@@ -1,0 +1,14 @@
+BEGIN_PROLOG
+
+analyzeEvents:
+{
+  module_type: "AnalyzeEvents"
+  GenieGenModuleLabel:  "generator"
+  SliceLabel: "pandora"
+  PFParticleLabel: "pandora"
+  TrackLabel: "pandoraTrack"
+  ShowerLabel: "pandoraShowerSBN"
+
+}
+
+END_PROLOG
