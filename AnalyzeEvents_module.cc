@@ -128,6 +128,7 @@ private:
   std::vector<float> vertexY;
   std::vector<float> vertexZ;
   std::vector<int> vertexSize;
+  std::vector<int> daughterSize;
 
   // reco parameters
   std::vector<int> fTrackIDs;
@@ -551,6 +552,7 @@ void hyperon::AnalyzeEvents::analyze(art::Event const& evt)
    std::cout<<"------------ MC TRUTH Parameters ----------------"<<std::endl;  
    nTotEvents++;
    vertexSize.push_back(0);
+   //daughterSize.push_back(0);
 
    //if (mclist.size() > 1){
 //	nMultiEvents++;
@@ -603,16 +605,24 @@ void hyperon::AnalyzeEvents::analyze(art::Event const& evt)
 		  isoVertexZ = -9999.;
 	  }
 
-	  // Daughter
+	  // Daughter information
+          int nDaughtPushedBack = 0;
+	  daughterSize.push_back(mcParticle->NumberDaughters()); // save num of daughters for each particle for later indexing
+	  std::cout<<"num daughters = "<<mcParticle->NumberDaughters()<<std::endl;
 	  for (int i_daughter = 0; i_daughter < mcParticle->NumberDaughters(); ++i_daughter){
 		  int daughterTrackID = mcParticle->Daughter(i_daughter);
 	  for (size_t i = 0; i < assocParticles.size(); ++i){
 		  if (assocParticles.at(i)->TrackId() == daughterTrackID){
 			  int daughterPdgCode = assocParticles.at(i)->PdgCode();
-			  daughterPDG.push_back(daughterPdgCode);
+			  daughterPDG.push_back(daughterPdgCode); // save all interaction particle daughter pdgs in one array
+			  nDaughtPushedBack++;
 			  break;
 		  }
 	  }
+	  }
+	  
+	  if(nDaughtPushedBack != mcParticle->NumberDaughters()){
+		  std::cout<<"num of daughters not matched"<<std::endl;
 	  }
            
 	  if(mcParticle->PdgCode()==  13) mu++;   
@@ -630,7 +640,7 @@ void hyperon::AnalyzeEvents::analyze(art::Event const& evt)
           if(mcParticle->PdgCode()== 2112) neutron++;
           if(mcParticle->PdgCode()== 3122){
 		  lambda++;
-		  std::cout<<"Lambda mother is "<<mcParticle->Mother();
+		  //std::cout<<"Lambda mother is "<<mcParticle->Mother();
 	  }
           if(mcParticle->PdgCode()== 3222) sigmap++;
           if(mcParticle->PdgCode()== 3212) sigma0++;
@@ -644,28 +654,6 @@ void hyperon::AnalyzeEvents::analyze(art::Event const& evt)
 	nMCParticles = 0; // reset counter
 
    }
-
-
-// SIGNAL DEFINITION
-
-bool AreKaons = false;
-bool IsAntiMuon = false;
-bool IsInFV = false;
-bool IsSigma0 = false;
-bool IsPhoton = false;
-bool IsLambda = false;
-if (gamma != 0){
-	IsPhoton = true;
-}
-if (kaonp != 0 || kaonm != 0 || kaon0 != 0)
-       AreKaons = true;
-if (sigma0 != 0)
-	IsSigma0 = true;
-if (IsSigma0 && IsPhoton && !AreKaons){
-	isSignal == true;
-	std::cout<<"MAYBE SIGNAL DETECTED"<<std::endl;
-}
-
    
 //std::cout<<"***************************"<<std::endl;
 //std::cout<<vertexSize.size()<<std::endl;
@@ -718,6 +706,7 @@ std::cout<<"****************************************************************"<<s
  vertexY.clear();
  vertexZ.clear();
  vertexSize.clear();
+ daughterSize.clear();
 }
 
 
@@ -725,7 +714,7 @@ void hyperon::AnalyzeEvents::beginJob()
 {
   // Implementation of optional member function here.
   art::ServiceHandle<art::TFileService> tfs;
-  fTree = tfs->make<TTree> ("TreeS", "Output TTree");
+  fTree = tfs->make<TTree> ("tree", "Output TTree");
 
   //add branches here
   
@@ -739,6 +728,7 @@ void hyperon::AnalyzeEvents::beginJob()
   fTree->Branch("vertexY", &vertexY);
   fTree->Branch("vertexZ", &vertexZ);
   fTree->Branch("vertexSize", &vertexSize);
+  fTree->Branch("daughterSize", &daughterSize);
   fTree->Branch("isoVertexX", &isoVertexX);
   fTree->Branch("isoVertexY", &isoVertexY);
   fTree->Branch("isoVertexZ", &isoVertexZ);

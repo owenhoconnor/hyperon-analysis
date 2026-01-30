@@ -35,6 +35,9 @@ void testingSIG::Loop()
 //
    
    int nSigma = 0;
+   int nLambda = 0;
+   int nGoodLambda = 0;
+   int nGoodSigma = 0;
 
    if (fChain == 0) return;
 
@@ -51,7 +54,9 @@ void testingSIG::Loop()
       
       bool IsAntiMuon = false;
       bool IsLambda = false;
+      bool IsGoodLambda = false;
       bool IsSigma0 = false;
+      bool IsGoodSigma = false;
       bool IsPhoton = false;
       bool IsKaonp = false;
       bool IsKaonm = false;
@@ -63,36 +68,120 @@ void testingSIG::Loop()
       bool IsSignal = false;
 
       int sumCounter = 0;
+      int daughterCounter = 0;
+
+      std::cout<<"****************** new event ********************"<<std::endl;
+      std::cout<<"truePDG size = "<<truePDG->size()<<", daughterSize size = "<<daughterSize->size()<<std::endl;
+
       for (int i_vert = 0; i_vert < vertexSize->size(); i_vert++){ // Loop over truth vertices in event (may be more than 1)
       sumCounter += vertexSize->at(i_vert); // Keep track of what particle index we are at over all vertices
 
-      for (int i = (sumCounter - vertexSize->at(i_vert)); i < sumCounter; i++){ // Loop through particles from previous vertex end to current vertex end  
-
+      for (int i = (sumCounter - vertexSize->at(i_vert)); i < sumCounter; i++){ // Loop through particles from previous vertex end to current vertex end   
+    
+	      std::cout<<"------------------- new particle ------------------"<<std::endl;    
           std::cout<<"Particle index "<<i<<" in vertex index  "<<i_vert<<" has vertex "<<vertexX->at(i)<<", "<<vertexY->at(i)<<", "
 		  <<vertexZ->at(i)<<", has PDG "<<truePDG->at(i)<<
-		  ", mother "<<motherPDG->at(i)<<" trueP "<<trueP->at(i)<<std::endl;
+		  ", mother "<<motherPDG->at(i)<<", num of daughters: "<<daughterSize->at(i)<<" trueP "<<trueP->at(i)<<std::endl;
+
+	  for (int i_daug = daughterCounter; i_daug < (daughterCounter + daughterSize->at(i)); i_daug++){
+		  std::cout<<"Daughter index "<<i_daug<<" has PDG "<<daughterPDG->at(i_daug)<<std::endl;
+	  } 
+
+	  if (std::abs(vertexX->at(i)) < 180 && std::abs(vertexY->at(i)) < 180 && vertexZ->at(i) > 10 & vertexZ->at(i) < 450){
+		  IsInFV = true;
+	  }
+
+	  if (truePDG->at(i) == 310 || truePDG->at(i) == 130 || truePDG->at(i) == 311){
+		  IsKaon0 = true;
+	  }
+	  if (truePDG->at(i) == 321){
+		  IsKaonp = true;
+	  }
+	  if (truePDG->at(i) == -321){
+		  IsKaonm = false;
+	  }
+	  if (truePDG->at(i) == 2212){
+		  IsProton = true;
+	  }
+	  if (truePDG->at(i) == 3122){
+		  IsLambda = true;
+		  bool HasProtonDaught = false;
+		  bool HasPionmDaught = false;
+
+		  for (int i_daught = daughterCounter; i_daught < (daughterCounter + daughterSize->at(i)); i_daught++){
+			  std::cout<<"Lambda daughter num "<<i_daught<<" has PDG "<<daughterPDG->at(i_daught)<<std::endl;
+			  if (daughterPDG->at(i_daught) == 2212){
+				  HasProtonDaught = true;
+			  }
+			  if (daughterPDG->at(i_daught) == -211){
+				  HasPionmDaught = true;
+			  }
+		  }
+
+		  if (HasProtonDaught && HasPionmDaught){
+			  nGoodLambda++;
+			  IsGoodLambda = true;
+		  }
+	  }
 
 	  if (truePDG->at(i) == 3212){
+		IsSigma0 = true;
+		bool HasPhotonDaughter = false;
+		bool HasLambdaDaughter = false;
 
-	   std::cout<<"SIGMA FOUND"<<std::endl;
-	   std::cout<<"sigma has "<<daughterPDG->size()<<" daughters"<<std::endl;
+		for (int i_daught = daughterCounter; i_daught < (daughterCounter + daughterSize->at(i)); i_daught++){
+			std::cout<<"Sigma0 daughter has PDG "<<daughterPDG->at(i_daught)<<std::endl;
+
+			if(daughterPDG->at(i_daught) == 22){
+				HasPhotonDaughter = true;
+			}
+			if(daughterPDG->at(i_daught) == 3122){
+				HasLambdaDaughter = true;
+			}
+		}
+
+		if (HasPhotonDaughter && HasLambdaDaughter){
+			nGoodSigma++;
+		}
+	   //std::cout<<"SIGMA FOUND"<<std::endl;
+	   //std::cout<<"sigma has "<<daughterPDG->size()<<" daughters"<<std::endl;
 	  /* for (int i_daugh = 0; i_daugh < daughterPDG->size(); i++){
 		std::cout<<"sigma daugher particle has PDG "<<daughterPDG->at(i_daugh)<<std::endl;
 		nSigma++;
 	   }*/
 
 	  }
+	  if (truePDG->at(i) == -13){
+		  IsAntiMuon = true;
+	  }
+	  if (truePDG->at(i) == -211){
+		  IsPionm = true;
+	  }
+	  if (truePDG->at(i) == 22){
+		  IsPhoton = true;
+	  }
 
-      }
-      }
+	  daughterCounter += daughterSize->at(i); // keep track of cumulative index of daughter PDGs
+      } // end of loop over particles in vertex
+  
+      } // end of loop over vertices in event
 
 
       // SIGNAL DEFINITION
       
       if (IsAntiMuon && IsInFV){
 	if (!IsKaonp && !IsKaonm && !IsKaon0){
-	    if(IsSigma0 && IsPhoton){
-		std::cout<<"check if sigma has lambda daughter... or otherway around"<<std::endl;
+	    if(IsSigma0){
+		nSigma++;
+		std::cout<<"signal event, nSignal = "<<nSigma<<std::endl;
+	    }
+	    if (IsLambda){
+		nLambda++;
+		std::cout<<"lambda event, nLambda = "<<nLambda<<std::endl; // check daughters of lambda for pion- and proton
+		if (IsGoodLambda){
+		nGoodLambda++;
+		std::cout<<"lambda w proton/pion daughters event, n good lambda = "<<nGoodLambda<<std::endl;
+		}
 	    }
 	}
       }
@@ -101,4 +190,7 @@ void testingSIG::Loop()
    }
 
    std::cout<<"num of sigma: "<<nSigma<<std::endl;
+   std::cout<<"num of lambda: "<<nLambda<<std::endl;
+   std::cout<<"num of good sigma: "<<nGoodSigma<<std::endl;
+   std::cout<<"num of good lambda: "<<nGoodLambda<<std::endl;
 }

@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////
 // This class has been automatically generated on
-// Thu Jan 22 15:19:54 2026 by ROOT version 6.28/12
-// from TTree TreeS/Output TTree
+// Fri Jan 30 16:11:43 2026 by ROOT version 6.38.00
+// from TTree tree/Output TTree
 // found on file: hyperonAnalysisSIG.root
 //////////////////////////////////////////////////////////
 
@@ -33,6 +33,7 @@ public :
    vector<float>   *vertexY;
    vector<float>   *vertexZ;
    vector<int>     *vertexSize;
+   vector<int>     *daughterSize;
    Float_t         isoVertexX;
    Float_t         isoVertexY;
    Float_t         isoVertexZ;
@@ -66,6 +67,7 @@ public :
    TBranch        *b_vertexY;   //!
    TBranch        *b_vertexZ;   //!
    TBranch        *b_vertexSize;   //!
+   TBranch        *b_daughterSize;   //!
    TBranch        *b_isoVertexX;   //!
    TBranch        *b_isoVertexY;   //!
    TBranch        *b_isoVertexZ;   //!
@@ -96,7 +98,7 @@ public :
    virtual Long64_t LoadTree(Long64_t entry);
    virtual void     Init(TTree *tree);
    virtual void     Loop();
-   virtual Bool_t   Notify();
+   virtual bool     Notify();
    virtual void     Show(Long64_t entry = -1);
 };
 
@@ -113,7 +115,7 @@ testingSIG::testingSIG(TTree *tree) : fChain(0)
          f = new TFile("hyperonAnalysisSIG.root");
       }
       TDirectory * dir = (TDirectory*)f->Get("hyperonAnalysisSIG.root:/ana");
-      dir->GetObject("TreeS",tree);
+      dir->GetObject("tree",tree);
 
    }
    Init(tree);
@@ -151,8 +153,6 @@ void testingSIG::Init(TTree *tree)
    // pointers of the tree will be set.
    // It is normally not necessary to make changes to the generated
    // code, but the routine can be extended by the user if needed.
-   // Init() will be called many times when running on PROOF
-   // (once per file to be processed).
 
    // Set object pointer
    trueP = 0;
@@ -163,6 +163,7 @@ void testingSIG::Init(TTree *tree)
    vertexY = 0;
    vertexZ = 0;
    vertexSize = 0;
+   daughterSize = 0;
    TrackIDs = 0;
    TrackLengths = 0;
    DistanceToRecoVertex = 0;
@@ -190,6 +191,7 @@ void testingSIG::Init(TTree *tree)
    fChain->SetBranchAddress("vertexY", &vertexY, &b_vertexY);
    fChain->SetBranchAddress("vertexZ", &vertexZ, &b_vertexZ);
    fChain->SetBranchAddress("vertexSize", &vertexSize, &b_vertexSize);
+   fChain->SetBranchAddress("daughterSize", &daughterSize, &b_daughterSize);
    fChain->SetBranchAddress("isoVertexX", &isoVertexX, &b_isoVertexX);
    fChain->SetBranchAddress("isoVertexY", &isoVertexY, &b_isoVertexY);
    fChain->SetBranchAddress("isoVertexZ", &isoVertexZ, &b_isoVertexZ);
@@ -215,15 +217,14 @@ void testingSIG::Init(TTree *tree)
    Notify();
 }
 
-Bool_t testingSIG::Notify()
+bool testingSIG::Notify()
 {
    // The Notify() function is called when a new file is opened. This
-   // can be either for a new TTree in a TChain or when when a new TTree
-   // is started when using PROOF. It is normally not necessary to make changes
+   // can be for a new TTree in a TChain. It is normally not necessary to make changes
    // to the generated code, but the routine can be extended by the
    // user if needed. The return value is currently not used.
 
-   return kTRUE;
+   return true;
 }
 
 void testingSIG::Show(Long64_t entry)
