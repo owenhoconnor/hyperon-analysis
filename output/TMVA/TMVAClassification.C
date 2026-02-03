@@ -144,7 +144,7 @@ int TMVAClassification( TString myMethodList = "" )
    // Register the training and test trees
  
    TTree *signalTree     = (TTree*)signalInput->Get("TreeS");
-   TTree *backgroundTree     = (TTree*)backgroundInput->Get("TreeS");
+   TTree *backgroundTree     = (TTree*)backgroundInput->Get("TreeB");
  
    // Create a ROOT output file where TMVA will store ntuples, histograms, etc.
    TString outfileName("TMVAC.root");
@@ -177,7 +177,8 @@ int TMVAClassification( TString myMethodList = "" )
    // Define the input variables that shall be used for the MVA training
    // note that you may also use variable expressions, such as: "3*var1/var2*abs(var3)"
    // [all types of expressions that can also be parsed by TTree::Draw( "expression" )]
-  // dataloader->AddVariable( "TrackLength", 'F' );
+   dataloader->AddVariable( "trackCount", 'F' );
+   dataloader->AddVariable( "showerCount", 'F');
    dataloader->AddVariable( "RecoVertexX", 'F' );
    dataloader->AddVariable( "RecoVertexY", 'F' );
    dataloader->AddVariable( "RecoVertexZ", 'F' );
@@ -245,7 +246,7 @@ int TMVAClassification( TString myMethodList = "" )
    // Set individual event weights (the variables must exist in the original TTree)
    // -  for signal    : `dataloader->SetSignalWeightExpression    ("weight1*weight2");`
    // -  for background: `dataloader->SetBackgroundWeightExpression("weight1*weight2");`
-   dataloader->SetBackgroundWeightExpression( "weight" );
+  // dataloader->SetBackgroundWeightExpression( "weight" );
  
    // Apply additional cuts on the signal and background samples (can be different)
    TCut mycuts = ""; // for example: TCut mycuts = "abs(var1)<0.5 && abs(var2-0.5)<1";
@@ -262,8 +263,11 @@ int TMVAClassification( TString myMethodList = "" )
    //
    //    dataloader->PrepareTrainingAndTestTree( mycut,
    //         "NSigTrain=3000:NBkgTrain=3000:NSigTest=3000:NBkgTest=3000:SplitMode=Random:!V" );
+   //
+   std::cout<<" Signal entries: "<<signalTree->GetEntries()<<std::endl;
+   std::cout<<" Background entries: "<<backgroundTree->GetEntries()<<std::endl;
    dataloader->PrepareTrainingAndTestTree( mycuts, mycutb,
-                                        "nTrain_Signal=1000:nTrain_Background=1000:SplitMode=Random:NormMode=NumEvents:!V" );
+                                        "nTrain_Signal=56:nTest_Signal=16:nTrain_Background=240:nTest_Background=60:SplitMode=Random:NormMode=EqualNumEvents:!V" );
  
    // ### Book MVA methods
    //
@@ -323,7 +327,7 @@ int TMVAClassification( TString myMethodList = "" )
    //
    //      "!H:!V:VolumeRangeMode=MinMax:DeltaFrac=0.2:KernelEstimator=Gauss:GaussSigma=0.3" );
    //      "!H:!V:VolumeRangeMode=RMS:DeltaFrac=3:KernelEstimator=Gauss:GaussSigma=0.3" );
-   if (Use["PDERS"])
+ /*  if (Use["PDERS"])
       factory->BookMethod( dataloader, TMVA::Types::kPDERS, "PDERS",
                            "!H:!V:NormTree=T:VolumeRangeMode=Adaptive:KernelEstimator=Gauss:GaussSigma=0.3:NEventsMin=400:NEventsMax=600" );
  
@@ -343,7 +347,7 @@ int TMVAClassification( TString myMethodList = "" )
    if (Use["PDEFoamBoost"])
       factory->BookMethod( dataloader, TMVA::Types::kPDEFoam, "PDEFoamBoost",
                            "!H:!V:Boost_Num=30:Boost_Transform=linear:SigBgSeparate=F:MaxDepth=4:UseYesNoCell=T:DTLogic=MisClassificationError:FillFoamWithOrigWeights=F:TailCut=0:nActiveCells=500:nBin=20:Nmin=400:Kernel=None:Compress=T" );
- 
+*/ 
    // K-Nearest Neighbour classifier (KNN)
    if (Use["KNN"])
       factory->BookMethod( dataloader, TMVA::Types::kKNN, "KNN",
@@ -371,7 +375,7 @@ int TMVAClassification( TString myMethodList = "" )
                            "H:!V:Boost_Num=20:Boost_Transform=log:Boost_Type=AdaBoost:Boost_AdaBoostBeta=0.2:!Boost_DetailedMonitoring" );
  
    // Function discrimination analysis (FDA) -- test of various fitters - the recommended one is Minuit (or GA or SA)
-   if (Use["FDA_MC"])
+  /* if (Use["FDA_MC"])
       factory->BookMethod( dataloader, TMVA::Types::kFDA, "FDA_MC",
                            "H:!V:Formula=(0)+(1)*x0+(2)*x1+(3)*x2+(4)*x3:ParRanges=(-1,1);(-10,10);(-10,10);(-10,10);(-10,10):FitMethod=MC:SampleSize=100000:Sigma=0.1" );
  
@@ -395,7 +399,7 @@ int TMVAClassification( TString myMethodList = "" )
       factory->BookMethod( dataloader, TMVA::Types::kFDA, "FDA_MCMT",
                            "H:!V:Formula=(0)+(1)*x0+(2)*x1+(3)*x2+(4)*x3:ParRanges=(-1,1);(-10,10);(-10,10);(-10,10);(-10,10):FitMethod=MC:Converger=MINUIT:ErrorLevel=1:PrintLevel=-1:FitStrategy=0:!UseImprove:!UseMinos:SetBatch:SampleSize=20" );
  
-   // TMVA ANN: MLP (recommended ANN) -- all ANNs in TMVA are Multilayer Perceptrons
+  */ // TMVA ANN: MLP (recommended ANN) -- all ANNs in TMVA are Multilayer Perceptrons
    if (Use["MLP"])
       factory->BookMethod( dataloader, TMVA::Types::kMLP, "MLP", "H:!V:NeuronType=tanh:VarTransform=N:NCycles=600:HiddenLayers=N+5:TestRate=5:!UseRegulator" );
  
@@ -406,7 +410,7 @@ int TMVAClassification( TString myMethodList = "" )
       factory->BookMethod( dataloader, TMVA::Types::kMLP, "MLPBNN", "H:!V:NeuronType=tanh:VarTransform=N:NCycles=60:HiddenLayers=N+5:TestRate=5:TrainingMethod=BFGS:UseRegulator" ); // BFGS training with bayesian regulators
  
  
-   // Multi-architecture DNN implementation.
+ /*  // Multi-architecture DNN implementation.
    if (Use["DNN_CPU"] or Use["DNN_GPU"]) {
       // General layout.
       TString layoutString ("Layout=TANH|128,TANH|128,TANH|128,LINEAR");
@@ -435,7 +439,7 @@ int TMVAClassification( TString myMethodList = "" )
          factory->BookMethod(dataloader, TMVA::Types::kDL, "DNN_CPU", cpuOptions);
       }
    }
- 
+ */
    // CF(Clermont-Ferrand)ANN
    if (Use["CFMlpANN"])
       factory->BookMethod( dataloader, TMVA::Types::kCFMlpANN, "CFMlpANN", "!H:!V:NCycles=200:HiddenLayers=N+1,N"  ); // n_cycles:#nodes:#nodes:...
@@ -505,7 +509,7 @@ int TMVAClassification( TString myMethodList = "" )
    std::cout << "==> TMVAClassification is done!" << std::endl;
  
    // Launch the GUI for the root macros
-   if (!gROOT->IsBatch()) TMVA::TMVAGui( outfileName );
+  // if (!gROOT->IsBatch()) TMVA::TMVAGui( outfileName );
  
    return 0;
 }
