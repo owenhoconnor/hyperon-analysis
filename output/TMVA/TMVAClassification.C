@@ -140,7 +140,7 @@ int TMVAClassification( TString myMethodList = "" )
       throw std::runtime_error("ERROR: could not open background data file");
    std::cout << "--- TMVAClassification       : Using signal input file: " << signalInput->GetName()
 	  <<" and background input file "<< backgroundInput->GetName() << std::endl;
- 
+   } 
    // Register the training and test trees
  
    TTree *signalTree     = (TTree*)signalInput->Get("TreeS");

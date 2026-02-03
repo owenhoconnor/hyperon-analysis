@@ -41,7 +41,7 @@ void testingSIG::Loop()
 
    if (fChain == 0) return;
 
-   auto outFile = std::unique_ptr<TFile>(TFile::Open("sigTree.root", "RECREATE"));
+   TFile *outFile = TFile::Open("TreeS.root", "RECREATE");
 
    if (!outFile || outFile->IsZombie()){
 	   std::cerr<<"Could not open file!!"<<std::endl;
@@ -50,6 +50,7 @@ void testingSIG::Loop()
 
    outFile->cd();
    TTree *signalTree = fChain->CloneTree(0);
+   signalTree->SetName("TreeS");
    signalTree->SetDirectory(outFile);
 
    Long64_t nentries = fChain->GetEntriesFast();
@@ -180,7 +181,7 @@ void testingSIG::Loop()
       // SIGNAL DEFINITION
       
       if (IsAntiMuon && IsInFV){
-	//if (!IsKaonp && !IsKaonm && !IsKaon0){
+	if (!IsKaonp && !IsKaonm && !IsKaon0){
 	    if(IsSigma0){
 		nSigma++;
 		if (IsGoodSigma){
@@ -198,15 +199,16 @@ void testingSIG::Loop()
 			std::cout<<"lambda w proton/pion daughters event, n goodlambda = "<<nGoodLambda<<std::endl;
 		}
 	    }
-	//}
+	}
       }
 
      
    }
 
    outFile->cd();
-   signalTree->Write(); // Write signal tree and close file
+   signalTree->Write("TreeS"); // Write signal tree and close file
    outFile->Close();
+   delete outFile;
 
    std::cout<<"num of sigma: "<<nSigma<<std::endl;
    std::cout<<"num of lambda: "<<nLambda<<std::endl;
