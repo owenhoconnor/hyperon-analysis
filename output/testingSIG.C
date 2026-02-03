@@ -39,10 +39,18 @@ void testingSIG::Loop()
    int nGoodLambda = 0;
    int nGoodSigma = 0;
 
-   TFile sigTree("sigTree.root", "recreate"); 
-   auto signalTree = fChain->CloneTree(0);
-
    if (fChain == 0) return;
+
+   TFile *outFile = TFile::Open("sigTree.root", "RECREATE");
+
+   if (!outFile || outFile->IsZombie()){
+	   std::cerr<<"Could not open file!!"<<std::endl;
+	   return;
+   }
+
+   outFile->cd();
+   TTree *signalTree = fChain->CloneTree(0);
+   signalTree->SetDirectory(&outFile);
 
    Long64_t nentries = fChain->GetEntriesFast();
 
@@ -195,6 +203,9 @@ void testingSIG::Loop()
 
      
    }
+
+   signalTree->Write(); // Write signal tree and close file
+   outFile->Close();
 
    std::cout<<"num of sigma: "<<nSigma<<std::endl;
    std::cout<<"num of lambda: "<<nLambda<<std::endl;
