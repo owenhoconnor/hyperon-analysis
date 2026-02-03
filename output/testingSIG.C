@@ -30,7 +30,7 @@ void testingSIG::Loop()
 //    fChain->GetEntry(jentry);       //read all branches
 //by  b_branchname->GetEntry(ientry); //read only this branch
 //
-// DEFINE 
+// fChain is the TTree 
 //
 //
    
@@ -38,6 +38,9 @@ void testingSIG::Loop()
    int nLambda = 0;
    int nGoodLambda = 0;
    int nGoodSigma = 0;
+
+   TFile sigTree("sigTree.root", "recreate"); 
+   auto signalTree = fChain->CloneTree(0);
 
    if (fChain == 0) return;
 
@@ -98,7 +101,7 @@ void testingSIG::Loop()
 		  IsKaonp = true;
 	  }
 	  if (truePDG->at(i) == -321){
-		  IsKaonm = false;
+		  IsKaonm = true;
 	  }
 	  if (truePDG->at(i) == 2212){
 		  IsProton = true;
@@ -119,7 +122,6 @@ void testingSIG::Loop()
 		  }
 
 		  if (HasProtonDaught && HasPionmDaught){
-			  nGoodLambda++;
 			  IsGoodLambda = true;
 		  }
 	  }
@@ -141,7 +143,7 @@ void testingSIG::Loop()
 		}
 
 		if (HasPhotonDaughter && HasLambdaDaughter){
-			nGoodSigma++;
+			IsGoodSigma = true;
 		}
 	   //std::cout<<"SIGMA FOUND"<<std::endl;
 	   //std::cout<<"sigma has "<<daughterPDG->size()<<" daughters"<<std::endl;
@@ -170,20 +172,25 @@ void testingSIG::Loop()
       // SIGNAL DEFINITION
       
       if (IsAntiMuon && IsInFV){
-	if (!IsKaonp && !IsKaonm && !IsKaon0){
+	//if (!IsKaonp && !IsKaonm && !IsKaon0){
 	    if(IsSigma0){
 		nSigma++;
-		std::cout<<"signal event, nSignal = "<<nSigma<<std::endl;
+		if (IsGoodSigma){
+			nGoodSigma++;
+			std::cout<<"signal event, nSignal = "<<nGoodSigma<<std::endl;
+			
+			signalTree->Fill();
+		}
 	    }
 	    if (IsLambda){
 		nLambda++;
 		std::cout<<"lambda event, nLambda = "<<nLambda<<std::endl; // check daughters of lambda for pion- and proton
 		if (IsGoodLambda){
-		nGoodLambda++;
-		std::cout<<"lambda w proton/pion daughters event, n good lambda = "<<nGoodLambda<<std::endl;
+			nGoodLambda++;
+			std::cout<<"lambda w proton/pion daughters event, n goodlambda = "<<nGoodLambda<<std::endl;
 		}
 	    }
-	}
+	//}
       }
 
      

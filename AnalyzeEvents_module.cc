@@ -101,7 +101,7 @@ private:
 
 
    int lambda=0,mu=0, mubar=0,kaonp=0,kaonm=0,kaon0=0,proton=0,neutron=0,pip=0,pim=0,pi0=0;
-   int sigmap=0, sigma0=0, sigmam=0, gamma=0;
+   int sigmap=0, sigma0=0, sigmam=0, gamma=0, goodSigma=0, goodLambda=0;
    int nMultiEvents = 0;
    int nSingleEvents = 0;
    int nTotEvents = 0;
@@ -552,7 +552,6 @@ void hyperon::AnalyzeEvents::analyze(art::Event const& evt)
    std::cout<<"------------ MC TRUTH Parameters ----------------"<<std::endl;  
    nTotEvents++;
    vertexSize.push_back(0);
-   //daughterSize.push_back(0);
 
    //if (mclist.size() > 1){
 //	nMultiEvents++;
@@ -606,7 +605,6 @@ void hyperon::AnalyzeEvents::analyze(art::Event const& evt)
 	  }
 
 	  // Daughter information
-          int nDaughtPushedBack = 0;
 	  daughterSize.push_back(mcParticle->NumberDaughters()); // save num of daughters for each particle for later indexing
 	  std::cout<<"num daughters = "<<mcParticle->NumberDaughters()<<std::endl;
 	  for (int i_daughter = 0; i_daughter < mcParticle->NumberDaughters(); ++i_daughter){
@@ -615,14 +613,9 @@ void hyperon::AnalyzeEvents::analyze(art::Event const& evt)
 		  if (assocParticles.at(i)->TrackId() == daughterTrackID){
 			  int daughterPdgCode = assocParticles.at(i)->PdgCode();
 			  daughterPDG.push_back(daughterPdgCode); // save all interaction particle daughter pdgs in one array
-			  nDaughtPushedBack++;
 			  break;
 		  }
 	  }
-	  }
-	  
-	  if(nDaughtPushedBack != mcParticle->NumberDaughters()){
-		  std::cout<<"num of daughters not matched"<<std::endl;
 	  }
            
 	  if(mcParticle->PdgCode()==  13) mu++;   
@@ -636,14 +629,61 @@ void hyperon::AnalyzeEvents::analyze(art::Event const& evt)
           if(mcParticle->PdgCode()== 321) kaonp++;
           if(mcParticle->PdgCode()==-321) kaonm++;
           if(mcParticle->PdgCode()== 311 || mcParticle->PdgCode() == 130 || mcParticle->PdgCode() == 310) kaon0++;
-          if(mcParticle->PdgCode()== 2212) proton++;
+          if(mcParticle->PdgCode()== 2212){
+		proton++;
+
+	  for (int i_daughter = 0; i_daughter < mcParticle->NumberDaughters(); ++i_daughter){
+		  int daughterTrackID = mcParticle->Daughter(i_daughter);
+	  for (size_t i = 0; i < assocParticles.size(); ++i){
+		  if (assocParticles.at(i)->TrackId() == daughterTrackID){
+			  int daughterPdgCode = assocParticles.at(i)->PdgCode();
+			  std::cout<<"PROTON DAUGHTER PDG = "<<daughterPdgCode<<std::endl;
+			  break;
+		 	 }
+	  	    }
+	  	}
+
+	  }
           if(mcParticle->PdgCode()== 2112) neutron++;
           if(mcParticle->PdgCode()== 3122){
 		  lambda++;
-		  //std::cout<<"Lambda mother is "<<mcParticle->Mother();
+		  
+	  for (int i_daughter = 0; i_daughter < mcParticle->NumberDaughters(); ++i_daughter){
+		  int daughterTrackID = mcParticle->Daughter(i_daughter);
+	  for (size_t i = 0; i < assocParticles.size(); ++i){
+		  if (assocParticles.at(i)->TrackId() == daughterTrackID){
+			  int daughterPdgCode = assocParticles.at(i)->PdgCode();
+			  std::cout<<"LAMBDA DAUGHTER PDG = "<<daughterPdgCode<<std::endl;
+
+			  if (daughterPdgCode == 2212){
+				  std::cout<<"LAMBDA w/ PROTON DAUGHTER"<<std::endl;
+				  goodLambda++;
+			  }
+			  break;
+		 	 }
+	  	    }
+	  	}
 	  }
           if(mcParticle->PdgCode()== 3222) sigmap++;
-          if(mcParticle->PdgCode()== 3212) sigma0++;
+          if(mcParticle->PdgCode()== 3212){
+		  sigma0++;
+
+	  for (int i_daughter = 0; i_daughter < mcParticle->NumberDaughters(); ++i_daughter){
+		  int daughterTrackID = mcParticle->Daughter(i_daughter);
+	  for (size_t i = 0; i < assocParticles.size(); ++i){
+		  if (assocParticles.at(i)->TrackId() == daughterTrackID){
+			  int daughterPdgCode = assocParticles.at(i)->PdgCode();
+			  std::cout<<"SIGMA0 DAUGHTER PDG = "<<daughterPdgCode<<std::endl;
+
+			  if (daughterPdgCode == 3122){
+				std::cout<<"SIGMA0 w/ LAMBDA DAUGHTER"<<std::endl;
+				goodSigma++;
+			  }
+			  break;
+		 	 }
+	  	    }
+	  	}
+	  }
           if(mcParticle->PdgCode()== 3112) sigmam++;
 
 	
@@ -669,6 +709,8 @@ void hyperon::AnalyzeEvents::analyze(art::Event const& evt)
 //std::cout<<"running ratio of single int events = "<<singleRatio<<std::endl;
 //std::cout<<"sanity check 1 = "<<sanityCheck<<std::endl;
 
+std::cout<<"num of good lambdas = "<<goodLambda<<std::endl;
+std::cout<<"num of good sigmas = "<<goodSigma<<std::endl;
 std::cout<<"****************************************************************"<<std::endl;
 
 
@@ -702,6 +744,8 @@ std::cout<<"****************************************************************"<<s
  //}
  trueP.clear();
  truePDG.clear();
+ daughterPDG.clear();
+ motherPDG.clear();
  vertexX.clear();
  vertexY.clear();
  vertexZ.clear();
