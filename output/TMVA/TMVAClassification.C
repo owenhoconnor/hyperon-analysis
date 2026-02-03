@@ -267,7 +267,7 @@ int TMVAClassification( TString myMethodList = "" )
    std::cout<<" Signal entries: "<<signalTree->GetEntries()<<std::endl;
    std::cout<<" Background entries: "<<backgroundTree->GetEntries()<<std::endl;
    dataloader->PrepareTrainingAndTestTree( mycuts, mycutb,
-                                        "nTrain_Signal=56:nTest_Signal=16:nTrain_Background=240:nTest_Background=60:SplitMode=Random:NormMode=EqualNumEvents:!V" );
+                                        "nTrain_Signal=40:nTest_Signal=16:nTrain_Background=240:nTest_Background=60:SplitMode=Random:NormMode=EqualNumEvents:!V" );
  
    // ### Book MVA methods
    //
@@ -276,7 +276,7 @@ int TMVAClassification( TString myMethodList = "" )
    // it is possible to preset ranges in the option string in which the cut optimisation should be done:
    // "...:CutRangeMin[2]=-1:CutRangeMax[2]=1"...", where [2] is the third input variable
  
-   // Cut optimisation
+/*   // Cut optimisation
    if (Use["Cuts"])
       factory->BookMethod( dataloader, TMVA::Types::kCuts, "Cuts",
                            "!H:!V:FitMethod=MC:EffSel:SampleSize=200000:VarProp=FSmart" );
@@ -296,7 +296,7 @@ int TMVAClassification( TString myMethodList = "" )
    if (Use["CutsSA"])
       factory->BookMethod( dataloader, TMVA::Types::kCuts, "CutsSA",
                            "!H:!V:FitMethod=SA:EffSel:MaxCalls=150000:KernelTemp=IncAdaptive:InitialTemp=1e+6:MinTemp=1e-6:Eps=1e-10:UseDefaultScale" );
- 
+ */
    // Likelihood ("naive Bayes estimator")
    if (Use["Likelihood"])
       factory->BookMethod( dataloader, TMVA::Types::kLikelihood, "Likelihood",
@@ -400,7 +400,7 @@ int TMVAClassification( TString myMethodList = "" )
                            "H:!V:Formula=(0)+(1)*x0+(2)*x1+(3)*x2+(4)*x3:ParRanges=(-1,1);(-10,10);(-10,10);(-10,10);(-10,10):FitMethod=MC:Converger=MINUIT:ErrorLevel=1:PrintLevel=-1:FitStrategy=0:!UseImprove:!UseMinos:SetBatch:SampleSize=20" );
  
   */ // TMVA ANN: MLP (recommended ANN) -- all ANNs in TMVA are Multilayer Perceptrons
-   if (Use["MLP"])
+ /*  if (Use["MLP"])
       factory->BookMethod( dataloader, TMVA::Types::kMLP, "MLP", "H:!V:NeuronType=tanh:VarTransform=N:NCycles=600:HiddenLayers=N+5:TestRate=5:!UseRegulator" );
  
    if (Use["MLPBFGS"])
@@ -409,7 +409,7 @@ int TMVAClassification( TString myMethodList = "" )
    if (Use["MLPBNN"])
       factory->BookMethod( dataloader, TMVA::Types::kMLP, "MLPBNN", "H:!V:NeuronType=tanh:VarTransform=N:NCycles=60:HiddenLayers=N+5:TestRate=5:TrainingMethod=BFGS:UseRegulator" ); // BFGS training with bayesian regulators
  
- 
+ */
  /*  // Multi-architecture DNN implementation.
    if (Use["DNN_CPU"] or Use["DNN_GPU"]) {
       // General layout.
@@ -440,7 +440,7 @@ int TMVAClassification( TString myMethodList = "" )
       }
    }
  */
-   // CF(Clermont-Ferrand)ANN
+ /*  // CF(Clermont-Ferrand)ANN
    if (Use["CFMlpANN"])
       factory->BookMethod( dataloader, TMVA::Types::kCFMlpANN, "CFMlpANN", "!H:!V:NCycles=200:HiddenLayers=N+1,N"  ); // n_cycles:#nodes:#nodes:...
  
@@ -451,7 +451,7 @@ int TMVAClassification( TString myMethodList = "" )
    // Support Vector Machine
    if (Use["SVM"])
       factory->BookMethod( dataloader, TMVA::Types::kSVM, "SVM", "Gamma=0.25:Tol=0.001:VarTransform=Norm" );
- 
+ */
    // Boosted Decision Trees
    if (Use["BDTG"]) // Gradient Boost
       factory->BookMethod( dataloader, TMVA::Types::kBDT, "BDTG",

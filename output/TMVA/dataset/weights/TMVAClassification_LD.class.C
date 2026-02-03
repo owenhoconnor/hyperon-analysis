@@ -10,10 +10,10 @@ Method         : LD::LD
 TMVA Release   : 4.2.1         [262657]
 ROOT Release   : 6.38/00       [402944]
 Creator        : ooconnor
-Date           : Tue Feb  3 10:45:38 2026
+Date           : Tue Feb  3 10:51:55 2026
 Host           : Linux buildvm-x86-26.rdu3.fedoraproject.org 6.17.1-300.fc43.x86_64 #1 SMP PREEMPT_DYNAMIC Mon Oct 6 15:37:21 UTC 2025 x86_64 x86_64 x86_64 GNU/Linux
 Dir            : /home/lar/ooconnor/larsoft_testing/srcs/sbndcode/sbndcode/Workshop/Analysis/output/TMVA
-Training events: 296
+Training events: 280
 Analysis type  : [Classification]
 
 
@@ -174,12 +174,12 @@ class ReadLD : public IClassifierReader {
 
 inline void ReadLD::Initialize() 
 {
-   fLDCoefficients.push_back( -0.107168657064 );
-   fLDCoefficients.push_back( 0.00311758251949 );
-   fLDCoefficients.push_back( 0.194527317589 );
-   fLDCoefficients.push_back( -0.000199771654177 );
-   fLDCoefficients.push_back( 7.70733718613e-05 );
-   fLDCoefficients.push_back( 0.000121044697292 );
+   fLDCoefficients.push_back( -0.0981168429959 );
+   fLDCoefficients.push_back( 0.0175953296926 );
+   fLDCoefficients.push_back( 0.180838067012 );
+   fLDCoefficients.push_back( 8.55214974065e-06 );
+   fLDCoefficients.push_back( 1.91863912069e-05 );
+   fLDCoefficients.push_back( -2.06636788122e-05 );
 
    // sanity check
    if (fLDCoefficients.size() != fNvars+1) {
