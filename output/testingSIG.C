@@ -41,7 +41,7 @@ void testingSIG::Loop()
 
    if (fChain == 0) return;
 
-   TFile *outFile = TFile::Open("sigTree.root", "RECREATE");
+   auto outFile = std::unique_ptr<TFile>(TFile::Open("sigTree.root", "RECREATE"));
 
    if (!outFile || outFile->IsZombie()){
 	   std::cerr<<"Could not open file!!"<<std::endl;
@@ -50,7 +50,7 @@ void testingSIG::Loop()
 
    outFile->cd();
    TTree *signalTree = fChain->CloneTree(0);
-   signalTree->SetDirectory(&outFile);
+   signalTree->SetDirectory(outFile);
 
    Long64_t nentries = fChain->GetEntriesFast();
 
@@ -98,7 +98,7 @@ void testingSIG::Loop()
 		  std::cout<<"Daughter index "<<i_daug<<" has PDG "<<daughterPDG->at(i_daug)<<std::endl;
 	  } 
 
-	  if (std::abs(vertexX->at(i)) < 180 && std::abs(vertexY->at(i)) < 180 && vertexZ->at(i) > 10 & vertexZ->at(i) < 450){
+	  if (std::abs(vertexX->at(i)) < 180 && std::abs(vertexY->at(i)) < 180 && vertexZ->at(i) > 10 && vertexZ->at(i) < 450){
 		  IsInFV = true;
 	  }
 
@@ -204,6 +204,7 @@ void testingSIG::Loop()
      
    }
 
+   outFile->cd();
    signalTree->Write(); // Write signal tree and close file
    outFile->Close();
 
