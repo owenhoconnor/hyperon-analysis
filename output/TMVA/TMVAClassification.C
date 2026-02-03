@@ -144,7 +144,7 @@ int TMVAClassification( TString myMethodList = "" )
    // Register the training and test trees
  
    TTree *signalTree     = (TTree*)signalInput->Get("TreeS");
-   TTree *backgroundTree     = (TTree*)backgroundInput->Get("TreeB");
+   TTree *backgroundTree     = (TTree*)backgroundInput->Get("TreeS");
  
    // Create a ROOT output file where TMVA will store ntuples, histograms, etc.
    TString outfileName("TMVAC.root");
@@ -177,14 +177,14 @@ int TMVAClassification( TString myMethodList = "" )
    // Define the input variables that shall be used for the MVA training
    // note that you may also use variable expressions, such as: "3*var1/var2*abs(var3)"
    // [all types of expressions that can also be parsed by TTree::Draw( "expression" )]
-   dataloader->AddVariable( "TrackLength", 'F' );
+  // dataloader->AddVariable( "TrackLength", 'F' );
    dataloader->AddVariable( "RecoVertexX", 'F' );
    dataloader->AddVariable( "RecoVertexY", 'F' );
    dataloader->AddVariable( "RecoVertexZ", 'F' );
-   dataloader->AddVariable( "DistanceToRecoVertex", 'F');
-   dataloader->AddVariable( "TrackStartPositionX", 'F');
-   dataloader->AddVariable( "TrackStartPositionY", 'F');
-   dataloader->AddVariable( "TrackStartPositionZ", 'F');
+  // dataloader->AddVariable( "DistanceToRecoVertex", 'F');
+  // dataloader->AddVariable( "TrackStartPositionX", 'F');
+   //dataloader->AddVariable( "TrackStartPositionY", 'F');
+   //dataloader->AddVariable( "TrackStartPositionZ", 'F');
  
    // You can add so-called "Spectator variables", which are not used in the MVA training,
    // but will appear in the final "TestTree" produced by TMVA. This TestTree will contain the
