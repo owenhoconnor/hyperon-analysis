@@ -96,6 +96,7 @@ void hyperonAnalysis::Loop()
       std::cout<<"num of primary particles = "<<nPFParticles<<std::endl;
       std::cout<<"num of tracks = "<<trackCount<<std::endl;
       std::cout<<"num of showers = "<<showerCount<<std::endl;
+      std::cout<<"num of track score entries = "<<trackScores->size()<<std::endl;
 
       if (std::abs(RecoVertexX) < 180 && std::abs(RecoVertexY) < 180 && RecoVertexZ > 10 & RecoVertexZ < 450){
       	 hRecoVertexX->Fill(RecoVertexX);

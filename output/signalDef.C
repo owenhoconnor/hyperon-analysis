@@ -33,6 +33,8 @@ void signalDef::Loop()
 // fChain is the TTree 
 //
 //
+//
+	
    
    int nSigma = 0;
    int nLambda = 0;
@@ -40,6 +42,50 @@ void signalDef::Loop()
    int nGoodSigma = 0;
 
    if (fChain == 0) return;
+
+   TString Samples[3];
+   Samples[0] = "Sigma";
+   Samples[1] = "Hyperons";
+   Samples[2] = "Background";
+   
+   int nEvents[3] = {0};
+   nEvents[0] = 1; // Sigma
+   nEvents[1] = 1; // Hyperons
+   nEvents[2] = 1; // BKG
+   
+
+   double PoT[3] = {0};
+   PoT[0] = 1; // sigma
+   PoT[1] = 1; // hyperons
+   PoT[2] = 1; // bkg
+
+   double scale[3] = {0};
+   scale[0] = PoT[2] / PoT[0];
+   scale[1] = PoT[2] / PoT[1];
+   scale[2] = PoT[2] / PoT[2];
+
+   const int nCuts = 4;
+   TString CutName[nCuts];
+   CutName[0] = "AllEvents";
+   CutName[1] = "FV";
+   CutName[2] = "nShowers";
+   CutName[3] = "nTracks";
+
+   const int nVars = 4;
+   TString VarName[nVars];
+   VarName[0] = "nTracks";
+   VarName[1] = "nShowers";
+
+   TH1F *Hist[nVars][3][nCuts];
+
+   for (int s = 0; s < 4; s++){ // samples
+	  for (int v = 0; v < nVars; v++){ // variables
+		 for (int c = 0; c < nCuts; c++){ // cuts
+			Hist[v][s][c] = new TH1F(VarName[v] + Samples[s] + CutName[c], "", 100, -1, -1);
+		 }
+	  }
+   }
+   
 
    TFile *outFile = TFile::Open("TreeS.root", "RECREATE");
 
@@ -77,13 +123,22 @@ void signalDef::Loop()
       bool IsPionm = false;
    
       bool IsInFV = false; // true vertex FV for signal def
+      bool IsInRecoFV = false;
+      bool IsInTrackRange = false;
+      bool IsInShowerRange = false;
       bool IsSignal = false;
+      bool Cuts[nCuts] = {false};
+      int s = 0; // sample index (0 = sigma signal, 1 = other hyperons, 2=bkg)
 
       int sumCounter = 0;
       int daughterCounter = 0;
 
       std::cout<<"****************** new event ********************"<<std::endl;
       std::cout<<"truePDG size = "<<truePDG->size()<<", daughterSize size = "<<daughterSize->size()<<std::endl;
+      std::cout<<"trackScores size = "<<trackScores->size()<<" track start pos size = "<<TrackStartPositionX->size()<<std::endl;
+      std::cout<<"distance to reco vertex size = "<<DistanceToRecoVertex->size()<<std::endl;
+      std::cout<<"track lengths size = "<<TrackLengths->size()<<std::endl;
+      std::cout<<"trackCount = "<<trackCount<<" showerCount = "<<showerCount<<std::endl;
 
       for (int i_vert = 0; i_vert < vertexSize->size(); i_vert++){ // Loop over truth vertices in event (may be more than 1)
       sumCounter += vertexSize->at(i_vert); // Keep track of what particle index we are at over all vertices
@@ -180,16 +235,12 @@ void signalDef::Loop()
 
       // SIGNAL DEFINITION
       
-      if (IsAntiMuon && IsInFV){
-	if (!IsKaonp && !IsKaonm && !IsKaon0){
-	    if(IsSigma0){
-		nSigma++;
-		if (IsGoodSigma){
+      if (IsInFV && IsAntiMuon && !IsKaonp && !IsKaonm && !IsKaon0){
+	      if (IsGoodSigma){
 			nGoodSigma++;
 			std::cout<<"signal event, nSignal = "<<nGoodSigma<<std::endl;
-			
+			IsSignal = true;
 			signalTree->Fill();
-		}
 	    }
 	    if (IsLambda){
 		nLambda++;
@@ -200,10 +251,30 @@ void signalDef::Loop()
 		}
 	    }
 	}
+
+      // Preselection
+
+      if (std::abs(RecoVertexX) < 180 && std::abs(RecoVertexY) < 180 && RecoVertexZ > 10 && RecoVertexZ < 450){IsInRecoFV = true;}
+
+      if (trackCount > 2 && trackCount < 6){IsInTrackRange = true;}
+      if (showerCount == 1 || showerCount == 2){IsInShowerRange = true;}
+
+      Cuts[0] = true;
+      Cuts[1] = Cuts[0] && IsInRecoFV;
+      Cuts[2] = Cuts[1] && IsInTrackRange;
+      Cuts[3] = Cuts[2] && IsInShowerRange;
+
+      for (int c = 0; c<nCuts; c++){
+
+	if(Cuts[c]){
+
+		std::cout<<"fill hists here"<<std::endl;
+	}
+
       }
 
      
-   }
+   } // end event loop
 
    outFile->cd();
    signalTree->Write("TreeS"); // Write signal tree and close file

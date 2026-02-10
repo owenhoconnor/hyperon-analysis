@@ -467,8 +467,22 @@ void hyperon::AnalyzeEvents::analyze(art::Event const& evt)
 
 	// Get shower if there is one
 	if (showers.size() == 1){
-	    art::Ptr<recob::Shower> shower = showers.at(0);
+	    art::Ptr<recob::Shower> shower = showers.at(0); // call it track for easier code later
 	    std::cout<<"Got shower: "<<shower<<std::endl;
+	    float showerLength = shower->Length();
+	    auto const& showerStart = shower->ShowerStart();
+	    TVector3 showerStartPos(showerStart.X(), showerStart.Y(), showerStart.Z());
+
+	    float distanceToVertex = -9999.0f;
+	    if (fFoundRecoVertex) {
+		distanceToVertex = (showerStartPos - fRecoVertex).Mag();
+	    }
+
+	    fTrackLengths.push_back(showerLength);
+	    fTrackStartPositionX.push_back(showerStart.X());
+	    fTrackStartPositionY.push_back(showerStart.Y());
+	    fTrackStartPositionZ.push_back(showerStart.Z());
+	    fDistanceToRecoVertex.push_back(distanceToVertex);
 	}
 	// Get PFPs associated with track
 	//std::vector<art::Ptr<recob::PFParticle>> trackPFPs = trackToPFPAssoc.at(track.key());
