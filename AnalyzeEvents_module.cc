@@ -149,6 +149,12 @@ private:
   std::vector<float> fNeutrinoNuScores;
   std::vector<float> fCosmicNuScores;
   std::vector<float> fTrackScores;
+  std::vector<float> fMuonTrackScores;
+  std::vector<float> fProtonTrackScores;
+  std::vector<float> fPionTrackScores;
+  std::vector<int> fTrueTrackPDG;
+  std::vector<int> fTrueShowerPDG;
+  std::map<int, int> trueTrackPDGMap;
   int fTrackCount = 0;
   int fShowerCount = 0;
   
@@ -561,12 +567,200 @@ void hyperon::AnalyzeEvents::analyze(art::Event const& evt)
    }
 
 
-// reco Track -> MC truth matching
+// Tracks reco -> truth matching
+//frecoTruePDG.clear();
+fTrueTrackPDG.clear();
+fMuonTrackScores.clear();
+fProtonTrackScores.clear();
+fPionTrackScores.clear();
+std::map<int, TVector3> trackTrueVertices;
+
+art::Handle<art::Assns<simb::MCParticle, recob::Hit>> hitTruthAssn;
+evt.getByLabel("gaushitTruthMatch", hitTruthAssn);
+art::FindManyP<recob::Hit> trackHitAssoc(trackHandle, evt, fTrackLabel);
+
+for (const art::Ptr<recob::PFParticle>& slicePFP : nuSlicePFPs) { // loop through PFPs in nuSlice
+    art::FindManyP<recob::Track> pfpTrackAssoc(pfpHandle, evt, fTrackLabel);
+
+    std::vector<art::Ptr<recob::Track>> tracks = pfpTrackAssoc.at(slicePFP.key());
+    if (tracks.empty()) 
+	continue;
+   
+    if (tracks.size() != 1) // ensure there is only 1 track associated with this PFP
+        continue;
+
+for (const auto& track : tracks) { // loop over tracks (is this really necessary???)
+  
+    std::vector<art::Ptr<recob::PFParticle>> trackPFPs = trackToPFPAssoc.at(track.key());
+    art::Ptr<recob::PFParticle> trackPFP = trackPFPs.front();
+    std::vector<art::Ptr<larpandoraobj::PFParticleMetadata>> trackMetadataVec = pfpMetadataAssoc.at(trackPFP.key());
+    float trackScore = -1.0;
+    if (trackMetadataVec.empty()) {
+	std::cerr << "No metadata found for track with ID: " << track->ID() << std::endl;
+       }
+
+        for (const auto& metadata : trackMetadataVec) {
+            const auto& propertiesMap = metadata->GetPropertiesMap();
+      		  std::cout << "\nTrack PFParticle Metadata Properties (ID " << track->ID() << "):" << std::endl;	 
+	 if (propertiesMap.find("TrackScore") != propertiesMap.end()) {
+                        trackScore = propertiesMap.at("TrackScore");
+	 
+    	 } 
+	 else {
+        	std::cerr << "No metadata found for track PFParticle ID: " << track->ID() << std::endl;
+   	 }
+
+	}
+
+    std::vector<art::Ptr<recob::Hit>> trackHits = trackHitAssoc.at(track.key());    
+
+    art::FindManyP<simb::MCParticle> hitToMCParticleAssn(trackHits, evt, "gaushitTruthMatch");
+    std::map<int, int> mcParticleHitCount;
+    
+    for (size_t i_hit = 0; i_hit < trackHits.size(); i_hit++) { // loop over hits
+        std::vector<art::Ptr<simb::MCParticle>> mcParticles = hitToMCParticleAssn.at(i_hit);
+        for (const auto& mcParticle : mcParticles) {
+            mcParticleHitCount[mcParticle->TrackId()]++;
+        }
+    }
+   
+    int bestTrackID = -1;
+    int maxHitCount = 0;
+    for (const auto& [trackID, hitCount] : mcParticleHitCount) { // find track with highest hit count
+        if (hitCount > maxHitCount) {
+            maxHitCount = hitCount;
+            bestTrackID = trackID;
+        }
+    } 
+    
+    if (bestTrackID != -1) {
+	art::ServiceHandle<cheat::ParticleInventoryService> piService;
+        const simb::MCParticle* mcParticle = piService->TrackIdToParticle_P(bestTrackID);
+	if (mcParticle) {
+	trueTrackPDGMap[track->ID()] = mcParticle->PdgCode();	
+
+	 int pdgCode = mcParticle->PdgCode();
+            if (pdgCode == -13) {
+                fMuonTrackScores.push_back(trackScore);
+            } else if (pdgCode == 2212) {
+                fProtonTrackScores.push_back(trackScore);
+            } else if (pdgCode == -211) {
+                fPionTrackScores.push_back(trackScore);
+            }
+
+		float matchQuality = static_cast<float>(maxHitCount) / trackHits.size();
+		std::cout<<"match quality = "<<matchQuality<<std::endl;
+
+		size_t trackIndex = std::find(fTrackIDs.begin(), fTrackIDs.end(), track->ID()) - fTrackIDs.begin();
+                if (trackIndex < fTrackIDs.size()) {
+		fTrueTrackPDG.push_back(mcParticle->PdgCode());
+
+                std::cout << "Best matched MC Particle for Track: "
+                          << "PDG: " << mcParticle->PdgCode()
+                          << ", Track ID: " << mcParticle->TrackId()
+                          << ", Hit Count: " << maxHitCount << std::endl;
+
+		// fIsLongestTrack.push_back(track->ID() == fLongestTrackID);
+               // fIsClosestTrack.push_back(track->ID() == fClosestTrackID);
+
+		/* if (track->ID() == fLongestTrackID) {
+                        fLongestTrackTruePDG = mcParticle->PdgCode();
+                        longestTrackCount++;
+                        longestTrackPDGCounts[mcParticle->PdgCode()]++;
+
+		                  
+                        if (mcParticle->PdgCode() == 13) { 
+                            longestTrackMuonCount++;
+                        }
+                        
+                        std::cout << "=========================" << std::endl;
+                        std::cout << "Best matched MC Particle for Longest Track: "
+                                  << "MCParticle Track ID: " << mcParticle->TrackId()
+                                  << ", PDG: " << mcParticle->PdgCode()
+                                  << ", Hit Count: " << maxHitCount
+                                  << ", Match Quality: " << matchQuality
+                                  << std::endl;
+                    }
+*/
+		/*	 if (track->ID() == fClosestTrackID) {
+                        fClosestTrackTruePDG = mcParticle->PdgCode();
+                        closestTrackCount++;
+                        closestTrackPDGCounts[mcParticle->PdgCode()]++;
+                        
+                        if (abs(mcParticle->PdgCode()) == 321) { // Kaon
+                            closestTrackKaonCount++;
+                        }
+                        
+                        std::cout << "=========================" << std::endl;
+                        std::cout << "Best matched MC Particle for Closest Track: "
+                                  << "MCParticle Track ID: " << mcParticle->TrackId()
+                                  << ", PDG: " << mcParticle->PdgCode()
+                                  << ", Hit Count: " << maxHitCount
+                                  << ", Match Quality: " << matchQuality
+                                  << std::endl;
+         	           	}	
+*/
+				}
+			}
+		}
+	} // end loop over tracks
+} // end loop over slice PFPs
 
 
 
+//Showers reco -> truth matching
+fTrueShowerPDG.clear();
 
-//reco Shower -> MC truth matching
+art::FindManyP<recob::Hit> showerHitAssoc(showerHandle, evt, fShowerLabel);
+for (const art::Ptr<recob::PFParticle>& slicePFP : nuSlicePFPs) {
+    art::FindManyP<recob::Shower> pfpShowerAssoc(pfpHandle, evt, fShowerLabel);
+
+    std::vector<art::Ptr<recob::Shower>> showers = pfpShowerAssoc.at(slicePFP.key());
+
+    if (showers.empty())
+        continue;
+
+    if (showers.size() != 1)
+        continue;
+
+    art::Ptr<recob::Shower> shower = showers[0];
+
+    std::vector<art::Ptr<recob::Hit>> showerHits = showerHitAssoc.at(shower.key());
+    art::FindManyP<simb::MCParticle> showerHitToMCParticleAssn(showerHits, evt, "gaushitTruthMatch");
+    
+    std::map<int, int> mcParticleHitCount;
+    
+for (size_t i_hit = 0; i_hit < showerHits.size(); i_hit++) { // loop over shower hits
+    std::vector<art::Ptr<simb::MCParticle>> mcParticles = showerHitToMCParticleAssn.at(i_hit); 
+
+ for (const auto& mcParticle : mcParticles) {
+        mcParticleHitCount[mcParticle->TrackId()]++;
+    }
+}
+
+    int bestTrackID = -1;
+    int maxHitCount = 0;
+    for (const auto& [trackID, hitCount] : mcParticleHitCount) { // find shower with highest number of hits
+        if (hitCount > maxHitCount) {
+            maxHitCount = hitCount;
+            bestTrackID = trackID;
+        }
+    }
+    if (bestTrackID != -1) {
+           art::ServiceHandle<cheat::ParticleInventoryService> piService;
+    const simb::MCParticle* mcParticle = piService->TrackIdToParticle_P(bestTrackID);    
+
+	if (mcParticle) {
+                //frecoTruePDG[shower->ID()] = mcParticle->PdgCode();
+		fTrueShowerPDG.push_back(mcParticle->PdgCode());
+                std::cout << "Best matched MC Particle for Shower: "
+                          << "PDG: " << mcParticle->PdgCode()
+                          << ", Track ID: " << mcParticle->TrackId()
+                          << ", Hit Count: " << maxHitCount << std::endl;
+            }
+        }
+}
+
 
 // MCTRUTH PARAMETERS
 
@@ -812,6 +1006,9 @@ void hyperon::AnalyzeEvents::beginJob()
   fTree->Branch("DistanceToRecoVertex", &fDistanceToRecoVertex);
   fTree->Branch("nuScores", &fnuScore);
   fTree->Branch("trackScores", &fTrackScores);
+  fTree->Branch("muonTrackScores", &fMuonTrackScores);
+  fTree->Branch("protonTrackScores", &fProtonTrackScores);
+  fTree->Branch("pionTrackScores", &fPionTrackScores);
   fTree->Branch("NeutrinoNuScores", &fNeutrinoNuScores);
   fTree->Branch("TrackStartPositionX", &fTrackStartPositionX);
   fTree->Branch("TrackStartPositionY", &fTrackStartPositionY);
@@ -819,6 +1016,10 @@ void hyperon::AnalyzeEvents::beginJob()
   fTree->Branch("TrackEndPositionX", &fTrackEndPositionX);
   fTree->Branch("TrackEndPositionY", &fTrackEndPositionY);
   fTree->Branch("TrackEndPositionZ", &fTrackEndPositionZ);
+
+  // truth matching
+  fTree->Branch("pfpTrackPDG", &fTrueTrackPDG);
+  fTree->Branch("pfpShowerPDG", &fTrueShowerPDG);
 
   //Histograms
 }
