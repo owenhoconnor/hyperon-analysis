@@ -1,3 +1,6 @@
 *.root
 *.db
 *.log
+output/*.root
+output/*.db
+output/*.log

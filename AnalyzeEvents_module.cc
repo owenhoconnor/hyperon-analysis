@@ -785,10 +785,12 @@ for (size_t i_hit = 0; i_hit < showerHits.size(); i_hit++) { // loop over shower
  //      int lambda=0,mu=0, mubar=0,kaonp=0,kaonm=0,kaon0=0,proton=0,neutron=0,pip=0,pim=0,pi0=0;
  //      int sigmap=0, sigma0=0, sigmam=0;
        std::vector< art::Ptr<simb::MCParticle> > assocParticles(fmpart.at(i_truth));
+       std::cout<<"assocParticles size = "<<assocParticles.size()<<std::endl;
        for (size_t i_mcpart = 0; i_mcpart < assocParticles.size(); i_mcpart++)
        {
            art::Ptr<simb::MCParticle> mcParticle(assocParticles.at(i_mcpart));
-           if(mcParticle->Mother()!=10000000) continue;
+	  // std::cout<<"mcParticle mother is "<<mcParticle->Mother()<<std::endl;
+           if(mcParticle->Mother()!=0) continue;
 
            std::cout<<"--Particle at index " << i_mcpart <<"at mclist index "<<i_truth<< " has pdg: " << mcParticle->PdgCode() 
 		    <<" has momentum: " << mcParticle->P()<<" Mother: "<<mcParticle->Mother()

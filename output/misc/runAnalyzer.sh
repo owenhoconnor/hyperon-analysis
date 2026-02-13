@@ -3,7 +3,7 @@ set -euo pipefail
 shopt -s nullglob
 
 FCL="${FCL:-../run_analyzeEvents.fcl}"
-BKG_DIR="${BKG_DIR:-/data/sbnd/background}"
+BKG_DIR="${BKG_DIR:-/data/sbnd/hyperons_new}"
 BADLIST="${BADLIST:-./bad_files.txt}"
 
 # If you ever hit "Argument list too long", lower this (e.g. 200)
@@ -19,7 +19,7 @@ done < "$BADLIST"
 
 # Gather good files
 good=()
-for f in "$BKG_DIR"/reco2-*.root; do
+for f in "$BKG_DIR"/*.root; do
   base="$(basename "$f")"
   [[ ${BAD["$base"]+x} ]] && continue
   good+=("$f")

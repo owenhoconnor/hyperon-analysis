@@ -31,7 +31,7 @@ void signalPreselect::Loop()
 //by  b_branchname->GetEntry(ientry); //read only this branch
    if (fChain == 0) return;
 
-   const int Ncuts = 3;
+ /*  const int Ncuts = 3;
    TString CutName[Ncuts];
    CutName[0] = "AllEvents";
    CutName[1] = "NShowers";
@@ -51,7 +51,7 @@ void signalPreselect::Loop()
 	   for (int v = 0; v < Nvars; v++){ // variables
 		   for (int c = 0; c < Ncuts; c++){ // cuts
 			   Hist[s][v][c] = new TH1F("", "", 100, -1, -1)
-
+*/
    TFile *outFile = TFile::Open("preTreeS.root", "RECREATE");
    if (!outFile || outFile->IsZombie()){
 	   std::cerr<<"Could not open file!"<<std::endl;
@@ -93,10 +93,10 @@ void signalPreselect::Loop()
       // Fill new tree
       if (IsInRecoFV){
 	   if(HasTrackRange){
-//		  if(HasShowerRange){
+		  if(HasShowerRange){
 			  signalPreTree->Fill();
 		  }
-//	   }
+	   }
       }
    }
 
