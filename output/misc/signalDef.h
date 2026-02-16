@@ -61,7 +61,6 @@ public :
    vector<float>   *TrackEndPositionZ;
    vector<int>     *pfpTrackPDG;
    vector<int>     *pfpShowerPDG;
-   vector<int>     *pfpPDG;
 
    // List of branches
    TBranch        *b_eventID;   //!
@@ -101,7 +100,6 @@ public :
    TBranch        *b_TrackEndPositionZ;   //!
    TBranch        *b_pfpTrackPDG;   //!
    TBranch        *b_pfpShowerPDG;   //!
-   TBranch        *b_pfpPDG; //!
 
    signalDef(TTree *tree=0);
    virtual ~signalDef();
@@ -193,7 +191,6 @@ void signalDef::Init(TTree *tree)
    TrackEndPositionZ = 0;
    pfpTrackPDG = 0;
    pfpShowerPDG = 0;
-   pfpPDG = 0;
    // Set branch addresses and branch pointers
    if (!tree) return;
    fChain = tree;
@@ -237,7 +234,6 @@ void signalDef::Init(TTree *tree)
    fChain->SetBranchAddress("TrackEndPositionZ", &TrackEndPositionZ, &b_TrackEndPositionZ);
    fChain->SetBranchAddress("pfpTrackPDG", &pfpTrackPDG, &b_pfpTrackPDG);
    fChain->SetBranchAddress("pfpShowerPDG", &pfpShowerPDG, &b_pfpShowerPDG);
-   fChain->SetBranchAddress("pfpPDG", &pfpPDG, &b_pfpPDG);
    Notify();
 }
 

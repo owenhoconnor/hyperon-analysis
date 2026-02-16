@@ -1,12 +1,12 @@
 //////////////////////////////////////////////////////////
 // This class has been automatically generated on
-// Fri Feb 13 15:25:29 2026 by ROOT version 6.38.00
+// Fri Feb 13 15:22:59 2026 by ROOT version 6.38.00
 // from TTree tree/Output TTree
 // found on file: hyperonAnalysisSIG.root
 //////////////////////////////////////////////////////////
 
-#ifndef signalDef_h
-#define signalDef_h
+#ifndef test_h
+#define test_h
 
 #include <TROOT.h>
 #include <TChain.h>
@@ -16,7 +16,7 @@
 #include "vector"
 #include "vector"
 
-class signalDef {
+class test {
 public :
    TTree          *fChain;   //!pointer to the analyzed TTree or TChain
    Int_t           fCurrent; //!current Tree number in a TChain
@@ -61,7 +61,6 @@ public :
    vector<float>   *TrackEndPositionZ;
    vector<int>     *pfpTrackPDG;
    vector<int>     *pfpShowerPDG;
-   vector<int>     *pfpPDG;
 
    // List of branches
    TBranch        *b_eventID;   //!
@@ -101,10 +100,9 @@ public :
    TBranch        *b_TrackEndPositionZ;   //!
    TBranch        *b_pfpTrackPDG;   //!
    TBranch        *b_pfpShowerPDG;   //!
-   TBranch        *b_pfpPDG; //!
 
-   signalDef(TTree *tree=0);
-   virtual ~signalDef();
+   test(TTree *tree=0);
+   virtual ~test();
    virtual Int_t    Cut(Long64_t entry);
    virtual Int_t    GetEntry(Long64_t entry);
    virtual Long64_t LoadTree(Long64_t entry);
@@ -116,8 +114,8 @@ public :
 
 #endif
 
-#ifdef signalDef_cxx
-signalDef::signalDef(TTree *tree) : fChain(0) 
+#ifdef test_cxx
+test::test(TTree *tree) : fChain(0) 
 {
 // if parameter tree is not specified (or zero), connect the file
 // used to generate this class and read the Tree.
@@ -133,19 +131,19 @@ signalDef::signalDef(TTree *tree) : fChain(0)
    Init(tree);
 }
 
-signalDef::~signalDef()
+test::~test()
 {
    if (!fChain) return;
    delete fChain->GetCurrentFile();
 }
 
-Int_t signalDef::GetEntry(Long64_t entry)
+Int_t test::GetEntry(Long64_t entry)
 {
 // Read contents of entry.
    if (!fChain) return 0;
    return fChain->GetEntry(entry);
 }
-Long64_t signalDef::LoadTree(Long64_t entry)
+Long64_t test::LoadTree(Long64_t entry)
 {
 // Set the environment to read one entry
    if (!fChain) return -5;
@@ -158,7 +156,7 @@ Long64_t signalDef::LoadTree(Long64_t entry)
    return centry;
 }
 
-void signalDef::Init(TTree *tree)
+void test::Init(TTree *tree)
 {
    // The Init() function is called when the selector needs to initialize
    // a new tree or chain. Typically here the branch addresses and branch
@@ -193,7 +191,6 @@ void signalDef::Init(TTree *tree)
    TrackEndPositionZ = 0;
    pfpTrackPDG = 0;
    pfpShowerPDG = 0;
-   pfpPDG = 0;
    // Set branch addresses and branch pointers
    if (!tree) return;
    fChain = tree;
@@ -237,11 +234,10 @@ void signalDef::Init(TTree *tree)
    fChain->SetBranchAddress("TrackEndPositionZ", &TrackEndPositionZ, &b_TrackEndPositionZ);
    fChain->SetBranchAddress("pfpTrackPDG", &pfpTrackPDG, &b_pfpTrackPDG);
    fChain->SetBranchAddress("pfpShowerPDG", &pfpShowerPDG, &b_pfpShowerPDG);
-   fChain->SetBranchAddress("pfpPDG", &pfpPDG, &b_pfpPDG);
    Notify();
 }
 
-bool signalDef::Notify()
+bool test::Notify()
 {
    // The Notify() function is called when a new file is opened. This
    // can be for a new TTree in a TChain. It is normally not necessary to make changes
@@ -251,18 +247,18 @@ bool signalDef::Notify()
    return true;
 }
 
-void signalDef::Show(Long64_t entry)
+void test::Show(Long64_t entry)
 {
 // Print contents of entry.
 // If entry is not specified, print current entry
    if (!fChain) return;
    fChain->Show(entry);
 }
-Int_t signalDef::Cut(Long64_t entry)
+Int_t test::Cut(Long64_t entry)
 {
 // This function may be called from Loop.
 // returns  1 if entry is accepted.
 // returns -1 otherwise.
    return 1;
 }
-#endif // #ifdef signalDef_cxx
+#endif // #ifdef test_cxx

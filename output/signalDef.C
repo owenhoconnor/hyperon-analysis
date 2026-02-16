@@ -55,7 +55,7 @@ void signalDef::Loop()
    
 
    double PoT[3] = {0};
-   PoT[0] = 1; // sigma
+   PoT[0] = 1; // sigma (placeholder, input actual value later)
    PoT[1] = 1; // hyperons
    PoT[2] = 1; // bkg
 
@@ -71,14 +71,19 @@ void signalDef::Loop()
    CutName[2] = "nShowers";
    CutName[3] = "nTracks";
 
-   const int nVars = 4;
+   const int nVars = 7;
    TString VarName[nVars];
    VarName[0] = "nTracks";
    VarName[1] = "nShowers";
+   VarName[2] = "trackScores";
+   VarName[3] = "muonTrackScore";
+   VarName[4] = "pionTrackScore";
+   VarName[5] = "protonTrackScore";
+   VarName[6] = "photonTrackScore";
 
    TH1F *Hist[nVars][3][nCuts];
 
-   for (int s = 0; s < 4; s++){ // samples
+   for (int s = 0; s < 3; s++){ // samples
 	  for (int v = 0; v < nVars; v++){ // variables
 		 for (int c = 0; c < nCuts; c++){ // cuts
 			Hist[v][s][c] = new TH1F(VarName[v] + Samples[s] + CutName[c], "", 100, -1, -1);
@@ -134,11 +139,15 @@ void signalDef::Loop()
       int daughterCounter = 0;
 
       std::cout<<"****************** new event ********************"<<std::endl;
-      std::cout<<"truePDG size = "<<truePDG->size()<<", daughterSize size = "<<daughterSize->size()<<std::endl;
-      std::cout<<"trackScores size = "<<trackScores->size()<<" track start pos size = "<<TrackStartPositionX->size()<<std::endl;
+      std::cout<<"trackStartPosition size = "<<TrackStartPositionX->size()<<std::endl;
       std::cout<<"distance to reco vertex size = "<<DistanceToRecoVertex->size()<<std::endl;
-      std::cout<<"track lengths size = "<<TrackLengths->size()<<std::endl;
+      std::cout<<"TrackLengths size = "<<TrackLengths->size()<<std::endl;
+      std::cout<<"trackScores size = "<<trackScores->size()<<std::endl;
       std::cout<<"trackCount = "<<trackCount<<" showerCount = "<<showerCount<<std::endl;
+      std::cout<<"pfpTrackPDG size = "<<pfpTrackPDG->size()<<std::endl;
+      std::cout<<"pfpShowerPDG size = "<<pfpShowerPDG->size()<<std::endl;
+      std::cout<<"nPFParticles = "<<nPFParticles<<std::endl;
+      std::cout<<"pfpPDG size = "<<pfpPDG->size()<<std::endl;
 
       for (int i_vert = 0; i_vert < vertexSize->size(); i_vert++){ // Loop over truth vertices in event (may be more than 1)
       sumCounter += vertexSize->at(i_vert); // Keep track of what particle index we are at over all vertices
@@ -268,7 +277,32 @@ void signalDef::Loop()
 
 	if(Cuts[c]){
 
-		std::cout<<"fill hists here"<<std::endl;
+		Hist[0][s][c]->Fill(trackCount, scale[s]);
+		Hist[1][s][c]->Fill(showerCount, scale[s]);
+
+		for (int i = 0; i < trackScores->size(); i++){
+
+			// Fill non-particle specific per PFP variables (e.g trackScore)
+			Hist[2][s][c]->Fill(trackScores->at(i), scale[s]);
+
+
+			if(pfpPDG->size() == trackScores->size()) {
+			// Fill particle specific per PFP variables (need pfpPDG to be same size as trackScores)
+			if(pfpPDG->at(i) == -13 && TrackLengths->at(i) > 0){ // Antimuon
+				Hist[3][s][c]->Fill(trackScores->at(i), scale[s]);
+			}
+			if(pfpPDG->at(i) == -211 && TrackLengths->at(i) > 0){ // Pion (minus)
+				Hist[4][s][c]->Fill(trackScores->at(i), scale[s]);
+			}
+			if(pfpPDG->at(i) == 2212 && TrackLengths->at(i) > 0){ //Proton
+				Hist[5][s][c]->Fill(trackScores->at(i), scale[s]);
+			}
+			if(pfpPDG->at(i) == 22 && TrackLengths->at(i) > 0){ // Photon
+				Hist[6][s][c]->Fill(trackScores->at(i), scale[s]);
+			}
+		    }
+
+		}
 	}
 
       }
@@ -280,6 +314,21 @@ void signalDef::Loop()
    signalTree->Write("TreeS"); // Write signal tree and close file
    outFile->Close();
    delete outFile;
+
+   TCanvas *c2 = new TCanvas("c2","",5000,4000); // Print results to a canvas
+
+   for(int v = 0; v< nVars; v++){
+    c2->Divide(nCuts,3);// 3 rows and 3 columns
+
+    for (int c = 0; c < nCuts; c++){
+      for(int s = 0; s < 3; s++){
+	c2->cd(c+1+s*nCuts);
+	Hist[v][s][c]->Draw();
+      }
+    }
+    c2->Print("plots/"+VarName[v]+".png");
+    c2->Clear();
+  }
 
    std::cout<<"num of sigma: "<<nSigma<<std::endl;
    std::cout<<"num of lambda: "<<nLambda<<std::endl;

@@ -154,6 +154,7 @@ private:
   std::vector<float> fPionTrackScores;
   std::vector<int> fTrueTrackPDG;
   std::vector<int> fTrueShowerPDG;
+  std::vector<int> fTruePfpPDG;
   std::map<int, int> trueTrackPDGMap;
   int fTrackCount = 0;
   int fShowerCount = 0;
@@ -367,6 +368,7 @@ void hyperon::AnalyzeEvents::analyze(art::Event const& evt)
 // Define vector of PFPs in nuSlice
    std::vector<art::Ptr<recob::PFParticle>> nuSlicePFPs(slicePFPAssoc.at(nuSliceKey));
    std::cout<<"!!! Now looping through nuSlicePFPs of size = "<<nuSlicePFPs.size()<<" !!!"<<std::endl;
+   std::cout<<"Equal to nPFParticles = "<<fNPrimaryParticles<<std::endl;
 
 // try to find reco vertex by looping over nuSlicePFPs
 
@@ -455,6 +457,7 @@ void hyperon::AnalyzeEvents::analyze(art::Event const& evt)
    for (const art::Ptr<recob::PFParticle>& nuSlicePFP : nuSlicePFPs) {
 	// Only interested in neutrino children
 	std::cout<<"nuSlicePFP Parent = "<<nuSlicePFP->Parent()<<" and nuID = "<<nuID<<std::endl;
+	std::cout<<"nuSlicePFP IsPrimary = "<<nuSlicePFP->IsPrimary()<<std::endl;
 	if (nuSlicePFP->Parent() != static_cast<long unsigned int>(nuID)){
 		std::cout<<"skipping this slicePFP (reason: not a neutrino child)"<<std::endl;
 		continue;
@@ -465,31 +468,13 @@ void hyperon::AnalyzeEvents::analyze(art::Event const& evt)
 	std::vector<art::Ptr<recob::Track>> tracks = pfpTrackAssoc.at(nuSlicePFP.key());
 	std::vector<art::Ptr<recob::Shower>> showers = pfpShowerAssoc.at(nuSlicePFP.key());
 
+	std::cout<<"tracks size = "<<tracks.size()<<", showers size = "<<showers.size()<<std::endl; 
 	// There should only be 0 or 1 tracks / showers associated with a PFP
 	if (tracks.size() != 1 && showers.size() != 1){
 		std::cout<<"Skipping this slicePFP (reason: tracks.size() != 1 and showers.size() != 1)"<<std::endl;
 		continue;
 	}
 
-	// Get shower if there is one
-	if (showers.size() == 1){
-	    art::Ptr<recob::Shower> shower = showers.at(0); // call it track for easier code later
-	    std::cout<<"Got shower: "<<shower<<std::endl;
-	    float showerLength = shower->Length();
-	    auto const& showerStart = shower->ShowerStart();
-	    TVector3 showerStartPos(showerStart.X(), showerStart.Y(), showerStart.Z());
-
-	    float distanceToVertex = -9999.0f;
-	    if (fFoundRecoVertex) {
-		distanceToVertex = (showerStartPos - fRecoVertex).Mag();
-	    }
-
-	    fTrackLengths.push_back(showerLength);
-	    fTrackStartPositionX.push_back(showerStart.X());
-	    fTrackStartPositionY.push_back(showerStart.Y());
-	    fTrackStartPositionZ.push_back(showerStart.Z());
-	    fDistanceToRecoVertex.push_back(distanceToVertex);
-	}
 	// Get PFPs associated with track
 	//std::vector<art::Ptr<recob::PFParticle>> trackPFPs = trackToPFPAssoc.at(track.key());
 	//art::Ptr<recob::PFParticle> trackPFP = trackPFPs.front();
@@ -527,48 +512,56 @@ void hyperon::AnalyzeEvents::analyze(art::Event const& evt)
 	}
 
 	// Classify PFP as track or shower with trackScore
-	if (trackScore > 0.5){
+	if ((trackScore > 0.5 && tracks.size() == 1) || showers.size() == 0){ // if no showers, save as track regardless of track score
 		fTrackCount++;
 		std::cout<<"trackScore > 0.5, +1 to tracks, nTracks = "<<fTrackCount<<std::endl;
+
+	 	art::Ptr<recob::Track> track = tracks.at(0);
+		float trackLength = track->Length();
+		auto const& trackStart = track->Vertex();
+		auto const& trackEnd = track->End();
+		TVector3 trackStartPos(trackStart.X(), trackStart.Y(), trackStart.Z());
+		TVector3 trackEndPos(trackEnd.X(), trackEnd.Y(), trackEnd.Z());
+
+		float distanceToVertex = -9999.0f;
+		if (fFoundRecoVertex){
+			distanceToVertex = (trackStartPos - fRecoVertex).Mag();
+		}
+
+		fTrackLengths.push_back(trackLength);
+		fTrackStartPositionX.push_back(trackStart.X());
+		fTrackStartPositionY.push_back(trackStart.Y());
+		fTrackStartPositionZ.push_back(trackStart.Z());
+		fTrackEndPositionX.push_back(trackEnd.X());
+		fTrackEndPositionY.push_back(trackEnd.Y());
+		fTrackEndPositionZ.push_back(trackEnd.Z());
+		fDistanceToRecoVertex.push_back(distanceToVertex);
 	}
-
-	else{
-		fShowerCount++;
-		std::cout<<"trackScore < 0.5, +1 to showers, nShowers = "<<fShowerCount<<std::endl;
-	}
-
-	// if there's a track (not a shower)
-	if (tracks.size() == 1){
-	    art::Ptr<recob::Track> track = tracks.at(0);
-	    float trackLength = track->Length();
-	    auto const& trackStart = track->Vertex();
-	    auto const& trackEnd = track->End();
-	    TVector3 trackStartPos(trackStart.X(), trackStart.Y(), trackStart.Z());
-	    TVector3 trackEndPos(trackEnd.X(), trackEnd.Y(), trackEnd.Z());
-
+	else {
+	    fShowerCount++;
+	    std::cout<<"trackScore < 0.5 or no tracks, +1 to showers, nShowers = "<<fShowerCount<<std::endl;
+	    art::Ptr<recob::Shower> shower = showers.at(0);
+	    float showerLength = shower->Length();
+	    auto const& showerStart = shower->ShowerStart();
+	    TVector3 showerStartPos(showerStart.X(), showerStart.Y(), showerStart.Z());
 
 	    float distanceToVertex = -9999.0f;
 	    if (fFoundRecoVertex) {
-		distanceToVertex = (trackStartPos - fRecoVertex).Mag();
+		distanceToVertex = (showerStartPos - fRecoVertex).Mag();
 	    }
 
-	     std::cout<<"Pushing back reco parameters now"<<std::endl;
-	    fTrackIDs.push_back(track->ID());
-	    fTrackLengths.push_back(trackLength);
-	    fTrackStartPositionX.push_back(trackStart.X());
-	    fTrackStartPositionY.push_back(trackStart.Y());
-	    fTrackStartPositionZ.push_back(trackStart.Z());
-	    fTrackEndPositionX.push_back(trackEnd.X());
-	    fTrackEndPositionY.push_back(trackEnd.Y());
-	    fTrackEndPositionZ.push_back(trackEnd.Z());
+	    fTrackLengths.push_back(showerLength);
+	    fTrackStartPositionX.push_back(showerStart.X());
+	    fTrackStartPositionY.push_back(showerStart.Y());
+	    fTrackStartPositionZ.push_back(showerStart.Z());
 	    fDistanceToRecoVertex.push_back(distanceToVertex);
-	}
-
+	  }
    }
 
 
 // Tracks reco -> truth matching
-//frecoTruePDG.clear();
+std::cout<<"========= Track Truth Matching =========="<<std::endl;
+fTruePfpPDG.clear();
 fTrueTrackPDG.clear();
 fMuonTrackScores.clear();
 fProtonTrackScores.clear();
@@ -583,6 +576,14 @@ for (const art::Ptr<recob::PFParticle>& slicePFP : nuSlicePFPs) { // loop throug
     art::FindManyP<recob::Track> pfpTrackAssoc(pfpHandle, evt, fTrackLabel);
 
     std::vector<art::Ptr<recob::Track>> tracks = pfpTrackAssoc.at(slicePFP.key());
+
+
+    // Only care about neutrino children (same condition for saving track/shower reco params)
+    if (slicePFP->Parent() != static_cast<long unsigned int>(nuID)){
+		std::cout<<"skipping this slicePFP (reason: not a neutrino child)"<<std::endl;
+		continue;
+    }
+
     if (tracks.empty()) 
 	continue;
    
@@ -591,23 +592,25 @@ for (const art::Ptr<recob::PFParticle>& slicePFP : nuSlicePFPs) { // loop throug
 
 for (const auto& track : tracks) { // loop over tracks (is this really necessary???)
   
-    std::vector<art::Ptr<recob::PFParticle>> trackPFPs = trackToPFPAssoc.at(track.key());
-    art::Ptr<recob::PFParticle> trackPFP = trackPFPs.front();
-    std::vector<art::Ptr<larpandoraobj::PFParticleMetadata>> trackMetadataVec = pfpMetadataAssoc.at(trackPFP.key());
+    //std::vector<art::Ptr<recob::PFParticle>> trackPFPs = trackToPFPAssoc.at(track.key());
+    //art::Ptr<recob::PFParticle> trackPFP = trackPFPs.front();
+    //std::vector<art::Ptr<larpandoraobj::PFParticleMetadata>> trackMetadataVec = pfpMetadataAssoc.at(trackPFP.key());
+    std::vector<art::Ptr<larpandoraobj::PFParticleMetadata>> pfpMetadataVec = pfpMetadataAssoc.at(slicePFP.key());
     float trackScore = -1.0;
-    if (trackMetadataVec.empty()) {
-	std::cerr << "No metadata found for track with ID: " << track->ID() << std::endl;
+    if (pfpMetadataVec.empty()) {
+	std::cerr << "No metadata found for PFP with key: " << slicePFP.key() << std::endl;
        }
 
-        for (const auto& metadata : trackMetadataVec) {
+        for (const auto& metadata : pfpMetadataVec) {
             const auto& propertiesMap = metadata->GetPropertiesMap();
-      		  std::cout << "\nTrack PFParticle Metadata Properties (ID " << track->ID() << "):" << std::endl;	 
+      		//  std::cout << "\nTrack PFParticle Metadata Properties (ID " << track->ID() << "):" << std::endl;	 
 	 if (propertiesMap.find("TrackScore") != propertiesMap.end()) {
                         trackScore = propertiesMap.at("TrackScore");
+			std::cout<<"trackScore = "<<trackScore<<std::endl;
 	 
     	 } 
 	 else {
-        	std::cerr << "No metadata found for track PFParticle ID: " << track->ID() << std::endl;
+        	std::cerr << "No metadata found for PFParticle with key: " << slicePFP.key() << std::endl;
    	 }
 
 	}
@@ -636,7 +639,7 @@ for (const auto& track : tracks) { // loop over tracks (is this really necessary
     if (bestTrackID != -1) {
 	art::ServiceHandle<cheat::ParticleInventoryService> piService;
         const simb::MCParticle* mcParticle = piService->TrackIdToParticle_P(bestTrackID);
-	if (mcParticle) {
+	if (mcParticle && trackScore > 0.5) { // only truth match track if we classify this PFP as a track
 	trueTrackPDGMap[track->ID()] = mcParticle->PdgCode();	
 
 	 int pdgCode = mcParticle->PdgCode();
@@ -649,16 +652,20 @@ for (const auto& track : tracks) { // loop over tracks (is this really necessary
             }
 
 		float matchQuality = static_cast<float>(maxHitCount) / trackHits.size();
-		std::cout<<"match quality = "<<matchQuality<<std::endl;
+		//std::cout<<"match quality = "<<matchQuality<<std::endl;
 
-		size_t trackIndex = std::find(fTrackIDs.begin(), fTrackIDs.end(), track->ID()) - fTrackIDs.begin();
-                if (trackIndex < fTrackIDs.size()) {
+		//size_t trackIndex = std::find(fTrackIDs.begin(), fTrackIDs.end(), track->ID()) - fTrackIDs.begin();
+                //if (trackIndex < fTrackIDs.size()) {
 		fTrueTrackPDG.push_back(mcParticle->PdgCode());
+		fTruePfpPDG.push_back(mcParticle->PdgCode());
 
                 std::cout << "Best matched MC Particle for Track: "
                           << "PDG: " << mcParticle->PdgCode()
                           << ", Track ID: " << mcParticle->TrackId()
-                          << ", Hit Count: " << maxHitCount << std::endl;
+                          << ", Hit Count: " << maxHitCount
+			  << ", trackHits.size(): "<<trackHits.size()
+			  <<", Match Quality: "<< matchQuality
+			  <<", trackScore: "<<trackScore<< std::endl;
 
 		// fIsLongestTrack.push_back(track->ID() == fLongestTrackID);
                // fIsClosestTrack.push_back(track->ID() == fClosestTrackID);
@@ -700,7 +707,7 @@ for (const auto& track : tracks) { // loop over tracks (is this really necessary
                                   << std::endl;
          	           	}	
 */
-				}
+				//}
 			}
 		}
 	} // end loop over tracks
@@ -709,6 +716,7 @@ for (const auto& track : tracks) { // loop over tracks (is this really necessary
 
 
 //Showers reco -> truth matching
+std::cout<<"======== Shower Truth Matching ==========="<<std::endl;
 fTrueShowerPDG.clear();
 
 art::FindManyP<recob::Hit> showerHitAssoc(showerHandle, evt, fShowerLabel);
@@ -716,6 +724,12 @@ for (const art::Ptr<recob::PFParticle>& slicePFP : nuSlicePFPs) {
     art::FindManyP<recob::Shower> pfpShowerAssoc(pfpHandle, evt, fShowerLabel);
 
     std::vector<art::Ptr<recob::Shower>> showers = pfpShowerAssoc.at(slicePFP.key());
+
+    // Only care about neutrino children (same as track logic)
+    if (slicePFP->Parent() != static_cast<long unsigned int>(nuID)){
+	std::cout<<"skipping this slicePFP (reason: not a neutrino child)"<<std::endl;
+	continue;
+    }
 
     if (showers.empty())
         continue;
@@ -725,6 +739,26 @@ for (const art::Ptr<recob::PFParticle>& slicePFP : nuSlicePFPs) {
 
     art::Ptr<recob::Shower> shower = showers[0];
 
+    std::vector<art::Ptr<larpandoraobj::PFParticleMetadata>> pfpMetadataVec = pfpMetadataAssoc.at(slicePFP.key());
+    float trackScore = -1.0;
+    if (pfpMetadataVec.empty()) {
+	std::cerr << "No metadata found for PFP with key: " << slicePFP.key() << std::endl;
+       }
+
+        for (const auto& metadata : pfpMetadataVec) {
+            const auto& propertiesMap = metadata->GetPropertiesMap();
+      		//  std::cout << "\nTrack PFParticle Metadata Properties (ID " << track->ID() << "):" << std::endl;	 
+	 if (propertiesMap.find("TrackScore") != propertiesMap.end()) {
+                        trackScore = propertiesMap.at("TrackScore");
+			std::cout<<"trackScore = "<<trackScore<<std::endl;
+	 
+    	 } 
+	 else {
+        	std::cerr << "No metadata found for PFParticle with key: " << slicePFP.key() << std::endl;
+   	 }
+
+	}
+	
     std::vector<art::Ptr<recob::Hit>> showerHits = showerHitAssoc.at(shower.key());
     art::FindManyP<simb::MCParticle> showerHitToMCParticleAssn(showerHits, evt, "gaushitTruthMatch");
     
@@ -750,13 +784,18 @@ for (size_t i_hit = 0; i_hit < showerHits.size(); i_hit++) { // loop over shower
            art::ServiceHandle<cheat::ParticleInventoryService> piService;
     const simb::MCParticle* mcParticle = piService->TrackIdToParticle_P(bestTrackID);    
 
-	if (mcParticle) {
+	if (mcParticle && trackScore < 0.5) { // only truth match shower if we classify this PFP as a shower
+
+		float matchQuality = static_cast<float>(maxHitCount) / showerHits.size();
                 //frecoTruePDG[shower->ID()] = mcParticle->PdgCode();
 		fTrueShowerPDG.push_back(mcParticle->PdgCode());
+		fTruePfpPDG.push_back(mcParticle->PdgCode());
                 std::cout << "Best matched MC Particle for Shower: "
                           << "PDG: " << mcParticle->PdgCode()
                           << ", Track ID: " << mcParticle->TrackId()
-                          << ", Hit Count: " << maxHitCount << std::endl;
+                          << ", Hit Count: " << maxHitCount 
+			  << ", showerHits.size(): "<<showerHits.size()
+			  << ", Match Quality: "<<matchQuality << std::endl;
             }
         }
 }
@@ -1022,6 +1061,7 @@ void hyperon::AnalyzeEvents::beginJob()
   // truth matching
   fTree->Branch("pfpTrackPDG", &fTrueTrackPDG);
   fTree->Branch("pfpShowerPDG", &fTrueShowerPDG);
+  fTree->Branch("pfpPDG", &fTruePfpPDG);
 
   //Histograms
 }
