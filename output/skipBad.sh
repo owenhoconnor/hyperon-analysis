@@ -2,7 +2,7 @@
 set -euo pipefail
 shopt -s nullglob
 
-SRC_DIR="/data/sbnd/hyperons_new"
+SRC_DIR="/data/sbnd/hyperons_new/firstbatch"
 FCL="run_analyzeEvents.fcl"
 BAD_LIST="bad_files.txt"
 

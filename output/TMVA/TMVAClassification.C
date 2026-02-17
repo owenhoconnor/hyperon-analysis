@@ -143,8 +143,8 @@ int TMVAClassification( TString myMethodList = "" )
    } 
    // Register the training and test trees
  
-   TTree *signalTree     = (TTree*)signalInput->Get("TreeS");
-   TTree *backgroundTree     = (TTree*)backgroundInput->Get("TreeB");
+   TTree *signalTree     = (TTree*)signalInput->Get("preTreeS");
+   TTree *backgroundTree     = (TTree*)backgroundInput->Get("preTreeB");
  
    // Create a ROOT output file where TMVA will store ntuples, histograms, etc.
    TString outfileName("TMVAC.root");
@@ -182,10 +182,15 @@ int TMVAClassification( TString myMethodList = "" )
    dataloader->AddVariable( "RecoVertexX", 'F' );
    dataloader->AddVariable( "RecoVertexY", 'F' );
    dataloader->AddVariable( "RecoVertexZ", 'F' );
-  // dataloader->AddVariable( "DistanceToRecoVertex", 'F');
-  // dataloader->AddVariable( "TrackStartPositionX", 'F');
-   //dataloader->AddVariable( "TrackStartPositionY", 'F');
-   //dataloader->AddVariable( "TrackStartPositionZ", 'F');
+  // dataloader->AddVariable( "distMuonPion", 'F');
+  // dataloader->AddVariable( "distMuonProton", 'F');
+   //dataloader->AddVariable( "distPionProton", 'F');
+   //dataloader->AddVariable( "distShowerMuon", 'F');
+   //dataloader->AddVariable( "distShowerPion", 'F');
+   //dataloader->AddVariable( "distShowerProton", 'F');
+   //dataloader->AddVariable( "angleMuonPion", 'F');
+   //dataloader->AddVariable( "angleMuonProton", 'F');
+   //dataloader->AddVariable( "anglePionProton", 'F');
  
    // You can add so-called "Spectator variables", which are not used in the MVA training,
    // but will appear in the final "TestTree" produced by TMVA. This TestTree will contain the
@@ -267,7 +272,7 @@ int TMVAClassification( TString myMethodList = "" )
    std::cout<<" Signal entries: "<<signalTree->GetEntries()<<std::endl;
    std::cout<<" Background entries: "<<backgroundTree->GetEntries()<<std::endl;
    dataloader->PrepareTrainingAndTestTree( mycuts, mycutb,
-                                        "nTrain_Signal=40:nTest_Signal=16:nTrain_Background=240:nTest_Background=60:SplitMode=Random:NormMode=EqualNumEvents:!V" );
+                                        "nTrain_Signal=140:nTest_Signal=56:nTrain_Background=2400:nTest_Background=600:SplitMode=Random:NormMode=EqualNumEvents:!V" );
  
    // ### Book MVA methods
    //

@@ -79,6 +79,7 @@ void bkgDef::Loop()
    
       bool IsInFV = false; // true vertex FV for signal def
       bool IsSignal = false;
+      int signalCount = 0;
 
       int sumCounter = 0;
       int daughterCounter = 0;
@@ -188,7 +189,7 @@ void bkgDef::Loop()
 		if (IsGoodSigma){
 			nGoodSigma++;
 			std::cout<<"signal event, nSignal = "<<nGoodSigma<<std::endl;
-			
+			signalCount++;
 			IsSignal = true;
 		}
 	    }

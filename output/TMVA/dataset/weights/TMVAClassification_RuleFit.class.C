@@ -10,10 +10,10 @@ Method         : RuleFit::RuleFit
 TMVA Release   : 4.2.1         [262657]
 ROOT Release   : 6.38/00       [402944]
 Creator        : ooconnor
-Date           : Tue Feb  3 10:51:56 2026
+Date           : Tue Feb 17 10:49:43 2026
 Host           : Linux buildvm-x86-26.rdu3.fedoraproject.org 6.17.1-300.fc43.x86_64 #1 SMP PREEMPT_DYNAMIC Mon Oct 6 15:37:21 UTC 2025 x86_64 x86_64 x86_64 GNU/Linux
-Dir            : /home/lar/ooconnor/larsoft_testing/srcs/sbndcode/sbndcode/Workshop/Analysis/output/TMVA
-Training events: 280
+Dir            : /home/lar/ooconnor/hyperons/srcs/sbndcode/sbndcode/Hyperons/output/TMVA
+Training events: 2540
 Analysis type  : [Classification]
 
 
@@ -52,11 +52,11 @@ RFNendnodes: "4" [RFF: Average number of end nodes]
 #VAR -*-*-*-*-*-*-*-*-*-*-*-* variables *-*-*-*-*-*-*-*-*-*-*-*-
 
 NVar 5
-trackCount                    trackCount                    trackCount                    trackCount                                                      'F'    [0,5]
-showerCount                   showerCount                   showerCount                   showerCount                                                     'F'    [0,7]
-RecoVertexX                   RecoVertexX                   RecoVertexX                   RecoVertexX                                                     'F'    [-9999,201.21421814]
-RecoVertexY                   RecoVertexY                   RecoVertexY                   RecoVertexY                                                     'F'    [-9999,203.759918213]
-RecoVertexZ                   RecoVertexZ                   RecoVertexZ                   RecoVertexZ                                                     'F'    [-9999,504.029144287]
+trackCount                    trackCount                    trackCount                    trackCount                                                      'F'    [3,5]
+showerCount                   showerCount                   showerCount                   showerCount                                                     'F'    [1,2]
+RecoVertexX                   RecoVertexX                   RecoVertexX                   RecoVertexX                                                     'F'    [-179.984375,179.797943115]
+RecoVertexY                   RecoVertexY                   RecoVertexY                   RecoVertexY                                                     'F'    [-179.879959106,179.966491699]
+RecoVertexZ                   RecoVertexZ                   RecoVertexZ                   RecoVertexZ                                                     'F'    [10.0281229019,449.6015625]
 NSpec 0
 
 
@@ -193,46 +193,20 @@ class ReadRuleFit : public IClassifierReader {
 void   ReadRuleFit::Initialize(){}
 void   ReadRuleFit::Clear(){}
 double ReadRuleFit::GetMvaValue__( const std::vector<double>& inputValues ) const {
-   double rval=0.2845055811;
+   double rval=-0.4529971388;
    //
    // here follows all rules ordered in importance (most important first)
    // at the end of each line, the relative importance of the rule is given
    //
-   if ((inputValues[1]<1.333333373)) rval+=-0.2896683911;   // importance = 0.038
-   if ((inputValues[1]<1.333333373)&&(-1.879478812<inputValues[2])&&(inputValues[4]<227.6549225)) rval+=-0.2807099115;   // importance = 0.031
-   if ((inputValues[0]<2.142857075)&&(inputValues[1]<0.3333333433)&&(inputValues[2]<13.47759724)) rval+=-0.2287758037;   // importance = 0.028
-   if ((inputValues[0]<1.190476179)&&(inputValues[1]<1.142857194)) rval+=-0.1998341113;   // importance = 0.028
-   if ((0.3333333433<inputValues[1])&&(inputValues[3]<49.29535675)) rval+=0.164475565;   // importance = 0.024
-   if ((0.04761904851<inputValues[1])&&(72.75305939<inputValues[4])) rval+=0.1400866944;   // importance = 0.021
-   if ((0.3333333433<inputValues[1])&&(-95.00784302<inputValues[3])&&(inputValues[3]<49.29535675)) rval+=0.1559972593;   // importance = 0.021
-   if ((inputValues[0]<2.142857075)&&(inputValues[1]<0.3333333433)&&(-42.49543762<inputValues[2])) rval+=-0.1696180307;   // importance = 0.019
-   if ((1.333333373<inputValues[1])) rval+=0.1284452114;   // importance = 0.017
-   if ((inputValues[1]<0.3333333433)&&(95.31716156<inputValues[4])) rval+=-0.1139567568;   // importance = 0.016
-   if ((inputValues[0]<1.190476179)) rval+=-0.09429185913;   // importance = 0.014
-   if ((inputValues[0]<2.142857075)&&(0.3333333433<inputValues[1])) rval+=0.08657188911;   // importance = 0.013
-   if ((inputValues[1]<0.3333333433)&&(inputValues[4]<268.0476074)) rval+=-0.08479783455;   // importance = 0.012
-   if ((inputValues[0]<2.142857075)&&(inputValues[1]<0.3333333433)&&(inputValues[2]<-42.49543762)&&(-27.92444229<inputValues[3])) rval+=-0.1288412124;   // importance = 0.011
-   if ((0.04761904851<inputValues[1])&&(inputValues[3]<145.9099579)&&(72.75305939<inputValues[4])) rval+=0.075156273;   // importance = 0.011
-   if ((inputValues[0]<1.190476179)&&(-4.738513947<inputValues[2])) rval+=-0.07569031046;   // importance = 0.009
-   if ((0.04761904851<inputValues[1])&&(inputValues[2]<34.41315842)&&(145.9099579<inputValues[3])&&(72.75305939<inputValues[4])) rval+=0.1183872234;   // importance = 0.008
-   if ((2.142857075<inputValues[0])&&(inputValues[1]<0.3333333433)&&(inputValues[2]<-5.180081367)) rval+=0.09150370302;   // importance = 0.008
-   if ((2.095238209<inputValues[0])&&(0.3333333433<inputValues[1])) rval+=0.04426575687;   // importance = 0.004
-   if ((1.190476179<inputValues[0])) rval+=-0.02468844693;   // importance = 0.004
-   if ((0.04761904851<inputValues[1])&&(145.9099579<inputValues[3])&&(72.75305939<inputValues[4])) rval+=0.0445272115;   // importance = 0.003
-   if ((2.142857075<inputValues[0])&&(inputValues[1]<0.3333333433)) rval+=0.0359900151;   // importance = 0.003
-   if ((inputValues[1]<1.333333373)&&(inputValues[2]<-1.879478812)&&(inputValues[4]<227.6549225)) rval+=0.02356959891;   // importance = 0.003
-   if ((0.04761904851<inputValues[1])&&(34.41315842<inputValues[2])&&(145.9099579<inputValues[3])&&(72.75305939<inputValues[4])) rval+=-0.05487891058;   // importance = 0.002
-   if ((1.190476179<inputValues[0])&&(-88.60092163<inputValues[3])) rval+=0.01521054034;   // importance = 0.002
-   if ((2.142857075<inputValues[0])&&(inputValues[1]<0.3333333433)&&(-5.180081367<inputValues[2])) rval+=-0.04690774223;   // importance = 0.002
-   if ((1.190476179<inputValues[0])&&(inputValues[3]<-32.89497375)) rval+=0.008651314183;   // importance = 0.001
+   if ((inputValues[0]<3.095238209)&&(inputValues[1]<1.047619104)) rval+=0.2685240232;   // importance = 1.000
+   if ((inputValues[0]<3.095238209)) rval+=0.321269366;   // importance = 0.968
+   if ((inputValues[2]<-42.92444611)) rval+=0.07631389797;   // importance = 0.290
+   if ((108.3734665<inputValues[4])&&(inputValues[4]<240.2808838)) rval+=-0.02966571514;   // importance = 0.104
    //
    // here follows all linear terms
    // at the end of each line, the relative importance of the term is given
    //
-   rval+=-0.1119091703*std::min( double(4), std::max( double(inputValues[0]), double(0)));   // importance = 0.030
-   rval+=0.06222879389*std::min( double(5), std::max( double(inputValues[1]), double(0)));   // importance = 0.021
-   rval+=0.001488379939*std::min( double(188.3335571), std::max( double(inputValues[2]), double(-9999)));   // importance = 0.999
-   rval+=0.001488522394*std::min( double(192.3880005), std::max( double(inputValues[3]), double(-9999)));   // importance = 1.000
+   rval+=0.01430148139*std::min( double(5), std::max( double(inputValues[0]), double(3)));   // importance = 0.063
    return rval;
 }
 inline double ReadRuleFit::GetMvaValue( const std::vector<double>& inputValues ) const

@@ -49,20 +49,26 @@ void signalDef::Loop()
    Samples[2] = "Background";
    
    int nEvents[3] = {0};
-   nEvents[0] = 1; // Sigma
-   nEvents[1] = 1; // Hyperons
-   nEvents[2] = 1; // BKG
+   nEvents[0] = 10443; // Sigma COUNT
+   nEvents[1] = nEvents[0]; // Hyperons
+   nEvents[2] = 1 + nEvents[0]; // BKG
    
 
-   double PoT[3] = {0};
-   PoT[0] = 1; // sigma (placeholder, input actual value later)
-   PoT[1] = 1; // hyperons
-   PoT[2] = 1; // bkg
+   double PoT[4] = {0};
+   PoT[0] = 2.69e19; // sigma
+   PoT[1] = PoT[0]; //  hyperons
+   PoT[2] = 8.875e15; // bkg
+   PoT[3] = 1e21; // total pot
+
+   double nHyperonFiles = 179.0;
+   double nBkgFiles = 1.0;
 
    double scale[3] = {0};
-   scale[0] = PoT[2] / PoT[0];
-   scale[1] = PoT[2] / PoT[1];
-   scale[2] = PoT[2] / PoT[2];
+   scale[0] = PoT[3] / (nHyperonFiles * PoT[0]); // sigma
+   scale[1] = PoT[3] / (nHyperonFiles * PoT[1]); // hyperons 
+   scale[2] = PoT[3] / (nBkgFiles * PoT[2]); // bkg
+   std::cout<<"SIGMA and HYPERON SCALE = "<<scale[0]<<std::endl;
+   std::cout<<"BACKGROUND SCALE = "<<scale[2]<<std::endl;
 
    const int nCuts = 4;
    TString CutName[nCuts];
@@ -71,15 +77,27 @@ void signalDef::Loop()
    CutName[2] = "nShowers";
    CutName[3] = "nTracks";
 
-   const int nVars = 7;
+   const int nVars = 15;
    TString VarName[nVars];
    VarName[0] = "nTracks";
    VarName[1] = "nShowers";
    VarName[2] = "trackScores";
+
    VarName[3] = "muonTrackScore";
-   VarName[4] = "pionTrackScore";
-   VarName[5] = "protonTrackScore";
-   VarName[6] = "photonTrackScore";
+   VarName[4] = "muonTrackLength";
+   VarName[5] = "muonTrackDistToVtx";
+
+   VarName[6] = "pionTrackScore";
+   VarName[7] = "pionTrackLength";
+   VarName[8] = "pionTrackDistToVtx";
+
+   VarName[9] = "protonTrackScore";
+   VarName[10] = "protonTrackLength";
+   VarName[11] = "protonTrackDistToVtx";
+   
+   VarName[12] = "gammaTrackScore";
+   VarName[13] = "gammaTrackLength";
+   VarName[14] = "gammaTrackDistToVtx";
 
    TH1F *Hist[nVars][3][nCuts];
 
@@ -289,23 +307,31 @@ void signalDef::Loop()
 			if(pfpPDG->size() == trackScores->size()) {
 			// Fill particle specific per PFP variables (need pfpPDG to be same size as trackScores)
 			if(pfpPDG->at(i) == -13 && TrackLengths->at(i) > 0){ // Antimuon
-				Hist[3][s][c]->Fill(trackScores->at(i), scale[s]);
+				Hist[3][s][c]->Fill(trackScores->at(i), 1);
+				Hist[4][s][c]->Fill(TrackLengths->at(i), 1);
+				Hist[5][s][c]->Fill(DistanceToRecoVertex->at(i), 1);
 			}
 			if(pfpPDG->at(i) == -211 && TrackLengths->at(i) > 0){ // Pion (minus)
-				Hist[4][s][c]->Fill(trackScores->at(i), scale[s]);
+				Hist[6][s][c]->Fill(trackScores->at(i), 1);
+				Hist[7][s][c]->Fill(TrackLengths->at(i), 1);
+				Hist[8][s][c]->Fill(DistanceToRecoVertex->at(i), 1);
 			}
 			if(pfpPDG->at(i) == 2212 && TrackLengths->at(i) > 0){ //Proton
-				Hist[5][s][c]->Fill(trackScores->at(i), scale[s]);
+				Hist[9][s][c]->Fill(trackScores->at(i), 1);
+				Hist[10][s][c]->Fill(TrackLengths->at(i), 1);
+				Hist[11][s][c]->Fill(DistanceToRecoVertex->at(i), 1);
 			}
 			if(pfpPDG->at(i) == 22 && TrackLengths->at(i) > 0){ // Photon
-				Hist[6][s][c]->Fill(trackScores->at(i), scale[s]);
+				Hist[12][s][c]->Fill(trackScores->at(i), 1);
+				Hist[13][s][c]->Fill(TrackLengths->at(i), 1);
+				Hist[14][s][c]->Fill(DistanceToRecoVertex->at(i), 1);
 			}
 		    }
 
 		}
-	}
+	   }
 
-      }
+      } // end loop over cuts
 
      
    } // end event loop
@@ -315,13 +341,13 @@ void signalDef::Loop()
    outFile->Close();
    delete outFile;
 
-   TCanvas *c2 = new TCanvas("c2","",5000,4000); // Print results to a canvas
+   TCanvas *c2 = new TCanvas("c2","",5000,1000); // Print results to a canvas
 
    for(int v = 0; v< nVars; v++){
-    c2->Divide(nCuts,3);// 3 rows and 3 columns
+    c2->Divide(nCuts,1);// 1 rows and 3 columns
 
     for (int c = 0; c < nCuts; c++){
-      for(int s = 0; s < 3; s++){
+      for(int s = 0; s < 1; s++){
 	c2->cd(c+1+s*nCuts);
 	Hist[v][s][c]->Draw();
       }
@@ -334,4 +360,6 @@ void signalDef::Loop()
    std::cout<<"num of lambda: "<<nLambda<<std::endl;
    std::cout<<"num of good sigma: "<<nGoodSigma<<std::endl;
    std::cout<<"num of good lambda: "<<nGoodLambda<<std::endl;
+   std::cout<<"sigma scale = "<<scale[0]<<std::endl;
+   std::cout<<"bkg scale = "<<scale[2]<<std::endl;
 }

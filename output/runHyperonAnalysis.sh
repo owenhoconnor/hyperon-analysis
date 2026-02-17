@@ -1,6 +1,6 @@
 root -b -l -x << EOF
-.L hyperonAnalysis.C
-hyperonAnalysis t;
+.L signalDef.C
+signalDef t;
 t.Loop();
 .q
 EOF

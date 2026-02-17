@@ -10,10 +10,10 @@ Method         : KNN::KNN
 TMVA Release   : 4.2.1         [262657]
 ROOT Release   : 6.38/00       [402944]
 Creator        : ooconnor
-Date           : Tue Feb  3 10:51:55 2026
+Date           : Tue Feb 17 10:49:40 2026
 Host           : Linux buildvm-x86-26.rdu3.fedoraproject.org 6.17.1-300.fc43.x86_64 #1 SMP PREEMPT_DYNAMIC Mon Oct 6 15:37:21 UTC 2025 x86_64 x86_64 x86_64 GNU/Linux
-Dir            : /home/lar/ooconnor/larsoft_testing/srcs/sbndcode/sbndcode/Workshop/Analysis/output/TMVA
-Training events: 280
+Dir            : /home/lar/ooconnor/hyperons/srcs/sbndcode/sbndcode/Hyperons/output/TMVA
+Training events: 2540
 Analysis type  : [Classification]
 
 
@@ -42,11 +42,11 @@ UseLDA: "False" [Use local linear discriminant - experimental feature]
 #VAR -*-*-*-*-*-*-*-*-*-*-*-* variables *-*-*-*-*-*-*-*-*-*-*-*-
 
 NVar 5
-trackCount                    trackCount                    trackCount                    trackCount                                                      'F'    [0,5]
-showerCount                   showerCount                   showerCount                   showerCount                                                     'F'    [0,7]
-RecoVertexX                   RecoVertexX                   RecoVertexX                   RecoVertexX                                                     'F'    [-9999,201.21421814]
-RecoVertexY                   RecoVertexY                   RecoVertexY                   RecoVertexY                                                     'F'    [-9999,203.759918213]
-RecoVertexZ                   RecoVertexZ                   RecoVertexZ                   RecoVertexZ                                                     'F'    [-9999,504.029144287]
+trackCount                    trackCount                    trackCount                    trackCount                                                      'F'    [3,5]
+showerCount                   showerCount                   showerCount                   showerCount                                                     'F'    [1,2]
+RecoVertexX                   RecoVertexX                   RecoVertexX                   RecoVertexX                                                     'F'    [-179.984375,179.797943115]
+RecoVertexY                   RecoVertexY                   RecoVertexY                   RecoVertexY                                                     'F'    [-179.879959106,179.966491699]
+RecoVertexZ                   RecoVertexZ                   RecoVertexZ                   RecoVertexZ                                                     'F'    [10.0281229019,449.6015625]
 NSpec 0
 
 
