@@ -144,14 +144,22 @@ void signalDef::Loop()
       bool IsKaon0 = false;
       bool IsProton = false;
       bool IsPionm = false;
+      bool IsSignal = false;
    
       bool IsInFV = false; // true vertex FV for signal def
       bool IsInRecoFV = false;
       bool IsInTrackRange = false;
       bool IsInShowerRange = false;
-      bool IsSignal = false;
+      bool SelMuonCandidate = false;
+      bool SelPionCandidate = false;
+      bool SelProtonCandidate = false
+      int muonIndex = -1;
+      int pionIndex = -1;
+      int protonIndex = -1;
+      int shower1Index = -1;
+      int shower2Index = -1;
       bool Cuts[nCuts] = {false};
-      int s = 0; // sample index (0 = sigma signal, 1 = other hyperons, 2=bkg)
+      int s = -1; // sample index (0 = sigma signal, 1 = other hyperons, 2=bkg)
 
       int sumCounter = 0;
       int daughterCounter = 0;
@@ -279,8 +287,23 @@ void signalDef::Loop()
 	    }
 	}
 
+      if(IsSignal && jentry < nEvents[0] + 1){s=0;}
+      if(!IsSignal && jentry < nEvents[0] + 1){s=1;}
+
       // Preselection
 
+      TVector3 muonStart;
+      TVector3 pionStart;
+      TVector3 protonStart;
+      TVector3 shower1Start;
+      TVector3 shower2Start;
+
+      /*if(muonIndex>-1){muonStart.SetXYZ(TrackStartPositionX->at(muonIndex), TrackStartPositionY->at(muonIndex), TrackStartPositionZ->at(muonIndex));}
+      if(pionIndex>-1){pionStart.SetXYZ(TrackStartPositionX->at(pionIndex), TrackStartPositionY->at(pionIndex), TrackStartPositionZ->at(pionIndex));}
+      if(protonIndex>-1)  protonStart.SetXYZ(trk_start_x->at(proton_index), trk_start_y->at(proton_index),trk_start_z->at(proton_index));
+    if(shower1Index>-1) shower1Start.SetXYZ(trk_start_x->at(shower1_index), trk_start_y->at(shower1_index),trk_start_z->at(shower1_index));
+       if(shower2Index>-1) shower2Start.SetXYZ(trk_start_x->at(shower2_index), trk_start_y->at(shower2_index),trk_start_z->at(shower2_index));
+*/
       if (std::abs(RecoVertexX) < 180 && std::abs(RecoVertexY) < 180 && RecoVertexZ > 10 && RecoVertexZ < 450){IsInRecoFV = true;}
 
       if (trackCount > 2 && trackCount < 6){IsInTrackRange = true;}
@@ -341,13 +364,13 @@ void signalDef::Loop()
    outFile->Close();
    delete outFile;
 
-   TCanvas *c2 = new TCanvas("c2","",5000,1000); // Print results to a canvas
+   TCanvas *c2 = new TCanvas("c2","",5000,2000); // Print results to a canvas
 
    for(int v = 0; v< nVars; v++){
-    c2->Divide(nCuts,1);// 1 rows and 3 columns
+    c2->Divide(nCuts,2);// 2 rows and 4 columns
 
     for (int c = 0; c < nCuts; c++){
-      for(int s = 0; s < 1; s++){
+      for(int s = 0; s < 2; s++){
 	c2->cd(c+1+s*nCuts);
 	Hist[v][s][c]->Draw();
       }
