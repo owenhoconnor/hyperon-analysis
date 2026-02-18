@@ -40,6 +40,7 @@
 #include "lardataobj/Simulation/SimChannel.h"
 #include "larsim/MCCheater/BackTrackerService.h"
 #include "larsim/MCCheater/ParticleInventoryService.h"
+#include "larsim/Utils/TruthMatchUtils.h"
 #include "nusimdata/SimulationBase/MCTruth.h"
 #include "lardataobj/AnalysisBase/ParticleID.h"
 #include "lardataobj/AnalysisBase/Calorimetry.h"
@@ -89,7 +90,7 @@ private:
   std::string fSliceLabel;
   std::string fTrackLabel;
   std::string fShowerLabel;
-  //std::string fClusterLabel;
+  std::string fClusterLabel;
 
   art::ServiceHandle<art::TFileService> tfs;
   art::ServiceHandle<cheat::ParticleInventoryService> particleInventory;
@@ -176,7 +177,7 @@ hyperon::AnalyzeEvents::AnalyzeEvents(fhicl::ParameterSet const& pset)
   , fTrackLabel(pset.get<std::string>("TrackLabel"))
   //, fCalorimetryLabel(pset.get<std::string>("CalorimetryLabel"))
   , fShowerLabel(pset.get<std::string>("ShowerLabel"))
-  //, fClusterLabel(pset.get<std::string>("ClusterLabel"))
+  , fClusterLabel(pset.get<std::string>("ClusterLabel"))
   // More initializers here.
 {
   // Call appropriate consumes<>() for any products to be retrieved by this module.
@@ -241,10 +242,10 @@ void hyperon::AnalyzeEvents::analyze(art::Event const& evt)
 
    art::FindManyP< simb::MCParticle > fmpart( mctruthListHandle, evt, "largeant" );
 
-// Get associations between PFParticles and Clusters, and between Hits and MCParticles
+// Get associations between PFParticles and Clusters, Clusters and Hits, and between Hits and MCParticles
 
    art::FindManyP<recob::Cluster> pfpClusterAssoc(pfpHandle, evt, fPFParticleLabel);
-  // art::FindManyP<recob::Hit> clusterHitAssoc(evt.getValidHandle<std::vector<recob::Cluster>>(fClusterLabel), evt, fClusterLabel);
+   art::FindManyP<recob::Hit> clusterHitAssoc(evt.getValidHandle<std::vector<recob::Cluster>>(fClusterLabel), evt, fClusterLabel);
   // art::FindManyP<simb::MCParticle> hitMCParticleAssoc(evt.getValidHandle<std::vector<recob::Hit>>(fHitLabel), evt, fHitLabel);
 
 // Get associations between PFParticle and Vertex
@@ -577,6 +578,12 @@ for (const art::Ptr<recob::PFParticle>& slicePFP : nuSlicePFPs) { // loop throug
 
     std::vector<art::Ptr<recob::Track>> tracks = pfpTrackAssoc.at(slicePFP.key());
 
+    // Get clusters from pfp to cluster association
+    std::vector<art::Ptr<recob::Cluster>> clusters = pfpClusterAssoc.at(slicePFP.key());
+    art::Ptr<recob::Cluster>> cluster = clusters[0];
+
+    // Get hits associated with cluster (hits from PFP)
+    std::vector<art::Ptr<recob::hit>> clusterHits = clusterHitAssoc.at(cluster.ID());
 
     // Only care about neutrino children (same condition for saving track/shower reco params)
     if (slicePFP->Parent() != static_cast<long unsigned int>(nuID)){
