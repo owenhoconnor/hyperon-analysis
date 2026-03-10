@@ -145,6 +145,20 @@ private:
   std::vector<float> fTrackEndPositionX;
   std::vector<float> fTrackEndPositionY;
   std::vector<float> fTrackEndPositionZ;
+  std::vector<float> fTrackStartDirX;
+  std::vector<float> fTrackStartDirY;
+  std::vector<float> fTrackStartDirZ;
+  std::vector<float> fTrackEndDirX;
+  std::vector<float> fTrackEndDirY;
+  std::vector<float> fTrackEndDirZ;
+  std::vector<float> fTrackVertexDirX;
+  std::vector<float> fTrackVertexDirY;
+  std::vector<float> fTrackVertexDirZ;
+  std::vector<float> fTrackTheta;
+  std::vector<float> fTrackPhi;
+  std::vector<float> fShowerDirX;
+  std::vector<float> fShowerDirY;
+  std::vector<float> fShowerDirZ;
   std::vector<int> fShowerPDG;
   std::vector<float> fnuScore;
   std::vector<float> fNeutrinoNuScores;
@@ -521,8 +535,16 @@ void hyperon::AnalyzeEvents::analyze(art::Event const& evt)
 		float trackLength = track->Length();
 		auto const& trackStart = track->Vertex();
 		auto const& trackEnd = track->End();
+		auto const& trackStartDir = track->StartDirection();
+		auto const& trackEndDir = track->EndDirection();
+		auto const& trackVertexDir = track->VertexDirection();
+		float trackTheta = track->Theta();
+		float trackPhi = track->Phi();
+
 		TVector3 trackStartPos(trackStart.X(), trackStart.Y(), trackStart.Z());
 		TVector3 trackEndPos(trackEnd.X(), trackEnd.Y(), trackEnd.Z());
+
+// HERE ADD TRACK DIRECTIONS
 
 		float distanceToVertex = -9999.0f;
 		if (fFoundRecoVertex){
@@ -536,6 +558,17 @@ void hyperon::AnalyzeEvents::analyze(art::Event const& evt)
 		fTrackEndPositionX.push_back(trackEnd.X());
 		fTrackEndPositionY.push_back(trackEnd.Y());
 		fTrackEndPositionZ.push_back(trackEnd.Z());
+		fTrackStartDirX.push_back(trackStartDir.X());
+		fTrackStartDirY.push_back(trackStartDir.Y());
+		fTrackStartDirZ.push_back(trackStartDir.Z());
+		fTrackEndDirX.push_back(trackEndDir.X());
+		fTrackEndDirY.push_back(trackEndDir.Y());
+		fTrackEndDirZ.push_back(trackEndDir.Z());
+		fTrackVertexDirX.push_back(trackVertexDir.X());
+		fTrackVertexDirY.push_back(trackVertexDir.Y());
+		fTrackVertexDirZ.push_back(trackVertexDir.Z());
+		fTrackTheta.push_back(trackTheta);
+		fTrackPhi.push_back(trackPhi);
 		fDistanceToRecoVertex.push_back(distanceToVertex);
 	}
 	else {
@@ -544,6 +577,7 @@ void hyperon::AnalyzeEvents::analyze(art::Event const& evt)
 	    art::Ptr<recob::Shower> shower = showers.at(0);
 	    float showerLength = shower->Length();
 	    auto const& showerStart = shower->ShowerStart();
+	    auto const& showerDir = shower->Direction();
 	    TVector3 showerStartPos(showerStart.X(), showerStart.Y(), showerStart.Z());
 
 	    float distanceToVertex = -9999.0f;
@@ -555,6 +589,12 @@ void hyperon::AnalyzeEvents::analyze(art::Event const& evt)
 	    fTrackStartPositionX.push_back(showerStart.X());
 	    fTrackStartPositionY.push_back(showerStart.Y());
 	    fTrackStartPositionZ.push_back(showerStart.Z());
+	    fTrackVertexDirX.push_back(showerDir.X());
+	    fTrackVertexDirY.push_back(showerDir.Y());
+	    fTrackVertexDirZ.push_back(showerDir.Z());
+	    fShowerDirX.push_back(showerDir.X());
+	    fShowerDirY.push_back(showerDir.Y());
+	    fShowerDirZ.push_back(showerDir.Z());
 	    fDistanceToRecoVertex.push_back(distanceToVertex);
 	  }
    }
@@ -579,11 +619,11 @@ for (const art::Ptr<recob::PFParticle>& slicePFP : nuSlicePFPs) { // loop throug
     std::vector<art::Ptr<recob::Track>> tracks = pfpTrackAssoc.at(slicePFP.key());
 
     // Get clusters from pfp to cluster association
-    std::vector<art::Ptr<recob::Cluster>> clusters = pfpClusterAssoc.at(slicePFP.key());
-    art::Ptr<recob::Cluster>> cluster = clusters[0];
+    //std::vector<art::Ptr<recob::Cluster>> clusters = pfpClusterAssoc.at(slicePFP.key());
+    //art::Ptr<recob::Cluster> cluster = clusters[0];
 
     // Get hits associated with cluster (hits from PFP)
-    std::vector<art::Ptr<recob::hit>> clusterHits = clusterHitAssoc.at(cluster.ID());
+    //std::vector<art::Ptr<recob::Hit>> clusterHits = clusterHitAssoc.at(cluster.ID());
 
     // Only care about neutrino children (same condition for saving track/shower reco params)
     if (slicePFP->Parent() != static_cast<long unsigned int>(nuID)){
@@ -1058,12 +1098,26 @@ void hyperon::AnalyzeEvents::beginJob()
   fTree->Branch("protonTrackScores", &fProtonTrackScores);
   fTree->Branch("pionTrackScores", &fPionTrackScores);
   fTree->Branch("NeutrinoNuScores", &fNeutrinoNuScores);
-  fTree->Branch("TrackStartPositionX", &fTrackStartPositionX);
-  fTree->Branch("TrackStartPositionY", &fTrackStartPositionY);
-  fTree->Branch("TrackStartPositionZ", &fTrackStartPositionZ);
-  fTree->Branch("TrackEndPositionX", &fTrackEndPositionX);
-  fTree->Branch("TrackEndPositionY", &fTrackEndPositionY);
-  fTree->Branch("TrackEndPositionZ", &fTrackEndPositionZ);
+  fTree->Branch("trackStartPositionX", &fTrackStartPositionX);
+  fTree->Branch("trackStartPositionY", &fTrackStartPositionY);
+  fTree->Branch("trackStartPositionZ", &fTrackStartPositionZ);
+  fTree->Branch("trackEndPositionX", &fTrackEndPositionX);
+  fTree->Branch("trackEndPositionY", &fTrackEndPositionY);
+  fTree->Branch("trackEndPositionZ", &fTrackEndPositionZ);
+  fTree->Branch("trackStartDirX", &fTrackStartDirX);
+  fTree->Branch("trackStartDirY", &fTrackStartDirY);
+  fTree->Branch("trackStartDirZ", &fTrackStartDirZ);
+  fTree->Branch("trackEndDirX", &fTrackEndDirX);
+  fTree->Branch("trackEndDirY", &fTrackEndDirY);
+  fTree->Branch("trackEndDirZ", &fTrackEndDirZ);
+  fTree->Branch("trackVertexDirX", &fTrackVertexDirX);
+  fTree->Branch("trackVertexDirY", &fTrackVertexDirY);
+  fTree->Branch("trackVertexDirZ", &fTrackVertexDirZ);
+  fTree->Branch("trackTheta", &fTrackTheta);
+  fTree->Branch("trackPhi", &fTrackPhi);
+  fTree->Branch("showerDirX", &fShowerDirX);
+  fTree->Branch("showerDirY", &fShowerDirY);
+  fTree->Branch("showerDirZ", &fShowerDirZ);
 
   // truth matching
   fTree->Branch("pfpTrackPDG", &fTrueTrackPDG);
