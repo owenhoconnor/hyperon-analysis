@@ -152,7 +152,7 @@ void signalDef::Loop()
       bool IsInShowerRange = false;
       bool SelMuonCandidate = false;
       bool SelPionCandidate = false;
-      bool SelProtonCandidate = false
+      bool SelProtonCandidate = false;
       int muonIndex = -1;
       int pionIndex = -1;
       int protonIndex = -1;

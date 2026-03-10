@@ -266,8 +266,14 @@ void hyperon::AnalyzeEvents::analyze(art::Event const& evt)
 
    art::FindManyP<recob::Vertex> pfpVertexAssoc(pfpHandle, evt, fPFParticleLabel);
    std::cout<<"Event "<<fEventID<<" has "<<sliceVector.size()<<" slices."<<std::endl;
+   if (sliceVector.size() == 0){
+	   std::cerr<<"No slices found in this event!"<<std::endl;
+	   return;
+   }
 
 // Filling our neutrino hierarchy variables
+
+   if (sliceVector.size() != 0){
 
    for (const art::Ptr<recob::Slice> &slice : sliceVector){
 
@@ -303,6 +309,7 @@ void hyperon::AnalyzeEvents::analyze(art::Event const& evt)
 
 		if (metadataVec.empty()){
 			std::cerr<<"No meta data found for PFParticle with key :"<<slice.key()<<std::endl;
+			return;
 		}
 
 		float nuScore = -1;
@@ -378,7 +385,7 @@ void hyperon::AnalyzeEvents::analyze(art::Event const& evt)
 	}	
 
    } 
-
+  }
 
 // Define vector of PFPs in nuSlice
    std::vector<art::Ptr<recob::PFParticle>> nuSlicePFPs(slicePFPAssoc.at(nuSliceKey));

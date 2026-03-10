@@ -8,6 +8,8 @@ analyzeEvents:
   PFParticleLabel: "pandora"
   TrackLabel: "pandoraTrack"
   ShowerLabel: "pandoraShowerSBN"
+  ClusterLabel: "pandoraSCE"
+  HitLabel: "gaushit" 
 
 }
 
