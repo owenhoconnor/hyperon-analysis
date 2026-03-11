@@ -35,13 +35,12 @@ void signalDef::Loop()
 //
 //
 	
+   if (fChain == 0) return;
    
    int nSigma = 0;
    int nLambda = 0;
    int nGoodLambda = 0;
    int nGoodSigma = 0;
-
-   if (fChain == 0) return;
 
    TString Samples[3];
    Samples[0] = "Sigma";
@@ -51,21 +50,21 @@ void signalDef::Loop()
    int nEvents[3] = {0};
    nEvents[0] = 56344; // number of events in hyperon files
    nEvents[1] = nEvents[0]; // hyperons
-   nEvents[2] = 1 + nEvents[0]; // number of events in bkg files
+   nEvents[2] = 209009 + nEvents[0]; // num of events in bkg files + num of events in hyp files
    
 
    double PoT[4] = {0};
-   PoT[0] = 2.69e19; // sigma
-   PoT[1] = PoT[0]; //  hyperons
-   PoT[2] = 8.875e15; // bkg
+   PoT[0] = 2.69e19; // pot per hyperon file
+   PoT[1] = PoT[0]; //  (hyperons)
+   PoT[2] = 8.875e15; // pot per bkg file
    PoT[3] = 1e21; // total pot
 
-   double nHyperonFiles = 179.0;
-   double nBkgFiles = 1.0;
+   double nHyperonFiles = 1776.;
+   double nBkgFiles = 2236.;
 
    double scale[3] = {0};
-   scale[0] = PoT[3] / (nHyperonFiles * PoT[0]); // sigma
-   scale[1] = PoT[3] / (nHyperonFiles * PoT[1]); // hyperons 
+   scale[0] = 0.035131; //PoT[3] / (nHyperonFiles * PoT[0]); // sigma
+   scale[1] = 0.035131; //PoT[3] / (nHyperonFiles * PoT[1]); // hyperons 
    scale[2] = PoT[3] / (nBkgFiles * PoT[2]); // bkg
    std::cout<<"SIGMA and HYPERON SCALE = "<<scale[0]<<std::endl;
    std::cout<<"BACKGROUND SCALE = "<<scale[2]<<std::endl;
@@ -111,17 +110,29 @@ void signalDef::Loop()
    }
    
 
-   TFile *outFile = TFile::Open("TreeS.root", "RECREATE");
+   TFile *sigFile = TFile::Open("TreeS.root", "RECREATE");
 
-   if (!outFile || outFile->IsZombie()){
-	   std::cerr<<"Could not open file!!"<<std::endl;
+   if (!sigFile || sigFile->IsZombie()){
+	   std::cerr<<"Could not open file!"<<std::endl;
 	   return;
    }
 
-   outFile->cd();
+   sigFile->cd();
    TTree *signalTree = fChain->CloneTree(0);
    signalTree->SetName("TreeS");
-   signalTree->SetDirectory(outFile);
+   signalTree->SetDirectory(sigFile);
+
+   TFile *bkgFile = TFile::Open("TreeB.root", "RECREATE");
+
+   if (!bkgFile || bkgFile->IsZombie()){
+	   std::cerr<<"Could not open file!"<<std::endl;
+	   return;
+   }
+
+   bkgFile->cd();
+   TTree *bkgTree = fChain->CloneTree(0);
+   bkgTree->SetName("TreeB");
+   bkgTree->SetDirectory(bkgFile);
 
    Long64_t nentries = fChain->GetEntriesFast();
 
@@ -276,7 +287,6 @@ void signalDef::Loop()
 			nGoodSigma++;
 			std::cout<<"signal event, nSignal = "<<nGoodSigma<<std::endl;
 			IsSignal = true;
-			signalTree->Fill();
 		        hTracksShowers->Fill(trackCount, showerCount);
 	    }
 	   // if (IsLambda){
@@ -289,16 +299,20 @@ void signalDef::Loop()
 	  //  }
 	}
 
-      if(IsSignal && jentry < nEvents[0] + 1){s=0;} // if signal and we're still within range of hyperon file events
+      if(IsSignal && jentry < nEvents[0] + 1){ // if signal and we're still within range of hyperon file events
+	  s=0;
       if(!IsSignal && jentry < nEvents[0] + 1){s=1;} // if not signal but we're still within range of hyperon file events (other hyperons)
+      if(!IsSignal && jentry > nEvents[0]){ // now within range of bkg events, exclude rare signal
+          s=2;
+      }	
+      if(IsSignal && jentry > nEvents[0]){continue;} // if there's signal in bkg range, ignore
 
       // Preselection
 
-      TVector3 muonStart;
-      TVector3 pionStart;
-      TVector3 protonStart;
+      TVector3 track1Start;
+      TVector3 track2Start;
+      TVector3 track3Start;
       TVector3 shower1Start;
-      TVector3 shower2Start;
 
       /*if(muonIndex>-1){muonStart.SetXYZ(TrackStartPositionX->at(muonIndex), TrackStartPositionY->at(muonIndex), TrackStartPositionZ->at(muonIndex));}
       if(pionIndex>-1){pionStart.SetXYZ(TrackStartPositionX->at(pionIndex), TrackStartPositionY->at(pionIndex), TrackStartPositionZ->at(pionIndex));}
@@ -308,15 +322,22 @@ void signalDef::Loop()
 */
       if (std::abs(RecoVertexX) < 180 && std::abs(RecoVertexY) < 180 && RecoVertexZ > 10 && RecoVertexZ < 450){IsInRecoFV = true;}
 
-      if (trackCount > 2 && trackCount < 6){IsInTrackRange = true;}
+      if (trackCount > 2 && trackCount < 6){IsInTrackRange = true;} // need to fill TMVA trees for specific topology
       if (showerCount == 1 || showerCount == 2){IsInShowerRange = true;}
+
+      // Select topology:
+
+      if (IsInRecoFV && trackCount == 3 && showerCount == 1){
+	      if(s==0){signalTree->Fill();}
+	      if(s==2){bkgTree->Fill();}
+      }
 
       Cuts[0] = true;
       Cuts[1] = Cuts[0] && IsInRecoFV;
       Cuts[2] = Cuts[1] && IsInTrackRange;
       Cuts[3] = Cuts[2] && IsInShowerRange;
 
-      for (int c = 0; c<nCuts; c++){
+    /*  for (int c = 0; c<nCuts; c++){
 
 	if(Cuts[c]){
 
@@ -357,16 +378,21 @@ void signalDef::Loop()
 	   }
 
       } // end loop over cuts
-
+*/
      
    } // end event loop
 
-   outFile->cd();
+   sigFile->cd();
    signalTree->Write("TreeS"); // Write signal tree and close file
-   outFile->Close();
-   delete outFile;
+   sigFile->Close();
+   delete sigFile;
 
-   TCanvas *c2 = new TCanvas("c2","",5000,2000); // Print results to a canvas
+   bkgFile->cd();
+   bkgTree->Write("TreeB"); // write bkg tree
+   bkgFile->Close();
+   delete bkgFile;
+
+/*   TCanvas *c2 = new TCanvas("c2","",5000,2000); // Print results to a canvas
 
    for(int v = 0; v< nVars; v++){
     c2->Divide(nCuts,2);// 2 rows and 4 columns
@@ -380,15 +406,12 @@ void signalDef::Loop()
     c2->Print("plots/"+VarName[v]+".png");
     c2->Clear();
   }
-
+*/
    TCanvas *c3 = new TCanvas("c3", "", 3000, 3000);
    hTracksShowers->Draw("text");
-   c3->Print("ntracks_v_nshowers.png");
+   c3->Print("plots/ntracks_v_nshowers.png");
 
-   std::cout<<"num of sigma: "<<nSigma<<std::endl;
-   std::cout<<"num of lambda: "<<nLambda<<std::endl;
    std::cout<<"num of good sigma: "<<nGoodSigma<<std::endl;
-   std::cout<<"num of good lambda: "<<nGoodLambda<<std::endl;
    std::cout<<"sigma scale = "<<scale[0]<<std::endl;
    std::cout<<"bkg scale = "<<scale[2]<<std::endl;
 }

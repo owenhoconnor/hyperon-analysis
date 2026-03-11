@@ -897,7 +897,7 @@ for (size_t i_hit = 0; i_hit < showerHits.size(); i_hit++) { // loop over shower
        {
            art::Ptr<simb::MCParticle> mcParticle(assocParticles.at(i_mcpart));
 	  // std::cout<<"mcParticle mother is "<<mcParticle->Mother()<<std::endl;
-           if(mcParticle->Mother()!=0) continue;
+           if(mcParticle->Mother()!=10000000) continue;
 
            std::cout<<"--Particle at index " << i_mcpart <<"at mclist index "<<i_truth<< " has pdg: " << mcParticle->PdgCode() 
 		    <<" has momentum: " << mcParticle->P()<<" Mother: "<<mcParticle->Mother()

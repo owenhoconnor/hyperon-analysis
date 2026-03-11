@@ -63,7 +63,14 @@ void signalPreselect::Loop()
    signalPreTree->SetName("preTreeS");
    signalPreTree->SetDirectory(outFile);
 
-   TH2F *hTracksShowers = new TH2F("nTracksvShowers", "", 100, -1, -1, 100, -1, -1);  
+   int MaxTracks = 6;
+   int MaxShowers = 6;
+
+   TH2F *hTracksShowers = new TH2F("hTracksShowers", ";num of Tracks;num of Showers", 
+		   MaxTracks + 1, -0.5, MaxTracks + 0.5, 
+		   MaxShowers + 1, -0.5, MaxShowers + 0.5);
+   hTracksShowers->SetDirectory(nullptr); 
+
    int minShowers = 1;
    int maxShowers = 2;
 
@@ -107,12 +114,36 @@ void signalPreselect::Loop()
    }
 
    std::cout<<"end of event loop"<<std::endl;
+
+   TCanvas *c1 = new TCanvas("c1", "Track-Shower Topology", 2000, 2000);
+   c1->SetRightMargin(0.15);
+   c1->SetLeftMargin(0.15);
+   c1->SetBottomMargin(0.15);
+
+   hTracksShowers->GetXaxis()->SetTitle("Number of tracks");
+   hTracksShowers->GetYaxis()->SetTitle("Number of showers");
+   hTracksShowers->GetZaxis()->SetTitle("Events");
+
+   hTracksShowers->GetXaxis()->CenterTitle();
+   hTracksShowers->GetYaxis()->CenterTitle();
+
+   hTracksShowers->GetXaxis()->SetTitleSize(0.04);
+   hTracksShowers->GetYaxis()->SetTitleSize(0.04);
+   hTracksShowers->GetZaxis()->SetTitleSize(0.04);
+
+   hTracksShowers->GetXaxis()->SetLabelSize(0.04);
+   hTracksShowers->GetYaxis()->SetLabelSize(0.04);
+   hTracksShowers->GetZaxis()->SetLabelSize(0.04);
+
+   hTracksShowers->GetXaxis()->SetNdivisions(MaxTracks + 1, 0, 0, kTRUE);
+   hTracksShowers->GetYaxis()->SetNdivisions(MaxShowers + 1, 0, 0, kTRUE);
+
+   gStyle->SetPalette(kViridis); 
+   hTracksShowers->Draw("COLZ TEXT");
+   c1->Print("plots/nTracksShowers.png");
+
    outFile->cd();
    signalPreTree->Write("preTreeS");
    outFile->Close();
    delete outFile;
-
-   TCanvas *c1 = new TCanvas("nTracksShowers", "", 2500, 2500);
-   hTracksShowers->Draw("text");
-   c1->Print("plots/nTracksShowers.png");
 }
