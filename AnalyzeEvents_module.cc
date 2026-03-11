@@ -220,6 +220,7 @@ void hyperon::AnalyzeEvents::analyze(art::Event const& evt)
  fCosmicNuScores.clear();
  fTrackScores.clear();
  highestNuScore = 0.;
+ nuSliceKey = -1;
  fFoundRecoVertex = false;
  fRecoVertex.SetXYZ(-9999., -9999., -9999.);
  fRecoVertexX = -9999.;
@@ -293,7 +294,7 @@ void hyperon::AnalyzeEvents::analyze(art::Event const& evt)
 
 	fNPfpSlices.push_back(slicePFPs.size());
 	std::cout<<"Slice key: "<< slice.key()<<", Number of PFPs: "<< slicePFPs.size() << std::endl;
-
+	std::cout<<"nuSliceKey = "<<nuSliceKey<<std::endl;
 
 	for (const art::Ptr<recob::PFParticle> &slicePFP : slicePFPs){
 
@@ -301,7 +302,14 @@ void hyperon::AnalyzeEvents::analyze(art::Event const& evt)
 		const bool isNeutrino = (std::abs(slicePFP->PdgCode()) == 14);
 
 		if (!(isPrimary && isNeutrino)){
-			//std::cout<<"Not a primary neutrino, skipping PFP!"<<std::endl;
+			std::cout<<"Not a primary neutrino, skipping PFP!"<<std::endl;
+			continue;
+		}
+
+		std::cout<<"Is a primary neutrino, not skipping!"<<std::endl;
+
+		if (slicePFP.key() >= pfpMetadataAssoc.size()){
+			std::cerr<<"PFP key "<<slicePFP.key()<<" out of bounds for pfpMetadataAssoc, size = "<<pfpMetadataAssoc.size()<<std::endl;
 			continue;
 		}
 
@@ -385,7 +393,13 @@ void hyperon::AnalyzeEvents::analyze(art::Event const& evt)
 	}	
 
    } 
-  }
+ }
+
+std::cout<<"After looping over all slices, nuSliceKey = "<<nuSliceKey<<std::endl;
+if (nuSliceKey < 0){
+	std::cerr<<"No slice contained a primary neutrino!"<<std::endl;
+	return;
+}
 
 // Define vector of PFPs in nuSlice
    std::vector<art::Ptr<recob::PFParticle>> nuSlicePFPs(slicePFPAssoc.at(nuSliceKey));

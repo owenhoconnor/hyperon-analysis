@@ -49,9 +49,9 @@ void signalDef::Loop()
    Samples[2] = "Background";
    
    int nEvents[3] = {0};
-   nEvents[0] = 10443; // Sigma COUNT
-   nEvents[1] = nEvents[0]; // Hyperons
-   nEvents[2] = 1 + nEvents[0]; // BKG
+   nEvents[0] = 56344; // number of events in hyperon files
+   nEvents[1] = nEvents[0]; // hyperons
+   nEvents[2] = 1 + nEvents[0]; // number of events in bkg files
    
 
    double PoT[4] = {0};
@@ -100,6 +100,7 @@ void signalDef::Loop()
    VarName[14] = "gammaTrackDistToVtx";
 
    TH1F *Hist[nVars][3][nCuts];
+   TH2F *hTracksShowers = new TH2F("nTracks v nShowers", "", 100, -1, -1, 100, -1, -1);
 
    for (int s = 0; s < 3; s++){ // samples
 	  for (int v = 0; v < nVars; v++){ // variables
@@ -165,7 +166,7 @@ void signalDef::Loop()
       int daughterCounter = 0;
 
       std::cout<<"****************** new event ********************"<<std::endl;
-      std::cout<<"trackStartPosition size = "<<TrackStartPositionX->size()<<std::endl;
+      std::cout<<"trackStartPosition size = "<<trackStartPositionX->size()<<std::endl;
       std::cout<<"distance to reco vertex size = "<<DistanceToRecoVertex->size()<<std::endl;
       std::cout<<"TrackLengths size = "<<TrackLengths->size()<<std::endl;
       std::cout<<"trackScores size = "<<trackScores->size()<<std::endl;
@@ -276,19 +277,20 @@ void signalDef::Loop()
 			std::cout<<"signal event, nSignal = "<<nGoodSigma<<std::endl;
 			IsSignal = true;
 			signalTree->Fill();
+		        hTracksShowers->Fill(trackCount, showerCount);
 	    }
-	    if (IsLambda){
-		nLambda++;
-		std::cout<<"lambda event, nLambda = "<<nLambda<<std::endl; // check daughters of lambda for pion- and proton
-		if (IsGoodLambda){
-			nGoodLambda++;
-			std::cout<<"lambda w proton/pion daughters event, n goodlambda = "<<nGoodLambda<<std::endl;
-		}
-	    }
+	   // if (IsLambda){
+	//	nLambda++;
+	//	std::cout<<"lambda event, nLambda = "<<nLambda<<std::endl; // check daughters of lambda for pion- and proton
+	//	if (IsGoodLambda){
+	//		nGoodLambda++;
+	//		std::cout<<"lambda w proton/pion daughters event, n goodlambda = "<<nGoodLambda<<std::endl;
+	//	}
+	  //  }
 	}
 
-      if(IsSignal && jentry < nEvents[0] + 1){s=0;}
-      if(!IsSignal && jentry < nEvents[0] + 1){s=1;}
+      if(IsSignal && jentry < nEvents[0] + 1){s=0;} // if signal and we're still within range of hyperon file events
+      if(!IsSignal && jentry < nEvents[0] + 1){s=1;} // if not signal but we're still within range of hyperon file events (other hyperons)
 
       // Preselection
 
@@ -378,6 +380,10 @@ void signalDef::Loop()
     c2->Print("plots/"+VarName[v]+".png");
     c2->Clear();
   }
+
+   TCanvas *c3 = new TCanvas("c3", "", 3000, 3000);
+   hTracksShowers->Draw("text");
+   c3->Print("ntracks_v_nshowers.png");
 
    std::cout<<"num of sigma: "<<nSigma<<std::endl;
    std::cout<<"num of lambda: "<<nLambda<<std::endl;

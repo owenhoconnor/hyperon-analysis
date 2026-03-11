@@ -62,7 +62,8 @@ void signalPreselect::Loop()
    TTree *signalPreTree = fChain->CloneTree(0);
    signalPreTree->SetName("preTreeS");
    signalPreTree->SetDirectory(outFile);
-  
+
+   TH2F *hTracksShowers = new TH2F("nTracksvShowers", "", 100, -1, -1, 100, -1, -1);  
    int minShowers = 1;
    int maxShowers = 2;
 
@@ -75,9 +76,13 @@ void signalPreselect::Loop()
       nb = fChain->GetEntry(jentry);   nbytes += nb;
       // if (Cut(ientry) < 0) continue;
        
+      std::cout<<"*********** new event num: "<<jentry<<"****************"<<std::endl;
+
       bool IsInRecoFV = false;
       bool HasTrackRange = false;
       bool HasShowerRange = false;
+
+      hTracksShowers->Fill(trackCount, showerCount);
 
       // Apply preselection cuts
       
@@ -95,13 +100,19 @@ void signalPreselect::Loop()
 	   if(HasTrackRange){
 		  if(HasShowerRange){
 			  signalPreTree->Fill();
+			  std::cout<<"Filling preselect hist"<<std::endl;
 		  }
 	   }
       }
    }
 
+   std::cout<<"end of event loop"<<std::endl;
    outFile->cd();
    signalPreTree->Write("preTreeS");
    outFile->Close();
    delete outFile;
+
+   TCanvas *c1 = new TCanvas("nTracksShowers", "", 2500, 2500);
+   hTracksShowers->Draw("text");
+   c1->Print("plots/nTracksShowers.png");
 }

@@ -191,6 +191,9 @@ int TMVAClassification( TString myMethodList = "" )
    //dataloader->AddVariable( "angleMuonPion", 'F');
    //dataloader->AddVariable( "angleMuonProton", 'F');
    //dataloader->AddVariable( "anglePionProton", 'F');
+   //dataloader->AddVariable( "distTrack1Track2", 'F');
+   //dataloader->AddVariable( "distTrack1Track3", 'F');
+   //dataloader->AddVariable( "distTrack2Track3", 'F');
  
    // You can add so-called "Spectator variables", which are not used in the MVA training,
    // but will appear in the final "TestTree" produced by TMVA. This TestTree will contain the
