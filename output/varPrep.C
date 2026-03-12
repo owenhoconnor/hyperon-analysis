@@ -94,7 +94,7 @@ void varPrep::Loop()
    sigTree->Branch("track3Length", &track3Length);
    sigTree->Branch("shower1Length", &shower1Length);
 
-   // Track start positions
+   // Track, shower start positions
    sigTree->Branch("track1StartPosX", &track1StartPosX, "track1StartPosX/F");
    sigTree->Branch("track1StartPosY", &track1StartPosY, "track1StartPosY/F");
    sigTree->Branch("track1StartPosZ", &track1StartPosZ, "track1StartPosZ/F");
@@ -106,6 +106,10 @@ void varPrep::Loop()
    sigTree->Branch("track3StartPosX", &track3StartPosX, "track3StartPosX/F");
    sigTree->Branch("track3StartPosY", &track3StartPosY, "track3StartPosY/F");
    sigTree->Branch("track3StartPosZ", &track3StartPosZ, "track3StartPosZ/F");
+
+   sigTree->Branch("shower1StartPosZ", &shower1StartPosX, "shower1StartPosX/F");
+   sigTree->Branch("shower1StartPosY", &shower1StartPosY, "shower1StartPosY/F");
+   sigTree->Branch("shower1StartPosZ", &shower1StartPosZ, "shower1StartPosZ/F");
 
 
 // Track, shower direction vectors
@@ -173,7 +177,7 @@ void varPrep::Loop()
 
       // sort tracks in descending order
       std::vector<int> idx = {0, 1, 2};
-      std::sort(idx.begin(), idx.end(), [&](int a, int b){return trackLengths[a] > trackLengths[b];});
+      std::sort(idx.begin(), idx.end(), [&](int a, int b){return trackLengths->at(a) > trackLengths->at(b);});
       
       // assign index to tracks in descending order: LONGESTEST = track1, SHORTEST = track3
       int trk1Idx = idx[0];

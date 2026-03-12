@@ -129,8 +129,8 @@ int TMVAClassification( TString myMethodList = "" )
  
    // Read training and test data
    // (it is also possible to use ASCII format as input -> see TMVA Users Guide)
-   TString signalInputFile = "./TreeS.root";
-   TString backgroundInputFile = "./TreeB.root";
+   TString signalInputFile = "./prepSig.root";
+   TString backgroundInputFile = "./prepBkg.root";
    std::unique_ptr<TFile> signalInput{TFile::Open(signalInputFile)};
    std::unique_ptr<TFile> backgroundInput{TFile::Open(backgroundInputFile)};
    if (!signalInput || signalInput->IsZombie()) {
@@ -143,8 +143,8 @@ int TMVAClassification( TString myMethodList = "" )
    } 
    // Register the training and test trees
  
-   TTree *signalTree     = (TTree*)signalInput->Get("TreeS");
-   TTree *backgroundTree     = (TTree*)backgroundInput->Get("TreeB");
+   TTree *signalTree     = (TTree*)signalInput->Get("sigTree");
+   TTree *backgroundTree     = (TTree*)backgroundInput->Get("bkgTree");
  
    // Create a ROOT output file where TMVA will store ntuples, histograms, etc.
    TString outfileName("TMVAC.root");
@@ -177,23 +177,63 @@ int TMVAClassification( TString myMethodList = "" )
    // Define the input variables that shall be used for the MVA training
    // note that you may also use variable expressions, such as: "3*var1/var2*abs(var3)"
    // [all types of expressions that can also be parsed by TTree::Draw( "expression" )]
-   //dataloader->AddVariable( "trackCount", 'F' );
-   //dataloader->AddVariable( "showerCount", 'F');
-   dataloader->AddVariable( "RecoVertexX", 'F' );
-   dataloader->AddVariable( "RecoVertexY", 'F' );
-   dataloader->AddVariable( "RecoVertexZ", 'F' );
-  // dataloader->AddVariable( "distMuonPion", 'F');
-  // dataloader->AddVariable( "distMuonProton", 'F');
-   //dataloader->AddVariable( "distPionProton", 'F');
-   //dataloader->AddVariable( "distShowerMuon", 'F');
-   //dataloader->AddVariable( "distShowerPion", 'F');
-   //dataloader->AddVariable( "distShowerProton", 'F');
-   //dataloader->AddVariable( "angleMuonPion", 'F');
-   //dataloader->AddVariable( "angleMuonProton", 'F');
-   //dataloader->AddVariable( "anglePionProton", 'F');
-   //dataloader->AddVariable( "distTrack1Track2", 'F');
-   //dataloader->AddVariable( "distTrack1Track3", 'F');
-   //dataloader->AddVariable( "distTrack2Track3", 'F');
+   // 4 lengths
+   dataloader->AddVariable( "track1Length", 'F' );
+   dataloader->AddVariable( "track2Length", 'F');
+   dataloader->AddVariable( "track3Length", 'F');
+   dataloader->AddVariable("shower1Length", 'F');
+
+   // 12 start positions (4 x 3)
+   dataloader->AddVariable("track1StartPosX", 'F');
+   dataloader->AddVariable("track1StartPosY", 'F');
+   dataloader->AddVariable("track1StartPosZ", 'F');
+   dataloader->AddVariable("track2StartPosX", 'F');
+   dataloader->AddVariable("track2StartPosY", 'F');
+   dataloader->AddVariable("track2StartPosZ", 'F');
+   dataloader->AddVariable("track3StartPosX", 'F');
+   dataloader->AddVariable("track3StartPosY", 'F');
+   dataloader->AddVariable("track3StartPosZ", 'F');
+   dataloader->AddVariable("shower1StartPosX", 'F');
+   dataloader->AddVariable("shower1StartPosY", 'F');
+   dataloader->AddVariable("shower1StartPosZ", 'F');
+
+   // 12 start directions (4 x 3)
+   dataloader->AddVariable("track1StartDirX", 'F');
+   dataloader->AddVariable("track1StartDirY", 'F');
+   dataloader->AddVariable("track1StartDirZ", 'F');
+   dataloader->AddVariable("track2StartDirX", 'F');
+   dataloader->AddVariable("track2StartDirY", 'F');
+   dataloader->AddVariable("track2StartDirZ", 'F');
+   dataloader->AddVariable("track3StartDirX", 'F');
+   dataloader->AddVariable("track3StartDirY", 'F');
+   dataloader->AddVariable("track3StartDirZ", 'F');
+   dataloader->AddVariable("shower1DirX", 'F');
+   dataloader->AddVariable("shower1DirY", 'F');
+   dataloader->AddVariable("shower1DirZ", 'F');
+
+   // 4 distances to reco vtx
+   dataloader->AddVariable("track1DistRecoVtx", 'F');
+   dataloader->AddVariable("track2DistRecoVtx", 'F');
+   dataloader->AddVariable("track3DistRecoVtx", 'F');
+   dataloader->AddVariable("shower1DistRecoVtx", 'F');
+
+   // 6 relative angles
+   dataloader->AddVariable("track1Track2Angle", 'F');
+   dataloader->AddVariable("track1Track3Angle", 'F');
+   dataloader->AddVariable("track2Track3Angle", 'F');
+   dataloader->AddVariable("track1Shower1Angle", 'F');
+   dataloader->AddVariable("track2Shower1Angle", 'F');
+   dataloader->AddVariable("track3Shower1Angle", 'F');
+
+   // 6 relative distances
+   dataloader->AddVariable("track1Track2Dist", 'F');
+   dataloader->AddVariable("track1Track3Dist", 'F');
+   dataloader->AddVariable("track2Track3Dist", 'F');
+   dataloader->AddVariable("track1Shower1Dist", 'F');
+   dataloader->AddVariable("track2Shower1Dist", 'F');
+   dataloader->AddVariable("track3Shower1Dist", 'F');
+
+   // total = 6 + 6 + 4 + 12 + 12 + 4 = 44 variables
  
    // You can add so-called "Spectator variables", which are not used in the MVA training,
    // but will appear in the final "TestTree" produced by TMVA. This TestTree will contain the
@@ -275,7 +315,7 @@ int TMVAClassification( TString myMethodList = "" )
    std::cout<<" Signal entries: "<<signalTree->GetEntries()<<std::endl;
    std::cout<<" Background entries: "<<backgroundTree->GetEntries()<<std::endl;
    dataloader->PrepareTrainingAndTestTree( mycuts, mycutb,
-                                        "nTrain_Signal=140:nTest_Signal=56:nTrain_Background=2400:nTest_Background=600:SplitMode=Random:NormMode=EqualNumEvents:!V" );
+                                        "SplitMode=Random:NormMode=EqualNumEvents:!V" );
  
    // ### Book MVA methods
    //
