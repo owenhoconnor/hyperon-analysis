@@ -129,8 +129,8 @@ int TMVAClassification( TString myMethodList = "" )
  
    // Read training and test data
    // (it is also possible to use ASCII format as input -> see TMVA Users Guide)
-   TString signalInputFile = "./signalAnalysis.root";
-   TString backgroundInputFile = "./backgroundAnalysis.root";
+   TString signalInputFile = "./TreeS.root";
+   TString backgroundInputFile = "./TreeB.root";
    std::unique_ptr<TFile> signalInput{TFile::Open(signalInputFile)};
    std::unique_ptr<TFile> backgroundInput{TFile::Open(backgroundInputFile)};
    if (!signalInput || signalInput->IsZombie()) {
@@ -143,8 +143,8 @@ int TMVAClassification( TString myMethodList = "" )
    } 
    // Register the training and test trees
  
-   TTree *signalTree     = (TTree*)signalInput->Get("preTreeS");
-   TTree *backgroundTree     = (TTree*)backgroundInput->Get("preTreeB");
+   TTree *signalTree     = (TTree*)signalInput->Get("TreeS");
+   TTree *backgroundTree     = (TTree*)backgroundInput->Get("TreeB");
  
    // Create a ROOT output file where TMVA will store ntuples, histograms, etc.
    TString outfileName("TMVAC.root");
@@ -177,8 +177,8 @@ int TMVAClassification( TString myMethodList = "" )
    // Define the input variables that shall be used for the MVA training
    // note that you may also use variable expressions, such as: "3*var1/var2*abs(var3)"
    // [all types of expressions that can also be parsed by TTree::Draw( "expression" )]
-   dataloader->AddVariable( "trackCount", 'F' );
-   dataloader->AddVariable( "showerCount", 'F');
+   //dataloader->AddVariable( "trackCount", 'F' );
+   //dataloader->AddVariable( "showerCount", 'F');
    dataloader->AddVariable( "RecoVertexX", 'F' );
    dataloader->AddVariable( "RecoVertexY", 'F' );
    dataloader->AddVariable( "RecoVertexZ", 'F' );

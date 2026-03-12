@@ -10,7 +10,7 @@ Method         : RuleFit::RuleFit
 TMVA Release   : 4.2.1         [262657]
 ROOT Release   : 6.38/00       [402944]
 Creator        : ooconnor
-Date           : Tue Feb 17 10:49:43 2026
+Date           : Thu Mar 12 11:27:04 2026
 Host           : Linux buildvm-x86-26.rdu3.fedoraproject.org 6.17.1-300.fc43.x86_64 #1 SMP PREEMPT_DYNAMIC Mon Oct 6 15:37:21 UTC 2025 x86_64 x86_64 x86_64 GNU/Linux
 Dir            : /home/lar/ooconnor/hyperons/srcs/sbndcode/sbndcode/Hyperons/output/TMVA
 Training events: 2540
@@ -51,12 +51,10 @@ RFNendnodes: "4" [RFF: Average number of end nodes]
 
 #VAR -*-*-*-*-*-*-*-*-*-*-*-* variables *-*-*-*-*-*-*-*-*-*-*-*-
 
-NVar 5
-trackCount                    trackCount                    trackCount                    trackCount                                                      'F'    [3,5]
-showerCount                   showerCount                   showerCount                   showerCount                                                     'F'    [1,2]
-RecoVertexX                   RecoVertexX                   RecoVertexX                   RecoVertexX                                                     'F'    [-179.984375,179.797943115]
-RecoVertexY                   RecoVertexY                   RecoVertexY                   RecoVertexY                                                     'F'    [-179.879959106,179.966491699]
-RecoVertexZ                   RecoVertexZ                   RecoVertexZ                   RecoVertexZ                                                     'F'    [10.0281229019,449.6015625]
+NVar 3
+RecoVertexX                   RecoVertexX                   RecoVertexX                   RecoVertexX                                                     'F'    [-179.729904175,179.898162842]
+RecoVertexY                   RecoVertexY                   RecoVertexY                   RecoVertexY                                                     'F'    [-179.91104126,179.771987915]
+RecoVertexZ                   RecoVertexZ                   RecoVertexZ                   RecoVertexZ                                                     'F'    [10.3850755692,449.893188477]
 NSpec 0
 
 
@@ -100,10 +98,10 @@ class ReadRuleFit : public IClassifierReader {
    ReadRuleFit( std::vector<std::string>& theInputVars )
       : IClassifierReader(),
         fClassName( "ReadRuleFit" ),
-        fNvars( 5 )
+        fNvars( 3 )
    {
       // the training input variables
-      const char* inputVars[] = { "trackCount", "showerCount", "RecoVertexX", "RecoVertexY", "RecoVertexZ" };
+      const char* inputVars[] = { "RecoVertexX", "RecoVertexY", "RecoVertexZ" };
 
       // sanity checks
       if (theInputVars.size() <= 0) {
@@ -133,17 +131,11 @@ class ReadRuleFit : public IClassifierReader {
       fVmax[1] = 0;
       fVmin[2] = 0;
       fVmax[2] = 0;
-      fVmin[3] = 0;
-      fVmax[3] = 0;
-      fVmin[4] = 0;
-      fVmax[4] = 0;
 
       // initialize input variable types
       fType[0] = 'F';
       fType[1] = 'F';
       fType[2] = 'F';
-      fType[3] = 'F';
-      fType[4] = 'F';
 
       // initialize constants
       Initialize();
@@ -173,15 +165,15 @@ class ReadRuleFit : public IClassifierReader {
    char   GetType( int ivar ) const { return fType[ivar]; }
 
    // normalisation of input variables
-   double fVmin[5];
-   double fVmax[5];
+   double fVmin[3];
+   double fVmax[3];
    double NormVariable( double x, double xmin, double xmax ) const {
       // normalise to output range: [-1, 1]
       return 2*(x - xmin)/(xmax - xmin) - 1.0;
    }
 
    // type of input variable: 'F' or 'I'
-   char   fType[5];
+   char   fType[3];
 
    // initialize internal variables
    void Initialize();
@@ -193,20 +185,23 @@ class ReadRuleFit : public IClassifierReader {
 void   ReadRuleFit::Initialize(){}
 void   ReadRuleFit::Clear(){}
 double ReadRuleFit::GetMvaValue__( const std::vector<double>& inputValues ) const {
-   double rval=-0.4529971388;
+   double rval=0.8856122556;
    //
    // here follows all rules ordered in importance (most important first)
    // at the end of each line, the relative importance of the rule is given
    //
-   if ((inputValues[0]<3.095238209)&&(inputValues[1]<1.047619104)) rval+=0.2685240232;   // importance = 1.000
-   if ((inputValues[0]<3.095238209)) rval+=0.321269366;   // importance = 0.968
-   if ((inputValues[2]<-42.92444611)) rval+=0.07631389797;   // importance = 0.290
-   if ((108.3734665<inputValues[4])&&(inputValues[4]<240.2808838)) rval+=-0.02966571514;   // importance = 0.104
+   if ((59.87764359<inputValues[1])) rval+=-0.6011213967;   // importance = 1.000
+   if ((inputValues[1]<77.00540924)) rval+=-0.4809737386;   // importance = 0.781
+   if ((inputValues[0]<94.27243042)) rval+=-0.3587262065;   // importance = 0.510
+   if ((-101.4705887<inputValues[0])&&(inputValues[2]<282.5892029)) rval+=-0.1334763878;   // importance = 0.230
+   if ((inputValues[2]<156.8877869)) rval+=-0.06803753513;   // importance = 0.110
+   if ((inputValues[1]<59.87764359)&&(inputValues[2]<240.5579834)) rval+=-0.0605063822;   // importance = 0.099
+   if ((-101.4705887<inputValues[0])&&(156.8877869<inputValues[2])) rval+=0.04379889123;   // importance = 0.076
+   if ((inputValues[1]<59.87764359)&&(240.5579834<inputValues[2])) rval+=0.01417148531;   // importance = 0.023
    //
    // here follows all linear terms
    // at the end of each line, the relative importance of the term is given
    //
-   rval+=0.01430148139*std::min( double(5), std::max( double(inputValues[0]), double(3)));   // importance = 0.063
    return rval;
 }
 inline double ReadRuleFit::GetMvaValue( const std::vector<double>& inputValues ) const

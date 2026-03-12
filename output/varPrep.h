@@ -1,12 +1,12 @@
 //////////////////////////////////////////////////////////
 // This class has been automatically generated on
-// Fri Feb 13 15:25:29 2026 by ROOT version 6.38.00
-// from TTree tree/Output TTree
-// found on file: hyperonAnalysisSIG.root
+// Thu Mar 12 18:21:47 2026 by ROOT version 6.38.00
+// from TTree preTree/Output TTree
+// found on file: TreeS.root
 //////////////////////////////////////////////////////////
 
-#ifndef signalDef_h
-#define signalDef_h
+#ifndef varPrep_h
+#define varPrep_h
 
 #include <TROOT.h>
 #include <TChain.h>
@@ -16,7 +16,7 @@
 #include "vector"
 #include "vector"
 
-class signalDef {
+class varPrep {
 public :
    TTree          *fChain;   //!pointer to the analyzed TTree or TChain
    Int_t           fCurrent; //!current Tree number in a TChain
@@ -59,9 +59,28 @@ public :
    vector<float>   *trackEndPositionX;
    vector<float>   *trackEndPositionY;
    vector<float>   *trackEndPositionZ;
+   vector<float>   *trackStartDirX;
+   vector<float>   *trackStartDirY;
+   vector<float>   *trackStartDirZ;
+   vector<float>   *trackEndDirX;
+   vector<float>   *trackEndDirY;
+   vector<float>   *trackEndDirZ;
+   vector<float>   *trackVertexDirX;
+   vector<float>   *trackVertexDirY;
+   vector<float>   *trackVertexDirZ;
+   vector<float>   *trackTheta;
+   vector<float>   *trackPhi;
+   vector<float>   *showerLengths;
+   vector<float>   *showerStartPositionX;
+   vector<float>   *showerStartPositionY;
+   vector<float>   *showerStartPositionZ;
+   vector<float>   *showerDirX;
+   vector<float>   *showerDirY;
+   vector<float>   *showerDirZ;
    vector<int>     *pfpTrackPDG;
    vector<int>     *pfpShowerPDG;
    vector<int>     *pfpPDG;
+   Int_t           sampleType;
 
    // List of branches
    TBranch        *b_eventID;   //!
@@ -99,12 +118,31 @@ public :
    TBranch        *b_trackEndPositionX;   //!
    TBranch        *b_trackEndPositionY;   //!
    TBranch        *b_trackEndPositionZ;   //!
+   TBranch        *b_trackStartDirX;   //!
+   TBranch        *b_trackStartDirY;   //!
+   TBranch        *b_trackStartDirZ;   //!
+   TBranch        *b_trackEndDirX;   //!
+   TBranch        *b_trackEndDirY;   //!
+   TBranch        *b_trackEndDirZ;   //!
+   TBranch        *b_trackVertexDirX;   //!
+   TBranch        *b_trackVertexDirY;   //!
+   TBranch        *b_trackVertexDirZ;   //!
+   TBranch        *b_trackTheta;   //!
+   TBranch        *b_trackPhi;   //!
+   TBranch        *b_showerLengths;   //!
+   TBranch        *b_showerStartPositionX;   //!
+   TBranch        *b_showerStartPositionY;   //!
+   TBranch        *b_showerStartPositionZ;   //!
+   TBranch        *b_showerDirX;   //!
+   TBranch        *b_showerDirY;   //!
+   TBranch        *b_showerDirZ;   //!
    TBranch        *b_pfpTrackPDG;   //!
    TBranch        *b_pfpShowerPDG;   //!
-   TBranch        *b_pfpPDG; //!
+   TBranch        *b_pfpPDG;   //!
+   TBranch        *b_sampleType;   //!
 
-   signalDef(TTree *tree=0);
-   virtual ~signalDef();
+   varPrep(TTree *tree=0);
+   virtual ~varPrep();
    virtual Int_t    Cut(Long64_t entry);
    virtual Int_t    GetEntry(Long64_t entry);
    virtual Long64_t LoadTree(Long64_t entry);
@@ -116,36 +154,35 @@ public :
 
 #endif
 
-#ifdef signalDef_cxx
-signalDef::signalDef(TTree *tree) : fChain(0) 
+#ifdef varPrep_cxx
+varPrep::varPrep(TTree *tree) : fChain(0) 
 {
 // if parameter tree is not specified (or zero), connect the file
 // used to generate this class and read the Tree.
    if (tree == 0) {
-      TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("hyperons.root");
+      TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("TreeS.root");
       if (!f || !f->IsOpen()) {
-         f = new TFile("hyperons.root");
+         f = new TFile("TreeS.root");
       }
-      TDirectory * dir = (TDirectory*)f->Get("hyperons.root:/ana");
-      dir->GetObject("tree",tree);
+      f->GetObject("preTree",tree);
 
    }
    Init(tree);
 }
 
-signalDef::~signalDef()
+varPrep::~varPrep()
 {
    if (!fChain) return;
    delete fChain->GetCurrentFile();
 }
 
-Int_t signalDef::GetEntry(Long64_t entry)
+Int_t varPrep::GetEntry(Long64_t entry)
 {
 // Read contents of entry.
    if (!fChain) return 0;
    return fChain->GetEntry(entry);
 }
-Long64_t signalDef::LoadTree(Long64_t entry)
+Long64_t varPrep::LoadTree(Long64_t entry)
 {
 // Set the environment to read one entry
    if (!fChain) return -5;
@@ -158,7 +195,7 @@ Long64_t signalDef::LoadTree(Long64_t entry)
    return centry;
 }
 
-void signalDef::Init(TTree *tree)
+void varPrep::Init(TTree *tree)
 {
    // The Init() function is called when the selector needs to initialize
    // a new tree or chain. Typically here the branch addresses and branch
@@ -191,6 +228,24 @@ void signalDef::Init(TTree *tree)
    trackEndPositionX = 0;
    trackEndPositionY = 0;
    trackEndPositionZ = 0;
+   trackStartDirX = 0;
+   trackStartDirY = 0;
+   trackStartDirZ = 0;
+   trackEndDirX = 0;
+   trackEndDirY = 0;
+   trackEndDirZ = 0;
+   trackVertexDirX = 0;
+   trackVertexDirY = 0;
+   trackVertexDirZ = 0;
+   trackTheta = 0;
+   trackPhi = 0;
+   showerLengths = 0;
+   showerStartPositionX = 0;
+   showerStartPositionY = 0;
+   showerStartPositionZ = 0;
+   showerDirX = 0;
+   showerDirY = 0;
+   showerDirZ = 0;
    pfpTrackPDG = 0;
    pfpShowerPDG = 0;
    pfpPDG = 0;
@@ -235,13 +290,32 @@ void signalDef::Init(TTree *tree)
    fChain->SetBranchAddress("trackEndPositionX", &trackEndPositionX, &b_trackEndPositionX);
    fChain->SetBranchAddress("trackEndPositionY", &trackEndPositionY, &b_trackEndPositionY);
    fChain->SetBranchAddress("trackEndPositionZ", &trackEndPositionZ, &b_trackEndPositionZ);
+   fChain->SetBranchAddress("trackStartDirX", &trackStartDirX, &b_trackStartDirX);
+   fChain->SetBranchAddress("trackStartDirY", &trackStartDirY, &b_trackStartDirY);
+   fChain->SetBranchAddress("trackStartDirZ", &trackStartDirZ, &b_trackStartDirZ);
+   fChain->SetBranchAddress("trackEndDirX", &trackEndDirX, &b_trackEndDirX);
+   fChain->SetBranchAddress("trackEndDirY", &trackEndDirY, &b_trackEndDirY);
+   fChain->SetBranchAddress("trackEndDirZ", &trackEndDirZ, &b_trackEndDirZ);
+   fChain->SetBranchAddress("trackVertexDirX", &trackVertexDirX, &b_trackVertexDirX);
+   fChain->SetBranchAddress("trackVertexDirY", &trackVertexDirY, &b_trackVertexDirY);
+   fChain->SetBranchAddress("trackVertexDirZ", &trackVertexDirZ, &b_trackVertexDirZ);
+   fChain->SetBranchAddress("trackTheta", &trackTheta, &b_trackTheta);
+   fChain->SetBranchAddress("trackPhi", &trackPhi, &b_trackPhi);
+   fChain->SetBranchAddress("showerLengths", &showerLengths, &b_showerLengths);
+   fChain->SetBranchAddress("showerStartPositionX", &showerStartPositionX, &b_showerStartPositionX);
+   fChain->SetBranchAddress("showerStartPositionY", &showerStartPositionY, &b_showerStartPositionY);
+   fChain->SetBranchAddress("showerStartPositionZ", &showerStartPositionZ, &b_showerStartPositionZ);
+   fChain->SetBranchAddress("showerDirX", &showerDirX, &b_showerDirX);
+   fChain->SetBranchAddress("showerDirY", &showerDirY, &b_showerDirY);
+   fChain->SetBranchAddress("showerDirZ", &showerDirZ, &b_showerDirZ);
    fChain->SetBranchAddress("pfpTrackPDG", &pfpTrackPDG, &b_pfpTrackPDG);
    fChain->SetBranchAddress("pfpShowerPDG", &pfpShowerPDG, &b_pfpShowerPDG);
    fChain->SetBranchAddress("pfpPDG", &pfpPDG, &b_pfpPDG);
+   fChain->SetBranchAddress("sampleType", &sampleType, &b_sampleType);
    Notify();
 }
 
-bool signalDef::Notify()
+bool varPrep::Notify()
 {
    // The Notify() function is called when a new file is opened. This
    // can be for a new TTree in a TChain. It is normally not necessary to make changes
@@ -251,18 +325,18 @@ bool signalDef::Notify()
    return true;
 }
 
-void signalDef::Show(Long64_t entry)
+void varPrep::Show(Long64_t entry)
 {
 // Print contents of entry.
 // If entry is not specified, print current entry
    if (!fChain) return;
    fChain->Show(entry);
 }
-Int_t signalDef::Cut(Long64_t entry)
+Int_t varPrep::Cut(Long64_t entry)
 {
 // This function may be called from Loop.
 // returns  1 if entry is accepted.
 // returns -1 otherwise.
    return 1;
 }
-#endif // #ifdef signalDef_cxx
+#endif // #ifdef varPrep_cxx

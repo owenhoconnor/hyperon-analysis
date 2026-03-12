@@ -10,7 +10,7 @@ Method         : LD::LD
 TMVA Release   : 4.2.1         [262657]
 ROOT Release   : 6.38/00       [402944]
 Creator        : ooconnor
-Date           : Tue Feb 17 10:49:40 2026
+Date           : Thu Mar 12 11:27:02 2026
 Host           : Linux buildvm-x86-26.rdu3.fedoraproject.org 6.17.1-300.fc43.x86_64 #1 SMP PREEMPT_DYNAMIC Mon Oct 6 15:37:21 UTC 2025 x86_64 x86_64 x86_64 GNU/Linux
 Dir            : /home/lar/ooconnor/hyperons/srcs/sbndcode/sbndcode/Hyperons/output/TMVA
 Training events: 2540
@@ -32,12 +32,10 @@ IgnoreNegWeightsInTraining: "False" [Events with negative weights are ignored in
 
 #VAR -*-*-*-*-*-*-*-*-*-*-*-* variables *-*-*-*-*-*-*-*-*-*-*-*-
 
-NVar 5
-trackCount                    trackCount                    trackCount                    trackCount                                                      'F'    [3,5]
-showerCount                   showerCount                   showerCount                   showerCount                                                     'F'    [1,2]
-RecoVertexX                   RecoVertexX                   RecoVertexX                   RecoVertexX                                                     'F'    [-179.984375,179.797943115]
-RecoVertexY                   RecoVertexY                   RecoVertexY                   RecoVertexY                                                     'F'    [-179.879959106,179.966491699]
-RecoVertexZ                   RecoVertexZ                   RecoVertexZ                   RecoVertexZ                                                     'F'    [10.0281229019,449.6015625]
+NVar 3
+RecoVertexX                   RecoVertexX                   RecoVertexX                   RecoVertexX                                                     'F'    [-179.729904175,179.898162842]
+RecoVertexY                   RecoVertexY                   RecoVertexY                   RecoVertexY                                                     'F'    [-179.91104126,179.771987915]
+RecoVertexZ                   RecoVertexZ                   RecoVertexZ                   RecoVertexZ                                                     'F'    [10.3850755692,449.893188477]
 NSpec 0
 
 
@@ -81,10 +79,10 @@ class ReadLD : public IClassifierReader {
    ReadLD( std::vector<std::string>& theInputVars )
       : IClassifierReader(),
         fClassName( "ReadLD" ),
-        fNvars( 5 )
+        fNvars( 3 )
    {
       // the training input variables
-      const char* inputVars[] = { "trackCount", "showerCount", "RecoVertexX", "RecoVertexY", "RecoVertexZ" };
+      const char* inputVars[] = { "RecoVertexX", "RecoVertexY", "RecoVertexZ" };
 
       // sanity checks
       if (theInputVars.size() <= 0) {
@@ -114,17 +112,11 @@ class ReadLD : public IClassifierReader {
       fVmax[1] = 0;
       fVmin[2] = 0;
       fVmax[2] = 0;
-      fVmin[3] = 0;
-      fVmax[3] = 0;
-      fVmin[4] = 0;
-      fVmax[4] = 0;
 
       // initialize input variable types
       fType[0] = 'F';
       fType[1] = 'F';
       fType[2] = 'F';
-      fType[3] = 'F';
-      fType[4] = 'F';
 
       // initialize constants
       Initialize();
@@ -154,15 +146,15 @@ class ReadLD : public IClassifierReader {
    char   GetType( int ivar ) const { return fType[ivar]; }
 
    // normalisation of input variables
-   double fVmin[5];
-   double fVmax[5];
+   double fVmin[3];
+   double fVmax[3];
    double NormVariable( double x, double xmin, double xmax ) const {
       // normalise to output range: [-1, 1]
       return 2*(x - xmin)/(xmax - xmin) - 1.0;
    }
 
    // type of input variable: 'F' or 'I'
-   char   fType[5];
+   char   fType[3];
 
    // initialize internal variables
    void Initialize();
@@ -174,12 +166,10 @@ class ReadLD : public IClassifierReader {
 
 inline void ReadLD::Initialize() 
 {
-   fLDCoefficients.push_back( 0.472210954853 );
-   fLDCoefficients.push_back( -0.228263310513 );
-   fLDCoefficients.push_back( -0.178710425651 );
-   fLDCoefficients.push_back( 6.2418372143e-05 );
-   fLDCoefficients.push_back( 0.000205488622679 );
-   fLDCoefficients.push_back( 4.65870233201e-05 );
+   fLDCoefficients.push_back( -0.0532871454141 );
+   fLDCoefficients.push_back( 0.000252890209861 );
+   fLDCoefficients.push_back( -6.04420114383e-05 );
+   fLDCoefficients.push_back( 0.000467497292036 );
 
    // sanity check
    if (fLDCoefficients.size() != fNvars+1) {

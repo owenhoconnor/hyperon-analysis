@@ -156,6 +156,10 @@ private:
   std::vector<float> fTrackVertexDirZ;
   std::vector<float> fTrackTheta;
   std::vector<float> fTrackPhi;
+  std::vector<float> fShowerLengths;
+  std::vector<float> fShowerStartPositionX;
+  std::vector<float> fShowerStartPositionY;
+  std::vector<float> fShowerStartPositionZ;
   std::vector<float> fShowerDirX;
   std::vector<float> fShowerDirY;
   std::vector<float> fShowerDirZ;
@@ -214,6 +218,24 @@ void hyperon::AnalyzeEvents::analyze(art::Event const& evt)
  fTrackEndPositionX.clear();
  fTrackEndPositionY.clear();
  fTrackEndPositionZ.clear();
+ fTrackStartDirX.clear();
+ fTrackStartDirY.clear();
+ fTrackStartDirZ.clear();
+ fTrackEndDirX.clear();
+ fTrackEndDirY.clear();
+ fTrackEndDirZ.clear();
+ fTrackVertexDirX.clear();
+ fTrackVertexDirY.clear();
+ fTrackVertexDirZ.clear();
+ fTrackTheta.clear();
+ fTrackPhi.clear();
+ fShowerLengths.clear();
+ fShowerStartPositionX.clear();
+ fShowerStartPositionY.clear();
+ fShowerStartPositionZ.clear();
+ fShowerDirX.clear();
+ fShowerDirY.clear();
+ fShowerDirZ.clear();
  fShowerPDG.clear();
  fnuScore.clear();
  fNeutrinoNuScores.clear();
@@ -548,7 +570,7 @@ if (nuSliceKey < 0){
 	}
 
 	// Classify PFP as track or shower with trackScore
-	if ((trackScore > 0.5 && tracks.size() == 1) || showers.size() == 0){ // if no showers, save as track regardless of track score
+	if (trackScore > 0.5 && tracks.size() == 1){
 		fTrackCount++;
 		std::cout<<"trackScore > 0.5, +1 to tracks, nTracks = "<<fTrackCount<<std::endl;
 
@@ -564,8 +586,6 @@ if (nuSliceKey < 0){
 
 		TVector3 trackStartPos(trackStart.X(), trackStart.Y(), trackStart.Z());
 		TVector3 trackEndPos(trackEnd.X(), trackEnd.Y(), trackEnd.Z());
-
-// HERE ADD TRACK DIRECTIONS
 
 		float distanceToVertex = -9999.0f;
 		if (fFoundRecoVertex){
@@ -592,9 +612,9 @@ if (nuSliceKey < 0){
 		fTrackPhi.push_back(trackPhi);
 		fDistanceToRecoVertex.push_back(distanceToVertex);
 	}
-	else {
+	else if (trackScore < 0.5 && showers.size() == 1) {
 	    fShowerCount++;
-	    std::cout<<"trackScore < 0.5 or no tracks, +1 to showers, nShowers = "<<fShowerCount<<std::endl;
+	    std::cout<<"trackScore < 0.5, +1 to showers, nShowers = "<<fShowerCount<<std::endl;
 	    art::Ptr<recob::Shower> shower = showers.at(0);
 	    float showerLength = shower->Length();
 	    auto const& showerStart = shower->ShowerStart();
@@ -606,13 +626,13 @@ if (nuSliceKey < 0){
 		distanceToVertex = (showerStartPos - fRecoVertex).Mag();
 	    }
 
-	    fTrackLengths.push_back(showerLength);
-	    fTrackStartPositionX.push_back(showerStart.X());
+	    fShowerLengths.push_back(showerLength);
+	    /*fTrackStartPositionX.push_back(showerStart.X());
 	    fTrackStartPositionY.push_back(showerStart.Y());
-	    fTrackStartPositionZ.push_back(showerStart.Z());
-	    fTrackVertexDirX.push_back(showerDir.X());
-	    fTrackVertexDirY.push_back(showerDir.Y());
-	    fTrackVertexDirZ.push_back(showerDir.Z());
+	    fTrackStartPositionZ.push_back(showerStart.Z()); */
+	    fShowerStartPositionX.push_back(showerStart.X());
+	    fShowerStartPositionY.push_back(showerStart.Y());
+	    fShowerStartPositionZ.push_back(showerStart.Z());
 	    fShowerDirX.push_back(showerDir.X());
 	    fShowerDirY.push_back(showerDir.Y());
 	    fShowerDirZ.push_back(showerDir.Z());
@@ -897,7 +917,7 @@ for (size_t i_hit = 0; i_hit < showerHits.size(); i_hit++) { // loop over shower
        {
            art::Ptr<simb::MCParticle> mcParticle(assocParticles.at(i_mcpart));
 	  // std::cout<<"mcParticle mother is "<<mcParticle->Mother()<<std::endl;
-           if(mcParticle->Mother()!=10000000) continue;
+           if(mcParticle->Mother()!=0) continue; // 10000000 for bkg files, 0 for hyperon files
 
            std::cout<<"--Particle at index " << i_mcpart <<"at mclist index "<<i_truth<< " has pdg: " << mcParticle->PdgCode() 
 		    <<" has momentum: " << mcParticle->P()<<" Mother: "<<mcParticle->Mother()
@@ -1108,7 +1128,7 @@ void hyperon::AnalyzeEvents::beginJob()
   fTree->Branch("trackCount", &fTrackCount);
   fTree->Branch("showerCount", &fShowerCount);
   fTree->Branch("TrackIDs", &fTrackIDs);
-  fTree->Branch("TrackLengths", &fTrackLengths);
+  fTree->Branch("trackLengths", &fTrackLengths);
   fTree->Branch("RecoVertexX", &fRecoVertexX);
   fTree->Branch("RecoVertexY", &fRecoVertexY);
   fTree->Branch("RecoVertexZ", &fRecoVertexZ);
@@ -1136,6 +1156,10 @@ void hyperon::AnalyzeEvents::beginJob()
   fTree->Branch("trackVertexDirZ", &fTrackVertexDirZ);
   fTree->Branch("trackTheta", &fTrackTheta);
   fTree->Branch("trackPhi", &fTrackPhi);
+  fTree->Branch("showerLengths", &fShowerLengths);
+  fTree->Branch("showerStartPositionX", &fShowerStartPositionX);
+  fTree->Branch("showerStartPositionY", &fShowerStartPositionY);
+  fTree->Branch("showerStartPositionZ", &fShowerStartPositionZ);
   fTree->Branch("showerDirX", &fShowerDirX);
   fTree->Branch("showerDirY", &fShowerDirY);
   fTree->Branch("showerDirZ", &fShowerDirZ);

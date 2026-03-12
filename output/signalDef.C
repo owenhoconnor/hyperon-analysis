@@ -119,7 +119,7 @@ void signalDef::Loop()
 
    sigFile->cd();
    TTree *signalTree = fChain->CloneTree(0);
-   signalTree->SetName("TreeS");
+   signalTree->SetName("preTree");
    signalTree->SetDirectory(sigFile);
 
    TFile *bkgFile = TFile::Open("TreeB.root", "RECREATE");
@@ -131,8 +131,12 @@ void signalDef::Loop()
 
    bkgFile->cd();
    TTree *bkgTree = fChain->CloneTree(0);
-   bkgTree->SetName("TreeB");
+   bkgTree->SetName("preTree");
    bkgTree->SetDirectory(bkgFile);
+
+   int sampleType;
+   signalTree->Branch("sampleType", &sampleType);
+   bkgTree->Branch("sampleType", &sampleType);
 
    Long64_t nentries = fChain->GetEntriesFast();
 
@@ -179,7 +183,7 @@ void signalDef::Loop()
       std::cout<<"****************** new event ********************"<<std::endl;
       std::cout<<"trackStartPosition size = "<<trackStartPositionX->size()<<std::endl;
       std::cout<<"distance to reco vertex size = "<<DistanceToRecoVertex->size()<<std::endl;
-      std::cout<<"TrackLengths size = "<<TrackLengths->size()<<std::endl;
+      std::cout<<"TrackLengths size = "<<trackLengths->size()<<std::endl;
       std::cout<<"trackScores size = "<<trackScores->size()<<std::endl;
       std::cout<<"trackCount = "<<trackCount<<" showerCount = "<<showerCount<<std::endl;
       std::cout<<"pfpTrackPDG size = "<<pfpTrackPDG->size()<<std::endl;
@@ -301,9 +305,15 @@ void signalDef::Loop()
 
       if(IsSignal && jentry < nEvents[0] + 1){ // if signal and we're still within range of hyperon file events
 	  s=0;
-      if(!IsSignal && jentry < nEvents[0] + 1){s=1;} // if not signal but we're still within range of hyperon file events (other hyperons)
+	  sampleType=0;
+      }
+      if(!IsSignal && jentry < nEvents[0] + 1){ // if not signal but we're still within range of hyperon file events (other hyperons)
+	      s=1;
+	      sampleType=1;
+      }
       if(!IsSignal && jentry > nEvents[0]){ // now within range of bkg events, exclude rare signal
           s=2;
+	  sampleType=2;
       }	
       if(IsSignal && jentry > nEvents[0]){continue;} // if there's signal in bkg range, ignore
 
@@ -383,12 +393,12 @@ void signalDef::Loop()
    } // end event loop
 
    sigFile->cd();
-   signalTree->Write("TreeS"); // Write signal tree and close file
+   signalTree->Write("preTree"); // Write signal tree and close file
    sigFile->Close();
    delete sigFile;
 
    bkgFile->cd();
-   bkgTree->Write("TreeB"); // write bkg tree
+   bkgTree->Write("preTree"); // write bkg tree
    bkgFile->Close();
    delete bkgFile;
 
