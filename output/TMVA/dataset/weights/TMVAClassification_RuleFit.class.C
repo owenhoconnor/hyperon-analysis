@@ -10,10 +10,10 @@ Method         : RuleFit::RuleFit
 TMVA Release   : 4.2.1         [262657]
 ROOT Release   : 6.38/00       [402944]
 Creator        : ooconnor
-Date           : Thu Mar 12 11:27:04 2026
+Date           : Fri Mar 13 17:07:53 2026
 Host           : Linux buildvm-x86-26.rdu3.fedoraproject.org 6.17.1-300.fc43.x86_64 #1 SMP PREEMPT_DYNAMIC Mon Oct 6 15:37:21 UTC 2025 x86_64 x86_64 x86_64 GNU/Linux
 Dir            : /home/lar/ooconnor/hyperons/srcs/sbndcode/sbndcode/Hyperons/output/TMVA
-Training events: 2540
+Training events: 1180
 Analysis type  : [Classification]
 
 
@@ -51,10 +51,51 @@ RFNendnodes: "4" [RFF: Average number of end nodes]
 
 #VAR -*-*-*-*-*-*-*-*-*-*-*-* variables *-*-*-*-*-*-*-*-*-*-*-*-
 
-NVar 3
-RecoVertexX                   RecoVertexX                   RecoVertexX                   RecoVertexX                                                     'F'    [-179.729904175,179.898162842]
-RecoVertexY                   RecoVertexY                   RecoVertexY                   RecoVertexY                                                     'F'    [-179.91104126,179.771987915]
-RecoVertexZ                   RecoVertexZ                   RecoVertexZ                   RecoVertexZ                                                     'F'    [10.3850755692,449.893188477]
+NVar 44
+track1Length                  track1Length                  track1Length                  track1Length                                                    'F'    [6.60223007202,496.36038208]
+track2Length                  track2Length                  track2Length                  track2Length                                                    'F'    [0.668267309666,121.635261536]
+track3Length                  track3Length                  track3Length                  track3Length                                                    'F'    [0.412237435579,38.8627433777]
+shower1Length                 shower1Length                 shower1Length                 shower1Length                                                   'F'    [0.277372866869,64.9242553711]
+track1StartPosX               track1StartPosX               track1StartPosX               track1StartPosX                                                 'F'    [-180.002807617,178.600708008]
+track1StartPosY               track1StartPosY               track1StartPosY               track1StartPosY                                                 'F'    [-178.46585083,179.862884521]
+track1StartPosZ               track1StartPosZ               track1StartPosZ               track1StartPosZ                                                 'F'    [12.3797225952,448.472045898]
+track2StartPosX               track2StartPosX               track2StartPosX               track2StartPosX                                                 'F'    [-178.250961304,178.54119873]
+track2StartPosY               track2StartPosY               track2StartPosY               track2StartPosY                                                 'F'    [-178.170730591,178.766769409]
+track2StartPosZ               track2StartPosZ               track2StartPosZ               track2StartPosZ                                                 'F'    [11.2616081238,449.381072998]
+track3StartPosX               track3StartPosX               track3StartPosX               track3StartPosX                                                 'F'    [-178.559509277,179.122558594]
+track3StartPosY               track3StartPosY               track3StartPosY               track3StartPosY                                                 'F'    [-178.273117065,179.014129639]
+track3StartPosZ               track3StartPosZ               track3StartPosZ               track3StartPosZ                                                 'F'    [9.94157314301,449.016326904]
+shower1StartPosX              shower1StartPosX              shower1StartPosX              shower1StartPosX                                                'F'    [-179.858627319,179.431137085]
+shower1StartPosY              shower1StartPosY              shower1StartPosY              shower1StartPosY                                                'F'    [-179.978729248,179.786865234]
+shower1StartPosZ              shower1StartPosZ              shower1StartPosZ              shower1StartPosZ                                                'F'    [12.1829843521,449.399993896]
+track1StartDirX               track1StartDirX               track1StartDirX               track1StartDirX                                                 'F'    [-0.99533033371,0.992457568645]
+track1StartDirY               track1StartDirY               track1StartDirY               track1StartDirY                                                 'F'    [-0.992119729519,0.993378341198]
+track1StartDirZ               track1StartDirZ               track1StartDirZ               track1StartDirZ                                                 'F'    [-0.999631285667,0.998943805695]
+track2StartDirX               track2StartDirX               track2StartDirX               track2StartDirX                                                 'F'    [-0.990601360798,0.998715162277]
+track2StartDirY               track2StartDirY               track2StartDirY               track2StartDirY                                                 'F'    [-0.998021602631,0.999431848526]
+track2StartDirZ               track2StartDirZ               track2StartDirZ               track2StartDirZ                                                 'F'    [-0.999366760254,0.999609947205]
+track3StartDirX               track3StartDirX               track3StartDirX               track3StartDirX                                                 'F'    [-0.98055356741,0.993002176285]
+track3StartDirY               track3StartDirY               track3StartDirY               track3StartDirY                                                 'F'    [-1,0.999867022038]
+track3StartDirZ               track3StartDirZ               track3StartDirZ               track3StartDirZ                                                 'F'    [-0.997544705868,0.999991297722]
+shower1DirX                   shower1DirX                   shower1DirX                   shower1DirX                                                     'F'    [-0.99372702837,0.99746710062]
+shower1DirY                   shower1DirY                   shower1DirY                   shower1DirY                                                     'F'    [-0.999887228012,0.999898135662]
+shower1DirZ                   shower1DirZ                   shower1DirZ                   shower1DirZ                                                     'F'    [-0.998255848885,0.999600112438]
+track1DistRecoVtx             track1DistRecoVtx             track1DistRecoVtx             track1DistRecoVtx                                               'F'    [0.0237985868007,3.98177313805]
+track2DistRecoVtx             track2DistRecoVtx             track2DistRecoVtx             track2DistRecoVtx                                               'F'    [0.0464399158955,9.78038883209]
+track3DistRecoVtx             track3DistRecoVtx             track3DistRecoVtx             track3DistRecoVtx                                               'F'    [0.0356111302972,11.9819936752]
+shower1DistRecoVtx            shower1DistRecoVtx            shower1DistRecoVtx            shower1DistRecoVtx                                              'F'    [0.0403059646487,78.6243667603]
+track1Track2Angle             track1Track2Angle             track1Track2Angle             track1Track2Angle                                               'F'    [0.144185423851,3.13272953033]
+track1Track3Angle             track1Track3Angle             track1Track3Angle             track1Track3Angle                                               'F'    [0.0396595671773,3.12610054016]
+track2Track3Angle             track2Track3Angle             track2Track3Angle             track2Track3Angle                                               'F'    [0.057684853673,3.11595344543]
+track1Shower1Angle            track1Shower1Angle            track1Shower1Angle            track1Shower1Angle                                              'F'    [0.0228180531412,3.13737034798]
+track2Shower1Angle            track2Shower1Angle            track2Shower1Angle            track2Shower1Angle                                              'F'    [0.0274586025625,3.10767269135]
+track3Shower1Angle            track3Shower1Angle            track3Shower1Angle            track3Shower1Angle                                              'F'    [0.0397528596222,3.12469959259]
+track1Track2Dist              track1Track2Dist              track1Track2Dist              track1Track2Dist                                                'F'    [0.0561579614878,9.81249904633]
+track1Track3Dist              track1Track3Dist              track1Track3Dist              track1Track3Dist                                                'F'    [0.0700156316161,11.9644546509]
+track2Track3Dist              track2Track3Dist              track2Track3Dist              track2Track3Dist                                                'F'    [0.0517720133066,9.7755689621]
+track1Shower1Dist             track1Shower1Dist             track1Shower1Dist             track1Shower1Dist                                               'F'    [0.206579074264,78.4287414551]
+track2Shower1Dist             track2Shower1Dist             track2Shower1Dist             track2Shower1Dist                                               'F'    [0.191956028342,78.6626205444]
+track3Shower1Dist             track3Shower1Dist             track3Shower1Dist             track3Shower1Dist                                               'F'    [0.114796884358,79.1389770508]
 NSpec 0
 
 
@@ -98,10 +139,10 @@ class ReadRuleFit : public IClassifierReader {
    ReadRuleFit( std::vector<std::string>& theInputVars )
       : IClassifierReader(),
         fClassName( "ReadRuleFit" ),
-        fNvars( 3 )
+        fNvars( 44 )
    {
       // the training input variables
-      const char* inputVars[] = { "RecoVertexX", "RecoVertexY", "RecoVertexZ" };
+      const char* inputVars[] = { "track1Length", "track2Length", "track3Length", "shower1Length", "track1StartPosX", "track1StartPosY", "track1StartPosZ", "track2StartPosX", "track2StartPosY", "track2StartPosZ", "track3StartPosX", "track3StartPosY", "track3StartPosZ", "shower1StartPosX", "shower1StartPosY", "shower1StartPosZ", "track1StartDirX", "track1StartDirY", "track1StartDirZ", "track2StartDirX", "track2StartDirY", "track2StartDirZ", "track3StartDirX", "track3StartDirY", "track3StartDirZ", "shower1DirX", "shower1DirY", "shower1DirZ", "track1DistRecoVtx", "track2DistRecoVtx", "track3DistRecoVtx", "shower1DistRecoVtx", "track1Track2Angle", "track1Track3Angle", "track2Track3Angle", "track1Shower1Angle", "track2Shower1Angle", "track3Shower1Angle", "track1Track2Dist", "track1Track3Dist", "track2Track3Dist", "track1Shower1Dist", "track2Shower1Dist", "track3Shower1Dist" };
 
       // sanity checks
       if (theInputVars.size() <= 0) {
@@ -131,11 +172,134 @@ class ReadRuleFit : public IClassifierReader {
       fVmax[1] = 0;
       fVmin[2] = 0;
       fVmax[2] = 0;
+      fVmin[3] = 0;
+      fVmax[3] = 0;
+      fVmin[4] = 0;
+      fVmax[4] = 0;
+      fVmin[5] = 0;
+      fVmax[5] = 0;
+      fVmin[6] = 0;
+      fVmax[6] = 0;
+      fVmin[7] = 0;
+      fVmax[7] = 0;
+      fVmin[8] = 0;
+      fVmax[8] = 0;
+      fVmin[9] = 0;
+      fVmax[9] = 0;
+      fVmin[10] = 0;
+      fVmax[10] = 0;
+      fVmin[11] = 0;
+      fVmax[11] = 0;
+      fVmin[12] = 0;
+      fVmax[12] = 0;
+      fVmin[13] = 0;
+      fVmax[13] = 0;
+      fVmin[14] = 0;
+      fVmax[14] = 0;
+      fVmin[15] = 0;
+      fVmax[15] = 0;
+      fVmin[16] = 0;
+      fVmax[16] = 0;
+      fVmin[17] = 0;
+      fVmax[17] = 0;
+      fVmin[18] = 0;
+      fVmax[18] = 0;
+      fVmin[19] = 0;
+      fVmax[19] = 0;
+      fVmin[20] = 0;
+      fVmax[20] = 0;
+      fVmin[21] = 0;
+      fVmax[21] = 0;
+      fVmin[22] = 0;
+      fVmax[22] = 0;
+      fVmin[23] = 0;
+      fVmax[23] = 0;
+      fVmin[24] = 0;
+      fVmax[24] = 0;
+      fVmin[25] = 0;
+      fVmax[25] = 0;
+      fVmin[26] = 0;
+      fVmax[26] = 0;
+      fVmin[27] = 0;
+      fVmax[27] = 0;
+      fVmin[28] = 0;
+      fVmax[28] = 0;
+      fVmin[29] = 0;
+      fVmax[29] = 0;
+      fVmin[30] = 0;
+      fVmax[30] = 0;
+      fVmin[31] = 0;
+      fVmax[31] = 0;
+      fVmin[32] = 0;
+      fVmax[32] = 0;
+      fVmin[33] = 0;
+      fVmax[33] = 0;
+      fVmin[34] = 0;
+      fVmax[34] = 0;
+      fVmin[35] = 0;
+      fVmax[35] = 0;
+      fVmin[36] = 0;
+      fVmax[36] = 0;
+      fVmin[37] = 0;
+      fVmax[37] = 0;
+      fVmin[38] = 0;
+      fVmax[38] = 0;
+      fVmin[39] = 0;
+      fVmax[39] = 0;
+      fVmin[40] = 0;
+      fVmax[40] = 0;
+      fVmin[41] = 0;
+      fVmax[41] = 0;
+      fVmin[42] = 0;
+      fVmax[42] = 0;
+      fVmin[43] = 0;
+      fVmax[43] = 0;
 
       // initialize input variable types
       fType[0] = 'F';
       fType[1] = 'F';
       fType[2] = 'F';
+      fType[3] = 'F';
+      fType[4] = 'F';
+      fType[5] = 'F';
+      fType[6] = 'F';
+      fType[7] = 'F';
+      fType[8] = 'F';
+      fType[9] = 'F';
+      fType[10] = 'F';
+      fType[11] = 'F';
+      fType[12] = 'F';
+      fType[13] = 'F';
+      fType[14] = 'F';
+      fType[15] = 'F';
+      fType[16] = 'F';
+      fType[17] = 'F';
+      fType[18] = 'F';
+      fType[19] = 'F';
+      fType[20] = 'F';
+      fType[21] = 'F';
+      fType[22] = 'F';
+      fType[23] = 'F';
+      fType[24] = 'F';
+      fType[25] = 'F';
+      fType[26] = 'F';
+      fType[27] = 'F';
+      fType[28] = 'F';
+      fType[29] = 'F';
+      fType[30] = 'F';
+      fType[31] = 'F';
+      fType[32] = 'F';
+      fType[33] = 'F';
+      fType[34] = 'F';
+      fType[35] = 'F';
+      fType[36] = 'F';
+      fType[37] = 'F';
+      fType[38] = 'F';
+      fType[39] = 'F';
+      fType[40] = 'F';
+      fType[41] = 'F';
+      fType[42] = 'F';
+      fType[43] = 'F';
 
       // initialize constants
       Initialize();
@@ -165,15 +329,15 @@ class ReadRuleFit : public IClassifierReader {
    char   GetType( int ivar ) const { return fType[ivar]; }
 
    // normalisation of input variables
-   double fVmin[3];
-   double fVmax[3];
+   double fVmin[44];
+   double fVmax[44];
    double NormVariable( double x, double xmin, double xmax ) const {
       // normalise to output range: [-1, 1]
       return 2*(x - xmin)/(xmax - xmin) - 1.0;
    }
 
    // type of input variable: 'F' or 'I'
-   char   fType[3];
+   char   fType[44];
 
    // initialize internal variables
    void Initialize();
@@ -185,23 +349,99 @@ class ReadRuleFit : public IClassifierReader {
 void   ReadRuleFit::Initialize(){}
 void   ReadRuleFit::Clear(){}
 double ReadRuleFit::GetMvaValue__( const std::vector<double>& inputValues ) const {
-   double rval=0.8856122556;
+   double rval=-0.1930571382;
    //
    // here follows all rules ordered in importance (most important first)
    // at the end of each line, the relative importance of the rule is given
    //
-   if ((59.87764359<inputValues[1])) rval+=-0.6011213967;   // importance = 1.000
-   if ((inputValues[1]<77.00540924)) rval+=-0.4809737386;   // importance = 0.781
-   if ((inputValues[0]<94.27243042)) rval+=-0.3587262065;   // importance = 0.510
-   if ((-101.4705887<inputValues[0])&&(inputValues[2]<282.5892029)) rval+=-0.1334763878;   // importance = 0.230
-   if ((inputValues[2]<156.8877869)) rval+=-0.06803753513;   // importance = 0.110
-   if ((inputValues[1]<59.87764359)&&(inputValues[2]<240.5579834)) rval+=-0.0605063822;   // importance = 0.099
-   if ((-101.4705887<inputValues[0])&&(156.8877869<inputValues[2])) rval+=0.04379889123;   // importance = 0.076
-   if ((inputValues[1]<59.87764359)&&(240.5579834<inputValues[2])) rval+=0.01417148531;   // importance = 0.023
+   if ((8.961262703<inputValues[3])&&(inputValues[3]<18.74791145)) rval+=0.5004143425;   // importance = 0.816
+   if ((7.640909195<inputValues[43])) rval+=0.397042933;   // importance = 0.683
+   if ((inputValues[43]<3.877853155)) rval+=-0.4027428383;   // importance = 0.660
+   if ((inputValues[21]<0.6188524961)) rval+=-0.3746205539;   // importance = 0.627
+   if ((inputValues[30]<1.74223721)) rval+=-0.3214340017;   // importance = 0.544
+   if ((inputValues[29]<2.364046812)) rval+=-0.3383734883;   // importance = 0.517
+   if ((1.74223721<inputValues[30])) rval+=0.2845198131;   // importance = 0.482
+   if ((inputValues[3]<12.60351276)&&(inputValues[21]<0.8092312217)) rval+=-0.2593012597;   // importance = 0.431
+   if ((inputValues[1]<40.99060059)&&(0.04771627858<inputValues[21])) rval+=0.2841073895;   // importance = 0.430
+   if ((3.782404184<inputValues[31])) rval+=0.2486039832;   // importance = 0.411
+   if ((2.364046812<inputValues[29])) rval+=0.2454036091;   // importance = 0.375
+   if ((inputValues[31]<3.782404184)) rval+=-0.2158938427;   // importance = 0.357
+   if ((inputValues[3]<6.434218884)&&(inputValues[29]<1.437004089)&&(inputValues[30]<2.722257376)) rval+=-0.2613171893;   // importance = 0.350
+   if ((0.8092312217<inputValues[21])&&(inputValues[30]<1.713943005)) rval+=0.2295540802;   // importance = 0.323
+   if ((0.8092312217<inputValues[21])&&(1.713943005<inputValues[30])) rval+=-0.2318441517;   // importance = 0.310
+   if ((6.434218884<inputValues[3])&&(1.225290537<inputValues[29])) rval+=0.1696273884;   // importance = 0.283
+   if ((0.1461509317<inputValues[19])&&(inputValues[27]<0.1433761269)) rval+=-0.1758676089;   // importance = 0.234
+   if ((1.449921012<inputValues[38])) rval+=0.1347521838;   // importance = 0.232
+   if ((inputValues[0]<147.461441)&&(inputValues[16]<-0.2380778044)&&(2.879987955<inputValues[30])) rval+=0.2685727455;   // importance = 0.217
+   if ((inputValues[38]<1.449921012)) rval+=-0.1197535705;   // importance = 0.206
+   if ((inputValues[3]<9.476120949)&&(1.769221187<inputValues[39])) rval+=0.160229497;   // importance = 0.205
+   if ((inputValues[1]<19.03818321)&&(inputValues[3]<6.434218884)&&(1.173361897<inputValues[30])) rval+=-0.2012320161;   // importance = 0.184
+   if ((inputValues[1]<23.70960045)) rval+=0.1053979458;   // importance = 0.178
+   if ((inputValues[3]<6.434218884)&&(1.173361897<inputValues[30])) rval+=-0.1454393923;   // importance = 0.176
+   if ((inputValues[40]<3.293037653)) rval+=0.1418036281;   // importance = 0.169
+   if ((0.8092312217<inputValues[21])&&(inputValues[37]<1.633373618)) rval+=-0.1204314312;   // importance = 0.167
+   if ((inputValues[16]<-0.2380778044)&&(2.879987955<inputValues[30])) rval+=0.1660967246;   // importance = 0.160
+   if ((12.59106445<inputValues[3])&&(-0.1347439587<inputValues[22])&&(inputValues[40]<3.293037653)) rval+=-0.09756194579;   // importance = 0.138
+   if ((inputValues[27]<0.1433761269)) rval+=-0.07627977143;   // importance = 0.131
+   if ((inputValues[18]<0.8086033463)) rval+=-0.07528583632;   // importance = 0.129
+   if ((inputValues[16]<-0.04876466468)&&(0.8092312217<inputValues[21])&&(1.713943005<inputValues[30])) rval+=-0.1360988615;   // importance = 0.129
+   if ((12.59106445<inputValues[3])&&(inputValues[22]<-0.1347439587)&&(inputValues[40]<3.293037653)) rval+=0.1070837011;   // importance = 0.126
+   if ((0.8086033463<inputValues[18])) rval+=0.07039620329;   // importance = 0.121
+   if ((6.434218884<inputValues[3])&&(inputValues[29]<1.225290537)) rval+=0.07091235459;   // importance = 0.114
+   if ((9.476120949<inputValues[3])&&(1.769221187<inputValues[39])) rval+=0.06952446091;   // importance = 0.109
+   if ((3.293037653<inputValues[40])) rval+=-0.08789406269;   // importance = 0.105
+   if ((12.59106445<inputValues[3])&&(inputValues[21]<0.8084572554)&&(inputValues[22]<-0.1347439587)&&(inputValues[40]<3.293037653)) rval+=0.1033535707;   // importance = 0.094
+   if ((inputValues[21]<0.6188524961)&&(-0.0477511622<inputValues[26])) rval+=-0.06594071258;   // importance = 0.091
+   if ((inputValues[3]<6.434218884)&&(inputValues[30]<1.173361897)) rval+=-0.0610024754;   // importance = 0.077
+   if ((inputValues[26]<-0.2440554798)&&(inputValues[43]<3.877853155)) rval+=-0.06315034916;   // importance = 0.075
+   if ((inputValues[21]<0.8092312217)&&(0.7734223604<inputValues[28])) rval+=-0.05056325898;   // importance = 0.074
+   if ((12.59106445<inputValues[3])&&(inputValues[40]<3.293037653)) rval+=0.03969870235;   // importance = 0.065
+   if ((-0.2380778044<inputValues[16])&&(2.879987955<inputValues[30])) rval+=-0.05045344155;   // importance = 0.063
+   if ((2.415142775<inputValues[38])&&(inputValues[39]<1.769221187)&&(inputValues[40]<2.590940714)) rval+=-0.1226078467;   // importance = 0.056
+   if ((23.70960045<inputValues[1])) rval+=-0.03068847777;   // importance = 0.052
+   if ((inputValues[39]<1.769221187)) rval+=-0.0284916863;   // importance = 0.049
+   if ((inputValues[39]<1.769221187)&&(inputValues[40]<2.590940714)) rval+=-0.02537792785;   // importance = 0.044
+   if ((0.1433761269<inputValues[27])) rval+=0.02379874365;   // importance = 0.041
+   if ((1.769221187<inputValues[39])) rval+=0.02208745667;   // importance = 0.038
+   if ((inputValues[38]<2.415142775)&&(inputValues[39]<1.769221187)&&(inputValues[40]<2.590940714)) rval+=0.02205560723;   // importance = 0.038
+   if ((0.8092312217<inputValues[21])&&(1.633373618<inputValues[37])) rval+=0.02364548197;   // importance = 0.032
+   if ((inputValues[3]<9.476120949)&&(0.4244642258<inputValues[27])&&(1.769221187<inputValues[39])) rval+=0.02202871621;   // importance = 0.016
+   if ((inputValues[3]<12.59106445)&&(inputValues[40]<3.293037653)) rval+=-0.00887669936;   // importance = 0.015
+   if ((inputValues[3]<12.59106445)&&(197.3759918<inputValues[15])&&(inputValues[40]<3.293037653)) rval+=0.001743139028;   // importance = 0.003
    //
    // here follows all linear terms
    // at the end of each line, the relative importance of the term is given
    //
+   rval+=0.0006399187074*std::min( double(396.1953125), std::max( double(inputValues[0]), double(22.05857849)));   // importance = 0.221
+   rval+=-0.01299896087*std::min( double(77.8442688), std::max( double(inputValues[1]), double(2.70040822)));   // importance = 0.875
+   rval+=-0.004719350617*std::min( double(29.0064373), std::max( double(inputValues[2]), double(0.792835176)));   // importance = 0.122
+   rval+=-0.000109159847*std::min( double(166.3921661), std::max( double(inputValues[4]), double(-167.4333038)));   // importance = 0.041
+   rval+=-0.0001087577259*std::min( double(167.5159454), std::max( double(inputValues[10]), double(-165.4434814)));   // importance = 0.041
+   rval+=-0.0004014973854*std::min( double(167.5759125), std::max( double(inputValues[14]), double(-166.2768707)));   // importance = 0.152
+   rval+=-0.0006551539282*std::min( double(437.1000061), std::max( double(inputValues[15]), double(22.29999542)));   // importance = 0.312
+   rval+=0.01012024134*std::min( double(0.8706550002), std::max( double(inputValues[16]), double(-0.8269617558)));   // importance = 0.017
+   rval+=-0.01196091157*std::min( double(0.8606954217), std::max( double(inputValues[17]), double(-0.8524303436)));   // importance = 0.019
+   rval+=0.7890645897*std::min( double(0.9925348163), std::max( double(inputValues[18]), double(-0.4062816203)));   // importance = 1.000
+   rval+=0.008771012594*std::min( double(0.8936020136), std::max( double(inputValues[19]), double(-0.8728380203)));   // importance = 0.016
+   rval+=0.08397328321*std::min( double(0.8508093953), std::max( double(inputValues[20]), double(-0.8537145257)));   // importance = 0.147
+   rval+=0.03463711934*std::min( double(0.9891571999), std::max( double(inputValues[21]), double(-0.7056260705)));   // importance = 0.057
+   rval+=-0.089244186*std::min( double(0.8744681478), std::max( double(inputValues[22]), double(-0.8249611855)));   // importance = 0.151
+   rval+=0.08323387607*std::min( double(0.9551393986), std::max( double(inputValues[23]), double(-0.9434286952)));   // importance = 0.170
+   rval+=0.001772926331*std::min( double(0.9899021387), std::max( double(inputValues[24]), double(-0.9337922931)));   // importance = 0.004
+   rval+=0.04659881286*std::min( double(0.9376891851), std::max( double(inputValues[25]), double(-0.950286448)));   // importance = 0.099
+   rval+=-0.05312330271*std::min( double(0.9520282149), std::max( double(inputValues[26]), double(-0.9518732429)));   // importance = 0.113
+   rval+=0.00773011045*std::min( double(7.372477055), std::max( double(inputValues[29]), double(0.1342306584)));   // importance = 0.053
+   rval+=0.0704068371*std::min( double(8.388679504), std::max( double(inputValues[30]), double(0.1769748777)));   // importance = 0.523
+   rval+=0.1035612592*std::min( double(2.682813644), std::max( double(inputValues[32]), double(0.3254018724)));   // importance = 0.219
+   rval+=-0.03769026972*std::min( double(2.933371305), std::max( double(inputValues[33]), double(0.3801279962)));   // importance = 0.092
+   rval+=-0.08774975409*std::min( double(2.794616699), std::max( double(inputValues[34]), double(0.3438269794)));   // importance = 0.216
+   rval+=0.002076169963*std::min( double(2.818148375), std::max( double(inputValues[35]), double(0.318636775)));   // importance = 0.005
+   rval+=0.004578628824*std::min( double(2.745692253), std::max( double(inputValues[36]), double(0.2981316447)));   // importance = 0.011
+   rval+=-0.1901260039*std::min( double(2.811965704), std::max( double(inputValues[37]), double(0.3103080392)));   // importance = 0.473
+   rval+=0.1049512293*std::min( double(7.197431564), std::max( double(inputValues[38]), double(0.2881283164)));   // importance = 0.674
+   rval+=0.009184413911*std::min( double(8.43783474), std::max( double(inputValues[39]), double(0.3255234063)));   // importance = 0.065
+   rval+=-0.1165385514*std::min( double(6.434762001), std::max( double(inputValues[40]), double(0.2795493007)));   // importance = 0.607
+   rval+=-0.0001167055585*std::min( double(66.62917328), std::max( double(inputValues[41]), double(0.5905381441)));   // importance = 0.008
    return rval;
 }
 inline double ReadRuleFit::GetMvaValue( const std::vector<double>& inputValues ) const

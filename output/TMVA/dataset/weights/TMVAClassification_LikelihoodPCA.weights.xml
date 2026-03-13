@@ -4,11 +4,11 @@
     <Info name="TMVA Release" value="4.2.1 [262657]"/>
     <Info name="ROOT Release" value="6.38/00 [402944]"/>
     <Info name="Creator" value="ooconnor"/>
-    <Info name="Date" value="Thu Mar 12 11:27:02 2026"/>
+    <Info name="Date" value="Fri Mar 13 17:07:39 2026"/>
     <Info name="Host" value="Linux buildvm-x86-26.rdu3.fedoraproject.org 6.17.1-300.fc43.x86_64 #1 SMP PREEMPT_DYNAMIC Mon Oct 6 15:37:21 UTC 2025 x86_64 x86_64 x86_64 GNU/Linux"/>
     <Info name="Dir" value="/home/lar/ooconnor/hyperons/srcs/sbndcode/sbndcode/Hyperons/output/TMVA"/>
-    <Info name="Training events" value="2540"/>
-    <Info name="TrainingTime" value="2.85101175e-01"/>
+    <Info name="Training events" value="1180"/>
+    <Info name="TrainingTime" value="1.31817102e-01"/>
     <Info name="AnalysisType" value="Classification"/>
   </GeneralInfo>
   <Options>
@@ -20,10 +20,51 @@
     <Option name="IgnoreNegWeightsInTraining" modified="No">False</Option>
     <Option name="TransformOutput" modified="Yes">False</Option>
   </Options>
-  <Variables NVar="3">
-    <Variable VarIndex="0" Expression="RecoVertexX" Label="RecoVertexX" Title="RecoVertexX" Unit="" Internal="RecoVertexX" Type="F" Min="-1.79729904e+02" Max="1.79898163e+02"/>
-    <Variable VarIndex="1" Expression="RecoVertexY" Label="RecoVertexY" Title="RecoVertexY" Unit="" Internal="RecoVertexY" Type="F" Min="-1.79911041e+02" Max="1.79771988e+02"/>
-    <Variable VarIndex="2" Expression="RecoVertexZ" Label="RecoVertexZ" Title="RecoVertexZ" Unit="" Internal="RecoVertexZ" Type="F" Min="1.03850756e+01" Max="4.49893188e+02"/>
+  <Variables NVar="44">
+    <Variable VarIndex="0" Expression="track1Length" Label="track1Length" Title="track1Length" Unit="" Internal="track1Length" Type="F" Min="6.60223007e+00" Max="4.96360382e+02"/>
+    <Variable VarIndex="1" Expression="track2Length" Label="track2Length" Title="track2Length" Unit="" Internal="track2Length" Type="F" Min="6.68267310e-01" Max="1.21635262e+02"/>
+    <Variable VarIndex="2" Expression="track3Length" Label="track3Length" Title="track3Length" Unit="" Internal="track3Length" Type="F" Min="4.12237436e-01" Max="3.88627434e+01"/>
+    <Variable VarIndex="3" Expression="shower1Length" Label="shower1Length" Title="shower1Length" Unit="" Internal="shower1Length" Type="F" Min="2.77372867e-01" Max="6.49242554e+01"/>
+    <Variable VarIndex="4" Expression="track1StartPosX" Label="track1StartPosX" Title="track1StartPosX" Unit="" Internal="track1StartPosX" Type="F" Min="-1.80002808e+02" Max="1.78600708e+02"/>
+    <Variable VarIndex="5" Expression="track1StartPosY" Label="track1StartPosY" Title="track1StartPosY" Unit="" Internal="track1StartPosY" Type="F" Min="-1.78465851e+02" Max="1.79862885e+02"/>
+    <Variable VarIndex="6" Expression="track1StartPosZ" Label="track1StartPosZ" Title="track1StartPosZ" Unit="" Internal="track1StartPosZ" Type="F" Min="1.23797226e+01" Max="4.48472046e+02"/>
+    <Variable VarIndex="7" Expression="track2StartPosX" Label="track2StartPosX" Title="track2StartPosX" Unit="" Internal="track2StartPosX" Type="F" Min="-1.78250961e+02" Max="1.78541199e+02"/>
+    <Variable VarIndex="8" Expression="track2StartPosY" Label="track2StartPosY" Title="track2StartPosY" Unit="" Internal="track2StartPosY" Type="F" Min="-1.78170731e+02" Max="1.78766769e+02"/>
+    <Variable VarIndex="9" Expression="track2StartPosZ" Label="track2StartPosZ" Title="track2StartPosZ" Unit="" Internal="track2StartPosZ" Type="F" Min="1.12616081e+01" Max="4.49381073e+02"/>
+    <Variable VarIndex="10" Expression="track3StartPosX" Label="track3StartPosX" Title="track3StartPosX" Unit="" Internal="track3StartPosX" Type="F" Min="-1.78559509e+02" Max="1.79122559e+02"/>
+    <Variable VarIndex="11" Expression="track3StartPosY" Label="track3StartPosY" Title="track3StartPosY" Unit="" Internal="track3StartPosY" Type="F" Min="-1.78273117e+02" Max="1.79014130e+02"/>
+    <Variable VarIndex="12" Expression="track3StartPosZ" Label="track3StartPosZ" Title="track3StartPosZ" Unit="" Internal="track3StartPosZ" Type="F" Min="9.94157314e+00" Max="4.49016327e+02"/>
+    <Variable VarIndex="13" Expression="shower1StartPosX" Label="shower1StartPosX" Title="shower1StartPosX" Unit="" Internal="shower1StartPosX" Type="F" Min="-1.79858627e+02" Max="1.79431137e+02"/>
+    <Variable VarIndex="14" Expression="shower1StartPosY" Label="shower1StartPosY" Title="shower1StartPosY" Unit="" Internal="shower1StartPosY" Type="F" Min="-1.79978729e+02" Max="1.79786865e+02"/>
+    <Variable VarIndex="15" Expression="shower1StartPosZ" Label="shower1StartPosZ" Title="shower1StartPosZ" Unit="" Internal="shower1StartPosZ" Type="F" Min="1.21829844e+01" Max="4.49399994e+02"/>
+    <Variable VarIndex="16" Expression="track1StartDirX" Label="track1StartDirX" Title="track1StartDirX" Unit="" Internal="track1StartDirX" Type="F" Min="-9.95330334e-01" Max="9.92457569e-01"/>
+    <Variable VarIndex="17" Expression="track1StartDirY" Label="track1StartDirY" Title="track1StartDirY" Unit="" Internal="track1StartDirY" Type="F" Min="-9.92119730e-01" Max="9.93378341e-01"/>
+    <Variable VarIndex="18" Expression="track1StartDirZ" Label="track1StartDirZ" Title="track1StartDirZ" Unit="" Internal="track1StartDirZ" Type="F" Min="-9.99631286e-01" Max="9.98943806e-01"/>
+    <Variable VarIndex="19" Expression="track2StartDirX" Label="track2StartDirX" Title="track2StartDirX" Unit="" Internal="track2StartDirX" Type="F" Min="-9.90601361e-01" Max="9.98715162e-01"/>
+    <Variable VarIndex="20" Expression="track2StartDirY" Label="track2StartDirY" Title="track2StartDirY" Unit="" Internal="track2StartDirY" Type="F" Min="-9.98021603e-01" Max="9.99431849e-01"/>
+    <Variable VarIndex="21" Expression="track2StartDirZ" Label="track2StartDirZ" Title="track2StartDirZ" Unit="" Internal="track2StartDirZ" Type="F" Min="-9.99366760e-01" Max="9.99609947e-01"/>
+    <Variable VarIndex="22" Expression="track3StartDirX" Label="track3StartDirX" Title="track3StartDirX" Unit="" Internal="track3StartDirX" Type="F" Min="-9.80553567e-01" Max="9.93002176e-01"/>
+    <Variable VarIndex="23" Expression="track3StartDirY" Label="track3StartDirY" Title="track3StartDirY" Unit="" Internal="track3StartDirY" Type="F" Min="-1.00000000e+00" Max="9.99867022e-01"/>
+    <Variable VarIndex="24" Expression="track3StartDirZ" Label="track3StartDirZ" Title="track3StartDirZ" Unit="" Internal="track3StartDirZ" Type="F" Min="-9.97544706e-01" Max="9.99991298e-01"/>
+    <Variable VarIndex="25" Expression="shower1DirX" Label="shower1DirX" Title="shower1DirX" Unit="" Internal="shower1DirX" Type="F" Min="-9.93727028e-01" Max="9.97467101e-01"/>
+    <Variable VarIndex="26" Expression="shower1DirY" Label="shower1DirY" Title="shower1DirY" Unit="" Internal="shower1DirY" Type="F" Min="-9.99887228e-01" Max="9.99898136e-01"/>
+    <Variable VarIndex="27" Expression="shower1DirZ" Label="shower1DirZ" Title="shower1DirZ" Unit="" Internal="shower1DirZ" Type="F" Min="-9.98255849e-01" Max="9.99600112e-01"/>
+    <Variable VarIndex="28" Expression="track1DistRecoVtx" Label="track1DistRecoVtx" Title="track1DistRecoVtx" Unit="" Internal="track1DistRecoVtx" Type="F" Min="2.37985868e-02" Max="3.98177314e+00"/>
+    <Variable VarIndex="29" Expression="track2DistRecoVtx" Label="track2DistRecoVtx" Title="track2DistRecoVtx" Unit="" Internal="track2DistRecoVtx" Type="F" Min="4.64399159e-02" Max="9.78038883e+00"/>
+    <Variable VarIndex="30" Expression="track3DistRecoVtx" Label="track3DistRecoVtx" Title="track3DistRecoVtx" Unit="" Internal="track3DistRecoVtx" Type="F" Min="3.56111303e-02" Max="1.19819937e+01"/>
+    <Variable VarIndex="31" Expression="shower1DistRecoVtx" Label="shower1DistRecoVtx" Title="shower1DistRecoVtx" Unit="" Internal="shower1DistRecoVtx" Type="F" Min="4.03059646e-02" Max="7.86243668e+01"/>
+    <Variable VarIndex="32" Expression="track1Track2Angle" Label="track1Track2Angle" Title="track1Track2Angle" Unit="" Internal="track1Track2Angle" Type="F" Min="1.44185424e-01" Max="3.13272953e+00"/>
+    <Variable VarIndex="33" Expression="track1Track3Angle" Label="track1Track3Angle" Title="track1Track3Angle" Unit="" Internal="track1Track3Angle" Type="F" Min="3.96595672e-02" Max="3.12610054e+00"/>
+    <Variable VarIndex="34" Expression="track2Track3Angle" Label="track2Track3Angle" Title="track2Track3Angle" Unit="" Internal="track2Track3Angle" Type="F" Min="5.76848537e-02" Max="3.11595345e+00"/>
+    <Variable VarIndex="35" Expression="track1Shower1Angle" Label="track1Shower1Angle" Title="track1Shower1Angle" Unit="" Internal="track1Shower1Angle" Type="F" Min="2.28180531e-02" Max="3.13737035e+00"/>
+    <Variable VarIndex="36" Expression="track2Shower1Angle" Label="track2Shower1Angle" Title="track2Shower1Angle" Unit="" Internal="track2Shower1Angle" Type="F" Min="2.74586026e-02" Max="3.10767269e+00"/>
+    <Variable VarIndex="37" Expression="track3Shower1Angle" Label="track3Shower1Angle" Title="track3Shower1Angle" Unit="" Internal="track3Shower1Angle" Type="F" Min="3.97528596e-02" Max="3.12469959e+00"/>
+    <Variable VarIndex="38" Expression="track1Track2Dist" Label="track1Track2Dist" Title="track1Track2Dist" Unit="" Internal="track1Track2Dist" Type="F" Min="5.61579615e-02" Max="9.81249905e+00"/>
+    <Variable VarIndex="39" Expression="track1Track3Dist" Label="track1Track3Dist" Title="track1Track3Dist" Unit="" Internal="track1Track3Dist" Type="F" Min="7.00156316e-02" Max="1.19644547e+01"/>
+    <Variable VarIndex="40" Expression="track2Track3Dist" Label="track2Track3Dist" Title="track2Track3Dist" Unit="" Internal="track2Track3Dist" Type="F" Min="5.17720133e-02" Max="9.77556896e+00"/>
+    <Variable VarIndex="41" Expression="track1Shower1Dist" Label="track1Shower1Dist" Title="track1Shower1Dist" Unit="" Internal="track1Shower1Dist" Type="F" Min="2.06579074e-01" Max="7.84287415e+01"/>
+    <Variable VarIndex="42" Expression="track2Shower1Dist" Label="track2Shower1Dist" Title="track2Shower1Dist" Unit="" Internal="track2Shower1Dist" Type="F" Min="1.91956028e-01" Max="7.86626205e+01"/>
+    <Variable VarIndex="43" Expression="track3Shower1Dist" Label="track3Shower1Dist" Title="track3Shower1Dist" Unit="" Internal="track3Shower1Dist" Type="F" Min="1.14796884e-01" Max="7.91389771e+01"/>
   </Variables>
   <Spectators NSpec="0"/>
   <Classes NClass="2">
@@ -33,78 +74,734 @@
   <Transformations NTransformations="1">
     <Transform Name="PCA">
       <Selection>
-        <Input NInputs="3">
-          <Input Type="Variable" Label="RecoVertexX" Expression="RecoVertexX"/>
-          <Input Type="Variable" Label="RecoVertexY" Expression="RecoVertexY"/>
-          <Input Type="Variable" Label="RecoVertexZ" Expression="RecoVertexZ"/>
+        <Input NInputs="44">
+          <Input Type="Variable" Label="track1Length" Expression="track1Length"/>
+          <Input Type="Variable" Label="track2Length" Expression="track2Length"/>
+          <Input Type="Variable" Label="track3Length" Expression="track3Length"/>
+          <Input Type="Variable" Label="shower1Length" Expression="shower1Length"/>
+          <Input Type="Variable" Label="track1StartPosX" Expression="track1StartPosX"/>
+          <Input Type="Variable" Label="track1StartPosY" Expression="track1StartPosY"/>
+          <Input Type="Variable" Label="track1StartPosZ" Expression="track1StartPosZ"/>
+          <Input Type="Variable" Label="track2StartPosX" Expression="track2StartPosX"/>
+          <Input Type="Variable" Label="track2StartPosY" Expression="track2StartPosY"/>
+          <Input Type="Variable" Label="track2StartPosZ" Expression="track2StartPosZ"/>
+          <Input Type="Variable" Label="track3StartPosX" Expression="track3StartPosX"/>
+          <Input Type="Variable" Label="track3StartPosY" Expression="track3StartPosY"/>
+          <Input Type="Variable" Label="track3StartPosZ" Expression="track3StartPosZ"/>
+          <Input Type="Variable" Label="shower1StartPosX" Expression="shower1StartPosX"/>
+          <Input Type="Variable" Label="shower1StartPosY" Expression="shower1StartPosY"/>
+          <Input Type="Variable" Label="shower1StartPosZ" Expression="shower1StartPosZ"/>
+          <Input Type="Variable" Label="track1StartDirX" Expression="track1StartDirX"/>
+          <Input Type="Variable" Label="track1StartDirY" Expression="track1StartDirY"/>
+          <Input Type="Variable" Label="track1StartDirZ" Expression="track1StartDirZ"/>
+          <Input Type="Variable" Label="track2StartDirX" Expression="track2StartDirX"/>
+          <Input Type="Variable" Label="track2StartDirY" Expression="track2StartDirY"/>
+          <Input Type="Variable" Label="track2StartDirZ" Expression="track2StartDirZ"/>
+          <Input Type="Variable" Label="track3StartDirX" Expression="track3StartDirX"/>
+          <Input Type="Variable" Label="track3StartDirY" Expression="track3StartDirY"/>
+          <Input Type="Variable" Label="track3StartDirZ" Expression="track3StartDirZ"/>
+          <Input Type="Variable" Label="shower1DirX" Expression="shower1DirX"/>
+          <Input Type="Variable" Label="shower1DirY" Expression="shower1DirY"/>
+          <Input Type="Variable" Label="shower1DirZ" Expression="shower1DirZ"/>
+          <Input Type="Variable" Label="track1DistRecoVtx" Expression="track1DistRecoVtx"/>
+          <Input Type="Variable" Label="track2DistRecoVtx" Expression="track2DistRecoVtx"/>
+          <Input Type="Variable" Label="track3DistRecoVtx" Expression="track3DistRecoVtx"/>
+          <Input Type="Variable" Label="shower1DistRecoVtx" Expression="shower1DistRecoVtx"/>
+          <Input Type="Variable" Label="track1Track2Angle" Expression="track1Track2Angle"/>
+          <Input Type="Variable" Label="track1Track3Angle" Expression="track1Track3Angle"/>
+          <Input Type="Variable" Label="track2Track3Angle" Expression="track2Track3Angle"/>
+          <Input Type="Variable" Label="track1Shower1Angle" Expression="track1Shower1Angle"/>
+          <Input Type="Variable" Label="track2Shower1Angle" Expression="track2Shower1Angle"/>
+          <Input Type="Variable" Label="track3Shower1Angle" Expression="track3Shower1Angle"/>
+          <Input Type="Variable" Label="track1Track2Dist" Expression="track1Track2Dist"/>
+          <Input Type="Variable" Label="track1Track3Dist" Expression="track1Track3Dist"/>
+          <Input Type="Variable" Label="track2Track3Dist" Expression="track2Track3Dist"/>
+          <Input Type="Variable" Label="track1Shower1Dist" Expression="track1Shower1Dist"/>
+          <Input Type="Variable" Label="track2Shower1Dist" Expression="track2Shower1Dist"/>
+          <Input Type="Variable" Label="track3Shower1Dist" Expression="track3Shower1Dist"/>
         </Input>
-        <Output NOutputs="3">
-          <Output Type="Variable" Label="RecoVertexX" Expression="RecoVertexX"/>
-          <Output Type="Variable" Label="RecoVertexY" Expression="RecoVertexY"/>
-          <Output Type="Variable" Label="RecoVertexZ" Expression="RecoVertexZ"/>
+        <Output NOutputs="44">
+          <Output Type="Variable" Label="track1Length" Expression="track1Length"/>
+          <Output Type="Variable" Label="track2Length" Expression="track2Length"/>
+          <Output Type="Variable" Label="track3Length" Expression="track3Length"/>
+          <Output Type="Variable" Label="shower1Length" Expression="shower1Length"/>
+          <Output Type="Variable" Label="track1StartPosX" Expression="track1StartPosX"/>
+          <Output Type="Variable" Label="track1StartPosY" Expression="track1StartPosY"/>
+          <Output Type="Variable" Label="track1StartPosZ" Expression="track1StartPosZ"/>
+          <Output Type="Variable" Label="track2StartPosX" Expression="track2StartPosX"/>
+          <Output Type="Variable" Label="track2StartPosY" Expression="track2StartPosY"/>
+          <Output Type="Variable" Label="track2StartPosZ" Expression="track2StartPosZ"/>
+          <Output Type="Variable" Label="track3StartPosX" Expression="track3StartPosX"/>
+          <Output Type="Variable" Label="track3StartPosY" Expression="track3StartPosY"/>
+          <Output Type="Variable" Label="track3StartPosZ" Expression="track3StartPosZ"/>
+          <Output Type="Variable" Label="shower1StartPosX" Expression="shower1StartPosX"/>
+          <Output Type="Variable" Label="shower1StartPosY" Expression="shower1StartPosY"/>
+          <Output Type="Variable" Label="shower1StartPosZ" Expression="shower1StartPosZ"/>
+          <Output Type="Variable" Label="track1StartDirX" Expression="track1StartDirX"/>
+          <Output Type="Variable" Label="track1StartDirY" Expression="track1StartDirY"/>
+          <Output Type="Variable" Label="track1StartDirZ" Expression="track1StartDirZ"/>
+          <Output Type="Variable" Label="track2StartDirX" Expression="track2StartDirX"/>
+          <Output Type="Variable" Label="track2StartDirY" Expression="track2StartDirY"/>
+          <Output Type="Variable" Label="track2StartDirZ" Expression="track2StartDirZ"/>
+          <Output Type="Variable" Label="track3StartDirX" Expression="track3StartDirX"/>
+          <Output Type="Variable" Label="track3StartDirY" Expression="track3StartDirY"/>
+          <Output Type="Variable" Label="track3StartDirZ" Expression="track3StartDirZ"/>
+          <Output Type="Variable" Label="shower1DirX" Expression="shower1DirX"/>
+          <Output Type="Variable" Label="shower1DirY" Expression="shower1DirY"/>
+          <Output Type="Variable" Label="shower1DirZ" Expression="shower1DirZ"/>
+          <Output Type="Variable" Label="track1DistRecoVtx" Expression="track1DistRecoVtx"/>
+          <Output Type="Variable" Label="track2DistRecoVtx" Expression="track2DistRecoVtx"/>
+          <Output Type="Variable" Label="track3DistRecoVtx" Expression="track3DistRecoVtx"/>
+          <Output Type="Variable" Label="shower1DistRecoVtx" Expression="shower1DistRecoVtx"/>
+          <Output Type="Variable" Label="track1Track2Angle" Expression="track1Track2Angle"/>
+          <Output Type="Variable" Label="track1Track3Angle" Expression="track1Track3Angle"/>
+          <Output Type="Variable" Label="track2Track3Angle" Expression="track2Track3Angle"/>
+          <Output Type="Variable" Label="track1Shower1Angle" Expression="track1Shower1Angle"/>
+          <Output Type="Variable" Label="track2Shower1Angle" Expression="track2Shower1Angle"/>
+          <Output Type="Variable" Label="track3Shower1Angle" Expression="track3Shower1Angle"/>
+          <Output Type="Variable" Label="track1Track2Dist" Expression="track1Track2Dist"/>
+          <Output Type="Variable" Label="track1Track3Dist" Expression="track1Track3Dist"/>
+          <Output Type="Variable" Label="track2Track3Dist" Expression="track2Track3Dist"/>
+          <Output Type="Variable" Label="track1Shower1Dist" Expression="track1Shower1Dist"/>
+          <Output Type="Variable" Label="track2Shower1Dist" Expression="track2Shower1Dist"/>
+          <Output Type="Variable" Label="track3Shower1Dist" Expression="track3Shower1Dist"/>
         </Output>
       </Selection>
-      <Statistics Class="Signal" ClassIndex="0" NRows="3">
-        -1.97096191e+00 4.27195297e+00 2.47898343e+02 
+      <Statistics Class="Signal" ClassIndex="0" NRows="44">
+        1.62553818e+02 2.11552008e+01 7.54243637e+00 1.89678136e+01 -4.85120844e+00 6.82908787e+00 2.33673328e+02 -4.83385888e+00 6.80903724e+00 2.35483618e+02 -4.76006882e+00 6.85745963e+00 2.35673454e+02 -5.98040564e+00 7.63000787e+00 2.37707827e+02 4.46489941e-02 -2.55758619e-02 8.06612358e-01 -1.01339352e-02 1.40786257e-02 6.98720768e-01 -1.21457437e-02 1.07362010e-02 5.11031604e-01 -1.92556419e-02 -1.64178432e-02 1.98812276e-01 7.10551535e-01 2.68414819e+00 2.99932724e+00 2.10806138e+01 1.17995928e+00 1.29833536e+00 1.09808530e+00 1.48375048e+00 1.43220569e+00 1.50613775e+00 2.85078441e+00 3.09174412e+00 1.92442121e+00 2.10281253e+01 2.09902364e+01 2.11405888e+01 
       </Statistics>
-      <Statistics Class="Background" ClassIndex="1" NRows="3">
-        -1.31975061e+01 7.08015156e+00 2.17710092e+02 
+      <Statistics Class="Background" ClassIndex="1" NRows="44">
+        1.30453843e+02 2.69868147e+01 7.48731542e+00 1.02357152e+01 -1.42383951e+01 4.25121874e+00 2.26514447e+02 -1.42880579e+01 4.22747773e+00 2.26623768e+02 -1.42353667e+01 4.24978197e+00 2.26575160e+02 -1.47172809e+01 4.20776786e+00 2.29189006e+02 1.21045887e-02 7.40299530e-03 5.52657026e-01 1.00216064e-03 -4.74898395e-02 4.31487086e-01 3.12527722e-02 -2.06767890e-02 2.86869539e-01 1.28862968e-03 5.44310206e-03 6.64856151e-02 8.60425367e-01 1.17289208e+00 1.29814210e+00 9.75619586e+00 1.50650747e+00 1.53616101e+00 1.57677093e+00 1.57538274e+00 1.58472879e+00 1.62067065e+00 1.45807435e+00 1.54582312e+00 1.80423605e+00 9.92691458e+00 1.00150380e+01 1.00877313e+01 
       </Statistics>
-      <Statistics Class="Combined" ClassIndex="2" NRows="3">
-        -1.25787202e+01 6.92536896e+00 2.19374012e+02 
+      <Statistics Class="Combined" ClassIndex="2" NRows="44">
+        1.38968498e+02 2.54399544e+01 7.50193649e+00 1.25519413e+01 -1.17484040e+01 4.93500945e+00 2.28413370e+02 -1.17802915e+01 4.91224733e+00 2.28973881e+02 -1.17220038e+01 4.94147952e+00 2.28988521e+02 -1.23997877e+01 5.11553152e+00 2.31448659e+02 2.07371301e-02 -1.34478632e-03 6.20019754e-01 -1.95173596e-03 -3.11585432e-02 5.02371952e-01 1.97411320e-02 -1.23443603e-02 3.46329476e-01 -4.16082541e-03 -3.55606296e-04 1.01585823e-01 8.20670698e-01 1.57375917e+00 1.74938867e+00 1.27600457e+01 1.41988918e+00 1.47307675e+00 1.44979753e+00 1.55107689e+00 1.54427139e+00 1.59029031e+00 1.82749659e+00 1.95588522e+00 1.83611567e+00 1.28715578e+01 1.29262558e+01 1.30195486e+01 
       </Statistics>
-      <Eigenvectors Class="Signal" ClassIndex="0" NRows="3" NCols="3">
-        2.03743889e-01 6.22329898e-01 7.55773726e-01 1.08455521e-02 -7.73353680e-01 6.33882055e-01 9.78964147e-01 -1.20952812e-01 -1.64315598e-01 
+      <Eigenvectors Class="Signal" ClassIndex="0" NRows="44" NCols="44">
+        1.48902415e-01 2.80292198e-02 1.78338537e-03 9.87764083e-01 3.04845566e-02 -4.14299769e-03 1.81561647e-02 -5.41097245e-03 -1.57679065e-03 -2.52165984e-03 3.82570063e-03 -4.61032622e-03 9.15421211e-04 9.71495624e-04 -3.90274321e-04 2.18160209e-04 1.28263274e-04 5.85762184e-04 1.11583836e-03 -8.43997434e-04 4.15981600e-04 1.04120581e-03 5.43966139e-04 8.77272603e-05 1.03472505e-03 6.24186320e-04 9.05425568e-04 -1.15356534e-03 1.30451520e-05 2.94911021e-04 -5.43463090e-07 1.01031613e-04 1.11758761e-04 -7.05510832e-04 -2.65192668e-04 1.10109694e-04 -6.45402851e-05 1.81655712e-05 -2.97548360e-04 -4.48711012e-04 -8.53450550e-04 -2.08980419e-04 -6.72173926e-05 -7.08928143e-05 2.49996148e-03 4.44611634e-03 1.77652962e-03 3.01754993e-03 -9.52672471e-03 -8.38901119e-01 -3.90801198e-01 -1.78118504e-01 -2.56700838e-02 -1.71033964e-01 -2.84400001e-01 -2.41418296e-02 6.68554213e-03 -9.47869590e-03 -2.73223078e-03 -1.28856399e-03 -8.59451576e-04 9.45554943e-04 -4.03564446e-03 3.08714677e-03 6.34850138e-04 -2.37093142e-03 -7.76567183e-04 -3.14910646e-03 -2.11209612e-03 -7.40139350e-04 -2.84303037e-03 6.90753240e-03 5.56850465e-04 1.66563765e-03 3.19684508e-04 -4.14736090e-03 -1.64591396e-04 8.66930812e-04 1.27801911e-03 -4.20924774e-04 -4.74629244e-04 9.81957867e-04 -6.29294227e-05 2.36848550e-03 2.70899770e-03 -1.38680216e-04 -3.70876533e-04 -7.72349690e-04 4.30192311e-04 -1.86939836e-03 1.74867364e-03 -4.36403229e-03 7.63313748e-03 -2.12769193e-01 -1.25669730e-01 -7.67625024e-02 -3.24824408e-02 -4.33796344e-02 9.04606170e-01 -3.27575176e-01 -1.92192716e-02 -5.02091376e-03 3.72652615e-02 3.38998872e-02 4.41611814e-03 -9.61758123e-03 -1.08512129e-02 2.60345702e-02 3.20064091e-03 5.07531705e-03 -3.30166078e-03 1.42137284e-03 -1.13486275e-02 -3.77045415e-03 -7.42772938e-03 -7.64223521e-03 6.12188974e-03 -1.46317233e-03 -5.75099661e-03 -7.64889369e-03 -1.79500218e-03 1.44466484e-03 2.70371236e-03 5.95562725e-04 -5.48423155e-03 5.79455370e-03 5.06490332e-03 -1.11399902e-03 4.60090659e-03 1.73877398e-03 -8.25478663e-04 1.37102912e-05 -1.31625459e-03 -7.02531247e-03 -2.66780249e-03 9.56582721e-03 1.76767787e-02 2.45658980e-01 -5.34053988e-01 -5.23518570e-01 1.13247665e-03 6.14431726e-01 -3.16878739e-02 -1.35746516e-03 1.16342480e-03 -3.17830018e-02 -5.98980423e-03 -1.79501787e-03 3.15384215e-03 -9.64217488e-04 6.06487521e-03 2.84916661e-03 -1.37262883e-03 -1.07144104e-02 5.08368400e-03 -1.74164942e-03 -3.36196717e-03 4.08509231e-03 1.28903833e-03 7.66266804e-03 1.20844953e-03 -2.12662358e-03 -1.81081182e-03 9.72374767e-04 -2.08824341e-03 1.87750894e-03 -9.42731256e-04 2.30602652e-03 1.16919263e-04 3.64584599e-05 -1.03722349e-03 -1.64347401e-03 7.18827225e-04 -6.25360995e-04 1.08873687e-03 -1.91071369e-04 -5.57271786e-02 4.71087806e-01 1.64782991e-01 -8.66859471e-03 -8.99805277e-03 1.72648421e-03 1.30587967e-01 -2.22772523e-01 8.47754748e-02 -7.12608826e-02 4.87168540e-03 -3.87852002e-02 -5.22768956e-03 -9.21006131e-03 8.75539892e-02 -4.14834134e-01 -5.72249572e-01 8.50984786e-02 1.45324654e-01 -5.08140330e-02 9.24660103e-02 -2.83334736e-02 -2.13556809e-02 -6.51663163e-03 1.47807529e-03 9.11155633e-04 -2.91714581e-02 5.82338499e-02 -1.05677121e-02 2.35057647e-02 -9.02023268e-02 1.72819099e-02 -9.14741230e-02 1.63690294e-01 1.51486636e-01 7.80036276e-03 2.09797181e-01 3.04649883e-02 -3.65085287e-02 -1.33937470e-02 -2.86513403e-02 -1.35731513e-02 -7.99884597e-03 -3.91767962e-03 -1.61740880e-02 1.64895501e-01 -4.69826298e-01 -3.18309390e-03 6.02363826e-03 1.19310230e-02 4.93302715e-02 -6.51669608e-02 -2.77335982e-01 -2.46232419e-02 -2.15296776e-02 2.37691231e-02 -1.53482586e-02 -1.51683734e-01 6.68085406e-02 6.10462371e-01 -3.59595868e-01 2.77833355e-02 1.74944885e-01 6.10429357e-02 1.49233814e-02 2.86185379e-02 3.37190377e-02 -3.68311493e-02 -7.56495062e-02 1.38812872e-01 -4.90735838e-02 5.21635906e-02 1.04282792e-01 1.62111336e-01 5.50813879e-03 5.99644099e-02 -1.79858719e-02 -8.70507596e-02 1.05365168e-01 -6.60099183e-02 2.77482685e-02 -2.94993242e-02 -3.40006739e-02 2.90150083e-02 1.23235703e-02 -7.72036208e-04 -4.62896160e-04 -4.38115582e-03 -4.90760180e-01 -5.55453587e-02 -4.08039690e-03 7.23792220e-02 1.81409431e-02 -8.51475408e-02 1.71716998e-01 3.54332083e-02 -6.95770453e-03 2.05150650e-01 -1.01910608e-01 -2.74567779e-01 -4.20201883e-02 -5.54941386e-02 1.52154955e-01 3.03469937e-02 1.89110673e-02 -1.12292185e-01 -1.92410956e-01 4.71920094e-02 2.95400186e-01 8.22598227e-02 -1.94874850e-01 -2.07499148e-01 -4.74572059e-01 -2.32048823e-01 6.15556668e-02 1.00779449e-01 -2.89099060e-02 2.79890000e-02 4.87692814e-02 6.86053450e-02 9.51576881e-02 9.91313761e-02 -2.34241841e-02 5.17597205e-02 8.84221331e-03 -6.17426693e-03 -3.79601684e-02 7.61519006e-03 -5.37409633e-02 8.84426646e-04 6.85354195e-04 7.78812504e-03 -5.58100657e-02 4.70640643e-01 1.65169226e-01 -9.67860211e-03 -1.01696065e-02 5.70357649e-05 1.31014371e-01 -2.28842990e-01 8.43276392e-02 -7.31296897e-02 -2.26334829e-04 3.94972760e-03 -7.50582443e-03 -1.68578220e-02 -1.00243868e-01 2.09822721e-01 2.22460402e-01 1.20173581e-02 -1.56747025e-01 -1.13158694e-01 1.81118850e-01 2.41341516e-01 4.86357873e-01 3.24614957e-02 -1.76115344e-02 3.38338295e-02 2.11401363e-01 -8.24575958e-02 -7.04855960e-02 -1.62242754e-02 5.78608284e-02 -6.42190372e-02 1.57185398e-01 -1.59500102e-01 -2.64725660e-01 9.31757628e-03 4.19637406e-02 -7.43447447e-02 1.93747525e-02 3.89657685e-02 1.57061349e-02 1.69120295e-02 3.30755552e-03 1.17668190e-02 -1.59812979e-02 1.64503128e-01 -4.69826955e-01 -2.59412130e-03 4.54756491e-03 4.55093766e-03 4.43636695e-02 -6.71501419e-02 -2.82075238e-01 -1.23954322e-02 2.49852855e-03 -5.22943993e-03 -2.46087828e-02 5.52609910e-02 -9.31782082e-02 -2.38915923e-01 -4.42160773e-02 -1.38646476e-01 -6.14156621e-01 -2.55370187e-01 -2.73347970e-01 -5.67795546e-02 -3.90717935e-02 5.48495102e-03 9.81889539e-02 -5.71626708e-02 3.25174328e-02 -4.95018238e-02 5.28022416e-02 -1.01020897e-01 -8.10851409e-03 -4.77071032e-03 2.59735098e-02 8.97467647e-02 -6.91908276e-02 8.52105032e-02 -4.89698235e-03 3.39291530e-02 3.00747394e-02 -1.63634320e-02 -1.90869857e-02 6.21083232e-04 -8.84424179e-03 9.93434420e-03 -4.90903860e-01 -5.53780870e-02 -4.18269247e-03 7.20971776e-02 1.66871186e-02 -1.33633754e-01 1.54346330e-01 2.07526519e-02 9.14228935e-03 1.95001491e-01 4.60789131e-02 8.65360240e-02 4.15237996e-01 -5.12250221e-02 -8.68167849e-03 -2.14075235e-03 1.32158988e-02 8.73125495e-02 2.57870154e-02 -6.81379631e-02 -1.45872561e-01 -2.79654360e-01 1.40729990e-01 4.53097910e-01 -2.30342433e-02 2.45665194e-01 6.54196188e-02 -6.66034770e-02 -7.08837697e-02 1.61213139e-02 -4.51717756e-02 -1.70302408e-01 -1.26348753e-01 2.88491148e-02 5.33509177e-02 -9.37390846e-02 -5.15665491e-02 -6.92356849e-02 -9.78705346e-03 -5.43660730e-02 5.23699368e-02 -1.02064157e-02 -5.30660290e-03 -8.10428016e-03 -5.57594134e-02 4.70187446e-01 1.64698106e-01 -7.66523661e-03 -1.09578591e-02 2.22770033e-03 1.37525192e-01 -2.28765302e-01 8.09565311e-02 -7.14057844e-02 -7.07252379e-03 2.96578863e-02 4.88182949e-03 2.79748340e-02 9.91648997e-03 1.99743525e-01 3.48443565e-01 -1.02759033e-01 1.18315727e-02 1.64759235e-01 -2.69782701e-01 -2.14587201e-01 -4.65996821e-01 -2.66060034e-02 1.55513327e-02 -3.19054678e-02 -1.86139430e-01 2.35296513e-02 8.36092439e-02 -1.33923660e-02 1.19458646e-02 5.36642300e-02 -5.24490696e-02 -6.66855961e-03 1.12189528e-01 -1.75370876e-02 -2.49968606e-01 4.22760822e-02 1.76535801e-02 -2.63066196e-02 1.39440781e-02 -3.92295115e-03 5.37651258e-03 -8.22717434e-03 -1.63883334e-02 1.65293650e-01 -4.69291619e-01 -3.56403503e-03 2.47417233e-03 4.51490747e-03 3.89244639e-02 -6.52816401e-02 -2.80081163e-01 -2.40095027e-02 6.42375668e-03 9.80429042e-03 3.73744729e-02 1.03047648e-01 2.83040405e-02 -3.73604902e-01 4.00834606e-01 1.14480116e-01 4.42161696e-01 1.90663714e-01 2.55032946e-01 2.79124795e-02 1.10508270e-02 3.18528932e-02 -2.64974350e-02 -8.35070747e-02 1.62974278e-02 -4.39074726e-03 -1.58903054e-01 -4.17797682e-02 -8.13837431e-03 -6.00676972e-02 -1.94323652e-02 -5.00002507e-03 -4.45522996e-02 -9.34249189e-03 -2.67259151e-02 -4.89077586e-04 5.96937730e-03 -1.28821967e-02 8.58459498e-03 2.45460259e-03 8.64836230e-03 -5.89973044e-03 -4.90659387e-01 -5.54588920e-02 -4.00956679e-03 7.21585920e-02 1.77535056e-02 -1.51558720e-01 1.46972194e-01 2.24071573e-02 5.06553301e-03 2.18957371e-01 6.19634209e-02 1.62118739e-01 -3.52381258e-01 1.46619566e-01 -1.22280024e-01 -1.91189408e-02 -3.49511839e-02 2.72110869e-02 1.62083222e-01 2.26986499e-02 -1.34581660e-01 2.10707603e-01 4.72221089e-02 -2.25646851e-01 4.98676005e-01 -9.70100326e-03 -1.32162514e-01 -3.03361330e-02 9.84475622e-02 -4.06016071e-02 2.30121462e-03 1.04008048e-01 2.98101681e-02 -1.31250184e-01 -3.09301800e-02 4.06351248e-02 4.47069612e-02 7.49460213e-02 4.80051652e-02 4.50588586e-02 1.18207434e-03 9.17431549e-03 1.63957945e-03 1.43420221e-04 -5.97348253e-02 4.61017455e-01 1.68288496e-01 6.08337852e-03 3.73955371e-02 1.16138132e-02 -4.17177136e-01 6.84034761e-01 -2.49342222e-01 2.21182180e-01 6.52847769e-03 4.80279222e-03 8.62053020e-03 -8.23102358e-04 3.34056274e-03 6.27189787e-03 1.61048877e-03 4.88356419e-03 -1.51876082e-03 -8.42446856e-04 -5.12070932e-03 2.34905836e-03 4.06340459e-05 9.05968638e-04 5.36543679e-04 -2.64243568e-03 3.05566718e-03 7.30206993e-04 -2.41956642e-03 6.35948008e-03 2.07135779e-02 -6.42485067e-03 -1.29620512e-02 2.43101336e-03 8.36015586e-04 7.73080872e-04 -1.55404017e-03 1.72779432e-03 -4.11228984e-04 6.22682829e-04 -1.03204394e-03 4.48156319e-04 -5.97672602e-04 3.73719606e-04 -1.33238904e-02 1.65553348e-01 -4.77741539e-01 3.91728601e-03 -2.93706688e-02 -2.07131709e-02 -1.38022359e-01 2.02931163e-01 8.22622816e-01 6.08183892e-02 1.61078533e-02 -3.06382149e-02 2.92502668e-03 -5.14434757e-03 -2.26386161e-03 2.37044112e-03 3.43457015e-03 -4.98928296e-03 -2.17376840e-03 3.25654962e-03 3.09458851e-03 5.74687370e-04 -5.18507110e-03 -2.47285290e-04 3.95526816e-03 1.57276485e-03 2.35298984e-04 1.58506555e-03 1.74404651e-03 -1.92744266e-02 1.09298289e-02 5.12975246e-03 1.19206249e-02 1.92198195e-03 8.17420549e-03 -1.00232713e-02 4.11869618e-03 -3.85902101e-03 -2.00966816e-03 3.16203766e-04 -1.61493310e-03 -2.43665411e-03 7.70854894e-04 3.83300792e-04 -4.91236704e-01 -6.23326893e-02 -4.27746511e-03 8.58643594e-02 -6.05195593e-02 3.61264361e-01 -4.62708929e-01 -8.42667591e-02 -1.22327866e-03 -6.22700959e-01 -5.80045350e-03 2.45351151e-02 -2.26761308e-02 -3.99536957e-02 -2.05615036e-02 -9.30679406e-03 2.59069461e-03 -2.13513151e-03 4.33061512e-03 -1.86579372e-03 -1.49654247e-02 -1.34416594e-02 7.20794356e-03 -1.95436684e-02 -1.17934024e-03 -3.47863196e-03 5.88108222e-03 -4.39563124e-03 1.16352477e-03 -3.18992505e-03 -6.03255906e-03 -2.36435336e-03 1.30689582e-03 2.80380903e-03 1.15013729e-03 1.44771936e-03 -2.09802447e-03 6.08452248e-04 -2.42489400e-04 1.33937306e-03 -3.56992567e-05 3.68013106e-05 3.00847845e-03 1.63907301e-04 1.17808599e-04 7.30670816e-05 2.11761631e-05 -3.85970125e-04 2.78137155e-05 -3.56632884e-04 9.30272404e-04 -4.39673426e-04 2.65992016e-03 -9.23396456e-05 -1.48041543e-04 -8.22922653e-03 7.93351399e-03 -6.02249567e-03 2.26583361e-02 -1.08136185e-01 -2.05791043e-01 4.49256949e-02 4.99145558e-02 -8.62891025e-03 -3.57325888e-02 -2.51511732e-02 -4.39088053e-02 -7.15321444e-02 -6.21113463e-02 -2.03778435e-02 4.63476772e-02 -1.21808116e-02 5.02047959e-02 1.00439906e-02 1.95941267e-01 -6.10125871e-02 1.28797127e-01 -2.89428003e-01 -2.90211937e-01 -1.45051429e-01 -2.97197700e-01 2.37741361e-01 -1.81566506e-01 -6.27705371e-01 2.87265699e-01 7.22279718e-02 1.23090790e-01 9.22286635e-03 -6.33018165e-05 3.69378786e-05 -3.22742998e-05 9.52439945e-06 1.43928252e-03 -9.61631841e-04 8.49756290e-04 -8.24689533e-05 -4.37232763e-03 -1.07072941e-03 -6.09473316e-03 1.56550102e-02 1.70883146e-02 -3.18116570e-02 1.23177634e-02 1.66770908e-01 -8.23819979e-02 -6.44323898e-03 8.62882207e-02 7.12675258e-03 5.61820483e-02 2.67061465e-02 5.58422291e-03 2.11790256e-02 1.35895746e-02 -9.95416151e-02 1.44288124e-02 -5.51024867e-02 -2.44715476e-02 -3.68537506e-01 -1.69265994e-02 -5.33772177e-02 -4.30962866e-02 2.48178614e-01 -7.26222660e-02 6.05687346e-02 -1.22748037e-02 2.81384033e-02 7.27318966e-01 -3.85242615e-01 -1.38143318e-01 -1.66272038e-01 4.76390935e-03 -3.69728033e-02 -3.72687427e-05 4.63343769e-05 5.00520766e-05 1.05629056e-03 -5.02725816e-05 3.08745292e-03 2.74572936e-03 1.66607751e-03 7.72526129e-04 5.76509829e-04 -3.38345451e-03 4.24793115e-04 -1.05232911e-02 -1.10028409e-03 -2.48112515e-03 4.94453634e-03 1.35924650e-02 -9.95099613e-04 -5.75305402e-03 -1.51963146e-02 2.26502536e-02 1.68066424e-02 3.31781421e-02 1.25499063e-02 1.59047680e-03 -9.26804413e-02 -2.70251950e-02 1.82761769e-01 9.51695125e-02 -2.01787461e-02 -2.44081693e-02 -1.00562809e-01 -1.79900741e-02 8.98048775e-02 8.22236320e-02 8.80384588e-03 1.03517473e-02 -5.13379307e-02 1.97495799e-01 1.39450230e-01 5.97103573e-01 5.41428483e-02 1.07742936e-01 6.97803502e-01 2.78149094e-05 4.08477226e-05 1.46763781e-05 -2.75713002e-04 -4.26887960e-04 1.80178218e-04 -6.83679206e-04 -2.80711997e-03 3.23347062e-04 -3.42915914e-03 -2.21168751e-03 7.24838232e-03 3.14008518e-03 -1.17563361e-02 -1.65558927e-02 1.26388876e-01 2.10172784e-01 -2.75753015e-02 -1.04274313e-01 -7.78384493e-02 1.07528512e-01 1.91816810e-01 1.81889731e-01 6.14774331e-02 1.24356283e-01 -1.11413497e-01 1.01614666e-01 3.76880856e-02 -9.53278868e-02 3.42435430e-02 -1.37925786e-01 2.86405358e-01 -2.83110230e-01 2.40389071e-01 4.79055424e-01 -1.56350912e-02 4.87227113e-02 3.16869211e-01 -2.41570858e-01 -3.78077493e-01 9.26853572e-02 -2.43163331e-03 7.04090313e-02 -1.40200079e-02 1.86559666e-04 -1.51163746e-04 6.62605771e-05 2.96686199e-05 -9.22271099e-05 7.93076645e-04 -7.43562116e-04 -4.01537580e-03 1.38339961e-03 1.30866917e-03 6.89408031e-03 -3.69506531e-03 -1.33981935e-02 1.57653636e-02 -1.29786992e-02 -1.52254000e-01 8.55836812e-02 -3.11255450e-02 -1.19737120e-01 -4.81145652e-02 -9.66485407e-02 3.90266644e-02 1.85497121e-02 -1.27049476e-01 -5.05478753e-02 5.47001905e-02 -3.59716372e-02 1.00120572e-01 -2.35070557e-01 4.81183452e-01 1.11813076e-01 8.53341129e-03 9.90204946e-02 -2.90557579e-01 3.09502204e-01 -4.38448337e-01 1.39321239e-01 -8.07089536e-02 4.11391232e-01 -1.03096966e-01 -4.20313251e-02 -1.23461893e-01 4.41325211e-02 -2.44641501e-02 -3.52059076e-06 8.12922069e-05 6.04633699e-05 -3.99102320e-04 3.94014720e-04 -4.52670206e-03 -7.08447250e-04 -5.38044517e-04 1.81337880e-04 -1.23515984e-03 6.92342672e-03 2.28556314e-03 1.21061400e-02 1.53325090e-02 -1.29874231e-02 4.02821032e-02 -1.39792046e-02 6.34424867e-02 2.52819088e-02 2.10315064e-02 -3.56141131e-02 -2.16704449e-01 8.48076953e-02 1.26935660e-01 6.84815873e-02 -3.01921632e-01 1.43383877e-02 1.26238739e-01 2.92905946e-02 3.90604966e-02 -1.50404998e-02 1.22534138e-01 1.32166966e-02 -1.62693011e-01 -6.89703908e-02 -2.33547775e-02 5.92855949e-02 -2.94160699e-02 -9.37478656e-02 -1.40707152e-01 -6.29361811e-01 1.40153910e-01 1.98343745e-01 5.20873301e-01 -3.43574797e-05 -3.25631982e-04 -1.70207807e-05 3.78372263e-04 -1.28295329e-03 2.59595548e-04 1.88849877e-03 -4.11042362e-04 -6.10873693e-04 -1.46775314e-03 6.59094155e-04 1.44000900e-02 -2.85455249e-03 1.52372139e-02 -2.46373022e-02 1.16040260e-01 1.68599657e-01 -4.68598268e-02 3.27420391e-03 9.71156014e-02 -9.93531806e-02 -7.20617087e-02 -1.54471501e-01 -4.56680449e-02 3.01372975e-03 8.18661864e-02 -7.06552152e-02 3.85421875e-02 4.40868948e-02 6.51166796e-02 1.03014267e-02 -2.87897138e-01 3.20332075e-02 1.43427803e-01 -2.45298917e-01 -3.45062011e-02 7.92881350e-01 1.24648025e-01 -1.37349070e-01 -2.29090020e-01 5.87814263e-02 -3.85324677e-03 2.76728091e-03 7.09560021e-03 1.99405560e-05 -1.39970627e-05 9.86319986e-05 -2.40303786e-04 -1.69645394e-03 -1.70582782e-03 -5.03073356e-04 2.46782389e-03 -3.96936036e-03 -3.21199791e-03 1.99614165e-03 -3.79284528e-03 1.28896631e-02 2.83303647e-02 -4.60229901e-03 -1.90285429e-01 1.48427180e-01 -1.74059461e-02 2.48241844e-02 6.54099108e-02 3.99399843e-02 8.97776866e-03 1.14055319e-01 4.35178325e-02 -1.65327583e-01 2.78435591e-01 1.03174561e-01 9.03444136e-03 7.97412089e-01 7.97694657e-02 1.38209209e-01 3.09028559e-01 -3.28187221e-02 6.79691660e-04 4.77963610e-02 2.92644603e-02 8.10535334e-02 -8.38915788e-02 1.19377098e-01 -1.06980852e-01 -4.77689796e-02 -2.01350817e-02 -1.61368332e-02 -7.28927615e-03 -1.34035049e-05 -2.50135519e-04 3.09305109e-04 -7.65780476e-04 -4.09648227e-04 -7.14543012e-03 -4.42877035e-03 -2.43201927e-03 -8.46198368e-04 -3.00868948e-04 1.66495174e-02 9.93288452e-03 -5.39623076e-02 3.31726477e-02 -5.78543511e-02 1.09124629e-02 4.67262079e-02 -1.15031930e-01 2.20902739e-01 -4.52456248e-01 -3.87425110e-02 8.71812041e-02 -9.92404277e-02 5.23307311e-02 -1.13000066e-01 4.62194388e-02 -3.13472996e-02 -2.31662511e-03 5.00703729e-03 8.20627926e-03 4.04856343e-02 9.23477602e-03 2.72136116e-02 -4.94842229e-03 -6.61577995e-02 -1.78653348e-03 -4.59203569e-02 5.98983181e-02 -1.83735979e-01 -1.15355713e-04 -8.40401324e-02 -7.48634671e-01 -1.51431870e-01 2.20656719e-01 -2.72024552e-05 -3.19938579e-04 2.06443546e-04 4.81209403e-04 5.04980462e-04 -8.30495338e-04 -1.38208707e-02 2.43732815e-02 -9.92936781e-03 7.78761256e-03 -3.69378569e-03 1.31743919e-03 -1.49121298e-02 2.61165532e-02 1.08268153e-02 -1.90144890e-02 2.85217292e-02 -4.39137978e-02 -6.08588615e-03 -2.05619993e-02 3.97367820e-02 -3.05341627e-02 -1.77602368e-02 7.61184529e-02 -9.22329294e-02 1.49714013e-01 -1.66133629e-01 2.87114909e-03 1.94103043e-03 -1.21166405e-01 -7.76570220e-01 2.26417565e-01 4.65342892e-01 -1.29999247e-01 -1.42482887e-02 -7.71651864e-02 3.82926904e-02 -2.70979748e-02 6.25631579e-03 -1.06192375e-01 6.77727957e-02 1.29218474e-02 2.02963221e-02 -1.47368803e-03 1.91152130e-04 3.76901914e-05 -3.78827414e-04 -4.12015341e-06 -1.61666083e-03 -4.86766664e-05 -3.59825842e-03 6.89942083e-03 3.23067987e-02 1.83950846e-03 -7.74429498e-04 5.60531789e-03 -4.23970896e-04 4.67325323e-03 6.58328225e-03 -8.44500582e-03 2.08431183e-02 1.17959697e-02 -2.03531114e-02 -5.74911751e-02 5.35967250e-02 -2.18691530e-02 1.83622886e-02 -3.33350698e-02 -4.96466157e-03 -6.76785236e-02 -9.94894011e-02 -2.78089638e-02 2.82350850e-02 6.09116615e-01 -3.50956213e-01 -6.83938248e-02 -3.71006886e-01 -4.29597264e-02 -3.06341247e-01 4.31557754e-01 -1.19272238e-01 5.94284394e-02 1.69492539e-01 -8.11293850e-02 2.09005065e-02 -1.80506657e-02 -2.00224886e-02 -2.95666331e-02 -5.55934660e-05 -3.98657421e-04 -1.90192147e-04 9.13531686e-05 8.03591630e-04 1.16062490e-02 -1.69132606e-02 -8.89026634e-03 -1.04079985e-04 -1.30990676e-02 -3.00997909e-03 1.38641310e-02 1.14548550e-02 5.54869862e-02 3.56144213e-02 4.04476421e-03 -3.44306353e-02 9.79232979e-04 -1.06154146e-01 5.71821833e-02 1.68484624e-01 2.46466100e-01 -1.62592494e-01 2.96955160e-01 9.58597559e-02 3.81749979e-02 -1.59970993e-01 8.16927692e-03 -2.11736709e-02 7.36697761e-02 8.34294300e-02 2.36752032e-02 3.97629235e-02 -1.72276739e-02 -3.65075172e-02 -8.67169915e-02 -3.06176896e-02 4.59855786e-02 2.54309261e-02 -1.18009563e-01 -6.88516465e-02 2.19361925e-01 -7.79493559e-01 1.91387110e-01 -8.32154380e-05 3.33439162e-04 1.75322577e-04 -2.40507291e-04 3.63491372e-04 4.16348714e-03 -1.14603944e-03 2.29385803e-03 -6.22231244e-03 -5.00049249e-04 -1.24747988e-02 -3.42862830e-02 -1.29832843e-02 -1.30382192e-02 4.47837150e-02 5.18808431e-02 1.69964206e-02 -1.84236514e-01 -8.37925607e-02 -2.17038764e-01 5.36629524e-01 -3.90942396e-01 -9.51283591e-02 -1.28150059e-01 2.52365509e-01 2.47435511e-02 -4.98199959e-02 -2.59785367e-01 9.49425636e-02 -8.90842808e-02 -5.27898273e-02 5.97154174e-02 -2.87754105e-01 -1.21766975e-01 -1.23381760e-01 -3.89609460e-01 4.27272080e-02 3.98576482e-02 2.76180693e-02 9.60237090e-02 5.38188863e-02 1.68950416e-02 9.31839195e-03 6.59098181e-03 -3.41543899e-04 -2.13900991e-04 -3.14334971e-04 1.37237229e-03 -9.97048199e-04 -4.08802345e-02 -1.69609822e-02 -1.38239945e-02 1.16358860e-02 -2.95975819e-03 1.35103385e-01 4.01732470e-01 4.50458515e-01 -1.26051211e-01 2.33214121e-02 -4.34647776e-02 -2.63708777e-02 2.32849934e-02 -1.24733778e-02 -3.78770212e-03 -7.58984611e-02 2.80672679e-01 -7.03219869e-02 -1.10161102e-01 -1.87366379e-01 -1.97566186e-01 -4.77967126e-02 -3.46438949e-02 9.26385437e-02 -9.16653241e-02 -5.85996852e-02 1.17318339e-01 -9.30712106e-02 -1.55724686e-01 -1.22962371e-01 -1.45483315e-01 8.41885528e-02 4.67103833e-01 9.72663264e-02 2.72541593e-01 -3.99070229e-02 3.10576900e-02 3.49944752e-02 1.45885417e-03 5.67797956e-04 4.52387224e-04 -4.35851121e-04 2.41827131e-03 3.07731559e-04 -5.72058548e-02 -2.19925432e-02 -1.14628614e-02 1.57587795e-02 9.60121565e-03 1.45995594e-01 4.89597345e-01 -3.53925128e-01 9.53737879e-02 -5.26445913e-02 -1.01520300e-02 -4.50431308e-02 2.13284665e-02 -1.01773453e-01 1.19921863e-01 -3.42206060e-02 8.44831810e-02 -7.32376211e-03 6.02579969e-02 -3.62037692e-01 -1.51754350e-01 -7.99225737e-04 -1.63714057e-01 1.11732386e-03 -9.46446666e-02 -1.27899349e-01 -8.86018089e-02 -3.18453080e-01 -1.42090606e-02 -7.02348328e-04 -2.02482353e-01 2.80987185e-03 -4.10959709e-01 -1.21599003e-01 -1.27092520e-01 3.07589473e-02 -2.45063746e-02 -1.47279543e-02 3.50066515e-03 4.09748248e-03 2.96334600e-04 4.70335987e-03 1.47171470e-02 -4.99573990e-01 5.47770823e-03 -1.55874208e-02 9.38567895e-04 -1.76635340e-02 2.19168789e-02 -1.94954099e-03 6.83729590e-03 8.15642911e-02 4.06383070e-01 2.03610778e-01 5.67609063e-02 -2.34790812e-02 2.12802823e-03 -7.82507003e-02 -5.31323094e-02 9.70833958e-02 -2.91481707e-02 -1.10165790e-02 -1.10647586e-03 -7.79969994e-02 5.96942061e-02 -6.91587266e-02 1.93777673e-02 -8.99718307e-03 -2.10032461e-01 4.39818577e-02 -1.31350187e-01 -9.92181882e-02 -4.67566416e-01 2.59479344e-01 3.40741914e-01 1.34794732e-01 3.23995280e-02 2.44855192e-02 -4.24998527e-02 1.52356509e-02 -2.54486048e-02 -2.00017712e-03 -9.03951258e-03 1.25040457e-04 -1.96235671e-04 -1.51786581e-04 -8.48150431e-04 -1.60338792e-04 -1.44348175e-03 -4.04222678e-03 -3.35867905e-03 6.05228051e-04 1.12689613e-03 -5.05803256e-03 -1.58381204e-03 -1.06145553e-02 -6.06136779e-04 1.04620799e-02 -4.51367507e-02 2.77517048e-04 -6.92310907e-02 -2.74756474e-04 -1.91750028e-03 1.06502648e-02 2.45365291e-01 -1.79476034e-01 -1.27698082e-01 -1.10484142e-01 5.52346458e-01 -2.55866679e-02 -5.04217872e-01 -2.13270562e-01 2.79459055e-02 5.76898782e-02 2.76422604e-02 -3.73642535e-02 1.12590831e-01 2.41186884e-02 9.65852279e-02 -4.71446734e-02 5.61486625e-02 8.87536451e-03 -3.93116075e-02 -1.72975928e-01 1.79283006e-01 2.40074865e-01 3.32902777e-01 6.88148924e-05 9.74946878e-05 -2.78679176e-04 6.85863346e-05 9.78531312e-04 3.58996824e-03 1.19344237e-03 9.28480207e-04 -3.26809152e-03 -3.75183288e-03 -6.45049322e-03 -3.32557072e-03 8.86541425e-02 -3.69975316e-02 4.61488325e-02 -2.15340348e-02 -8.50527994e-02 1.63725325e-01 -2.43278241e-01 5.65976657e-01 1.17742432e-02 -1.06390704e-01 -4.24292009e-02 -4.61284796e-02 1.52692426e-01 1.06953535e-01 2.55904074e-01 -4.79860466e-02 -2.00276926e-01 -3.21095023e-02 -2.05291463e-04 3.64439509e-01 -8.37287239e-02 -1.15865079e-01 -1.53332198e-01 7.24150299e-02 7.86078046e-02 -3.33281940e-02 -2.60567190e-02 9.22280015e-03 1.01103956e-01 -4.37683458e-01 -8.69205608e-02 1.26710186e-01 2.49578159e-06 2.63032836e-04 -2.40829007e-04 4.76525213e-05 -1.72028002e-04 9.90649771e-03 5.84154115e-03 3.44364907e-03 -1.69433724e-04 5.22937851e-03 -2.59572588e-02 -1.97596649e-02 2.46221518e-02 -2.94685239e-02 6.15026249e-02 -3.05438050e-02 -1.80787132e-02 4.20880183e-02 -1.86206766e-01 3.48671236e-01 1.18929456e-01 4.75153191e-02 1.73880370e-01 -1.31106986e-01 9.88519459e-02 -2.62878825e-02 -1.09152530e-01 -1.64267790e-01 2.78973231e-01 5.95982208e-02 -1.59352387e-01 -5.81482554e-01 1.34137274e-01 8.39041594e-02 2.21505680e-01 -1.16750524e-01 -2.01972451e-01 1.88579019e-01 -9.32361637e-02 6.03473742e-03 -1.71630253e-01 -2.58091975e-01 -1.23033780e-02 8.43767519e-02 1.13590432e-04 4.61864530e-04 2.16404303e-04 -7.24998746e-04 -5.50161224e-04 -1.19439538e-02 1.17450593e-02 4.75197055e-03 4.08442890e-03 1.58627854e-02 -2.55374463e-03 -1.50373168e-02 5.76743409e-04 3.35330918e-03 1.04868675e-02 2.47974211e-02 2.43287463e-02 5.06662872e-02 1.95159549e-01 -9.13705966e-02 -2.56522106e-01 -3.15879829e-01 1.38735333e-01 -3.45650588e-01 -1.32277533e-01 -2.00256659e-01 3.60989475e-01 -4.39136662e-01 6.72788612e-03 4.41240604e-02 -8.16371726e-02 2.08638462e-02 1.13532655e-01 -1.13270409e-02 1.67956892e-01 7.31120627e-02 6.73121043e-02 7.23455598e-02 2.86341573e-02 -2.08607853e-02 6.31730003e-02 1.19879087e-01 -4.10335312e-01 1.01891005e-01 6.29523697e-06 5.18937209e-04 -2.99909471e-05 2.02320869e-05 -1.27094456e-03 -6.66617021e-03 1.75602693e-02 1.01724482e-02 2.41527180e-04 6.28668516e-03 3.35678906e-03 -1.74060616e-02 -1.38318708e-02 -1.09698513e-01 -5.52968970e-02 -5.66712571e-02 5.57596769e-02 -1.32838991e-01 2.64028278e-02 -4.77784482e-03 -9.93191085e-02 -2.55608226e-02 9.88784343e-02 -3.93929278e-01 -5.92865018e-02 3.79382951e-01 1.98579246e-01 5.26230140e-01 -7.50511661e-02 -2.13556508e-01 -1.91215927e-01 -1.52899988e-01 -3.03189582e-01 -5.67422956e-02 -5.90851253e-02 -9.02080650e-02 -1.16004670e-01 3.34906062e-02 -2.75597920e-02 -3.89829324e-02 -1.50428714e-01 9.86448904e-02 -2.14546888e-01 8.21229238e-02 -6.80267589e-05 2.48688645e-04 -1.32032838e-04 7.26590381e-04 2.10758510e-04 -4.30992491e-03 1.41301323e-02 5.86956918e-03 -2.30120240e-04 4.02573233e-03 2.10288051e-03 -2.45013679e-03 1.83162875e-03 -1.31466676e-01 -5.11632355e-02 -4.19911625e-02 6.68849592e-02 1.95140177e-01 -7.91463504e-02 1.25365240e-02 -2.97653733e-02 -2.36496670e-01 3.93779411e-01 -2.12384121e-01 -1.97710943e-01 6.05957603e-02 -7.10643135e-01 -2.41244964e-02 -1.16939563e-01 -9.92453220e-02 1.82429804e-01 1.82532475e-01 -3.92978806e-02 7.69777432e-02 -2.80729418e-02 6.82702436e-02 8.22858221e-03 3.24170526e-02 -3.79237750e-02 -4.55709685e-02 2.94353246e-02 -3.80368357e-02 -1.12759126e-01 3.21120136e-02 -4.56947722e-04 -3.72817700e-05 -2.73251436e-04 8.42363947e-04 -7.70972224e-04 -4.18164788e-02 -1.46753770e-02 -1.17679332e-02 2.24380889e-03 -3.68559889e-03 1.36134975e-01 3.72847287e-01 4.25685224e-01 -1.24350869e-01 5.03171059e-02 -2.82807165e-03 1.98008731e-02 -1.03461805e-01 -2.33580180e-02 -1.04249993e-01 2.08969440e-01 1.92190206e-02 -1.00825892e-01 -3.37888334e-01 2.36894683e-01 -3.37636074e-02 -2.21512285e-02 7.89663913e-02 5.77694892e-03 8.08329390e-02 7.04704030e-02 7.01011466e-04 2.27234067e-01 1.14887187e-01 9.05402635e-02 2.08120961e-01 -2.27297909e-02 -4.47675332e-01 -1.13439259e-01 -2.09250058e-01 -5.44422849e-03 -8.06347421e-03 -2.27593406e-02 1.32068681e-02 5.44498378e-04 5.15557776e-04 -3.09049074e-04 2.25445469e-03 1.43680089e-03 -5.54688946e-02 -1.86298245e-02 -7.79806860e-03 1.22488152e-02 4.40446471e-03 1.51063241e-01 4.70206591e-01 -2.99013443e-01 7.94657105e-02 -6.50586306e-02 2.28355166e-02 -1.71552080e-02 -2.95614478e-02 -6.78005365e-02 1.19539770e-02 2.60667112e-01 -3.56402529e-01 -4.39495584e-03 1.02019634e-01 -1.12576599e-01 1.77959176e-01 1.51028517e-01 1.92395421e-01 -1.00006553e-01 1.32363710e-01 1.36690158e-01 2.21490980e-03 2.79108022e-01 1.53540624e-01 4.96943721e-02 1.62979987e-01 -6.59065068e-02 3.75130890e-01 7.97247359e-02 8.31899748e-02 -3.13080113e-02 1.70285647e-02 6.03795895e-03 -1.01571351e-02 6.12326128e-04 2.14152385e-04 -3.13368256e-04 9.93180901e-04 2.72278938e-03 -9.57567995e-03 4.36677435e-03 2.09966920e-03 4.66020225e-03 -3.60230911e-04 4.16554712e-03 1.16296209e-01 -2.04425808e-01 -3.32833254e-01 8.33328180e-01 -8.20645181e-02 1.06284610e-01 -2.18928964e-01 1.56209533e-02 -3.06574757e-02 -1.50604132e-01 9.77084346e-03 1.39244483e-01 1.08573555e-01 9.95806858e-02 1.15304009e-02 -6.35622020e-03 -1.62240498e-02 -2.76864478e-02 -1.59358114e-02 2.98738963e-02 1.09768049e-02 1.02818157e-02 -3.10879585e-02 -5.74227863e-02 2.51914317e-02 1.97129855e-02 1.15288666e-02 5.99761416e-03 8.21660220e-03 5.37706090e-03 -9.77777787e-03 1.70803926e-03 8.13288158e-03 3.87867086e-03 3.37517357e-04 4.72914483e-03 1.48350603e-02 -4.99970588e-01 1.06747007e-03 -1.33496644e-02 6.17669848e-04 -1.45394671e-02 2.58543676e-02 3.61734883e-03 8.62486392e-03 9.64800926e-02 4.35918108e-01 2.15542973e-01 8.01099329e-02 -2.06919602e-02 7.24639909e-02 1.92168543e-02 -3.52696450e-03 -1.14530488e-01 1.62091677e-02 1.07527814e-01 -1.19690391e-01 2.93628220e-02 1.14775597e-02 2.32899426e-02 5.61822507e-02 -9.15637565e-03 1.62315369e-01 -2.54984943e-02 1.30107959e-01 5.33614530e-02 4.51925087e-01 -2.56783774e-01 -3.26785765e-01 -1.34156292e-01 -2.21929015e-02 -2.79681944e-02 4.87148296e-02 -2.29097628e-02 1.27538838e-02 1.36786191e-02 7.37149003e-03 4.01831091e-03 1.17878387e-03 5.09550279e-03 1.47773454e-02 -4.95438397e-01 -1.82891969e-02 2.76737157e-02 2.49530256e-02 -2.57769466e-02 4.50895786e-02 3.73270717e-03 -1.94956320e-02 -1.15721174e-02 -3.15017191e-01 -3.28757206e-01 -9.88008415e-02 -7.93703853e-02 -6.32943922e-01 1.28034617e-01 2.30495264e-01 -2.93358640e-02 -1.32879789e-02 1.20496370e-01 1.19304945e-01 -7.22573774e-03 -9.46367233e-02 -4.28944413e-02 -7.46523560e-02 -4.49587417e-02 4.95109481e-02 3.13114809e-02 4.42426378e-02 2.31315986e-02 7.97689331e-03 -1.43767955e-02 1.78048159e-02 -1.12542170e-03 5.18028233e-03 -8.21404761e-03 -2.21134487e-03 2.57305175e-02 -3.70872135e-06 -1.70303309e-02 4.04009629e-03 4.17427711e-03 1.97548774e-03 4.10573072e-03 1.42388172e-02 -4.96353073e-01 -2.18991461e-02 3.20994332e-02 2.14174537e-02 -2.14726340e-02 4.59251909e-02 1.32340852e-02 -1.93575651e-03 -1.68578943e-01 -5.30040981e-01 -8.47216714e-02 -3.41130326e-02 1.17444431e-01 5.56985391e-01 -7.09757271e-02 -1.72141119e-01 4.97777794e-02 2.77319589e-02 -2.17456737e-01 8.06189170e-03 5.68829303e-02 2.23302424e-02 8.78824729e-02 -1.27456298e-03 5.99328104e-02 -1.47433822e-03 -4.67127891e-02 -4.17581127e-02 2.35015514e-02 7.49348334e-03 1.18042474e-02 -3.16868859e-02 -9.13448393e-05 -1.49865736e-02 1.35563732e-02 -3.96871015e-03 -1.84988181e-02 1.24368814e-02 4.42228459e-03 -2.04897975e-03 
       </Eigenvectors>
-      <Eigenvectors Class="Background" ClassIndex="1" NRows="3" NCols="3">
-        -1.00392448e-02 -1.59421930e-02 -9.99822514e-01 -2.62160531e-02 -9.99525015e-01 1.62006854e-02 9.99605888e-01 -2.63740428e-02 -9.61653493e-03 
+      <Eigenvectors Class="Background" ClassIndex="1" NRows="44" NCols="44">
+        7.39471609e-02 -2.85761837e-02 4.04631843e-02 -9.94811452e-01 -3.00479278e-02 -3.68358576e-02 -7.79026536e-03 9.78084595e-03 -6.37047060e-04 3.39337628e-04 -9.12630416e-04 -1.46064036e-04 2.14038314e-03 -8.11971000e-04 -7.59781701e-05 -4.10512768e-04 3.21631699e-04 -4.49363839e-04 3.31914991e-04 8.12837814e-04 2.18715598e-04 4.53845593e-04 -8.72987413e-04 -1.79725434e-04 -9.85416128e-04 -1.88592886e-04 1.75292824e-04 -4.33051339e-04 -3.08101623e-04 -3.59488310e-04 -1.91193744e-05 1.86940519e-05 7.33291429e-04 3.12248957e-04 5.50397558e-04 -4.88534190e-05 -1.56748854e-04 -3.84679011e-04 -1.04617540e-04 -1.92863554e-04 -2.65691908e-04 1.95842797e-04 -3.12666914e-04 5.29730604e-04 1.29561242e-03 6.96210429e-04 2.86969935e-03 -3.92497876e-02 8.66878772e-02 9.82842633e-01 6.92363926e-02 -1.35761394e-03 2.08888628e-03 8.74902614e-03 -1.41339172e-01 1.27888535e-03 -5.11498910e-03 1.18904034e-03 2.40600681e-04 -9.10979092e-04 2.37106974e-03 -5.67510183e-04 -1.64609987e-03 7.84394235e-04 -3.43063939e-03 1.89023574e-03 -2.33550204e-03 1.64787181e-03 3.79512210e-04 -4.29427621e-03 1.53421471e-03 -9.53526513e-04 -4.50436102e-04 -6.37333730e-04 1.00435930e-03 6.21541888e-04 -1.49841662e-03 -6.60190249e-04 -1.56378045e-03 5.99953962e-04 -6.96222202e-04 -1.59709949e-03 -1.21921980e-03 -1.26036833e-03 3.62747754e-04 3.70897014e-04 -1.41266696e-03 9.16207297e-04 -8.21656053e-04 8.05006845e-04 -1.26633722e-04 -6.99353768e-03 3.03577494e-02 1.43605328e-01 -6.29403886e-02 -2.35065124e-02 1.62855855e-03 -6.19883084e-02 9.84468776e-01 -1.65457653e-02 5.45646357e-03 6.37182579e-03 8.60419868e-03 8.04878051e-03 1.12804229e-02 6.63451869e-03 -8.40706639e-03 -2.85224831e-04 -4.25927963e-03 1.16340019e-03 3.74642671e-04 -2.46889332e-03 2.11338529e-03 3.69456167e-03 -3.18335094e-03 2.53475449e-04 2.51667525e-03 4.21291113e-03 4.23684434e-04 1.41227052e-03 -1.17183279e-03 -1.78509664e-03 3.18934066e-03 1.99568660e-03 3.72181464e-03 3.34144814e-03 2.97458037e-03 2.88290364e-03 -2.12949687e-04 7.87066992e-04 2.09379135e-04 -8.77875703e-04 -1.91328156e-05 -1.13364114e-03 2.64862791e-03 1.54693451e-03 1.09173665e-01 4.79612239e-02 -9.77857687e-01 -1.18781623e-01 9.69448730e-02 1.17653599e-02 -7.50270625e-02 9.20369886e-03 -8.57926670e-03 -4.68611906e-04 3.86466844e-03 -1.59446791e-03 2.29450307e-03 4.10758556e-03 -5.13603069e-03 1.32864189e-03 -6.31333726e-05 2.83606190e-03 3.28848071e-03 -3.15217202e-03 1.08385069e-03 -3.78256799e-03 1.69512592e-03 -1.33477855e-03 -1.58661232e-03 -3.65473730e-05 2.85381595e-05 4.56344313e-04 9.85047455e-04 7.23051094e-04 -3.93506771e-04 -6.06174403e-04 7.11411071e-04 -8.76878639e-04 1.65528118e-03 4.08002287e-04 -4.95195286e-04 -9.65378996e-04 -1.52013638e-03 1.40655469e-03 3.22222526e-02 -9.65781527e-02 -4.89202506e-01 -1.50336204e-02 1.07286810e-02 7.52795933e-04 5.81016363e-03 4.12863798e-02 6.51236862e-02 2.75577167e-01 1.75905819e-02 -2.55822963e-02 -2.05614961e-02 -3.15374570e-02 1.05354021e-02 3.55624288e-02 -1.05872185e-01 -9.89955570e-02 -8.83429751e-02 6.63890613e-03 -4.05774686e-02 -1.27070813e-01 2.79558867e-01 -4.55083192e-01 1.00483103e-02 -8.93115252e-03 -7.34565645e-04 2.46619621e-02 -1.37907802e-02 -4.59888171e-02 3.19225492e-02 1.10221786e-01 -7.99757828e-02 1.64450178e-01 -1.19626433e-01 7.64192550e-02 2.33144665e-01 -1.14354507e-01 2.75903751e-01 -3.16859246e-01 7.34156734e-03 -5.28221541e-02 1.24149624e-01 1.79810248e-02 5.58186238e-02 4.88405493e-01 -9.26854368e-02 -1.46620718e-02 4.82288088e-04 -5.01740526e-03 3.35011611e-02 -7.85883984e-02 2.68811052e-01 -5.41940700e-02 -5.30580104e-03 -3.08489841e-03 4.56542976e-03 -6.14894672e-02 1.77910664e-01 7.14816705e-03 1.09225905e-01 -7.30795195e-02 3.78119868e-01 -4.72012173e-02 -4.80159442e-01 -8.98794263e-02 -9.91264089e-03 -3.36493578e-02 1.61576168e-01 5.65607739e-02 -9.55694581e-02 -8.31982060e-02 1.24678097e-02 -1.56637060e-02 2.72866628e-02 3.20713290e-01 2.20263205e-01 -1.35410910e-01 -7.56663491e-02 -2.71137990e-04 -1.40597260e-02 3.16509749e-02 -7.90584856e-03 4.31750802e-03 -3.84322743e-02 5.11637427e-02 -1.15526384e-02 4.11122003e-02 -4.94887198e-01 4.72698362e-02 -4.18245629e-02 -3.63265502e-02 -5.42237940e-02 5.31863134e-03 -3.00566426e-02 2.69572824e-01 7.36671557e-02 -5.58058846e-02 -8.08513100e-04 1.47609501e-01 5.86975483e-03 3.67332264e-01 5.79905098e-02 -9.59827467e-03 -1.73257657e-01 1.18471895e-01 -2.52790919e-01 -9.52738136e-02 -2.81562331e-01 -7.91981958e-02 1.76378109e-01 1.88970463e-01 -8.69548494e-02 -1.49067425e-01 -1.84218724e-01 2.46507579e-01 8.07544915e-02 1.96867226e-02 -6.81891047e-02 1.02528525e-01 -1.00126315e-02 2.15794728e-02 1.29493408e-01 6.38294023e-02 -3.64391420e-02 -5.27964427e-02 -1.36002868e-01 -1.14386603e-01 -1.75228262e-01 -2.17632037e-02 -1.52199996e-02 3.92594358e-03 3.24886571e-02 -9.65428866e-02 -4.89484285e-01 -1.46138481e-02 9.72688272e-03 -1.06507749e-03 3.52050635e-03 4.39755478e-02 6.09036794e-02 2.78000573e-01 1.48774262e-02 5.57718884e-02 2.25871993e-02 7.84742282e-02 4.56894133e-02 -8.10468144e-02 1.63734660e-01 2.26558971e-01 6.57170131e-02 -3.71409186e-01 2.77249035e-02 4.27736027e-01 -9.62399395e-02 8.48949032e-02 -1.53094336e-03 7.93368368e-02 8.89708295e-03 3.31684924e-02 4.55812949e-02 7.68684042e-02 -4.78012426e-02 -1.95890825e-01 1.44434838e-01 -3.50285940e-01 9.29771764e-02 1.74278326e-02 -2.19479725e-02 -2.16346947e-02 -8.43011934e-02 7.15875225e-02 3.91010583e-02 5.96681148e-02 8.11883205e-03 -2.36435904e-02 5.59075618e-02 4.88334653e-01 -9.27748788e-02 -1.47069830e-02 -7.65314622e-04 -3.21355325e-03 3.78628396e-02 -8.17815344e-02 2.67186967e-01 -5.26805001e-02 -2.62923830e-03 1.33410575e-02 1.24132760e-03 3.32738991e-02 4.61522179e-01 -2.92691942e-01 -1.72201609e-01 4.39649944e-02 -2.38428847e-01 6.62936991e-02 3.76697393e-01 2.19208645e-03 -2.31106455e-02 8.47677296e-03 -6.96814263e-02 3.13994048e-02 4.66119252e-02 4.69426982e-02 4.97024515e-02 -1.33584680e-01 1.91447047e-01 -2.20718223e-01 -1.03026841e-01 5.85805148e-02 1.54039299e-02 -2.02243044e-02 -1.45903054e-02 -1.69033217e-02 -1.18082331e-02 1.40049500e-03 -2.85799693e-03 -1.59403186e-02 3.35967301e-03 -2.16741709e-02 -4.94947321e-01 4.72683520e-02 -4.15478916e-02 -3.61962038e-02 -5.30773202e-02 4.88043239e-03 -2.95002600e-02 2.62487900e-01 6.94893348e-02 -5.77360624e-02 -2.33442618e-04 -1.30008451e-01 -3.10112380e-01 1.47759374e-01 6.29725972e-02 2.63802585e-02 3.80744210e-01 -1.32395591e-01 2.35013011e-01 1.53734283e-02 2.28667175e-01 -9.76583004e-02 1.23254978e-01 -4.37186042e-02 -2.16801918e-02 -1.52788808e-02 3.49725094e-01 -1.90697405e-01 -1.15103191e-01 -2.62800243e-02 2.41245859e-02 -5.34530008e-02 -2.53091593e-02 -4.59416442e-02 -7.17359833e-02 -2.85826670e-02 -4.67207668e-03 7.16096001e-03 5.34352099e-02 5.22950920e-02 1.96986886e-01 2.57957480e-02 -3.87276452e-02 -2.05905062e-02 3.23494440e-02 -9.65863087e-02 -4.89403212e-01 -1.42427003e-02 1.13976323e-02 -4.12697152e-04 6.14552194e-04 3.87277903e-02 6.71322555e-02 2.78137784e-01 2.21539040e-02 -1.88070618e-02 -1.05843668e-02 -4.86972475e-02 -4.96526739e-02 4.92174422e-02 -5.44704364e-02 -1.28003997e-01 2.02527560e-02 3.63539122e-01 1.17202005e-02 -3.04645701e-01 -1.80437757e-01 3.66953946e-01 -6.85889437e-03 -6.87844731e-02 -9.45682483e-03 -6.16405874e-02 -3.56562229e-02 -1.24794250e-02 2.80523749e-02 8.13328509e-02 -6.03517900e-02 1.87297781e-01 2.47760830e-02 -9.55822050e-02 -2.12159433e-01 1.38841225e-01 -1.92532396e-01 2.43693603e-01 -4.72212638e-02 -6.67319722e-03 -1.30687112e-01 6.65469231e-03 5.56392513e-02 4.88362921e-01 -9.32631053e-02 -1.49462533e-02 6.48433779e-04 -3.52973662e-03 3.37592070e-02 -8.09974169e-02 2.71169662e-01 -4.86712659e-02 -2.22820347e-03 -1.97533166e-02 -4.62510783e-03 3.12723247e-02 -6.36707336e-01 2.81072007e-01 6.97330661e-02 3.14159215e-02 -1.42575166e-01 -2.41699164e-02 1.03675611e-01 8.53561749e-02 3.08877908e-02 2.59299697e-02 -8.83167900e-02 -8.54827453e-02 4.40508753e-02 4.21718915e-02 -7.65781809e-02 1.48430978e-01 -2.19570303e-01 -1.01351406e-01 -1.14203172e-01 7.64215831e-02 6.20237081e-02 2.33504775e-02 2.77484138e-02 -1.41692950e-02 2.13248196e-02 -6.47831445e-03 4.34037936e-02 -3.66139870e-02 7.47054174e-03 -2.06686942e-02 -4.94949470e-01 4.67518905e-02 -4.17938427e-02 -3.45344203e-02 -5.39993958e-02 1.09993431e-02 -3.52307781e-02 2.64942491e-01 7.80066955e-02 -5.34584731e-02 3.03999173e-03 -2.54143671e-02 2.97947117e-01 -5.18579648e-01 -1.22191854e-01 -2.17895705e-02 -2.09077435e-01 -8.17760584e-03 1.49439208e-02 7.13682759e-02 5.68704135e-02 1.79820274e-01 -3.01247070e-01 -1.40520524e-01 1.07572972e-01 1.60524927e-01 -1.65735251e-01 -5.36267454e-02 3.48930877e-02 7.51337897e-03 4.50759462e-02 -4.78276647e-02 3.29484916e-02 2.43943472e-02 -5.92088419e-02 -3.40706803e-02 3.97606160e-02 4.57328123e-02 8.06179825e-02 6.16877524e-02 -2.08096458e-02 2.61327915e-03 5.67208823e-02 1.74666623e-02 3.39657272e-02 -9.79058174e-02 -4.88702999e-01 -1.50902040e-02 -2.62382486e-02 3.81533594e-03 -1.41022241e-02 -1.25177180e-01 -1.95455405e-01 -8.31509647e-01 -5.57732589e-02 -1.22507631e-02 7.27831896e-03 1.79198215e-03 -5.85908003e-03 -4.01571657e-03 -3.93424860e-03 3.54792479e-04 2.88746229e-03 1.55629949e-03 8.34278492e-04 3.94035034e-03 -2.86376430e-03 2.85151307e-03 -1.39724591e-03 -1.51605573e-03 1.29529088e-03 3.90530991e-03 3.88176464e-03 -1.85308090e-02 -1.22959862e-02 4.33783128e-03 -4.08667774e-03 -1.50270424e-03 1.97893391e-03 1.84610787e-03 1.22818302e-03 -2.91570578e-03 1.10011474e-03 1.82368446e-03 5.98245184e-04 -1.48933710e-04 -1.43496502e-03 -9.60827041e-04 5.58356607e-02 4.86830712e-01 -9.13829683e-02 -9.68320476e-03 -1.44130419e-02 1.04153464e-02 -1.10425751e-01 2.42766408e-01 -8.09649866e-01 1.54344311e-01 8.58734113e-03 9.90267151e-03 -7.64024974e-04 -3.88529254e-03 -2.81116327e-03 4.28652018e-03 -6.71684274e-03 -2.69171572e-03 2.73153469e-03 4.92444257e-03 -5.60246723e-05 2.16990176e-03 1.76881434e-03 -8.57096758e-04 -3.57053488e-03 -2.04813348e-03 4.93499060e-03 -6.01525306e-03 1.45337223e-02 5.63203084e-04 7.15201403e-04 1.38272597e-03 -3.16616836e-03 4.75431627e-04 -1.90316720e-03 -2.82184519e-03 1.00924325e-03 -3.85254966e-04 -1.61245593e-03 5.75867338e-04 -2.21955144e-03 1.43747122e-03 6.57384192e-04 1.32103474e-03 -4.92843380e-01 4.91212137e-02 -4.01632473e-02 -5.21225914e-02 1.66113169e-01 -2.53439790e-02 9.42355906e-02 -7.97195405e-01 -2.23143975e-01 1.64385478e-01 -4.70838637e-03 7.93421605e-03 7.57381844e-03 3.56317192e-03 1.79294754e-03 4.79863690e-03 1.84311400e-03 2.23435695e-02 3.12777437e-03 8.75320238e-03 -3.83516393e-03 -2.95961003e-03 1.35698467e-03 -4.54719721e-03 8.25781781e-04 3.75046805e-03 3.02562790e-04 -2.33508655e-03 -7.13883299e-04 -1.04099983e-03 -1.24774188e-03 -1.31120467e-03 2.35638822e-03 -2.10643082e-04 1.50763855e-03 -1.16427637e-03 1.30801456e-03 -3.07419744e-04 1.98154482e-03 4.00768064e-04 -9.55713794e-04 -6.62431518e-03 -2.82977910e-03 -7.44001008e-04 -1.22612789e-04 -4.42277010e-05 2.16056744e-05 -3.13289414e-04 -2.37930736e-04 1.99415962e-03 1.59975887e-04 2.01993195e-04 -1.75378245e-04 -1.55795914e-03 6.04643263e-04 -4.84336533e-03 -9.05538888e-03 -4.60302481e-02 -3.38210443e-02 2.38299906e-02 -8.85708249e-02 -7.44092142e-02 -7.14803587e-02 -2.48067875e-02 -5.30156225e-02 -1.07993176e-01 2.05473278e-01 -4.84727134e-01 1.54162029e-02 1.09731102e-02 -1.54799110e-02 7.08516803e-02 3.68875122e-02 -1.09026265e-01 -1.29433896e-01 -2.03796669e-01 5.89226373e-02 -1.79202518e-01 9.67396241e-02 -6.70881087e-02 -4.73756072e-01 4.98023700e-01 -2.55163435e-01 -1.20349980e-02 8.24126233e-02 -1.27354662e-02 -1.18366083e-01 -3.39453755e-03 2.72011079e-05 8.16169384e-05 6.63703458e-05 5.88096392e-05 -1.17484268e-04 -8.76587765e-04 -1.88959148e-03 -9.68864771e-05 2.09631513e-04 -2.92746533e-03 1.75230015e-05 -4.62294352e-03 1.50072046e-02 -1.67974778e-02 5.98855486e-02 2.52281243e-02 2.22909451e-02 -6.85460291e-02 1.96278104e-01 -2.91562775e-02 -3.39618627e-01 1.51103937e-02 -2.21057600e-02 2.20540544e-02 7.23328819e-03 -1.16719458e-02 -2.94226128e-02 -5.92033534e-02 1.39815803e-01 5.87482268e-02 1.21800413e-01 -4.70145794e-01 -2.06200194e-01 2.81526367e-01 1.64287398e-01 3.87297132e-01 -3.17819422e-01 -2.29800057e-01 1.34890301e-01 5.77248211e-02 2.06347990e-01 -2.02276429e-01 1.10170099e-01 3.07682675e-02 2.51948312e-05 -1.70927354e-05 8.10191502e-05 -1.73272444e-03 5.35280630e-04 -7.50584270e-05 -1.81959609e-03 -2.95214575e-05 -9.82829762e-04 2.16737996e-03 -4.91894905e-03 8.20893201e-03 -6.41575142e-03 6.66575914e-02 -9.20810210e-03 2.48914339e-02 -3.65558965e-02 5.82418790e-02 -8.19814809e-02 -6.91392525e-02 -6.04978039e-02 -1.18241931e-01 -3.69244451e-03 8.49060928e-02 2.22069140e-01 8.65923458e-02 -5.70135879e-02 1.70064980e-01 1.03692011e-01 2.40365497e-02 4.18186210e-02 1.01163629e-01 -3.79915781e-01 -2.16296592e-01 -3.07664179e-01 6.69039610e-02 2.17859271e-02 2.01650518e-01 1.46779552e-01 2.38797754e-01 2.47652819e-01 -1.68381370e-02 2.13982301e-01 -5.69167833e-01 4.92352080e-06 -1.21578841e-04 -1.29248145e-04 8.90092817e-05 -5.92611207e-04 -1.06181163e-03 8.16193614e-05 2.14817394e-03 -5.10601218e-04 5.66574372e-03 1.57663808e-03 7.30837975e-03 1.14421486e-02 3.85576171e-02 3.98319987e-02 -9.00061893e-02 1.08499384e-01 1.65535582e-01 1.19425708e-01 -2.21351613e-01 1.75163207e-02 2.96922158e-01 -1.42846049e-01 1.38055340e-01 3.19926310e-02 -2.17083845e-02 6.93610565e-02 -2.70961675e-02 -2.39239949e-02 -1.78135117e-01 -8.99311869e-02 2.29574380e-01 -1.86865620e-01 4.86911323e-01 -1.13008825e-01 -5.40738573e-02 -1.58199820e-01 4.26343507e-01 6.25458883e-02 -3.60082100e-01 1.50489161e-02 -1.66011003e-01 -4.67833053e-02 -7.65258667e-03 7.01954434e-05 3.27726056e-05 7.46813704e-05 5.88329546e-05 -1.30540146e-04 9.74858791e-04 1.59755907e-03 2.60903846e-03 -2.85262217e-03 3.16538005e-03 -1.35344562e-03 7.59115696e-03 -1.08001454e-02 1.23378527e-03 1.29496529e-01 -9.13564319e-02 -5.83352187e-02 4.09358935e-02 -1.16417482e-01 1.08317376e-01 2.78250777e-01 1.92119966e-02 -1.12172620e-02 -2.31059198e-02 1.57777713e-01 5.16119906e-02 3.99417423e-02 -2.23545184e-02 -1.12696751e-02 2.35513321e-01 -4.34608189e-01 3.90410437e-01 2.22390381e-01 -1.77443606e-02 9.24240138e-02 4.62708780e-01 -2.98171237e-01 -8.23435841e-02 1.57431303e-01 9.24099813e-02 1.19377881e-01 -1.20203299e-01 7.58905919e-02 5.85404329e-02 -4.96603365e-05 1.85543019e-05 1.31992980e-04 -1.48504014e-04 -5.39836490e-04 4.27071714e-03 -3.35156330e-03 1.36870303e-03 -2.52853328e-03 -3.01915100e-04 -3.69721710e-03 -2.01583285e-02 -3.46552995e-02 1.18314510e-01 -1.20761568e-02 7.76373029e-02 9.82515081e-02 -4.85296881e-02 2.30916172e-01 -1.09422444e-01 2.47898727e-01 -1.81579175e-01 -4.49516075e-02 -7.60924041e-02 5.71920248e-02 1.08631715e-01 -2.57745263e-01 -3.99394344e-02 9.55569763e-02 -5.42881560e-02 -1.97796696e-02 -1.01000066e-01 2.64246123e-01 2.41933671e-01 4.05403747e-01 8.57877179e-02 1.55761269e-01 1.48954319e-01 1.85699640e-02 3.32236756e-02 -3.38167359e-01 7.73333361e-03 1.92112834e-01 -4.39963498e-01 5.59748092e-05 -9.44298121e-05 -2.75722901e-05 2.39631144e-04 8.51707397e-04 -2.49887694e-04 -3.03845375e-03 4.67032654e-05 6.74214367e-04 2.73625663e-03 2.68461490e-03 7.68445950e-03 -5.44783796e-03 -4.40833106e-03 -2.88656269e-02 2.80522462e-02 -1.68196930e-02 -9.61218630e-02 2.30886098e-02 2.55659481e-01 9.90961357e-04 -1.64806398e-01 -1.95324378e-01 3.10697062e-01 -1.42106856e-02 -2.53776577e-02 -2.41367083e-03 2.93766407e-02 9.97852409e-02 -1.03690801e-01 -1.05359148e-01 -2.44905010e-01 1.86181905e-01 -3.73167203e-01 4.45698550e-03 1.17036987e-01 7.67809172e-02 1.93018828e-01 1.85679873e-01 -6.03534501e-01 1.45603219e-01 -7.30468456e-02 1.06861938e-01 2.66633155e-03 -1.32952235e-04 1.27091607e-05 -2.40091425e-04 1.15941873e-04 6.79173196e-04 -4.60255744e-04 -2.47002793e-04 -1.62594897e-03 3.06121059e-03 2.86062817e-03 9.22018531e-04 -9.55842506e-03 1.19161229e-02 6.24833680e-02 -2.70250942e-01 1.56140434e-01 3.01172593e-02 2.21397990e-02 -1.14144229e-01 -5.20466725e-02 1.54074497e-01 7.26391103e-02 5.25711820e-02 3.85127749e-02 -4.90967705e-02 -5.43872436e-03 -1.55035801e-02 -3.47447773e-02 1.89349170e-01 -4.15140862e-01 6.09891428e-01 2.80162928e-01 2.10952247e-01 -1.05467062e-01 1.59215633e-03 2.40638836e-01 -2.27424796e-01 -2.85526952e-02 4.10639669e-02 3.64347674e-02 4.85060383e-02 -6.88363184e-02 5.83339467e-02 7.68600405e-02 4.36495831e-05 -3.16646952e-05 -1.24521747e-04 -3.15080176e-06 -1.96377872e-04 3.31491812e-03 -2.95353002e-03 2.64594225e-05 2.07611509e-03 1.97565700e-03 1.02813553e-02 -2.08022459e-02 7.90933122e-02 -2.54581960e-01 -4.75930529e-02 8.77543434e-03 -2.11998368e-01 8.92263465e-02 2.09264496e-01 -1.65231232e-01 1.32281781e-01 -1.10290470e-01 2.51444939e-01 1.63793318e-01 1.59711738e-02 1.82865394e-02 1.12653029e-01 3.27402372e-02 -4.92550022e-02 -3.65332435e-02 -4.40634817e-02 3.53379161e-02 1.11234061e-01 8.31161422e-03 -5.38606823e-02 -2.28398402e-01 -3.08859743e-01 -4.45969864e-01 -1.62484687e-01 -2.87385973e-01 7.03635020e-02 -7.02640810e-02 -1.22862628e-01 -4.06497259e-01 -1.27512020e-05 4.18592805e-05 -1.54873129e-04 -3.61648727e-04 2.93164944e-04 5.21488573e-04 -5.48078009e-04 -3.70000412e-03 -8.60725068e-03 -2.45278226e-02 -5.17976199e-03 -4.01454383e-03 1.21566567e-02 -1.77325201e-03 2.16791275e-02 8.31413793e-03 1.43160023e-02 2.52800926e-02 -1.50798884e-02 -2.26141950e-02 7.75526728e-02 -3.23043840e-02 1.02875070e-01 4.02024625e-02 -6.58097788e-02 6.77888807e-02 -1.08205577e-01 -4.39561953e-02 -1.48531649e-01 7.67036866e-01 4.80951594e-01 3.34033143e-02 8.36446640e-02 2.88564682e-02 -3.57365808e-02 -4.09728173e-03 -8.07490321e-02 2.23010630e-01 -4.43376042e-02 -2.03543328e-01 4.01454633e-02 -3.81578224e-02 2.19535952e-02 -3.11160136e-03 6.11153749e-05 5.39988905e-05 5.92819292e-05 2.22470642e-04 4.19524072e-04 1.47530406e-04 -2.13255217e-03 6.86181441e-03 -1.82641185e-02 3.48144839e-03 2.12865888e-03 -4.40972898e-03 -7.95529837e-03 -2.85740919e-03 1.19979151e-02 -1.10360309e-02 2.70184839e-02 4.74080580e-02 4.86523779e-02 -2.97997045e-02 -6.01253308e-05 -4.64486692e-02 -1.02841280e-01 -1.36696445e-02 8.42855918e-02 -5.82978509e-02 -1.74646684e-01 3.39170520e-01 -8.55931820e-01 -2.01007667e-01 9.98364621e-02 -7.16364459e-02 4.46321178e-02 -3.30238361e-02 3.50539788e-02 1.44243866e-01 -4.22170472e-02 -1.90764686e-02 6.36221991e-02 2.90021781e-02 4.37858246e-02 -4.17130586e-02 9.51541765e-03 4.91992001e-03 -1.00520627e-04 -1.64581291e-04 -3.93936254e-05 -1.57149930e-04 1.75709667e-03 -4.27609081e-04 -1.78743253e-03 -2.21173127e-02 -6.47865190e-03 3.57051076e-03 4.85849479e-03 -1.25968538e-02 -2.03795921e-02 -4.80686546e-02 -2.34383138e-02 -7.34655475e-02 -3.17755184e-03 -4.37724659e-01 -1.34082250e-01 -2.81713383e-01 2.34288837e-02 -1.38105590e-02 -6.20971684e-02 1.04610612e-01 -5.07008241e-02 2.43287831e-02 -4.21621997e-02 -2.90136761e-02 -4.75663227e-02 -2.66850897e-02 -7.39907629e-02 -1.53534474e-02 4.40872059e-02 1.62856870e-01 -2.19241127e-01 1.87938580e-01 -7.21023529e-02 -3.01284972e-02 -3.20537469e-01 -1.13653624e-01 9.48904020e-02 5.47471503e-01 3.56954355e-01 4.32227812e-02 -8.45404478e-06 1.36796828e-04 5.99438103e-05 -1.80728626e-04 -8.55482863e-04 1.71598157e-03 -1.58437061e-03 7.15170867e-04 6.82469312e-04 5.80421039e-04 1.69617361e-03 -4.05062733e-02 1.29606387e-02 3.30640410e-01 -5.53129420e-02 5.58913475e-02 -4.50611047e-01 5.70992075e-02 5.58392079e-02 -1.53333299e-01 -2.78538277e-02 -4.90098853e-02 -9.26858787e-02 1.39282071e-02 -5.11411383e-02 1.74597240e-02 -1.22188452e-02 -2.28930417e-01 -6.03695445e-02 6.24579740e-03 -1.49944487e-02 -1.28963633e-01 2.47061291e-01 1.06975278e-01 -1.43711459e-01 -7.11522986e-02 -8.43766652e-02 7.43381167e-02 4.59557924e-01 1.13782421e-01 1.33854893e-01 3.44170711e-01 -2.99348652e-01 -2.80921693e-02 -2.13672239e-04 1.66872368e-04 4.49150929e-04 -6.74288922e-04 3.14179496e-04 -2.85751487e-03 1.41899726e-06 -7.50081263e-03 -2.89975690e-03 5.34485723e-03 -4.43153053e-03 -4.13354460e-01 -4.03748793e-01 -1.68946214e-01 2.91902143e-02 8.47220471e-02 -4.19735662e-02 4.49841407e-02 2.67523515e-02 8.64857760e-03 6.68486368e-03 9.06153302e-02 -5.94628445e-02 2.01202882e-02 -3.99139358e-02 1.39494713e-02 -6.92593308e-02 1.04083326e-01 4.92087870e-02 4.91192430e-02 1.42304815e-02 7.82811957e-03 -2.79986064e-01 -1.71853521e-01 -5.19083674e-02 1.69180592e-01 -2.32833362e-01 -3.81869482e-02 1.67396111e-01 -1.13726868e-01 -5.26599928e-01 2.37498991e-01 -1.43018917e-01 -1.03575350e-02 2.12848295e-04 -1.13203208e-04 -1.61187037e-04 1.20591081e-03 -6.21496277e-04 1.06463701e-03 -7.23606725e-03 1.68127637e-03 -2.75133700e-03 1.41640053e-02 -1.00145685e-02 -3.35532975e-01 4.75576353e-01 3.55893233e-02 -2.18258672e-02 -1.42180355e-01 1.33167416e-01 -2.97242687e-02 4.48829729e-02 1.61863170e-02 1.41220084e-02 -5.45965410e-02 9.07889017e-02 8.40672039e-03 -1.22975436e-02 3.95123254e-02 2.66490668e-02 5.61515440e-02 3.13570521e-02 -1.61393776e-02 3.89880212e-02 1.04387050e-01 -1.95054868e-01 -2.52781452e-02 2.55316714e-01 3.14542823e-01 1.94806880e-01 4.15531712e-02 -1.04473967e-01 -1.01550721e-01 1.77882256e-01 2.53275539e-01 -4.67909852e-01 -9.40928725e-02 2.45962016e-03 3.13557855e-03 1.12034843e-03 -1.22770633e-02 4.89257244e-01 -4.62641136e-02 4.15139928e-02 8.91441312e-02 9.51867796e-03 -3.05466362e-02 -2.05603203e-03 7.31687202e-02 -2.12951799e-02 2.45680912e-02 -4.86071625e-02 -1.19447041e-01 -2.60634693e-02 -2.43225727e-01 8.64992985e-02 4.56736901e-03 3.97532136e-02 8.97072525e-02 -2.15913928e-02 1.45413573e-02 8.54438857e-02 -4.55863320e-02 2.94592883e-03 2.17851999e-01 5.00273012e-02 4.40487667e-02 6.38424269e-02 1.75182913e-01 -1.75050199e-01 -6.01158064e-02 4.55557817e-01 -3.47864592e-01 -1.52527023e-01 -4.01259904e-02 2.74546528e-01 -2.87387665e-02 1.46363640e-01 1.92653710e-01 1.45635179e-01 8.51820651e-02 6.02574108e-06 5.37077055e-05 -3.75956837e-05 8.85445985e-04 -6.20132569e-05 -7.85694644e-04 2.63380559e-03 -2.52966072e-03 3.41996670e-03 6.27794481e-04 2.88892701e-03 2.94682050e-02 6.55693358e-02 -2.07409105e-01 4.14412717e-02 -1.15905641e-01 -7.46132888e-02 -6.63585302e-02 -8.03447739e-02 1.46692791e-01 -2.61907977e-01 2.28965715e-01 1.02598924e-01 3.06275968e-02 -4.33603881e-01 -2.52209463e-01 4.46180854e-01 -2.88560214e-02 -1.35908124e-01 3.74766634e-03 3.49135869e-02 5.65091676e-02 1.72521105e-01 2.03457940e-05 1.32445100e-01 1.14704423e-01 2.39382028e-02 1.71886548e-01 1.33153585e-01 1.13291534e-01 -1.27870256e-01 6.00998532e-02 1.51568835e-01 -3.57332269e-01 1.86232543e-05 5.56743190e-05 -9.65333761e-05 7.77466704e-04 4.90593828e-04 -3.51827173e-03 1.38412055e-03 3.61277289e-04 -2.18346705e-03 5.99687271e-04 -2.19593066e-03 2.95190969e-03 -9.27501506e-02 1.36644116e-01 4.46590344e-02 -4.47607859e-02 2.64996318e-01 -1.00492271e-01 -1.25006730e-01 2.06216091e-01 -4.61965201e-02 1.49119810e-01 -3.67837708e-01 -2.79801175e-01 -3.68318090e-01 -1.16137527e-01 -3.87800514e-01 -3.57899725e-02 4.10340107e-02 2.38617619e-02 -2.84473298e-02 1.09976304e-01 5.30112758e-02 1.93054533e-02 -1.00829856e-01 -1.14747321e-01 -1.41017008e-01 -2.29213335e-01 -3.09936119e-02 -1.04736318e-01 1.94784361e-01 -1.69916977e-02 -1.72141006e-01 -3.12328703e-01 -5.60348607e-05 5.59041091e-05 -1.90173815e-05 -1.44341221e-04 1.71563830e-03 -3.96976726e-03 3.60788887e-03 1.74958837e-03 -1.81419601e-03 -4.90557457e-03 -2.09693539e-03 6.24764833e-02 -3.00796437e-02 1.80161259e-01 -3.48352155e-02 1.85590355e-02 1.86029471e-02 -1.10917724e-01 -3.18750419e-01 2.19137018e-01 -1.63078954e-01 2.57293343e-01 -6.61631779e-02 -5.59977084e-02 6.14253829e-01 5.87923422e-02 1.92559600e-01 -3.04128797e-01 -1.43025484e-01 -3.93334948e-03 1.11363888e-01 -6.76027216e-02 1.90706066e-02 2.06112006e-02 1.08137882e-01 -2.49427381e-02 -4.98461350e-02 -1.05863809e-01 -1.07804774e-01 -1.69505739e-01 -1.45982862e-01 6.70908095e-02 -8.75213274e-02 -2.23887588e-01 8.19395120e-05 2.02209777e-04 4.73636337e-05 1.39636397e-04 -2.18797555e-03 1.44833617e-03 4.06734190e-04 1.08139200e-02 6.48477558e-03 -5.27752668e-04 -1.61909413e-03 9.61869307e-03 3.65666042e-04 7.19304543e-02 1.38314372e-02 6.50995334e-02 -2.02959224e-02 3.62276320e-01 2.22566614e-01 5.07354926e-01 3.37218499e-02 2.79332549e-01 3.85157676e-01 5.04777164e-02 -4.77559496e-02 1.38482612e-01 -2.53934096e-01 -8.78806299e-02 -4.59100246e-02 -9.42556061e-02 -4.65726323e-02 -3.30946694e-02 -4.63661996e-02 6.60141561e-02 -2.64551471e-02 -3.16251125e-03 -3.67633799e-02 2.99299644e-02 -8.19889138e-02 -2.57704423e-02 1.31300905e-01 3.40884954e-01 2.50900043e-01 1.76522259e-02 9.80704605e-05 8.05205074e-05 -7.98416832e-05 3.08132793e-04 -1.12842539e-03 -1.94932554e-03 1.32980926e-03 7.65904980e-03 3.03509447e-03 -3.68910679e-03 1.54537098e-03 3.59663819e-02 5.05467436e-02 -2.09335115e-02 -6.03669215e-02 -9.76659710e-02 4.86063042e-02 4.74296402e-01 1.00836229e-01 9.01374262e-03 4.47319828e-02 -2.57762612e-01 -2.81283430e-01 -2.24650334e-01 1.87351234e-01 -5.86877854e-01 1.54676141e-01 1.18117124e-02 9.90581929e-02 7.26621984e-02 8.60947155e-02 -9.27664643e-03 -3.41535318e-03 2.30447083e-02 -2.21868906e-03 3.85901759e-02 -4.63846197e-02 -5.11644046e-02 -8.43707655e-02 -6.92814524e-02 7.76368769e-03 2.70736301e-01 1.67121037e-01 2.54305867e-02 7.74316668e-06 -6.45448286e-05 1.54034672e-05 1.45104518e-04 -5.46797604e-04 5.97721109e-04 -1.98255438e-03 9.05847937e-03 1.71922672e-03 -4.17742883e-03 -7.77707280e-03 1.64613008e-02 -2.03101284e-03 5.24640542e-02 1.36257915e-01 3.87690937e-01 2.98955332e-02 2.22923094e-01 -8.43666452e-02 6.73778947e-02 -1.11902402e-01 -1.20136331e-01 -2.95868449e-01 -1.20878494e-01 -1.28430259e-01 5.20202587e-01 3.85731185e-01 3.37688529e-01 3.61056773e-02 2.36664726e-02 3.29472438e-02 4.95200012e-02 6.64485604e-02 1.39749761e-01 8.83299665e-02 -3.14405645e-02 -2.96276936e-02 -6.36592835e-02 -7.42086397e-02 -7.16674704e-02 7.55917822e-02 1.57178890e-01 5.02131045e-02 2.22156769e-03 -2.27044242e-04 3.17605290e-04 4.70576530e-04 -7.51707644e-04 1.22200204e-03 -1.38654633e-03 -1.37943350e-03 -4.69562776e-03 -9.15227878e-04 6.48688391e-03 -1.73120204e-03 -4.04749609e-01 -3.43973545e-01 1.01200599e-02 4.83013466e-02 1.12377668e-01 -4.49835210e-01 4.56589458e-02 4.03365078e-02 -7.80721409e-02 -5.94971628e-02 1.08826440e-01 -1.46048887e-01 -3.12558204e-02 -2.16502473e-02 -9.23283346e-02 -2.61350587e-02 -1.67847361e-01 -5.05352899e-02 -1.43259337e-02 2.13058933e-02 1.38856720e-01 -4.28866642e-02 -3.72470923e-02 2.72361131e-01 1.02823561e-02 2.44927404e-01 3.33903742e-02 -3.14668121e-01 -1.29127074e-02 3.30179475e-01 -1.78732289e-01 1.17011039e-01 -8.59940896e-03 2.63962985e-04 2.43413184e-05 -8.18775132e-05 9.95966904e-04 -7.10799207e-04 2.30865515e-03 -8.50637419e-03 3.73456958e-03 -8.58671877e-05 9.97112602e-03 -5.67399676e-03 -3.31010175e-01 4.24602757e-01 3.83583454e-01 -7.19110716e-02 -1.22097001e-01 -5.81953524e-02 -1.32451198e-02 9.24965487e-02 9.09303876e-03 -1.53446271e-03 -8.12162298e-02 -1.25846651e-01 -9.02734855e-02 -1.67737646e-01 1.36622948e-01 9.53419916e-02 -2.30505643e-01 -1.42378122e-01 -8.05890196e-04 -4.52713732e-02 4.37458635e-02 -1.63355465e-01 -1.79197165e-01 -6.81313088e-02 -1.34091017e-01 -1.99088223e-01 -8.39038575e-02 -2.49675598e-02 -2.87858075e-02 -2.45171180e-01 -1.77805416e-01 3.76317333e-01 6.14318734e-02 -5.82770716e-05 2.22494043e-04 1.60158560e-04 6.92962116e-05 -2.61935056e-04 -8.11895347e-04 -3.23582327e-03 -1.04026984e-03 -9.22724912e-03 9.60472939e-03 -1.30962819e-02 -6.12123757e-01 6.27006984e-02 5.20782723e-03 2.46447683e-02 -6.07752002e-02 1.80951202e-01 4.02574916e-03 -1.98309774e-01 5.78142488e-02 -9.39176940e-02 7.46000474e-02 1.24343399e-01 9.35992260e-02 1.97735736e-01 -1.17534687e-01 -2.55722765e-02 3.26543097e-01 1.30613196e-01 2.66603577e-02 -1.81892912e-02 -1.28973174e-01 3.89693967e-01 2.03535864e-01 -1.31650224e-01 -2.25858511e-01 -2.40125088e-02 4.18342158e-03 9.87539333e-02 1.02482915e-01 8.83818108e-02 -6.63414178e-02 1.11397993e-01 2.47015787e-02 2.43466917e-03 3.18744020e-03 1.20429362e-03 -1.22511463e-02 4.85746037e-01 -4.57288602e-02 3.95599720e-02 9.48491482e-02 1.44367242e-02 -3.19615396e-02 2.25199285e-03 4.08972688e-02 -7.95696524e-03 2.14574692e-01 -9.96224551e-02 -5.69113646e-02 -2.08367650e-01 -1.34030168e-01 3.18104346e-01 1.68655241e-01 8.80017216e-02 1.85214053e-01 -6.25127048e-02 -1.10309896e-01 3.70391898e-02 -3.70495948e-02 1.33976535e-01 2.80690535e-01 8.70558504e-02 5.81683875e-02 2.84131890e-02 -8.35206241e-02 1.13518962e-01 4.80194720e-02 -3.51852897e-01 2.33329791e-01 1.16081784e-01 1.32398835e-03 -2.46027701e-01 2.24381725e-02 -1.31272600e-01 -1.36731586e-01 -1.25203445e-01 -4.62270348e-02 2.34777943e-03 2.96518905e-03 1.13773799e-03 -1.23384525e-02 4.81826527e-01 -4.67626351e-02 4.17265372e-02 1.03560873e-01 5.65764401e-03 -3.44556362e-02 -5.40604805e-03 -6.16438524e-02 -2.02446537e-01 -1.38599304e-01 -2.08371515e-01 -4.10751381e-01 1.22587346e-01 3.21721285e-01 -2.34518150e-01 -6.32764799e-02 -1.78963425e-01 -2.63210993e-01 2.41206474e-02 3.47103559e-02 -9.61885861e-02 2.99064709e-01 -4.37961802e-02 -2.48721165e-01 -6.28572321e-02 -6.83071533e-02 -2.36690694e-02 -4.75690371e-02 8.21975939e-02 4.96414096e-02 -2.76630044e-02 8.02675057e-02 4.24594573e-02 5.96757082e-03 -2.95557569e-02 -6.83218342e-04 1.49328776e-02 -3.01186008e-02 -1.73199880e-02 -2.30539899e-02 2.69222898e-03 3.00306470e-03 8.76369666e-04 -1.17926496e-02 4.83467455e-01 -4.73520806e-02 4.12893101e-02 1.00948550e-01 9.96371724e-03 -3.67381571e-02 -1.65558283e-02 -5.87754713e-02 2.34693113e-01 -1.03392742e-01 3.56012300e-01 5.83670284e-01 1.10126802e-01 5.48958905e-02 -1.69938759e-01 -1.14523105e-01 5.36811954e-02 -1.30010833e-02 6.13450941e-02 6.31217128e-02 -3.08828205e-02 -2.14718588e-01 -9.49189875e-02 -2.51689714e-01 -7.26222884e-02 -3.61599104e-02 -7.13781477e-02 -4.65386164e-02 -2.00434407e-02 -3.56448912e-02 -7.94641314e-02 3.70638876e-02 -5.84427789e-03 3.38697369e-02 -7.87349934e-04 8.11852871e-03 -3.15320835e-02 -2.32822792e-02 -2.66367274e-03 -1.60469134e-02 
       </Eigenvectors>
-      <Eigenvectors Class="Combined" ClassIndex="2" NRows="3" NCols="3">
-        1.03342160e-04 -2.29219254e-03 -9.99997368e-01 -2.46732143e-02 -9.99692949e-01 2.28894497e-03 9.99695565e-01 -2.46729128e-02 1.59866186e-04 
+      <Eigenvectors Class="Combined" ClassIndex="2" NRows="44" NCols="44">
+        9.29656540e-02 -2.47175159e-02 -2.08752764e-02 -9.93674203e-01 -4.80685627e-02 -2.31674060e-02 4.34087292e-03 6.37646771e-03 -2.36621970e-05 1.07043020e-03 8.65531940e-04 2.61005248e-03 -1.26025067e-03 5.17539278e-05 -3.87362784e-05 2.25138944e-04 -2.75603717e-04 -6.03814774e-04 1.09019046e-04 -4.10510917e-04 -4.24277611e-04 -3.83598617e-04 -3.20800522e-04 -5.26447882e-04 4.66830541e-04 -5.13204801e-04 5.21633912e-04 -3.68849483e-04 1.16809362e-03 -3.17871287e-04 2.55356173e-04 8.85062832e-05 2.19533550e-04 -2.74161571e-04 4.64510097e-04 -6.05904863e-04 1.64808717e-04 3.24184639e-05 -2.88122642e-04 -4.05178519e-04 -4.12347845e-04 -9.40354782e-06 -5.93686214e-05 -3.90363094e-04 2.01498561e-03 6.46229131e-05 -1.26799135e-03 -2.37441825e-02 1.82346324e-02 9.86039733e-01 3.10889472e-02 -1.24811936e-02 -6.96220021e-03 1.30485049e-02 -1.59336797e-01 -4.01447898e-03 5.41491355e-03 1.26799542e-03 6.92680294e-04 -1.45206292e-03 4.70158551e-04 3.55889057e-04 1.66812277e-03 -2.10613943e-03 6.17066379e-06 -7.13383260e-04 -3.05989213e-03 -3.49083505e-04 1.36969320e-04 -2.75043752e-03 6.24383853e-04 2.19069123e-03 -1.98281548e-03 5.04281744e-04 7.99031202e-04 4.70395263e-04 1.03274428e-04 8.66499084e-04 -1.46089200e-03 1.20681462e-03 -1.92648671e-04 -4.45141972e-04 -6.84675800e-04 -1.40956014e-04 -9.79647049e-04 1.45517104e-03 -1.92509352e-04 -1.10883401e-03 -5.69969311e-04 4.03117093e-05 -4.29916454e-04 -3.81005624e-03 1.60353488e-02 1.60699153e-01 -5.89617143e-02 5.42326234e-03 -2.09011214e-02 -2.49005535e-02 9.82028736e-01 6.13279331e-02 -3.66963456e-03 -2.96330563e-02 -3.39489384e-03 -7.66757750e-03 3.59354372e-03 -1.21997681e-03 4.80514382e-03 -5.69766353e-03 9.89679066e-04 -2.00443976e-03 -2.20239584e-03 -2.38501021e-03 -2.80957530e-03 5.01978391e-03 -3.64949409e-03 -9.06686258e-04 -6.17748958e-03 1.39803978e-03 -1.89454555e-03 -3.05902101e-03 1.73274285e-04 1.62522997e-04 1.86452811e-03 -4.01228903e-04 7.49208375e-04 -1.02664873e-03 4.87772442e-03 3.88650769e-03 8.07487821e-04 -2.54450907e-03 4.16795688e-04 2.88683140e-04 -8.03529076e-04 -5.69148093e-04 -3.00065564e-03 -8.34340759e-03 1.03572100e-01 1.90423867e-02 -9.62403967e-01 2.03028439e-01 -1.22243766e-01 -1.34753012e-02 -6.90490656e-02 3.22814887e-02 6.24298412e-03 -1.41026254e-02 9.18030694e-03 2.17863450e-03 3.41578071e-03 4.87194563e-03 8.50931517e-04 -1.91922471e-03 1.84900267e-04 -4.61039777e-03 2.63784672e-03 -4.49306682e-03 1.77613725e-03 -3.45643607e-03 1.14927157e-03 3.26889477e-03 1.65672953e-03 -1.14369428e-03 1.11872734e-03 -9.94999753e-04 -6.72665272e-05 1.05539093e-04 -1.02006300e-04 1.71633031e-04 1.42388458e-04 4.97669395e-04 -2.61043138e-04 -6.83144712e-04 -3.20136185e-04 -3.16516759e-04 -1.47397322e-03 -1.38692942e-03 1.44715777e-02 -5.43160491e-02 4.97342310e-01 -7.41064218e-03 8.61422723e-03 -1.40134028e-03 2.98850946e-02 9.03250262e-02 -1.03775906e-01 2.47990692e-01 6.78928239e-03 7.60306597e-03 2.08634468e-02 -6.48192782e-02 -3.47256623e-02 8.47885795e-02 -1.26859388e-01 -1.11556451e-03 -3.27273461e-01 2.46661074e-02 4.98328174e-01 -1.97337653e-02 2.63551344e-01 -9.92877081e-02 -6.05838005e-03 -4.44365017e-02 -6.86450403e-03 1.98062240e-02 -6.87938044e-03 -2.42864883e-02 3.02757476e-02 4.44087355e-03 1.02816134e-02 2.59257355e-01 -1.21139612e-01 6.35524146e-03 2.74066345e-01 -6.70285698e-02 -3.84894562e-02 -1.60761220e-01 9.98083307e-02 1.18652753e-03 7.30534755e-03 -6.94411534e-03 3.81715032e-02 4.95443692e-01 5.36769446e-02 -9.80551169e-03 -2.36784065e-03 -4.65693133e-03 2.87157932e-02 -2.82685301e-02 -2.65122202e-01 -1.04701920e-01 -1.13984215e-02 -4.02958173e-03 -2.22777870e-03 -6.17348744e-02 1.07013278e-01 -3.57512089e-01 -1.74059271e-01 -2.95783949e-01 4.18731593e-01 1.70103526e-01 2.42049780e-01 -5.63364484e-02 3.37397812e-02 -2.89016532e-02 -6.02145632e-02 2.98769923e-02 -6.73303792e-03 5.79853850e-02 -1.45859978e-02 4.11329250e-03 6.39504625e-02 -4.36952839e-02 3.41949227e-01 -3.19333010e-02 -4.53612908e-02 9.58496749e-03 1.79102672e-02 -2.23043644e-02 3.95902210e-02 -5.14755042e-03 -1.92166431e-02 -5.53591046e-03 1.64759401e-02 -2.89889554e-02 -4.96372132e-01 3.53636517e-02 1.83685024e-02 -4.33973222e-02 -4.73121504e-02 -6.61105500e-05 6.09242135e-02 2.49611416e-01 1.13140568e-02 -9.29961662e-02 -2.73106221e-02 2.85763304e-01 -2.53751500e-02 -2.50546832e-01 -2.06364793e-01 -1.16744813e-01 1.02936849e-01 2.46748466e-01 1.50656770e-02 2.32972549e-01 6.05538335e-02 -2.53896954e-02 -1.31935736e-01 1.36152019e-02 1.50516086e-01 -6.25535893e-02 -1.91951519e-02 -1.61845013e-01 -4.55942793e-01 4.63529012e-02 -4.79992796e-02 6.34506840e-02 6.07155425e-02 -2.01117439e-02 -5.21186875e-03 -1.26857125e-01 -2.22144476e-02 7.25767026e-02 -8.09643712e-02 -1.23013960e-01 -3.88204595e-02 -6.58223586e-02 1.32182830e-02 4.12864223e-03 1.46270428e-02 -5.43781450e-02 4.97461096e-01 -6.82983402e-03 8.62020091e-03 -2.94595504e-03 2.83311333e-02 9.28497328e-02 -1.02894641e-01 2.50608874e-01 3.75675001e-03 1.23842302e-02 -2.76730422e-02 6.03471831e-02 6.69581855e-02 -1.12078457e-01 1.22773468e-01 9.39417566e-02 1.98552959e-01 -5.30708413e-03 -2.47108863e-01 3.44326287e-01 -1.31749837e-01 -4.29614137e-01 -2.67293696e-02 7.33387853e-02 -3.35313416e-02 -5.41582990e-02 2.92216955e-02 3.43652202e-02 -6.65841898e-02 -1.13511825e-02 -4.43495525e-02 -4.10056495e-01 4.26943450e-03 3.09293261e-02 5.70666862e-02 2.59434961e-02 -1.14613951e-02 6.82822072e-02 -3.19138255e-02 3.05031354e-02 3.39900335e-02 1.52636303e-02 3.82733781e-02 4.95368712e-01 5.36251546e-02 -9.97929988e-03 -2.87995370e-03 -2.25306318e-03 2.94093733e-02 -2.82810339e-02 -2.64841788e-01 -1.08020862e-01 -3.55434798e-03 1.78141152e-03 -1.56699355e-02 2.14413120e-02 6.47898178e-02 -2.30547468e-01 -2.38509064e-01 4.33351044e-01 -4.16516499e-01 -1.53338500e-01 -2.61546067e-01 1.17663942e-02 4.10855872e-02 6.98311634e-02 -6.05344498e-03 1.83844889e-02 -1.34831974e-02 -2.98028371e-02 4.22768307e-02 6.91181342e-02 1.71779148e-01 -1.61577414e-02 -2.24959488e-01 -6.01765763e-03 1.55254030e-02 1.02787463e-02 -3.61004561e-02 1.57897501e-02 -3.05536862e-02 -1.19605621e-02 3.03221475e-03 -8.99550158e-03 -3.39488932e-04 1.83288455e-02 -4.96504859e-01 3.54165094e-02 1.83828637e-02 -4.46196204e-02 -4.04890358e-02 2.34491595e-03 5.01149612e-02 2.63487420e-01 1.84676333e-02 -9.34273109e-02 8.95520864e-03 -1.01597187e-01 3.63081488e-01 6.88440359e-02 1.38115561e-02 -1.36768242e-01 1.66816307e-01 -6.27306802e-02 8.28414073e-02 -3.23611569e-01 1.64668495e-02 1.93378200e-01 2.83419221e-01 1.37631701e-01 1.64149962e-01 -1.15902914e-01 -9.29752515e-02 2.20028379e-01 2.82120646e-01 -5.34976005e-02 1.57465986e-02 -6.75154809e-03 -3.07729559e-02 8.46084803e-03 1.13023093e-02 7.13809871e-02 1.07702449e-02 -3.92358649e-02 6.26525451e-02 9.21557696e-02 2.07078086e-02 1.37938491e-01 -3.31775178e-02 6.47374439e-03 1.45235527e-02 -5.43371860e-02 4.97239215e-01 -7.12082766e-03 9.90554885e-03 -3.34678505e-03 2.69505652e-02 9.31905865e-02 -1.08537962e-01 2.49805513e-01 6.44009988e-03 -1.54045299e-02 6.28688466e-03 6.00790160e-03 -3.04850595e-02 2.84057750e-02 2.60818590e-03 -9.04023544e-02 1.26820963e-01 -1.89843284e-02 -2.48599347e-01 -3.24460834e-01 -1.31193092e-01 5.29659296e-01 3.31761419e-02 -2.70321740e-02 3.98002066e-02 3.28459627e-02 -2.19289403e-02 -1.20030712e-02 3.24617403e-02 -1.73733274e-02 3.18188277e-02 1.49618780e-01 1.15346217e-01 -3.80019519e-02 -3.32064113e-01 4.14539394e-02 5.09266364e-02 8.95583017e-02 -6.54350311e-02 -3.18067949e-02 -4.12495060e-02 -8.85489856e-03 3.79809751e-02 4.95340867e-01 5.42372036e-02 -9.91521279e-03 -1.28788418e-03 -1.80346279e-03 2.77408903e-02 -2.98911747e-02 -2.66165707e-01 -1.05593345e-01 -1.92469109e-03 -1.55916317e-02 1.54244830e-02 3.90810977e-02 -1.73407869e-01 5.86475389e-01 4.11801179e-01 -1.35987662e-01 1.37269586e-04 -2.13207882e-02 1.94021983e-02 4.81552967e-02 -7.16956325e-02 -4.25313106e-02 6.21914335e-02 -4.78616517e-02 1.84040127e-02 -2.78762054e-02 -3.26449335e-02 -9.33801059e-02 -2.31018492e-01 6.15569208e-02 -1.17479703e-01 3.49862568e-02 2.92933786e-02 -2.16233973e-02 1.90585337e-02 4.53219151e-03 -8.71119647e-03 1.80136513e-02 1.76626130e-02 1.48019814e-02 -1.66801362e-02 1.10365016e-02 -4.96457567e-01 3.49911463e-02 1.85798666e-02 -4.36689741e-02 -4.05738848e-02 8.64763424e-03 4.28757503e-02 2.75612117e-01 1.65411640e-02 -1.02296918e-01 1.41721330e-02 -1.54804542e-01 -3.26905513e-01 1.87835092e-01 1.67230685e-01 2.49170399e-01 -2.79678871e-01 -1.93503364e-01 -1.02664677e-01 8.49033288e-02 -7.39545255e-02 -1.54568006e-01 -1.66705892e-01 -1.46854494e-01 -3.12901911e-01 1.74732147e-01 1.12152921e-01 -5.88704096e-02 1.72976394e-01 6.31457890e-03 3.19352161e-02 -5.66048136e-02 -2.79817439e-02 1.19736579e-02 -7.30721897e-03 5.57971575e-02 1.11198475e-02 -3.49614982e-02 1.79217470e-02 3.04003083e-02 1.70589345e-02 -7.01298568e-02 2.44594049e-02 -1.17303611e-02 1.44730260e-02 -5.65720304e-02 4.94751736e-01 -9.49853822e-03 -2.90111305e-02 9.64848703e-03 -9.25036152e-02 -2.81112233e-01 3.17892082e-01 -7.49110573e-01 -1.68800174e-02 -4.23021613e-03 1.75483331e-03 -1.58883922e-03 -2.14499790e-03 -1.81811057e-03 5.04600457e-04 -2.44075484e-03 1.78272564e-03 -1.92028174e-04 -2.84164069e-03 -5.37594996e-04 -6.02594195e-04 -5.89579333e-04 -5.13335096e-04 -1.84778499e-03 4.00751554e-04 1.43639614e-03 -4.27912060e-04 1.89093245e-03 3.91399125e-03 2.44177777e-02 2.31971547e-03 1.06683094e-03 1.50681421e-03 6.24075882e-04 9.75130954e-04 -2.97395226e-04 -1.06917348e-03 3.03880750e-03 -2.42841012e-03 -1.61006564e-04 -5.61722017e-05 5.39802485e-04 3.89782040e-02 4.96032398e-01 5.24442846e-02 -9.34742743e-03 -1.66644713e-03 7.88864670e-03 -8.83807051e-02 8.63630604e-02 7.96458052e-01 3.14191117e-01 1.68239032e-02 1.85625542e-02 2.17914686e-03 1.78321986e-03 1.76873839e-03 2.09228311e-03 1.92858177e-04 -1.64577837e-03 -2.25904424e-03 4.44883492e-03 1.28839065e-05 -3.31023797e-03 -3.33005206e-03 1.78148024e-03 3.87050521e-03 -1.31252321e-04 1.61081972e-03 -4.85187924e-04 5.14906600e-03 2.03118643e-02 -4.75070437e-03 -1.54921872e-03 5.29820342e-04 2.96576209e-03 4.43854025e-04 1.78186164e-03 -9.03020725e-04 1.95216560e-03 -2.12341685e-04 -1.07624158e-03 -1.39643122e-03 -2.83723362e-04 5.14326796e-04 -4.43719321e-04 -4.95205529e-01 3.64208715e-02 1.54630388e-02 -5.89763083e-02 1.28437570e-01 -1.17110490e-02 -1.51041977e-01 -7.88780520e-01 -4.45095508e-02 2.89279455e-01 2.62357645e-03 -2.88660771e-02 -1.21876402e-02 -6.47229499e-03 2.54609738e-02 3.87939690e-03 9.90233424e-03 9.65081498e-03 4.89000613e-03 5.39342898e-03 -3.39764548e-03 -1.35133360e-02 1.54373633e-02 -4.48099413e-03 -1.52297633e-03 3.51865297e-03 1.62630097e-04 6.51298045e-04 1.07571169e-03 6.06167539e-04 2.89608430e-04 6.45981678e-05 -1.91298299e-03 -4.52453005e-04 1.34447970e-03 -3.14883227e-04 4.06263574e-04 1.49835493e-03 2.35366650e-04 4.22404674e-04 9.56392334e-04 -1.95689855e-03 -4.53222685e-03 1.07965836e-03 -5.90255785e-05 -4.29622646e-05 -3.90143113e-07 -1.73621631e-04 -1.36557847e-04 1.62295025e-03 1.62126544e-04 9.56478754e-04 6.83120154e-04 5.92395215e-04 6.49321568e-04 1.28893025e-03 1.09646849e-02 -1.02768363e-02 -4.20644239e-03 5.62269992e-02 -7.69330971e-02 -2.56948609e-02 -1.58630975e-01 3.47205877e-02 3.01392831e-01 -2.12117227e-02 1.39656316e-01 -5.47974607e-02 -5.18418807e-02 -2.72608936e-02 -8.28749451e-04 1.56986005e-03 -1.39939527e-02 3.95404204e-02 -2.64678137e-02 1.63188294e-01 -4.10614923e-02 -4.50316041e-01 1.95018375e-01 -7.35720161e-02 -6.10892651e-01 -8.49100366e-02 2.55255155e-01 -1.37267851e-01 2.91072129e-01 1.20275125e-01 -7.54089050e-02 -1.15538425e-02 6.91722127e-06 7.00228799e-05 -4.11329405e-05 7.02589261e-05 -5.17786148e-04 -5.24447301e-04 -6.94300716e-04 -1.47697384e-04 -1.50592225e-03 -2.34956124e-03 -1.08730833e-03 -5.65560809e-03 -1.85323278e-03 -1.39851475e-02 2.07077200e-02 -1.31564846e-01 -4.43536991e-02 -1.34962048e-01 1.76963831e-01 1.02316729e-01 1.09857604e-01 -3.80540424e-02 -5.10783553e-02 -4.38905459e-02 6.10587639e-02 -2.29078737e-02 -1.50041840e-02 -1.87774057e-02 8.42511865e-03 1.51263498e-01 -5.49766945e-03 -6.95203930e-02 -5.55570507e-01 9.51192822e-02 6.42396491e-02 -3.16842207e-01 -4.77187065e-02 -3.55072822e-01 -4.49747354e-01 2.43613178e-01 2.09474426e-01 7.93426550e-02 -8.03476071e-02 -2.30172235e-02 3.18845738e-06 -1.91809425e-05 -9.34443128e-06 -1.69535595e-03 1.00838584e-03 -1.11536915e-03 -1.97721088e-03 1.78113443e-03 3.77406011e-04 8.78727932e-04 -4.72202845e-03 -2.99993617e-03 6.72185192e-04 -3.58758601e-03 5.29196497e-04 -2.70649737e-03 4.03921322e-02 4.82987905e-02 1.48803682e-02 6.55210098e-02 2.13425006e-02 4.58335503e-02 -1.22837736e-02 6.39142081e-02 -1.50158192e-01 9.80417870e-02 -1.16868854e-01 9.27871484e-02 -2.97576902e-01 8.88169839e-02 -3.99794157e-03 9.33420858e-03 -4.51315982e-02 9.21019758e-02 -2.22292274e-01 4.08765251e-01 -4.06002207e-02 -1.24805665e-01 1.56937217e-01 3.70115758e-01 2.79334652e-01 7.06417150e-02 6.65775359e-02 5.83420740e-01 1.18576702e-05 -8.59201089e-05 1.08510203e-04 1.43258565e-04 -2.98545312e-04 -8.08083236e-04 3.81880451e-04 7.76296351e-04 -3.09752023e-04 4.14796362e-03 7.32180422e-04 -1.24028767e-03 -8.05737360e-03 1.65636437e-02 1.82181659e-02 -7.51971313e-02 5.37005241e-02 4.98184735e-02 1.60568822e-01 3.54756526e-03 -2.47950507e-01 2.15672119e-01 -1.07750281e-01 -2.50254395e-01 -3.83236967e-02 -1.97663737e-02 3.63500687e-02 -1.25689140e-03 5.95987363e-02 -3.98647488e-02 5.90244693e-02 1.58247649e-01 6.03457022e-02 5.91098308e-01 -2.83908333e-03 -8.49251154e-02 -2.11443090e-01 -1.13753808e-01 1.83221947e-01 -3.88715245e-01 3.59237232e-01 2.65131970e-02 -1.05154243e-01 4.78292135e-03 9.29897766e-05 -7.53108785e-06 -9.62213873e-05 -2.17531475e-05 1.70939358e-04 5.56563285e-04 -1.72132256e-04 1.58391674e-03 1.29018725e-03 3.01753895e-03 2.86518421e-04 -1.08665548e-03 1.03243966e-03 1.67703342e-02 1.00279494e-02 -4.57973441e-03 -4.95928572e-02 1.45594170e-01 -1.89486357e-01 -8.79532962e-02 -1.66177448e-01 -2.43742947e-02 5.51376911e-02 1.88232862e-02 -8.72074360e-02 7.29404246e-02 -5.62418257e-03 1.21264210e-01 -1.01681762e-02 -8.84836427e-02 -4.38262457e-01 1.11651974e-01 5.49639076e-01 -3.28952435e-02 -4.48747716e-02 -2.85294655e-01 1.79629750e-02 -3.68298891e-01 -2.24717322e-01 2.39757881e-01 1.53027115e-01 2.29864214e-02 -6.28288423e-02 -4.59473096e-02 -4.28858718e-05 6.34612314e-07 -4.33456662e-05 -2.24835393e-04 3.41586720e-04 3.38422607e-03 -3.45111000e-03 4.06313741e-03 1.75767325e-03 -4.38743902e-04 -3.97580210e-04 -2.50798274e-02 3.20471596e-02 3.97051807e-02 -1.31676088e-02 -6.08283395e-02 1.20953943e-01 -2.77955585e-02 4.52934359e-02 -4.08753098e-02 3.95532674e-02 1.78490437e-01 2.11145694e-01 1.91701886e-01 -2.55878729e-01 1.89958570e-01 1.79924148e-01 -1.19767836e-01 6.76048899e-02 3.54710976e-02 8.52466364e-03 9.81440027e-03 -1.88443245e-02 -3.99721603e-02 2.36888294e-01 -4.51650356e-01 1.18750164e-01 1.50319329e-01 2.85680726e-02 -9.36440474e-02 5.09620158e-02 -3.99734870e-01 1.39288154e-01 4.63218553e-01 2.52054271e-05 -8.19222903e-05 -6.66380582e-05 1.27549633e-04 7.60492277e-04 -2.72833736e-04 -9.05804366e-04 7.00311167e-04 -9.89303762e-04 1.49921236e-03 1.55282795e-03 2.00645112e-03 -1.71151496e-03 1.85134223e-02 -1.75849546e-02 -2.07577638e-03 2.25514786e-02 -4.55238833e-02 1.01969931e-01 -2.72992108e-02 -1.62483242e-01 -2.16491166e-01 -1.13873693e-01 3.05628084e-01 2.30271223e-03 -1.06456686e-02 -1.90778652e-03 1.11608377e-02 2.12398533e-02 5.38191023e-02 1.78937710e-02 1.38321103e-01 -8.81978814e-02 -3.56824700e-01 -1.88190939e-01 9.44678334e-03 4.63060050e-01 -1.85620590e-01 8.00019790e-02 -4.25806064e-01 3.95612703e-01 1.38478301e-01 -4.60818917e-03 -2.69210097e-03 -1.00759283e-04 -6.86947081e-06 1.63892830e-04 1.13286958e-04 9.97910704e-04 -1.46041927e-04 7.19566417e-04 -8.65206882e-04 -2.58441652e-03 -7.24251584e-04 1.70692100e-03 -4.66694962e-03 -2.98802928e-03 4.48907717e-03 -7.47034499e-02 2.38605973e-01 2.12273553e-01 1.40014371e-02 -5.27390758e-02 -4.69573708e-02 -1.71176376e-02 7.43653337e-02 -1.96803571e-02 -1.61547931e-02 3.87113597e-02 2.80644766e-02 -1.37391779e-04 -8.28328712e-03 -1.55434293e-02 3.12553989e-01 7.34298778e-01 -1.57220566e-01 3.49758171e-01 -7.76049201e-02 -3.57791438e-02 -1.16618971e-01 -3.14936589e-02 -1.64295161e-01 -1.37767357e-01 1.02212091e-01 1.08489068e-01 3.37363987e-03 -1.77465888e-02 -6.13865152e-02 1.09408867e-05 -9.87949165e-05 6.31801293e-05 4.70724808e-05 7.14412863e-04 3.33486534e-03 -3.75581734e-03 3.18904547e-03 -1.40651655e-03 -8.43335561e-04 1.29710467e-02 -3.36457045e-02 -6.88042816e-02 6.17314853e-02 8.77339879e-02 1.37250771e-01 -1.51087194e-01 -1.03778479e-01 -4.88739343e-02 3.21504109e-01 -1.51811890e-01 2.30423850e-01 1.66380439e-01 1.25962739e-01 1.33025588e-01 -4.55751930e-02 -8.99436044e-02 4.97804029e-02 3.40498799e-02 -3.31450569e-02 1.89264701e-02 1.90475521e-02 8.73120870e-02 -4.56822358e-02 2.75083868e-02 3.78739866e-02 -9.54220361e-02 -3.87011258e-02 -3.65296683e-01 -3.38750639e-01 -2.88567826e-01 3.46595975e-01 -1.66017502e-01 4.11775783e-01 -3.00794368e-05 -2.84553895e-05 2.76249840e-05 -3.33766665e-04 -7.25660116e-06 9.84999719e-04 -2.58337106e-03 -9.55388945e-03 1.13836284e-02 -2.43231367e-02 -3.67663371e-03 -1.56915493e-04 -1.30099775e-02 -8.94038002e-03 -7.48421899e-03 1.24786931e-02 1.89625039e-03 2.47999527e-02 -2.07473830e-02 -7.09391591e-03 -3.07450543e-02 5.11409860e-02 3.68388299e-02 4.13819594e-02 6.59991264e-02 3.68192485e-02 -2.57499136e-02 -7.95370961e-02 -4.96458785e-02 -1.23129503e-01 -1.84705793e-01 -9.15254030e-01 2.44117338e-02 -2.67108892e-02 -8.22513148e-02 -5.28069920e-02 -8.61792953e-02 -1.22778554e-02 9.14250510e-02 -1.56375200e-01 1.89003326e-01 4.31775852e-02 -1.99025014e-03 -1.16510250e-04 9.88026050e-05 1.24760025e-04 -6.98029214e-05 1.50072714e-04 5.96621072e-04 1.58074340e-04 -1.40485677e-03 2.84367241e-03 2.29876800e-02 1.01645676e-02 1.13889858e-03 2.88895928e-04 4.55740083e-03 -4.81578352e-03 -3.03249658e-03 -1.21623099e-02 3.75862491e-03 -6.28065779e-05 1.68154356e-02 1.07289466e-02 -3.06421809e-02 8.64409179e-03 2.25877226e-02 -1.02228863e-02 -1.31786776e-01 -5.02517705e-02 9.04935634e-03 -1.23447673e-02 -1.72599450e-01 -8.82626415e-01 3.52779763e-01 4.17483935e-02 -6.76388234e-02 -9.19258614e-02 6.62908669e-04 -6.40009550e-02 1.76484890e-02 -7.36837764e-02 -6.89813097e-02 9.62335709e-02 6.41050364e-02 8.68123901e-03 -2.97188175e-02 -4.59761566e-03 -1.02154070e-04 -9.80961162e-05 -7.31925395e-05 -2.29303483e-04 1.50186131e-03 -8.16637760e-04 -1.07281318e-02 -1.94089698e-02 -1.75153821e-03 8.24347140e-03 3.47374483e-03 -1.57571555e-02 1.67041760e-02 3.70112057e-02 -8.71063646e-02 -1.28033249e-02 -1.19077696e-01 -6.34631267e-02 -7.37569770e-02 -1.06857846e-01 1.46673032e-01 2.81876329e-01 -3.50693134e-01 1.69406732e-01 2.74457422e-02 2.89676610e-02 3.27071334e-02 -2.33397858e-02 5.64971947e-02 -5.44348872e-02 -7.20019717e-03 5.65610829e-02 1.68349753e-02 3.79429507e-02 -1.89824626e-01 -1.40388784e-01 -1.35880315e-01 -1.92384428e-02 -4.88879384e-02 -4.09413524e-02 -4.19882882e-02 2.62309421e-01 7.33380304e-01 -2.57296026e-02 -1.36483554e-05 7.69970585e-05 4.48210793e-05 5.15911595e-05 -1.17437350e-03 1.36200926e-03 -1.98186272e-04 -1.71333245e-03 -1.83019936e-03 -1.57751208e-03 -1.47282864e-03 1.41833369e-02 7.35715403e-04 -5.88790876e-02 -1.78283163e-01 -8.26727172e-02 1.77276938e-01 2.48772736e-01 -3.95160275e-02 4.82506740e-01 8.25978373e-02 3.21148241e-02 -9.45031518e-02 9.65985249e-02 -4.39018029e-02 5.34052390e-02 1.44073439e-01 -8.54946906e-03 3.95354752e-01 -5.82888786e-02 2.62195059e-02 -5.67341014e-02 -3.87906658e-02 1.98581298e-02 8.87640132e-02 -4.94092003e-03 9.58318960e-02 -4.20141742e-01 3.74932470e-01 1.02738555e-01 -2.42054852e-01 9.39170723e-02 -2.43031158e-02 6.08628891e-03 -3.00504152e-04 1.95493005e-04 -2.50676324e-04 -2.04945813e-03 5.46086805e-03 -3.10081267e-04 -1.11867149e-02 1.23119787e-02 4.81640160e-03 7.75118918e-04 2.71630403e-02 -4.20673661e-01 4.70662098e-01 5.99216627e-02 1.21955117e-01 2.54912933e-02 -3.84471151e-02 -7.86632276e-02 -6.61984426e-02 1.04124674e-02 -5.52396677e-02 -5.52062039e-02 -7.65344346e-02 -9.25919512e-02 8.68042475e-03 7.61614950e-03 -4.12025253e-02 -1.00096231e-01 -3.18367919e-01 4.50115357e-02 -5.82069302e-03 -2.89391965e-03 -5.43279524e-02 -4.03028858e-02 -1.40656975e-01 3.55662950e-03 -8.34756985e-02 -3.98079841e-01 7.30885653e-02 -2.03423683e-01 -2.93294803e-01 -3.28619877e-01 5.30712996e-02 4.24359646e-04 2.48163671e-04 7.02193424e-05 3.47671519e-04 -1.21513122e-03 5.15851984e-03 3.92568742e-03 -1.68752106e-02 2.57761408e-02 1.03965792e-02 -4.91048986e-04 2.45440757e-02 -4.89749061e-01 -4.00550096e-01 5.81158842e-02 -3.52645232e-02 -4.35195165e-02 -2.24380618e-03 7.78547313e-02 7.96267395e-02 -1.64508269e-01 5.90887446e-02 2.34879817e-02 5.91177256e-02 3.82008325e-03 1.36591496e-01 -2.79830446e-02 -1.04629555e-01 2.07208720e-02 -3.08763644e-01 4.91487851e-02 1.87643482e-02 2.71651636e-02 -2.37808632e-02 5.07878440e-02 4.60830658e-02 -3.52389090e-01 1.45565074e-01 3.16395740e-02 3.34113767e-01 9.17207016e-02 -1.48292611e-01 3.28476887e-01 -1.12729452e-01 2.30111071e-02 2.38330077e-03 1.32819888e-03 3.23400505e-04 -2.29674613e-02 4.94862981e-01 -1.09826418e-02 5.29064186e-02 3.85403482e-02 1.47288762e-02 -3.28246792e-02 -2.81999054e-03 2.28331344e-02 1.79466818e-02 2.14642291e-01 -3.24262641e-01 -7.09909027e-02 -1.22900589e-01 -1.11023054e-01 -4.03319088e-02 -5.96885358e-02 -3.64675760e-02 6.54789801e-02 -3.93910903e-02 -1.15938651e-02 -6.52122355e-02 -5.31531808e-02 -7.98679759e-02 6.94706289e-03 -1.77016641e-01 2.95511943e-02 -6.91501655e-03 -6.28491646e-02 5.87208811e-02 3.98263208e-02 6.09668002e-01 2.35453223e-01 1.54458717e-01 -1.57095486e-01 -3.43343715e-02 -4.78004884e-02 4.33863077e-02 3.28069038e-02 1.11215341e-01 -5.13572558e-02 4.25819101e-05 5.67570775e-05 -8.13786079e-05 1.10125599e-03 -9.41453059e-04 7.01035315e-04 2.07256119e-03 -3.92062826e-03 -2.39122918e-03 1.15678890e-03 1.01077073e-03 2.10386317e-02 -5.35953933e-02 -8.31357774e-04 2.10066325e-02 4.57398175e-02 -1.96777607e-01 -6.06793905e-02 -5.29417940e-02 2.92761981e-03 -3.42453542e-02 -1.86876121e-01 -1.91663289e-01 -2.05677545e-01 5.19746918e-01 -4.24636710e-01 -1.49072220e-01 -5.81097135e-02 2.38329764e-01 -8.29918798e-02 3.19523902e-02 -1.43110347e-03 1.05007029e-01 -5.06853987e-02 8.86585111e-02 -1.20431470e-01 6.03842863e-02 -2.99083483e-02 1.30320326e-01 1.06989385e-01 1.09757925e-01 -2.53578967e-01 1.10441748e-01 3.68145400e-01 4.13875317e-05 1.12457598e-04 4.63040142e-05 7.06831470e-04 -5.76252301e-04 -2.80145817e-03 2.50033532e-03 -3.69308675e-03 6.83046211e-05 1.19442388e-03 -3.53241770e-03 2.03787972e-02 8.94990515e-02 -3.92106287e-02 -5.11173835e-02 -1.14347124e-01 9.47628239e-02 5.26601913e-02 4.74997983e-02 -4.09869521e-01 1.45901655e-01 -2.64581757e-01 -1.53310721e-01 -1.48764270e-01 -1.22898912e-01 -9.32750148e-02 3.95852781e-01 -4.41077106e-01 8.10035115e-02 -1.02624389e-02 -1.38154063e-02 -3.28532877e-02 9.49638143e-02 1.38410750e-02 1.82248247e-02 9.01178019e-02 -3.46937800e-02 -8.36709892e-02 -1.18824988e-01 -6.11440752e-02 -1.45347315e-01 3.20892732e-01 -1.51146922e-01 2.85866165e-01 -1.50555562e-05 1.04889304e-04 2.08521781e-05 2.43968413e-04 -3.61782815e-04 -3.32980575e-03 5.90688960e-03 -4.27800144e-03 1.14437221e-03 -7.51662617e-04 -9.39081206e-03 7.21460628e-02 2.08040817e-02 -6.81460742e-02 -1.15692922e-01 -4.21789882e-02 1.04014464e-01 7.89104116e-02 -2.02290643e-02 -1.62968877e-01 1.09746601e-01 -2.89126984e-01 -2.75763256e-01 -2.20747996e-01 -5.48090385e-02 2.72835841e-01 -1.10674642e-01 6.83033767e-01 2.86016533e-02 -3.93699671e-02 4.43775873e-02 -8.98890979e-02 -5.21390953e-02 -2.11000490e-02 6.27722283e-02 -1.16270154e-01 -4.25313710e-02 1.80142638e-02 -6.65065261e-02 -2.10674750e-01 -1.61109007e-01 8.86081089e-03 -1.59069621e-02 2.08509757e-01 1.03874464e-04 1.21598846e-04 8.42510956e-05 3.40452211e-04 -1.71139260e-03 1.95944517e-03 6.30413628e-03 1.46703184e-02 3.22027308e-04 -4.66006697e-03 -1.62749007e-03 1.18605372e-02 -7.76467288e-04 -1.03698817e-02 9.68653436e-03 4.54888517e-03 9.23361380e-02 -2.12115385e-02 5.14053378e-02 1.00780268e-01 -2.30764758e-01 -3.66996236e-01 4.72866017e-01 -2.33738159e-01 3.22953890e-01 3.86437877e-01 1.70912084e-01 -7.01390679e-02 -4.01031287e-02 -3.67432620e-02 3.10565401e-02 4.33850215e-02 -1.90622403e-02 4.28779348e-02 6.72209674e-02 3.56069857e-02 -3.17361576e-02 -4.94277545e-02 1.17533299e-02 -1.67161043e-03 3.47852544e-02 1.58085727e-01 4.24314483e-01 -2.89169856e-03 9.24923208e-05 1.02658160e-04 1.83557296e-04 3.20464372e-04 -1.03675834e-03 -1.71206985e-03 9.30601674e-03 9.57441417e-03 1.02379246e-03 -5.08613960e-03 1.45689957e-03 2.39991022e-02 -4.11538600e-02 -3.68521141e-02 1.47840874e-01 1.02477562e-01 5.50588645e-02 1.76949489e-01 1.44372286e-01 7.38276761e-02 -1.14399207e-01 -1.32749207e-01 2.32273182e-01 -9.46272731e-02 -3.76511565e-01 -6.51471749e-01 1.78140875e-01 2.70405222e-01 -9.35873088e-02 1.06787156e-01 -7.52982439e-03 -8.94393167e-02 -3.49150415e-02 -9.44642964e-03 1.98180503e-02 -5.01035921e-02 -6.11298326e-03 -4.26587948e-02 -9.74814891e-03 -4.04647510e-02 -6.46231996e-02 6.28755670e-02 3.07065633e-01 -9.14366280e-03 5.27307574e-07 -2.86161913e-06 4.81325738e-05 -2.41479252e-06 -9.41405566e-04 2.24528196e-04 5.00761044e-03 9.32522208e-03 1.08192178e-03 -3.87922999e-03 -6.55964159e-03 1.40161939e-02 2.62093078e-03 -7.66937365e-02 1.81993144e-01 -8.76837760e-02 2.91015825e-01 -2.30820187e-02 -8.55387059e-02 2.46714099e-02 -4.05986921e-03 -2.18899889e-01 1.40855148e-02 -3.02755222e-02 -2.88178873e-01 -7.84851635e-03 -7.42023090e-01 -3.10591012e-01 1.45459633e-01 -5.03151016e-03 -6.69436292e-04 5.19783872e-03 3.37480643e-02 6.52336276e-02 9.46140973e-02 -6.46839946e-02 -1.18062070e-02 1.26784880e-02 -2.56559188e-02 -5.37811799e-02 -4.20622732e-02 1.23368788e-01 1.41026997e-01 9.57656614e-03 -3.30936506e-04 3.09687944e-04 -2.26913792e-04 -1.86868621e-03 5.61138574e-03 1.44392753e-03 -9.73281414e-03 1.31911778e-02 1.16749640e-03 -1.64211898e-03 2.97904305e-02 -4.00857646e-01 4.26600896e-01 4.73017337e-02 2.60050440e-02 -5.30443932e-02 4.40834979e-02 7.54455406e-02 -1.46122694e-01 3.81872825e-01 -2.67782535e-03 -1.16225786e-01 -2.09958643e-01 -7.31191098e-02 -3.52833127e-02 -2.49698278e-02 1.28983853e-01 3.75825706e-02 1.13423329e-02 8.01362525e-03 -1.52496685e-03 -1.85818277e-02 8.99178940e-02 1.61124834e-02 1.35380664e-01 -7.81306012e-02 9.35182336e-02 4.46453109e-01 -1.05220828e-01 1.13428521e-01 2.70916171e-01 2.31014868e-01 -2.49687897e-02 -3.92440245e-03 2.87138841e-04 1.42258352e-04 2.98539504e-04 -1.18942778e-03 4.27157062e-03 5.02407770e-03 -1.49428911e-02 2.49995703e-02 8.33212320e-03 -3.26343556e-03 2.88261785e-02 -4.68214698e-01 -3.45309926e-01 6.88724623e-02 -1.51401104e-01 -1.41921179e-01 2.40389769e-01 2.90201682e-01 1.25868345e-01 2.13587339e-02 1.77795363e-01 -3.47661106e-02 2.92752569e-02 8.05154683e-02 8.99834014e-02 -4.47118603e-02 -4.33066875e-03 -2.95020168e-03 1.53696476e-01 -7.17897323e-02 -4.96445281e-02 2.61851958e-02 5.83458165e-02 -4.06490574e-02 -3.97232148e-02 3.01406320e-01 -1.57931552e-01 -1.39957209e-02 -3.51700369e-01 -1.42764076e-01 1.18109417e-01 -2.83285160e-01 1.00713039e-01 -1.93506486e-02 1.12831593e-04 2.21477661e-04 -1.20982580e-04 -3.98229047e-04 -5.08145051e-04 -2.10566634e-04 -1.02380043e-03 4.44704083e-03 6.06941900e-03 5.94538214e-03 -7.05114471e-03 -2.63842007e-01 1.76835495e-02 -7.95898834e-01 -3.38939013e-01 1.02910553e-01 -2.25851585e-01 -1.28268450e-01 2.80874253e-02 -7.61726818e-02 -1.94077510e-01 7.34919823e-02 7.01484558e-02 -5.08990074e-02 -1.34864587e-01 1.42454960e-02 -4.61506808e-02 -1.51198179e-02 1.30766044e-01 1.40872608e-02 9.52689366e-04 -4.25954543e-03 -2.58220943e-02 -3.95161846e-02 3.08610765e-02 5.28011763e-02 5.12113220e-03 5.51278134e-03 -2.14802687e-02 2.57848051e-02 2.55763074e-02 -2.58002332e-03 1.76123804e-02 1.35996662e-02 2.31926964e-03 1.36201178e-03 2.66256397e-04 -2.27792726e-02 4.91810524e-01 -9.94147193e-03 5.49355824e-02 4.42208618e-02 1.44184567e-02 -3.44987844e-02 1.19921365e-03 1.97965251e-02 2.12132486e-02 2.16255240e-01 -4.38156903e-01 -1.06897920e-01 -4.84302857e-03 -1.00973512e-01 -3.38190376e-02 8.91137934e-02 -1.06541749e-01 -1.20023125e-01 1.46673148e-01 -1.04534533e-01 -1.06256425e-01 -7.85626340e-02 -5.45340938e-02 -4.14245449e-02 1.18751489e-01 2.02138499e-02 1.27278809e-02 3.07952151e-02 -4.62430976e-02 -4.02010075e-02 -5.35928283e-01 -1.95341508e-01 -1.36483570e-01 1.46619987e-01 2.26481555e-02 3.38428888e-02 -6.34100165e-02 -2.48319540e-02 -8.78061057e-02 3.96255772e-02 2.31704067e-03 1.14989231e-03 5.60036097e-04 -2.27762182e-02 4.87268624e-01 -1.11791040e-02 7.17387239e-02 6.27864858e-02 1.94677115e-02 -4.50356803e-02 -3.63021607e-03 8.10050997e-03 1.44687801e-01 -1.14324454e-01 3.00427367e-01 3.56510132e-01 -2.22990325e-01 4.61965285e-01 3.81303857e-01 -4.41302689e-02 1.67668989e-01 -1.24264797e-02 -1.34253025e-02 6.61847781e-02 5.80269308e-02 1.62375565e-01 -8.10122986e-02 -5.98635029e-02 8.91799003e-02 -3.38734067e-02 5.49238614e-03 2.48977568e-02 1.97628426e-03 1.15874921e-02 -2.90408280e-02 -5.87497156e-02 -2.56466008e-03 2.71113251e-02 -3.36046936e-03 1.34426622e-02 1.11966842e-02 1.83553502e-02 -1.02817514e-02 1.06666158e-02 2.63684370e-03 1.48465329e-03 9.18237455e-04 -2.23436390e-02 4.88802397e-01 -1.15159341e-02 7.17441332e-02 6.53688318e-02 1.73289335e-02 -4.38037207e-02 -1.02647645e-02 -2.71741461e-02 -1.84480589e-01 -3.22490523e-01 4.56725391e-01 -1.79634401e-01 3.46325892e-01 -2.49172251e-01 -3.06612479e-01 1.47923267e-02 -2.33049150e-02 7.10355429e-02 -9.69429329e-02 5.02344974e-02 1.15934591e-01 -3.05541817e-02 2.16179845e-01 9.10026167e-02 -2.81411512e-02 -1.56797168e-02 -1.25504353e-02 1.00629967e-02 -1.51669511e-02 -1.08258863e-02 -4.75984718e-02 1.66706720e-02 -1.67370686e-02 -1.68422509e-02 1.49849448e-02 4.68028989e-04 7.29118028e-03 -2.68623883e-02 -1.17255833e-02 7.78192453e-04 
       </Eigenvectors>
     </Transform>
   </Transformations>
   <MVAPdfs/>
-  <Weights NVariables="3" NClasses="2">
+  <Weights NVariables="44" NClasses="2">
     <PDFDescriptor VarIndex="0" ClassIndex="0">
       <PDF Name="LikelihoodPCA PDF Sig[0]" MinNSmooth="20" MaxNSmooth="20" InterpolMethod="2" KDE_type="1" KDE_iter="1" KDE_border="1" KDE_finefactor="1.0000000000000000e+00">
-        <Histogram Name="dataset_LikelihoodPCA_RecoVertexX_sig_original" NBins="2" XMin="-2.6468515014648438e+02" XMax="2.3481764221191406e+02" HasEquidistantBins="1">
-          6.40000000e+01 7.60000000e+01 
+        <Histogram Name="dataset_LikelihoodPCA_track1Length_sig_original" NBins="6" XMin="-4.8555422973632812e+02" XMax="4.9553805541992188e+02" HasEquidistantBins="1">
+          3.70000000e+01 6.30000000e+01 6.50000000e+01 4.70000000e+01 6.20000000e+01 3.90000000e+01 
         </Histogram>
       </PDF>
     </PDFDescriptor>
     <PDFDescriptor VarIndex="0" ClassIndex="1">
       <PDF Name="LikelihoodPCA PDF Bkg[0]" MinNSmooth="20" MaxNSmooth="20" InterpolMethod="2" KDE_type="1" KDE_iter="1" KDE_border="1" KDE_finefactor="1.0000000000000000e+00">
-        <Histogram Name="dataset_LikelihoodPCA_RecoVertexX_bgd_original" NBins="2" XMin="-2.6468515014648438e+02" XMax="2.3481764221191406e+02" HasEquidistantBins="1">
-          6.70253754e+01 7.29754791e+01 
+        <Histogram Name="dataset_LikelihoodPCA_track1Length_bgd_original" NBins="6" XMin="-4.8555422973632812e+02" XMax="4.9553805541992188e+02" HasEquidistantBins="1">
+          4.54879189e+01 5.84844704e+01 5.59573631e+01 4.76540108e+01 6.46217270e+01 4.07947197e+01 
         </Histogram>
       </PDF>
     </PDFDescriptor>
     <PDFDescriptor VarIndex="1" ClassIndex="0">
       <PDF Name="LikelihoodPCA PDF Sig[1]" MinNSmooth="5" MaxNSmooth="5" InterpolMethod="2" KDE_type="1" KDE_iter="1" KDE_border="1" KDE_finefactor="1.0000000000000000e+00">
-        <Histogram Name="dataset_LikelihoodPCA_RecoVertexY_sig_original" NBins="2" XMin="-2.5857058715820312e+02" XMax="2.6540023803710938e+02" HasEquidistantBins="1">
-          7.60000000e+01 6.40000000e+01 
+        <Histogram Name="dataset_LikelihoodPCA_track2Length_sig_original" NBins="6" XMin="-4.6206808471679688e+02" XMax="4.6555319213867188e+02" HasEquidistantBins="1">
+          1.40000000e+01 7.60000000e+01 7.40000000e+01 6.70000000e+01 5.70000000e+01 2.50000000e+01 
         </Histogram>
       </PDF>
     </PDFDescriptor>
     <PDFDescriptor VarIndex="1" ClassIndex="1">
       <PDF Name="LikelihoodPCA PDF Bkg[1]" MinNSmooth="5" MaxNSmooth="5" InterpolMethod="2" KDE_type="1" KDE_iter="1" KDE_border="1" KDE_finefactor="1.0000000000000000e+00">
-        <Histogram Name="dataset_LikelihoodPCA_RecoVertexY_bgd_original" NBins="2" XMin="-2.5857058715820312e+02" XMax="2.6540023803710938e+02" HasEquidistantBins="1">
-          7.31504822e+01 6.68503723e+01 
+        <Histogram Name="dataset_LikelihoodPCA_track2Length_bgd_original" NBins="6" XMin="-4.6206808471679688e+02" XMax="4.6555319213867188e+02" HasEquidistantBins="1">
+          1.80507565e+01 7.50911713e+01 5.99285316e+01 7.43691406e+01 6.78708649e+01 1.76897411e+01 
         </Histogram>
       </PDF>
     </PDFDescriptor>
     <PDFDescriptor VarIndex="2" ClassIndex="0">
       <PDF Name="LikelihoodPCA PDF Sig[2]" MinNSmooth="5" MaxNSmooth="5" InterpolMethod="2" KDE_type="1" KDE_iter="1" KDE_border="1" KDE_finefactor="1.0000000000000000e+00">
-        <Histogram Name="dataset_LikelihoodPCA_RecoVertexZ_sig_original" NBins="2" XMin="-2.6734725952148438e+02" XMax="2.7207812500000000e+02" HasEquidistantBins="1">
-          7.60000000e+01 6.40000000e+01 
+        <Histogram Name="dataset_LikelihoodPCA_track3Length_sig_original" NBins="6" XMin="-4.5137786865234375e+02" XMax="4.4815557861328125e+02" HasEquidistantBins="1">
+          2.10000000e+01 5.70000000e+01 8.40000000e+01 6.60000000e+01 5.90000000e+01 2.60000000e+01 
         </Histogram>
       </PDF>
     </PDFDescriptor>
     <PDFDescriptor VarIndex="2" ClassIndex="1">
       <PDF Name="LikelihoodPCA PDF Bkg[2]" MinNSmooth="5" MaxNSmooth="5" InterpolMethod="2" KDE_type="1" KDE_iter="1" KDE_border="1" KDE_finefactor="1.0000000000000000e+00">
-        <Histogram Name="dataset_LikelihoodPCA_RecoVertexZ_bgd_original" NBins="2" XMin="-2.6734725952148438e+02" XMax="2.7207812500000000e+02" HasEquidistantBins="1">
-          6.90670776e+01 7.09337769e+01 
+        <Histogram Name="dataset_LikelihoodPCA_track3Length_bgd_original" NBins="6" XMin="-4.5137786865234375e+02" XMax="4.4815557861328125e+02" HasEquidistantBins="1">
+          2.38270016e+01 5.34302559e+01 6.89539108e+01 8.41165543e+01 7.03979721e+01 1.22745123e+01 
+        </Histogram>
+      </PDF>
+    </PDFDescriptor>
+    <PDFDescriptor VarIndex="3" ClassIndex="0">
+      <PDF Name="LikelihoodPCA PDF Sig[3]" MinNSmooth="5" MaxNSmooth="5" InterpolMethod="2" KDE_type="1" KDE_iter="1" KDE_border="1" KDE_finefactor="1.0000000000000000e+00">
+        <Histogram Name="dataset_LikelihoodPCA_shower1Length_sig_original" NBins="6" XMin="-3.3338601684570312e+02" XMax="2.7214346313476562e+02" HasEquidistantBins="1">
+          0.00000000e+00 2.80000000e+01 8.90000000e+01 1.36000000e+02 4.40000000e+01 1.60000000e+01 
+        </Histogram>
+      </PDF>
+    </PDFDescriptor>
+    <PDFDescriptor VarIndex="3" ClassIndex="1">
+      <PDF Name="LikelihoodPCA PDF Bkg[3]" MinNSmooth="5" MaxNSmooth="5" InterpolMethod="2" KDE_type="1" KDE_iter="1" KDE_border="1" KDE_finefactor="1.0000000000000000e+00">
+        <Histogram Name="dataset_LikelihoodPCA_shower1Length_bgd_original" NBins="6" XMin="-3.3338601684570312e+02" XMax="2.7214346313476562e+02" HasEquidistantBins="1">
+          7.94232893e+00 2.27439556e+01 6.17336082e+01 1.50181885e+02 7.03979721e+01 0.00000000e+00 
+        </Histogram>
+      </PDF>
+    </PDFDescriptor>
+    <PDFDescriptor VarIndex="4" ClassIndex="0">
+      <PDF Name="LikelihoodPCA PDF Sig[4]" MinNSmooth="5" MaxNSmooth="5" InterpolMethod="2" KDE_type="1" KDE_iter="1" KDE_border="1" KDE_finefactor="1.0000000000000000e+00">
+        <Histogram Name="dataset_LikelihoodPCA_track1StartPosX_sig_original" NBins="6" XMin="-1.2274523925781250e+02" XMax="1.4638519287109375e+02" HasEquidistantBins="1">
+          1.50000000e+01 3.40000000e+01 1.21000000e+02 1.43000000e+02 0.00000000e+00 0.00000000e+00 
+        </Histogram>
+      </PDF>
+    </PDFDescriptor>
+    <PDFDescriptor VarIndex="4" ClassIndex="1">
+      <PDF Name="LikelihoodPCA PDF Bkg[4]" MinNSmooth="5" MaxNSmooth="5" InterpolMethod="2" KDE_type="1" KDE_iter="1" KDE_border="1" KDE_finefactor="1.0000000000000000e+00">
+        <Histogram Name="dataset_LikelihoodPCA_track1StartPosX_bgd_original" NBins="6" XMin="-1.2274523925781250e+02" XMax="1.4638519287109375e+02" HasEquidistantBins="1">
+          0.00000000e+00 0.00000000e+00 2.53069077e+02 3.28523827e+01 1.62456799e+01 1.08304510e+01 
+        </Histogram>
+      </PDF>
+    </PDFDescriptor>
+    <PDFDescriptor VarIndex="5" ClassIndex="0">
+      <PDF Name="LikelihoodPCA PDF Sig[5]" MinNSmooth="5" MaxNSmooth="5" InterpolMethod="2" KDE_type="1" KDE_iter="1" KDE_border="1" KDE_finefactor="1.0000000000000000e+00">
+        <Histogram Name="dataset_LikelihoodPCA_track1StartPosY_sig_original" NBins="6" XMin="-9.3899261474609375e+01" XMax="9.4102340698242188e+01" HasEquidistantBins="1">
+          2.00000000e+00 1.20000000e+01 1.21000000e+02 1.76000000e+02 2.00000000e+00 0.00000000e+00 
+        </Histogram>
+      </PDF>
+    </PDFDescriptor>
+    <PDFDescriptor VarIndex="5" ClassIndex="1">
+      <PDF Name="LikelihoodPCA PDF Bkg[5]" MinNSmooth="5" MaxNSmooth="5" InterpolMethod="2" KDE_type="1" KDE_iter="1" KDE_border="1" KDE_finefactor="1.0000000000000000e+00">
+        <Histogram Name="dataset_LikelihoodPCA_track1StartPosY_bgd_original" NBins="6" XMin="-9.3899261474609375e+01" XMax="9.4102340698242188e+01" HasEquidistantBins="1">
+          0.00000000e+00 4.69319534e+00 1.85199631e+02 9.27809219e+01 2.34659863e+01 6.85928440e+00 
+        </Histogram>
+      </PDF>
+    </PDFDescriptor>
+    <PDFDescriptor VarIndex="6" ClassIndex="0">
+      <PDF Name="LikelihoodPCA PDF Sig[6]" MinNSmooth="5" MaxNSmooth="5" InterpolMethod="2" KDE_type="1" KDE_iter="1" KDE_border="1" KDE_finefactor="1.0000000000000000e+00">
+        <Histogram Name="dataset_LikelihoodPCA_track1StartPosZ_sig_original" NBins="6" XMin="-7.3820388793945312e+01" XMax="5.3272800445556641e+01" HasEquidistantBins="1">
+          0.00000000e+00 1.20000000e+01 5.90000000e+01 1.78000000e+02 5.60000000e+01 8.00000000e+00 
+        </Histogram>
+      </PDF>
+    </PDFDescriptor>
+    <PDFDescriptor VarIndex="6" ClassIndex="1">
+      <PDF Name="LikelihoodPCA PDF Bkg[6]" MinNSmooth="5" MaxNSmooth="5" InterpolMethod="2" KDE_type="1" KDE_iter="1" KDE_border="1" KDE_finefactor="1.0000000000000000e+00">
+        <Histogram Name="dataset_LikelihoodPCA_track1StartPosZ_bgd_original" NBins="6" XMin="-7.3820388793945312e+01" XMax="5.3272800445556641e+01" HasEquidistantBins="1">
+          7.22029984e-01 1.08304510e+01 3.35744133e+01 2.50181015e+02 1.76897411e+01 0.00000000e+00 
+        </Histogram>
+      </PDF>
+    </PDFDescriptor>
+    <PDFDescriptor VarIndex="7" ClassIndex="0">
+      <PDF Name="LikelihoodPCA PDF Sig[7]" MinNSmooth="5" MaxNSmooth="5" InterpolMethod="2" KDE_type="1" KDE_iter="1" KDE_border="1" KDE_finefactor="1.0000000000000000e+00">
+        <Histogram Name="dataset_LikelihoodPCA_track2StartPosX_sig_original" NBins="6" XMin="-4.4307888031005859e+01" XMax="8.4411918640136719e+01" HasEquidistantBins="1">
+          1.30000000e+01 1.19000000e+02 1.66000000e+02 1.20000000e+01 3.00000000e+00 0.00000000e+00 
+        </Histogram>
+      </PDF>
+    </PDFDescriptor>
+    <PDFDescriptor VarIndex="7" ClassIndex="1">
+      <PDF Name="LikelihoodPCA PDF Bkg[7]" MinNSmooth="5" MaxNSmooth="5" InterpolMethod="2" KDE_type="1" KDE_iter="1" KDE_border="1" KDE_finefactor="1.0000000000000000e+00">
+        <Histogram Name="dataset_LikelihoodPCA_track2StartPosX_bgd_original" NBins="6" XMin="-4.4307888031005859e+01" XMax="8.4411918640136719e+01" HasEquidistantBins="1">
+          5.05421019e+00 1.02528336e+02 1.93863815e+02 9.02537441e+00 1.80507493e+00 7.22029984e-01 
+        </Histogram>
+      </PDF>
+    </PDFDescriptor>
+    <PDFDescriptor VarIndex="8" ClassIndex="0">
+      <PDF Name="LikelihoodPCA PDF Sig[8]" MinNSmooth="5" MaxNSmooth="5" InterpolMethod="2" KDE_type="1" KDE_iter="1" KDE_border="1" KDE_finefactor="1.0000000000000000e+00">
+        <Histogram Name="dataset_LikelihoodPCA_track2StartPosY_sig_original" NBins="6" XMin="-6.9160751342773438e+01" XMax="6.8333602905273438e+01" HasEquidistantBins="1">
+          1.00000000e+00 9.00000000e+00 1.34000000e+02 1.60000000e+02 9.00000000e+00 0.00000000e+00 
+        </Histogram>
+      </PDF>
+    </PDFDescriptor>
+    <PDFDescriptor VarIndex="8" ClassIndex="1">
+      <PDF Name="LikelihoodPCA PDF Bkg[8]" MinNSmooth="5" MaxNSmooth="5" InterpolMethod="2" KDE_type="1" KDE_iter="1" KDE_border="1" KDE_finefactor="1.0000000000000000e+00">
+        <Histogram Name="dataset_LikelihoodPCA_track2StartPosY_bgd_original" NBins="6" XMin="-6.9160751342773438e+01" XMax="6.8333602905273438e+01" HasEquidistantBins="1">
+          3.61014992e-01 5.77623987e+00 1.32131500e+02 1.67871262e+02 4.69319534e+00 2.16609001e+00 
+        </Histogram>
+      </PDF>
+    </PDFDescriptor>
+    <PDFDescriptor VarIndex="9" ClassIndex="0">
+      <PDF Name="LikelihoodPCA PDF Sig[9]" MinNSmooth="5" MaxNSmooth="5" InterpolMethod="2" KDE_type="1" KDE_iter="1" KDE_border="1" KDE_finefactor="1.0000000000000000e+00">
+        <Histogram Name="dataset_LikelihoodPCA_track2StartPosZ_sig_original" NBins="6" XMin="-5.0945308685302734e+01" XMax="5.2708770751953125e+01" HasEquidistantBins="1">
+          2.00000000e+00 1.10000000e+01 1.76000000e+02 1.03000000e+02 2.00000000e+01 1.00000000e+00 
+        </Histogram>
+      </PDF>
+    </PDFDescriptor>
+    <PDFDescriptor VarIndex="9" ClassIndex="1">
+      <PDF Name="LikelihoodPCA PDF Bkg[9]" MinNSmooth="5" MaxNSmooth="5" InterpolMethod="2" KDE_type="1" KDE_iter="1" KDE_border="1" KDE_finefactor="1.0000000000000000e+00">
+        <Histogram Name="dataset_LikelihoodPCA_track2StartPosZ_bgd_original" NBins="6" XMin="-5.0945308685302734e+01" XMax="5.2708770751953125e+01" HasEquidistantBins="1">
+          3.61015034e+00 6.85928440e+00 1.97112885e+02 9.85571671e+01 6.13725471e+00 7.22029984e-01 
+        </Histogram>
+      </PDF>
+    </PDFDescriptor>
+    <PDFDescriptor VarIndex="10" ClassIndex="0">
+      <PDF Name="LikelihoodPCA PDF Sig[10]" MinNSmooth="5" MaxNSmooth="5" InterpolMethod="2" KDE_type="1" KDE_iter="1" KDE_border="1" KDE_finefactor="1.0000000000000000e+00">
+        <Histogram Name="dataset_LikelihoodPCA_track3StartPosX_sig_original" NBins="6" XMin="-3.3671470642089844e+01" XMax="2.6578573226928711e+01" HasEquidistantBins="1">
+          0.00000000e+00 4.00000000e+00 6.70000000e+01 2.07000000e+02 3.00000000e+01 5.00000000e+00 
+        </Histogram>
+      </PDF>
+    </PDFDescriptor>
+    <PDFDescriptor VarIndex="10" ClassIndex="1">
+      <PDF Name="LikelihoodPCA PDF Bkg[10]" MinNSmooth="5" MaxNSmooth="5" InterpolMethod="2" KDE_type="1" KDE_iter="1" KDE_border="1" KDE_finefactor="1.0000000000000000e+00">
+        <Histogram Name="dataset_LikelihoodPCA_track3StartPosX_bgd_original" NBins="6" XMin="-3.3671470642089844e+01" XMax="2.6578573226928711e+01" HasEquidistantBins="1">
+          0.00000000e+00 3.61015034e+00 7.94233551e+01 1.84116608e+02 3.75455818e+01 8.30334377e+00 
+        </Histogram>
+      </PDF>
+    </PDFDescriptor>
+    <PDFDescriptor VarIndex="11" ClassIndex="0">
+      <PDF Name="LikelihoodPCA PDF Sig[11]" MinNSmooth="5" MaxNSmooth="5" InterpolMethod="2" KDE_type="1" KDE_iter="1" KDE_border="1" KDE_finefactor="1.0000000000000000e+00">
+        <Histogram Name="dataset_LikelihoodPCA_track3StartPosY_sig_original" NBins="6" XMin="-1.7075096130371094e+01" XMax="1.7760452270507812e+01" HasEquidistantBins="1">
+          0.00000000e+00 1.10000000e+01 1.82000000e+02 1.01000000e+02 1.70000000e+01 2.00000000e+00 
+        </Histogram>
+      </PDF>
+    </PDFDescriptor>
+    <PDFDescriptor VarIndex="11" ClassIndex="1">
+      <PDF Name="LikelihoodPCA PDF Bkg[11]" MinNSmooth="5" MaxNSmooth="5" InterpolMethod="2" KDE_type="1" KDE_iter="1" KDE_border="1" KDE_finefactor="1.0000000000000000e+00">
+        <Histogram Name="dataset_LikelihoodPCA_track3StartPosY_bgd_original" NBins="6" XMin="-1.7075096130371094e+01" XMax="1.7760452270507812e+01" HasEquidistantBins="1">
+          7.22029984e-01 9.74740505e+00 1.26355347e+02 1.76174438e+02 0.00000000e+00 0.00000000e+00 
+        </Histogram>
+      </PDF>
+    </PDFDescriptor>
+    <PDFDescriptor VarIndex="12" ClassIndex="0">
+      <PDF Name="LikelihoodPCA PDF Sig[12]" MinNSmooth="5" MaxNSmooth="5" InterpolMethod="2" KDE_type="1" KDE_iter="1" KDE_border="1" KDE_finefactor="1.0000000000000000e+00">
+        <Histogram Name="dataset_LikelihoodPCA_track3StartPosZ_sig_original" NBins="6" XMin="-1.0767663002014160e+01" XMax="1.1782079696655273e+01" HasEquidistantBins="1">
+          3.00000000e+00 1.60000000e+01 1.69000000e+02 1.21000000e+02 4.00000000e+00 0.00000000e+00 
+        </Histogram>
+      </PDF>
+    </PDFDescriptor>
+    <PDFDescriptor VarIndex="12" ClassIndex="1">
+      <PDF Name="LikelihoodPCA PDF Bkg[12]" MinNSmooth="5" MaxNSmooth="5" InterpolMethod="2" KDE_type="1" KDE_iter="1" KDE_border="1" KDE_finefactor="1.0000000000000000e+00">
+        <Histogram Name="dataset_LikelihoodPCA_track3StartPosZ_bgd_original" NBins="6" XMin="-1.0767663002014160e+01" XMax="1.1782079696655273e+01" HasEquidistantBins="1">
+          1.80507493e+00 7.94232893e+00 2.13358231e+02 8.05064011e+01 9.02537441e+00 3.61014992e-01 
+        </Histogram>
+      </PDF>
+    </PDFDescriptor>
+    <PDFDescriptor VarIndex="13" ClassIndex="0">
+      <PDF Name="LikelihoodPCA PDF Sig[13]" MinNSmooth="5" MaxNSmooth="5" InterpolMethod="2" KDE_type="1" KDE_iter="1" KDE_border="1" KDE_finefactor="1.0000000000000000e+00">
+        <Histogram Name="dataset_LikelihoodPCA_shower1StartPosX_sig_original" NBins="6" XMin="-7.0782542228698730e+00" XMax="6.5762906074523926e+00" HasEquidistantBins="1">
+          4.00000000e+00 2.00000000e+01 9.50000000e+01 1.72000000e+02 2.00000000e+01 2.00000000e+00 
+        </Histogram>
+      </PDF>
+    </PDFDescriptor>
+    <PDFDescriptor VarIndex="13" ClassIndex="1">
+      <PDF Name="LikelihoodPCA PDF Bkg[13]" MinNSmooth="5" MaxNSmooth="5" InterpolMethod="2" KDE_type="1" KDE_iter="1" KDE_border="1" KDE_finefactor="1.0000000000000000e+00">
+        <Histogram Name="dataset_LikelihoodPCA_shower1StartPosX_bgd_original" NBins="6" XMin="-7.0782542228698730e+00" XMax="6.5762906074523926e+00" HasEquidistantBins="1">
+          0.00000000e+00 0.00000000e+00 1.43322739e+02 1.53069946e+02 1.51626348e+01 1.44405997e+00 
+        </Histogram>
+      </PDF>
+    </PDFDescriptor>
+    <PDFDescriptor VarIndex="14" ClassIndex="0">
+      <PDF Name="LikelihoodPCA PDF Sig[14]" MinNSmooth="5" MaxNSmooth="5" InterpolMethod="2" KDE_type="1" KDE_iter="1" KDE_border="1" KDE_finefactor="1.0000000000000000e+00">
+        <Histogram Name="dataset_LikelihoodPCA_shower1StartPosY_sig_original" NBins="6" XMin="-6.9294381141662598e+00" XMax="8.4380435943603516e+00" HasEquidistantBins="1">
+          1.00000000e+00 2.00000000e+01 2.27000000e+02 5.50000000e+01 7.00000000e+00 3.00000000e+00 
+        </Histogram>
+      </PDF>
+    </PDFDescriptor>
+    <PDFDescriptor VarIndex="14" ClassIndex="1">
+      <PDF Name="LikelihoodPCA PDF Bkg[14]" MinNSmooth="5" MaxNSmooth="5" InterpolMethod="2" KDE_type="1" KDE_iter="1" KDE_border="1" KDE_finefactor="1.0000000000000000e+00">
+        <Histogram Name="dataset_LikelihoodPCA_shower1StartPosY_bgd_original" NBins="6" XMin="-6.9294381141662598e+00" XMax="8.4380435943603516e+00" HasEquidistantBins="1">
+          7.22029984e-01 1.04694357e+01 2.55235123e+02 4.29608116e+01 3.61015034e+00 0.00000000e+00 
+        </Histogram>
+      </PDF>
+    </PDFDescriptor>
+    <PDFDescriptor VarIndex="15" ClassIndex="0">
+      <PDF Name="LikelihoodPCA PDF Sig[15]" MinNSmooth="5" MaxNSmooth="5" InterpolMethod="2" KDE_type="1" KDE_iter="1" KDE_border="1" KDE_finefactor="1.0000000000000000e+00">
+        <Histogram Name="dataset_LikelihoodPCA_shower1StartPosZ_sig_original" NBins="6" XMin="-7.7066507339477539e+00" XMax="5.4097332954406738e+00" HasEquidistantBins="1">
+          0.00000000e+00 4.00000000e+00 4.20000000e+01 2.16000000e+02 4.80000000e+01 3.00000000e+00 
+        </Histogram>
+      </PDF>
+    </PDFDescriptor>
+    <PDFDescriptor VarIndex="15" ClassIndex="1">
+      <PDF Name="LikelihoodPCA PDF Bkg[15]" MinNSmooth="5" MaxNSmooth="5" InterpolMethod="2" KDE_type="1" KDE_iter="1" KDE_border="1" KDE_finefactor="1.0000000000000000e+00">
+        <Histogram Name="dataset_LikelihoodPCA_shower1StartPosZ_bgd_original" NBins="6" XMin="-7.7066507339477539e+00" XMax="5.4097332954406738e+00" HasEquidistantBins="1">
+          3.61014992e-01 1.44405997e+00 2.34659863e+01 2.61011444e+02 2.59930935e+01 7.22029984e-01 
+        </Histogram>
+      </PDF>
+    </PDFDescriptor>
+    <PDFDescriptor VarIndex="16" ClassIndex="0">
+      <PDF Name="LikelihoodPCA PDF Sig[16]" MinNSmooth="5" MaxNSmooth="5" InterpolMethod="2" KDE_type="1" KDE_iter="1" KDE_border="1" KDE_finefactor="1.0000000000000000e+00">
+        <Histogram Name="dataset_LikelihoodPCA_track1StartDirX_sig_original" NBins="6" XMin="-5.2435207366943359e+00" XMax="3.9926600456237793e+00" HasEquidistantBins="1">
+          1.00000000e+00 1.10000000e+01 6.80000000e+01 1.80000000e+02 4.60000000e+01 7.00000000e+00 
+        </Histogram>
+      </PDF>
+    </PDFDescriptor>
+    <PDFDescriptor VarIndex="16" ClassIndex="1">
+      <PDF Name="LikelihoodPCA PDF Bkg[16]" MinNSmooth="5" MaxNSmooth="5" InterpolMethod="2" KDE_type="1" KDE_iter="1" KDE_border="1" KDE_finefactor="1.0000000000000000e+00">
+        <Histogram Name="dataset_LikelihoodPCA_track1StartDirX_bgd_original" NBins="6" XMin="-5.2435207366943359e+00" XMax="3.9926600456237793e+00" HasEquidistantBins="1">
+          7.22029984e-01 9.02537441e+00 5.09031487e+01 2.17329315e+02 3.39354286e+01 1.08304501e+00 
+        </Histogram>
+      </PDF>
+    </PDFDescriptor>
+    <PDFDescriptor VarIndex="17" ClassIndex="0">
+      <PDF Name="LikelihoodPCA PDF Sig[17]" MinNSmooth="5" MaxNSmooth="5" InterpolMethod="2" KDE_type="1" KDE_iter="1" KDE_border="1" KDE_finefactor="1.0000000000000000e+00">
+        <Histogram Name="dataset_LikelihoodPCA_track1StartDirY_sig_original" NBins="6" XMin="-5.8821702003479004e+00" XMax="3.9548430442810059e+00" HasEquidistantBins="1">
+          0.00000000e+00 3.00000000e+00 3.90000000e+01 2.05000000e+02 6.30000000e+01 3.00000000e+00 
+        </Histogram>
+      </PDF>
+    </PDFDescriptor>
+    <PDFDescriptor VarIndex="17" ClassIndex="1">
+      <PDF Name="LikelihoodPCA PDF Bkg[17]" MinNSmooth="5" MaxNSmooth="5" InterpolMethod="2" KDE_type="1" KDE_iter="1" KDE_border="1" KDE_finefactor="1.0000000000000000e+00">
+        <Histogram Name="dataset_LikelihoodPCA_track1StartDirY_bgd_original" NBins="6" XMin="-5.8821702003479004e+00" XMax="3.9548430442810059e+00" HasEquidistantBins="1">
+          0.00000000e+00 7.22029984e-01 3.97116737e+01 2.03611023e+02 6.85928955e+01 3.61014992e-01 
+        </Histogram>
+      </PDF>
+    </PDFDescriptor>
+    <PDFDescriptor VarIndex="18" ClassIndex="0">
+      <PDF Name="LikelihoodPCA PDF Sig[18]" MinNSmooth="5" MaxNSmooth="5" InterpolMethod="2" KDE_type="1" KDE_iter="1" KDE_border="1" KDE_finefactor="1.0000000000000000e+00">
+        <Histogram Name="dataset_LikelihoodPCA_track1StartDirZ_sig_original" NBins="6" XMin="-5.2200527191162109e+00" XMax="6.8090305328369141e+00" HasEquidistantBins="1">
+          2.00000000e+00 2.10000000e+01 2.36000000e+02 5.30000000e+01 1.00000000e+00 0.00000000e+00 
+        </Histogram>
+      </PDF>
+    </PDFDescriptor>
+    <PDFDescriptor VarIndex="18" ClassIndex="1">
+      <PDF Name="LikelihoodPCA PDF Bkg[18]" MinNSmooth="5" MaxNSmooth="5" InterpolMethod="2" KDE_type="1" KDE_iter="1" KDE_border="1" KDE_finefactor="1.0000000000000000e+00">
+        <Histogram Name="dataset_LikelihoodPCA_track1StartDirZ_bgd_original" NBins="6" XMin="-5.2200527191162109e+00" XMax="6.8090305328369141e+00" HasEquidistantBins="1">
+          0.00000000e+00 1.58846655e+01 2.51625046e+02 4.47658882e+01 3.61014992e-01 3.61014992e-01 
+        </Histogram>
+      </PDF>
+    </PDFDescriptor>
+    <PDFDescriptor VarIndex="19" ClassIndex="0">
+      <PDF Name="LikelihoodPCA PDF Sig[19]" MinNSmooth="5" MaxNSmooth="5" InterpolMethod="2" KDE_type="1" KDE_iter="1" KDE_border="1" KDE_finefactor="1.0000000000000000e+00">
+        <Histogram Name="dataset_LikelihoodPCA_track2StartDirX_sig_original" NBins="6" XMin="-3.1169810295104980e+00" XMax="4.2716856002807617e+00" HasEquidistantBins="1">
+          2.00000000e+00 6.10000000e+01 1.83000000e+02 5.80000000e+01 9.00000000e+00 0.00000000e+00 
+        </Histogram>
+      </PDF>
+    </PDFDescriptor>
+    <PDFDescriptor VarIndex="19" ClassIndex="1">
+      <PDF Name="LikelihoodPCA PDF Bkg[19]" MinNSmooth="5" MaxNSmooth="5" InterpolMethod="2" KDE_type="1" KDE_iter="1" KDE_border="1" KDE_finefactor="1.0000000000000000e+00">
+        <Histogram Name="dataset_LikelihoodPCA_track2StartDirX_bgd_original" NBins="6" XMin="-3.1169810295104980e+00" XMax="4.2716856002807617e+00" HasEquidistantBins="1">
+          2.16609001e+00 6.17336082e+01 1.77618469e+02 6.71488342e+01 4.33218050e+00 0.00000000e+00 
+        </Histogram>
+      </PDF>
+    </PDFDescriptor>
+    <PDFDescriptor VarIndex="20" ClassIndex="0">
+      <PDF Name="LikelihoodPCA PDF Sig[20]" MinNSmooth="5" MaxNSmooth="5" InterpolMethod="2" KDE_type="1" KDE_iter="1" KDE_border="1" KDE_finefactor="1.0000000000000000e+00">
+        <Histogram Name="dataset_LikelihoodPCA_track2StartDirY_sig_original" NBins="6" XMin="-3.6783328056335449e+00" XMax="5.0964021682739258e+00" HasEquidistantBins="1">
+          0.00000000e+00 5.10000000e+01 2.08000000e+02 5.10000000e+01 2.00000000e+00 1.00000000e+00 
+        </Histogram>
+      </PDF>
+    </PDFDescriptor>
+    <PDFDescriptor VarIndex="20" ClassIndex="1">
+      <PDF Name="LikelihoodPCA PDF Bkg[20]" MinNSmooth="5" MaxNSmooth="5" InterpolMethod="2" KDE_type="1" KDE_iter="1" KDE_border="1" KDE_finefactor="1.0000000000000000e+00">
+        <Histogram Name="dataset_LikelihoodPCA_track2StartDirY_bgd_original" NBins="6" XMin="-3.6783328056335449e+00" XMax="5.0964021682739258e+00" HasEquidistantBins="1">
+          2.16609001e+00 4.69319801e+01 2.09026138e+02 5.45133018e+01 3.61014992e-01 0.00000000e+00 
+        </Histogram>
+      </PDF>
+    </PDFDescriptor>
+    <PDFDescriptor VarIndex="21" ClassIndex="0">
+      <PDF Name="LikelihoodPCA PDF Sig[21]" MinNSmooth="5" MaxNSmooth="5" InterpolMethod="2" KDE_type="1" KDE_iter="1" KDE_border="1" KDE_finefactor="1.0000000000000000e+00">
+        <Histogram Name="dataset_LikelihoodPCA_track2StartDirZ_sig_original" NBins="6" XMin="-3.6405856609344482e+00" XMax="4.0552401542663574e+00" HasEquidistantBins="1">
+          1.00000000e+00 1.60000000e+01 1.88000000e+02 1.00000000e+02 7.00000000e+00 1.00000000e+00 
+        </Histogram>
+      </PDF>
+    </PDFDescriptor>
+    <PDFDescriptor VarIndex="21" ClassIndex="1">
+      <PDF Name="LikelihoodPCA PDF Bkg[21]" MinNSmooth="5" MaxNSmooth="5" InterpolMethod="2" KDE_type="1" KDE_iter="1" KDE_border="1" KDE_finefactor="1.0000000000000000e+00">
+        <Histogram Name="dataset_LikelihoodPCA_track2StartDirZ_bgd_original" NBins="6" XMin="-3.6405856609344482e+00" XMax="4.0552401542663574e+00" HasEquidistantBins="1">
+          3.61014992e-01 1.98558331e+01 1.71842346e+02 1.13358795e+02 6.13725471e+00 1.44405997e+00 
+        </Histogram>
+      </PDF>
+    </PDFDescriptor>
+    <PDFDescriptor VarIndex="22" ClassIndex="0">
+      <PDF Name="LikelihoodPCA PDF Sig[22]" MinNSmooth="5" MaxNSmooth="5" InterpolMethod="2" KDE_type="1" KDE_iter="1" KDE_border="1" KDE_finefactor="1.0000000000000000e+00">
+        <Histogram Name="dataset_LikelihoodPCA_track3StartDirX_sig_original" NBins="6" XMin="-5.0051813125610352e+00" XMax="3.7974352836608887e+00" HasEquidistantBins="1">
+          0.00000000e+00 0.00000000e+00 4.20000000e+01 2.44000000e+02 2.70000000e+01 0.00000000e+00 
+        </Histogram>
+      </PDF>
+    </PDFDescriptor>
+    <PDFDescriptor VarIndex="22" ClassIndex="1">
+      <PDF Name="LikelihoodPCA PDF Bkg[22]" MinNSmooth="5" MaxNSmooth="5" InterpolMethod="2" KDE_type="1" KDE_iter="1" KDE_border="1" KDE_finefactor="1.0000000000000000e+00">
+        <Histogram Name="dataset_LikelihoodPCA_track3StartDirX_bgd_original" NBins="6" XMin="-5.0051813125610352e+00" XMax="3.7974352836608887e+00" HasEquidistantBins="1">
+          0.00000000e+00 1.44405997e+00 5.55963478e+01 2.29603577e+02 2.52710629e+01 1.08304501e+00 
+        </Histogram>
+      </PDF>
+    </PDFDescriptor>
+    <PDFDescriptor VarIndex="23" ClassIndex="0">
+      <PDF Name="LikelihoodPCA PDF Sig[23]" MinNSmooth="5" MaxNSmooth="5" InterpolMethod="2" KDE_type="1" KDE_iter="1" KDE_border="1" KDE_finefactor="1.0000000000000000e+00">
+        <Histogram Name="dataset_LikelihoodPCA_track3StartDirY_sig_original" NBins="6" XMin="-4.9520149230957031e+00" XMax="2.5891125202178955e+00" HasEquidistantBins="1">
+          0.00000000e+00 1.00000000e+00 7.00000000e+00 1.63000000e+02 1.39000000e+02 3.00000000e+00 
+        </Histogram>
+      </PDF>
+    </PDFDescriptor>
+    <PDFDescriptor VarIndex="23" ClassIndex="1">
+      <PDF Name="LikelihoodPCA PDF Bkg[23]" MinNSmooth="5" MaxNSmooth="5" InterpolMethod="2" KDE_type="1" KDE_iter="1" KDE_border="1" KDE_finefactor="1.0000000000000000e+00">
+        <Histogram Name="dataset_LikelihoodPCA_track3StartDirY_bgd_original" NBins="6" XMin="-4.9520149230957031e+00" XMax="2.5891125202178955e+00" HasEquidistantBins="1">
+          0.00000000e+00 0.00000000e+00 1.58846655e+01 1.50903900e+02 1.41156693e+02 5.05421019e+00 
+        </Histogram>
+      </PDF>
+    </PDFDescriptor>
+    <PDFDescriptor VarIndex="24" ClassIndex="0">
+      <PDF Name="LikelihoodPCA PDF Sig[24]" MinNSmooth="5" MaxNSmooth="5" InterpolMethod="2" KDE_type="1" KDE_iter="1" KDE_border="1" KDE_finefactor="1.0000000000000000e+00">
+        <Histogram Name="dataset_LikelihoodPCA_track3StartDirZ_sig_original" NBins="6" XMin="-5.7473731040954590e+00" XMax="2.6441729068756104e+00" HasEquidistantBins="1">
+          0.00000000e+00 0.00000000e+00 3.00000000e+00 1.13000000e+02 1.88000000e+02 9.00000000e+00 
+        </Histogram>
+      </PDF>
+    </PDFDescriptor>
+    <PDFDescriptor VarIndex="24" ClassIndex="1">
+      <PDF Name="LikelihoodPCA PDF Bkg[24]" MinNSmooth="5" MaxNSmooth="5" InterpolMethod="2" KDE_type="1" KDE_iter="1" KDE_border="1" KDE_finefactor="1.0000000000000000e+00">
+        <Histogram Name="dataset_LikelihoodPCA_track3StartDirZ_bgd_original" NBins="6" XMin="-5.7473731040954590e+00" XMax="2.6441729068756104e+00" HasEquidistantBins="1">
+          0.00000000e+00 0.00000000e+00 5.41522503e+00 1.16968948e+02 1.85921646e+02 4.69319534e+00 
+        </Histogram>
+      </PDF>
+    </PDFDescriptor>
+    <PDFDescriptor VarIndex="25" ClassIndex="0">
+      <PDF Name="LikelihoodPCA PDF Sig[25]" MinNSmooth="5" MaxNSmooth="5" InterpolMethod="2" KDE_type="1" KDE_iter="1" KDE_border="1" KDE_finefactor="1.0000000000000000e+00">
+        <Histogram Name="dataset_LikelihoodPCA_shower1DirX_sig_original" NBins="6" XMin="-2.9504425525665283e+00" XMax="2.7736654281616211e+00" HasEquidistantBins="1">
+          1.00000000e+00 4.00000000e+00 1.37000000e+02 1.54000000e+02 1.70000000e+01 0.00000000e+00 
+        </Histogram>
+      </PDF>
+    </PDFDescriptor>
+    <PDFDescriptor VarIndex="25" ClassIndex="1">
+      <PDF Name="LikelihoodPCA PDF Bkg[25]" MinNSmooth="5" MaxNSmooth="5" InterpolMethod="2" KDE_type="1" KDE_iter="1" KDE_border="1" KDE_finefactor="1.0000000000000000e+00">
+        <Histogram Name="dataset_LikelihoodPCA_shower1DirX_bgd_original" NBins="6" XMin="-2.9504425525665283e+00" XMax="2.7736654281616211e+00" HasEquidistantBins="1">
+          7.22029984e-01 1.40795889e+01 1.25994331e+02 1.45488785e+02 2.67151241e+01 0.00000000e+00 
+        </Histogram>
+      </PDF>
+    </PDFDescriptor>
+    <PDFDescriptor VarIndex="26" ClassIndex="0">
+      <PDF Name="LikelihoodPCA PDF Sig[26]" MinNSmooth="5" MaxNSmooth="5" InterpolMethod="2" KDE_type="1" KDE_iter="1" KDE_border="1" KDE_finefactor="1.0000000000000000e+00">
+        <Histogram Name="dataset_LikelihoodPCA_shower1DirY_sig_original" NBins="6" XMin="-2.3426055908203125e+00" XMax="2.6338899135589600e+00" HasEquidistantBins="1">
+          1.00000000e+00 2.20000000e+01 1.82000000e+02 9.60000000e+01 1.20000000e+01 0.00000000e+00 
+        </Histogram>
+      </PDF>
+    </PDFDescriptor>
+    <PDFDescriptor VarIndex="26" ClassIndex="1">
+      <PDF Name="LikelihoodPCA PDF Bkg[26]" MinNSmooth="5" MaxNSmooth="5" InterpolMethod="2" KDE_type="1" KDE_iter="1" KDE_border="1" KDE_finefactor="1.0000000000000000e+00">
+        <Histogram Name="dataset_LikelihoodPCA_shower1DirY_bgd_original" NBins="6" XMin="-2.3426055908203125e+00" XMax="2.6338899135589600e+00" HasEquidistantBins="1">
+          1.44405997e+00 3.79065971e+01 1.48737854e+02 1.05416458e+02 1.91338024e+01 3.61014992e-01 
+        </Histogram>
+      </PDF>
+    </PDFDescriptor>
+    <PDFDescriptor VarIndex="27" ClassIndex="0">
+      <PDF Name="LikelihoodPCA PDF Sig[27]" MinNSmooth="5" MaxNSmooth="5" InterpolMethod="2" KDE_type="1" KDE_iter="1" KDE_border="1" KDE_finefactor="1.0000000000000000e+00">
+        <Histogram Name="dataset_LikelihoodPCA_shower1DirZ_sig_original" NBins="6" XMin="-5.7438063621520996e+00" XMax="3.0479166507720947e+00" HasEquidistantBins="1">
+          0.00000000e+00 0.00000000e+00 2.00000000e+00 1.72000000e+02 1.39000000e+02 0.00000000e+00 
+        </Histogram>
+      </PDF>
+    </PDFDescriptor>
+    <PDFDescriptor VarIndex="27" ClassIndex="1">
+      <PDF Name="LikelihoodPCA PDF Bkg[27]" MinNSmooth="5" MaxNSmooth="5" InterpolMethod="2" KDE_type="1" KDE_iter="1" KDE_border="1" KDE_finefactor="1.0000000000000000e+00">
+        <Histogram Name="dataset_LikelihoodPCA_shower1DirZ_bgd_original" NBins="6" XMin="-5.7438063621520996e+00" XMax="3.0479166507720947e+00" HasEquidistantBins="1">
+          0.00000000e+00 0.00000000e+00 4.69319534e+00 1.79784515e+02 1.26355347e+02 2.16609001e+00 
+        </Histogram>
+      </PDF>
+    </PDFDescriptor>
+    <PDFDescriptor VarIndex="28" ClassIndex="0">
+      <PDF Name="LikelihoodPCA PDF Sig[28]" MinNSmooth="5" MaxNSmooth="5" InterpolMethod="2" KDE_type="1" KDE_iter="1" KDE_border="1" KDE_finefactor="1.0000000000000000e+00">
+        <Histogram Name="dataset_LikelihoodPCA_track1DistRecoVtx_sig_original" NBins="6" XMin="-2.1890902519226074e+00" XMax="1.4967833757400513e+00" HasEquidistantBins="1">
+          0.00000000e+00 2.00000000e+00 7.30000000e+01 1.52000000e+02 7.80000000e+01 8.00000000e+00 
+        </Histogram>
+      </PDF>
+    </PDFDescriptor>
+    <PDFDescriptor VarIndex="28" ClassIndex="1">
+      <PDF Name="LikelihoodPCA PDF Bkg[28]" MinNSmooth="5" MaxNSmooth="5" InterpolMethod="2" KDE_type="1" KDE_iter="1" KDE_border="1" KDE_finefactor="1.0000000000000000e+00">
+        <Histogram Name="dataset_LikelihoodPCA_track1DistRecoVtx_bgd_original" NBins="6" XMin="-2.1890902519226074e+00" XMax="1.4967833757400513e+00" HasEquidistantBins="1">
+          3.61014992e-01 1.22745123e+01 7.87013245e+01 1.12997780e+02 9.49470139e+01 1.37185736e+01 
+        </Histogram>
+      </PDF>
+    </PDFDescriptor>
+    <PDFDescriptor VarIndex="29" ClassIndex="0">
+      <PDF Name="LikelihoodPCA PDF Sig[29]" MinNSmooth="5" MaxNSmooth="5" InterpolMethod="2" KDE_type="1" KDE_iter="1" KDE_border="1" KDE_finefactor="1.0000000000000000e+00">
+        <Histogram Name="dataset_LikelihoodPCA_track2DistRecoVtx_sig_original" NBins="6" XMin="-1.6154791116714478e+00" XMax="1.6212593317031860e+00" HasEquidistantBins="1">
+          2.00000000e+00 2.20000000e+01 1.47000000e+02 1.05000000e+02 3.70000000e+01 0.00000000e+00 
+        </Histogram>
+      </PDF>
+    </PDFDescriptor>
+    <PDFDescriptor VarIndex="29" ClassIndex="1">
+      <PDF Name="LikelihoodPCA PDF Bkg[29]" MinNSmooth="5" MaxNSmooth="5" InterpolMethod="2" KDE_type="1" KDE_iter="1" KDE_border="1" KDE_finefactor="1.0000000000000000e+00">
+        <Histogram Name="dataset_LikelihoodPCA_track2DistRecoVtx_bgd_original" NBins="6" XMin="-1.6154791116714478e+00" XMax="1.6212593317031860e+00" HasEquidistantBins="1">
+          3.97116542e+00 4.29608116e+01 1.11553719e+02 1.05777473e+02 4.11557350e+01 7.58131409e+00 
+        </Histogram>
+      </PDF>
+    </PDFDescriptor>
+    <PDFDescriptor VarIndex="30" ClassIndex="0">
+      <PDF Name="LikelihoodPCA PDF Sig[30]" MinNSmooth="5" MaxNSmooth="5" InterpolMethod="2" KDE_type="1" KDE_iter="1" KDE_border="1" KDE_finefactor="1.0000000000000000e+00">
+        <Histogram Name="dataset_LikelihoodPCA_track3DistRecoVtx_sig_original" NBins="6" XMin="-1.9977912902832031e+00" XMax="1.8804585933685303e+00" HasEquidistantBins="1">
+          0.00000000e+00 1.20000000e+01 1.33000000e+02 1.46000000e+02 2.20000000e+01 0.00000000e+00 
+        </Histogram>
+      </PDF>
+    </PDFDescriptor>
+    <PDFDescriptor VarIndex="30" ClassIndex="1">
+      <PDF Name="LikelihoodPCA PDF Bkg[30]" MinNSmooth="5" MaxNSmooth="5" InterpolMethod="2" KDE_type="1" KDE_iter="1" KDE_border="1" KDE_finefactor="1.0000000000000000e+00">
+        <Histogram Name="dataset_LikelihoodPCA_track3DistRecoVtx_bgd_original" NBins="6" XMin="-1.9977912902832031e+00" XMax="1.8804585933685303e+00" HasEquidistantBins="1">
+          1.08304501e+00 2.34659863e+01 1.14441841e+02 1.34297546e+02 3.79065971e+01 1.80507493e+00 
+        </Histogram>
+      </PDF>
+    </PDFDescriptor>
+    <PDFDescriptor VarIndex="31" ClassIndex="0">
+      <PDF Name="LikelihoodPCA PDF Sig[31]" MinNSmooth="5" MaxNSmooth="5" InterpolMethod="2" KDE_type="1" KDE_iter="1" KDE_border="1" KDE_finefactor="1.0000000000000000e+00">
+        <Histogram Name="dataset_LikelihoodPCA_shower1DistRecoVtx_sig_original" NBins="6" XMin="-2.9621593952178955e+00" XMax="2.9716510772705078e+00" HasEquidistantBins="1">
+          0.00000000e+00 7.00000000e+00 1.44000000e+02 1.62000000e+02 0.00000000e+00 0.00000000e+00 
+        </Histogram>
+      </PDF>
+    </PDFDescriptor>
+    <PDFDescriptor VarIndex="31" ClassIndex="1">
+      <PDF Name="LikelihoodPCA PDF Bkg[31]" MinNSmooth="5" MaxNSmooth="5" InterpolMethod="2" KDE_type="1" KDE_iter="1" KDE_border="1" KDE_finefactor="1.0000000000000000e+00">
+        <Histogram Name="dataset_LikelihoodPCA_shower1DistRecoVtx_bgd_original" NBins="6" XMin="-2.9621593952178955e+00" XMax="2.9716510772705078e+00" HasEquidistantBins="1">
+          7.22029984e-01 3.24913526e+00 1.50181885e+02 1.55597000e+02 2.88812017e+00 3.61014992e-01 
+        </Histogram>
+      </PDF>
+    </PDFDescriptor>
+    <PDFDescriptor VarIndex="32" ClassIndex="0">
+      <PDF Name="LikelihoodPCA PDF Sig[32]" MinNSmooth="5" MaxNSmooth="5" InterpolMethod="2" KDE_type="1" KDE_iter="1" KDE_border="1" KDE_finefactor="1.0000000000000000e+00">
+        <Histogram Name="dataset_LikelihoodPCA_track1Track2Angle_sig_original" NBins="6" XMin="-6.5662417411804199e+00" XMax="2.1265068054199219e+00" HasEquidistantBins="1">
+          0.00000000e+00 0.00000000e+00 0.00000000e+00 8.00000000e+00 2.97000000e+02 8.00000000e+00 
+        </Histogram>
+      </PDF>
+    </PDFDescriptor>
+    <PDFDescriptor VarIndex="32" ClassIndex="1">
+      <PDF Name="LikelihoodPCA PDF Bkg[32]" MinNSmooth="5" MaxNSmooth="5" InterpolMethod="2" KDE_type="1" KDE_iter="1" KDE_border="1" KDE_finefactor="1.0000000000000000e+00">
+        <Histogram Name="dataset_LikelihoodPCA_track1Track2Angle_bgd_original" NBins="6" XMin="-6.5662417411804199e+00" XMax="2.1265068054199219e+00" HasEquidistantBins="1">
+          0.00000000e+00 0.00000000e+00 3.61014992e-01 7.94232893e+00 2.88449188e+02 1.62456799e+01 
+        </Histogram>
+      </PDF>
+    </PDFDescriptor>
+    <PDFDescriptor VarIndex="33" ClassIndex="0">
+      <PDF Name="LikelihoodPCA PDF Sig[33]" MinNSmooth="5" MaxNSmooth="5" InterpolMethod="2" KDE_type="1" KDE_iter="1" KDE_border="1" KDE_finefactor="1.0000000000000000e+00">
+        <Histogram Name="dataset_LikelihoodPCA_track1Track3Angle_sig_original" NBins="6" XMin="-4.6234464645385742e+00" XMax="2.9096319675445557e+00" HasEquidistantBins="1">
+          0.00000000e+00 0.00000000e+00 4.00000000e+00 2.75000000e+02 3.40000000e+01 0.00000000e+00 
+        </Histogram>
+      </PDF>
+    </PDFDescriptor>
+    <PDFDescriptor VarIndex="33" ClassIndex="1">
+      <PDF Name="LikelihoodPCA PDF Bkg[33]" MinNSmooth="5" MaxNSmooth="5" InterpolMethod="2" KDE_type="1" KDE_iter="1" KDE_border="1" KDE_finefactor="1.0000000000000000e+00">
+        <Histogram Name="dataset_LikelihoodPCA_track1Track3Angle_bgd_original" NBins="6" XMin="-4.6234464645385742e+00" XMax="2.9096319675445557e+00" HasEquidistantBins="1">
+          0.00000000e+00 0.00000000e+00 6.85928440e+00 2.61372467e+02 4.36828423e+01 1.08304501e+00 
+        </Histogram>
+      </PDF>
+    </PDFDescriptor>
+    <PDFDescriptor VarIndex="34" ClassIndex="0">
+      <PDF Name="LikelihoodPCA PDF Sig[34]" MinNSmooth="5" MaxNSmooth="5" InterpolMethod="2" KDE_type="1" KDE_iter="1" KDE_border="1" KDE_finefactor="1.0000000000000000e+00">
+        <Histogram Name="dataset_LikelihoodPCA_track2Track3Angle_sig_original" NBins="6" XMin="-2.5745127201080322e+00" XMax="3.0501973628997803e+00" HasEquidistantBins="1">
+          0.00000000e+00 4.00000000e+00 2.41000000e+02 6.80000000e+01 0.00000000e+00 0.00000000e+00 
+        </Histogram>
+      </PDF>
+    </PDFDescriptor>
+    <PDFDescriptor VarIndex="34" ClassIndex="1">
+      <PDF Name="LikelihoodPCA PDF Bkg[34]" MinNSmooth="5" MaxNSmooth="5" InterpolMethod="2" KDE_type="1" KDE_iter="1" KDE_border="1" KDE_finefactor="1.0000000000000000e+00">
+        <Histogram Name="dataset_LikelihoodPCA_track2Track3Angle_bgd_original" NBins="6" XMin="-2.5745127201080322e+00" XMax="3.0501973628997803e+00" HasEquidistantBins="1">
+          3.61014992e-01 1.40795889e+01 2.16246292e+02 8.19504623e+01 3.61014992e-01 0.00000000e+00 
+        </Histogram>
+      </PDF>
+    </PDFDescriptor>
+    <PDFDescriptor VarIndex="35" ClassIndex="0">
+      <PDF Name="LikelihoodPCA PDF Sig[35]" MinNSmooth="5" MaxNSmooth="5" InterpolMethod="2" KDE_type="1" KDE_iter="1" KDE_border="1" KDE_finefactor="1.0000000000000000e+00">
+        <Histogram Name="dataset_LikelihoodPCA_track1Shower1Angle_sig_original" NBins="6" XMin="-1.8253951072692871e+00" XMax="3.4301218986511230e+00" HasEquidistantBins="1">
+          1.00000000e+00 1.11000000e+02 1.99000000e+02 2.00000000e+00 0.00000000e+00 0.00000000e+00 
+        </Histogram>
+      </PDF>
+    </PDFDescriptor>
+    <PDFDescriptor VarIndex="35" ClassIndex="1">
+      <PDF Name="LikelihoodPCA PDF Bkg[35]" MinNSmooth="5" MaxNSmooth="5" InterpolMethod="2" KDE_type="1" KDE_iter="1" KDE_border="1" KDE_finefactor="1.0000000000000000e+00">
+        <Histogram Name="dataset_LikelihoodPCA_track1Shower1Angle_bgd_original" NBins="6" XMin="-1.8253951072692871e+00" XMax="3.4301218986511230e+00" HasEquidistantBins="1">
+          4.33218050e+00 1.22023163e+02 1.80506531e+02 6.13725471e+00 0.00000000e+00 0.00000000e+00 
+        </Histogram>
+      </PDF>
+    </PDFDescriptor>
+    <PDFDescriptor VarIndex="36" ClassIndex="0">
+      <PDF Name="LikelihoodPCA PDF Sig[36]" MinNSmooth="5" MaxNSmooth="5" InterpolMethod="2" KDE_type="1" KDE_iter="1" KDE_border="1" KDE_finefactor="1.0000000000000000e+00">
+        <Histogram Name="dataset_LikelihoodPCA_track2Shower1Angle_sig_original" NBins="6" XMin="-1.6635013818740845e+00" XMax="1.5647798776626587e+00" HasEquidistantBins="1">
+          0.00000000e+00 2.00000000e+00 1.27000000e+02 1.71000000e+02 1.20000000e+01 1.00000000e+00 
+        </Histogram>
+      </PDF>
+    </PDFDescriptor>
+    <PDFDescriptor VarIndex="36" ClassIndex="1">
+      <PDF Name="LikelihoodPCA PDF Bkg[36]" MinNSmooth="5" MaxNSmooth="5" InterpolMethod="2" KDE_type="1" KDE_iter="1" KDE_border="1" KDE_finefactor="1.0000000000000000e+00">
+        <Histogram Name="dataset_LikelihoodPCA_track2Shower1Angle_bgd_original" NBins="6" XMin="-1.6635013818740845e+00" XMax="1.5647798776626587e+00" HasEquidistantBins="1">
+          7.22029984e-01 1.80507565e+01 1.14441841e+02 1.56319016e+02 2.16609097e+01 1.80507493e+00 
+        </Histogram>
+      </PDF>
+    </PDFDescriptor>
+    <PDFDescriptor VarIndex="37" ClassIndex="0">
+      <PDF Name="LikelihoodPCA PDF Sig[37]" MinNSmooth="5" MaxNSmooth="5" InterpolMethod="2" KDE_type="1" KDE_iter="1" KDE_border="1" KDE_finefactor="1.0000000000000000e+00">
+        <Histogram Name="dataset_LikelihoodPCA_track3Shower1Angle_sig_original" NBins="6" XMin="-2.0215988159179688e+00" XMax="2.9242150783538818e+00" HasEquidistantBins="1">
+          0.00000000e+00 1.70000000e+01 2.86000000e+02 8.00000000e+00 2.00000000e+00 0.00000000e+00 
+        </Histogram>
+      </PDF>
+    </PDFDescriptor>
+    <PDFDescriptor VarIndex="37" ClassIndex="1">
+      <PDF Name="LikelihoodPCA PDF Bkg[37]" MinNSmooth="5" MaxNSmooth="5" InterpolMethod="2" KDE_type="1" KDE_iter="1" KDE_border="1" KDE_finefactor="1.0000000000000000e+00">
+        <Histogram Name="dataset_LikelihoodPCA_track3Shower1Angle_bgd_original" NBins="6" XMin="-2.0215988159179688e+00" XMax="2.9242150783538818e+00" HasEquidistantBins="1">
+          7.22029984e-01 4.00726891e+01 2.44404892e+02 2.77981701e+01 0.00000000e+00 0.00000000e+00 
+        </Histogram>
+      </PDF>
+    </PDFDescriptor>
+    <PDFDescriptor VarIndex="38" ClassIndex="0">
+      <PDF Name="LikelihoodPCA PDF Sig[38]" MinNSmooth="5" MaxNSmooth="5" InterpolMethod="2" KDE_type="1" KDE_iter="1" KDE_border="1" KDE_finefactor="1.0000000000000000e+00">
+        <Histogram Name="dataset_LikelihoodPCA_track1Track2Dist_sig_original" NBins="6" XMin="-2.5533392429351807e+00" XMax="1.9871274232864380e+00" HasEquidistantBins="1">
+          0.00000000e+00 0.00000000e+00 3.80000000e+01 2.67000000e+02 8.00000000e+00 0.00000000e+00 
+        </Histogram>
+      </PDF>
+    </PDFDescriptor>
+    <PDFDescriptor VarIndex="38" ClassIndex="1">
+      <PDF Name="LikelihoodPCA PDF Bkg[38]" MinNSmooth="5" MaxNSmooth="5" InterpolMethod="2" KDE_type="1" KDE_iter="1" KDE_border="1" KDE_finefactor="1.0000000000000000e+00">
+        <Histogram Name="dataset_LikelihoodPCA_track1Track2Dist_bgd_original" NBins="6" XMin="-2.5533392429351807e+00" XMax="1.9871274232864380e+00" HasEquidistantBins="1">
+          0.00000000e+00 1.44405997e+00 5.48743172e+01 2.33935669e+02 2.16609097e+01 1.08304501e+00 
+        </Histogram>
+      </PDF>
+    </PDFDescriptor>
+    <PDFDescriptor VarIndex="39" ClassIndex="0">
+      <PDF Name="LikelihoodPCA PDF Sig[39]" MinNSmooth="5" MaxNSmooth="5" InterpolMethod="2" KDE_type="1" KDE_iter="1" KDE_border="1" KDE_finefactor="1.0000000000000000e+00">
+        <Histogram Name="dataset_LikelihoodPCA_track1Track3Dist_sig_original" NBins="6" XMin="-2.1689231395721436e+00" XMax="1.6390675306320190e+00" HasEquidistantBins="1">
+          0.00000000e+00 0.00000000e+00 3.10000000e+01 2.69000000e+02 1.30000000e+01 0.00000000e+00 
+        </Histogram>
+      </PDF>
+    </PDFDescriptor>
+    <PDFDescriptor VarIndex="39" ClassIndex="1">
+      <PDF Name="LikelihoodPCA PDF Bkg[39]" MinNSmooth="5" MaxNSmooth="5" InterpolMethod="2" KDE_type="1" KDE_iter="1" KDE_border="1" KDE_finefactor="1.0000000000000000e+00">
+        <Histogram Name="dataset_LikelihoodPCA_track1Track3Dist_bgd_original" NBins="6" XMin="-2.1689231395721436e+00" XMax="1.6390675306320190e+00" HasEquidistantBins="1">
+          3.61014992e-01 0.00000000e+00 6.46217270e+01 2.05055054e+02 4.22387810e+01 7.22029984e-01 
+        </Histogram>
+      </PDF>
+    </PDFDescriptor>
+    <PDFDescriptor VarIndex="40" ClassIndex="0">
+      <PDF Name="LikelihoodPCA PDF Sig[40]" MinNSmooth="5" MaxNSmooth="5" InterpolMethod="2" KDE_type="1" KDE_iter="1" KDE_border="1" KDE_finefactor="1.0000000000000000e+00">
+        <Histogram Name="dataset_LikelihoodPCA_track2Track3Dist_sig_original" NBins="6" XMin="-1.5340514183044434e+00" XMax="1.6910699605941772e+00" HasEquidistantBins="1">
+          0.00000000e+00 4.00000000e+00 2.11000000e+02 9.80000000e+01 0.00000000e+00 0.00000000e+00 
+        </Histogram>
+      </PDF>
+    </PDFDescriptor>
+    <PDFDescriptor VarIndex="40" ClassIndex="1">
+      <PDF Name="LikelihoodPCA PDF Bkg[40]" MinNSmooth="5" MaxNSmooth="5" InterpolMethod="2" KDE_type="1" KDE_iter="1" KDE_border="1" KDE_finefactor="1.0000000000000000e+00">
+        <Histogram Name="dataset_LikelihoodPCA_track2Track3Dist_bgd_original" NBins="6" XMin="-1.5340514183044434e+00" XMax="1.6910699605941772e+00" HasEquidistantBins="1">
+          1.80507493e+00 2.16609097e+01 1.70398315e+02 1.10831688e+02 8.30334377e+00 0.00000000e+00 
+        </Histogram>
+      </PDF>
+    </PDFDescriptor>
+    <PDFDescriptor VarIndex="41" ClassIndex="0">
+      <PDF Name="LikelihoodPCA PDF Sig[41]" MinNSmooth="5" MaxNSmooth="5" InterpolMethod="2" KDE_type="1" KDE_iter="1" KDE_border="1" KDE_finefactor="1.0000000000000000e+00">
+        <Histogram Name="dataset_LikelihoodPCA_track1Shower1Dist_sig_original" NBins="6" XMin="-1.9155911207199097e+00" XMax="2.4369728565216064e+00" HasEquidistantBins="1">
+          0.00000000e+00 0.00000000e+00 3.03000000e+02 1.00000000e+01 0.00000000e+00 0.00000000e+00 
+        </Histogram>
+      </PDF>
+    </PDFDescriptor>
+    <PDFDescriptor VarIndex="41" ClassIndex="1">
+      <PDF Name="LikelihoodPCA PDF Bkg[41]" MinNSmooth="5" MaxNSmooth="5" InterpolMethod="2" KDE_type="1" KDE_iter="1" KDE_border="1" KDE_finefactor="1.0000000000000000e+00">
+        <Histogram Name="dataset_LikelihoodPCA_track1Shower1Dist_bgd_original" NBins="6" XMin="-1.9155911207199097e+00" XMax="2.4369728565216064e+00" HasEquidistantBins="1">
+          3.61014992e-01 1.48016195e+01 2.42960861e+02 5.34302559e+01 1.44405997e+00 0.00000000e+00 
+        </Histogram>
+      </PDF>
+    </PDFDescriptor>
+    <PDFDescriptor VarIndex="42" ClassIndex="0">
+      <PDF Name="LikelihoodPCA PDF Sig[42]" MinNSmooth="5" MaxNSmooth="5" InterpolMethod="2" KDE_type="1" KDE_iter="1" KDE_border="1" KDE_finefactor="1.0000000000000000e+00">
+        <Histogram Name="dataset_LikelihoodPCA_track2Shower1Dist_sig_original" NBins="6" XMin="-1.7352126836776733e+00" XMax="1.3700313568115234e+00" HasEquidistantBins="1">
+          0.00000000e+00 0.00000000e+00 2.40000000e+01 2.87000000e+02 2.00000000e+00 0.00000000e+00 
+        </Histogram>
+      </PDF>
+    </PDFDescriptor>
+    <PDFDescriptor VarIndex="42" ClassIndex="1">
+      <PDF Name="LikelihoodPCA PDF Bkg[42]" MinNSmooth="5" MaxNSmooth="5" InterpolMethod="2" KDE_type="1" KDE_iter="1" KDE_border="1" KDE_finefactor="1.0000000000000000e+00">
+        <Histogram Name="dataset_LikelihoodPCA_track2Shower1Dist_bgd_original" NBins="6" XMin="-1.7352126836776733e+00" XMax="1.3700313568115234e+00" HasEquidistantBins="1">
+          1.08304501e+00 6.85928440e+00 6.28166542e+01 2.12636215e+02 2.85202007e+01 1.08304501e+00 
+        </Histogram>
+      </PDF>
+    </PDFDescriptor>
+    <PDFDescriptor VarIndex="43" ClassIndex="0">
+      <PDF Name="LikelihoodPCA PDF Sig[43]" MinNSmooth="5" MaxNSmooth="5" InterpolMethod="2" KDE_type="1" KDE_iter="1" KDE_border="1" KDE_finefactor="1.0000000000000000e+00">
+        <Histogram Name="dataset_LikelihoodPCA_track3Shower1Dist_sig_original" NBins="6" XMin="-2.2159404754638672e+00" XMax="1.8370195627212524e+00" HasEquidistantBins="1">
+          0.00000000e+00 0.00000000e+00 5.00000000e+00 3.08000000e+02 0.00000000e+00 0.00000000e+00 
+        </Histogram>
+      </PDF>
+    </PDFDescriptor>
+    <PDFDescriptor VarIndex="43" ClassIndex="1">
+      <PDF Name="LikelihoodPCA PDF Bkg[43]" MinNSmooth="5" MaxNSmooth="5" InterpolMethod="2" KDE_type="1" KDE_iter="1" KDE_border="1" KDE_finefactor="1.0000000000000000e+00">
+        <Histogram Name="dataset_LikelihoodPCA_track3Shower1Dist_bgd_original" NBins="6" XMin="-2.2159404754638672e+00" XMax="1.8370195627212524e+00" HasEquidistantBins="1">
+          0.00000000e+00 0.00000000e+00 5.16251793e+01 2.50181015e+02 9.74740505e+00 1.44405997e+00 
         </Histogram>
       </PDF>
     </PDFDescriptor>

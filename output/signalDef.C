@@ -166,6 +166,7 @@ void signalDef::Loop()
       bool IsInRecoFV = false;
       bool IsInTrackRange = false;
       bool IsInShowerRange = false;
+      bool IsBadShower = false;
       bool SelMuonCandidate = false;
       bool SelPionCandidate = false;
       bool SelProtonCandidate = false;
@@ -337,7 +338,13 @@ void signalDef::Loop()
 
       // Select topology:
 
-      if (IsInRecoFV && trackCount == 3 && showerCount == 1){
+      /*for (int i = 0; i < showerLengths->size(); i++){
+	      if(showerLengths->at(i) < 0){IsBadShower = true;}
+	      if(std::abs(showerStartPositionX->at(i)) > 180){IsBadShower = true;}
+	      if(std::abs(showerStartPositionY->at(i)) > 180){IsBadShower = true;}
+	      if(showerStartPositionZ->at(i) < 0){IsBadShower = true;} 
+      }*/
+      if (IsInRecoFV && trackCount == 3 && showerCount == 1 && !IsBadShower){
 	      if(s==0){signalTree->Fill();}
 	      if(s==2){bkgTree->Fill();}
       }

@@ -107,7 +107,7 @@ void varPrep::Loop()
    sigTree->Branch("track3StartPosY", &track3StartPosY, "track3StartPosY/F");
    sigTree->Branch("track3StartPosZ", &track3StartPosZ, "track3StartPosZ/F");
 
-   sigTree->Branch("shower1StartPosZ", &shower1StartPosX, "shower1StartPosX/F");
+   sigTree->Branch("shower1StartPosX", &shower1StartPosX, "shower1StartPosX/F");
    sigTree->Branch("shower1StartPosY", &shower1StartPosY, "shower1StartPosY/F");
    sigTree->Branch("shower1StartPosZ", &shower1StartPosZ, "shower1StartPosZ/F");
 
@@ -159,6 +159,32 @@ void varPrep::Loop()
    bkgTree->SetTitle("Background Tree");
    bkgTree->SetDirectory(bkgFile);
 
+   int nSig = 0;
+   int nBkg = 0;
+   int nBadSig = 0;
+   int nBadBkg = 0;
+
+   // define distance cut thresholds based on visual inspection of distributions
+
+   int track1DistRecoVtxCut = 4;
+   int track2DistRecoVtxCut = 10;
+   int track3DistRecoVtxCut = 12;
+   int shower1DistRecoVtxCut = 80;
+
+   int track1Track2DistCut = 10;
+   int track1Track3DistCut = 12;
+   int track2Track3DistCut = 10;
+   int track1Shower1DistCut = 80;
+   int track2Shower1DistCut = 80;
+   int track3Shower1DistCut = 80;
+
+   // define length cut thresholds
+
+   int track1LengthCut = 500;
+   int track2LengthCut = 125;
+   int track3LengthCut = 40;
+   int shower1LengthCut = 65;
+
    Long64_t nentries = fChain->GetEntriesFast();
 
    Long64_t nbytes = 0, nb = 0;
@@ -174,6 +200,39 @@ void varPrep::Loop()
       std::cout<<"trackLengths size = "<<trackLengths->size()<<std::endl;
       std::cout<<"showerCount = "<<showerCount<<std::endl;
       std::cout<<"showerLengths size = "<<showerLengths->size()<<std::endl;
+
+      // apply stricter cuts
+
+      bool IsBadTrack = false;
+      bool IsBadShower = false;
+
+      // flag if any tracks or shower start pos is outside reco FV
+      for (int i = 0; i < trackLengths->size(); i++){
+	//      std::cout<<"track "<<i<<" start position = "<<trackStartPositionX->at(i)<<", "<<trackStartPositionY->at(i)<<", "<<trackStartPositionZ->at(i)<<std::endl;
+	      if(trackStartPositionX->at(i) > 180 || std::abs(trackStartPositionY->at(i)) > 180
+			      || trackStartPositionZ->at(i) < 0 || trackStartPositionZ->at(i) > 450){IsBadTrack = true;}
+      }
+
+      //std::cout<<"shower start position is "<<showerStartPositionX->at(0)<<", "<<showerStartPositionY->at(0)<<", "<<showerStartPositionZ<<std::endl; 
+      if(std::abs(showerStartPositionX->at(0)) > 180 || std::abs(showerStartPositionY->at(0)) > 180 
+			      || showerStartPositionZ->at(0) < 10 || showerStartPositionZ->at(0) > 450){IsBadShower = true;}
+
+      // flag is any tracks or shower directions are outside cosine range
+      for (int i = 0; i < trackLengths->size(); i++){
+	  std::cout<<"track "<<i<<" direction is "<<trackStartDirX->at(i)<<", "<<trackStartDirY->at(i)<<", "<<trackStartDirZ->at(i)<<std::endl;
+	  if(std::abs(trackStartDirX->at(i)) > 1 || std::abs(trackStartDirY->at(i)) > 1 || std::abs(trackStartDirZ->at(i)) > 1){
+		  IsBadTrack = true;
+		  //std::cout<<"bad track due to direction out of cosine range"<<std::endl;
+	  }
+      }
+
+      if(std::abs(showerDirX->at(0)) > 1 || std::abs(showerDirY->at(0)) > 1 || std::abs(showerDirZ->at(0)) > 1){IsBadShower = true;}
+
+      if(IsBadTrack || IsBadShower){
+	      if(sampleType==0){nBadSig++;}
+	      if(sampleType==2){nBadBkg++;} 
+	      continue;
+      } // exclude events that have any tracks or showers outside reco fv
 
       // sort tracks in descending order
       std::vector<int> idx = {0, 1, 2};
@@ -228,6 +287,19 @@ void varPrep::Loop()
       TVector3 track3StartDir(trackStartDirX->at(trk3Idx), trackStartDirY->at(trk3Idx), trackStartDirZ->at(trk3Idx));
       TVector3 shower1Dir(showerDirX->at(shwr1Idx), showerDirY->at(shwr1Idx), showerDirZ->at(shwr1Idx));
 
+      track1StartDirX = track1StartDir.X();
+      track1StartDirY = track1StartDir.Y();
+      track1StartDirZ = track1StartDir.Z();
+      track2StartDirX = track2StartDir.X();
+      track2StartDirY = track2StartDir.Y();
+      track2StartDirZ = track2StartDir.Z();
+      track3StartDirX = track3StartDir.X();
+      track3StartDirY = track3StartDir.Y();
+      track3StartDirZ = track3StartDir.Z();
+      shower1DirX = shower1Dir.X();
+      shower1DirY = shower1Dir.Y();
+      shower1DirZ = shower1Dir.Z();
+
       track1DistRecoVtx = (track1StartPos - recoVtx).Mag();
       track2DistRecoVtx = (track2StartPos - recoVtx).Mag();
       track3DistRecoVtx = (track3StartPos - recoVtx).Mag();
@@ -247,12 +319,38 @@ void varPrep::Loop()
       track2Shower1Dist = (track2StartPos - shower1StartPos).Mag();
       track3Shower1Dist = (track3StartPos - shower1StartPos).Mag();
 
+      // apply visual inspec distance cuts
+      
+      if (track1DistRecoVtx > track1DistRecoVtxCut){continue;}
+      if(track2DistRecoVtx > track2DistRecoVtxCut){continue;}
+      if(track3DistRecoVtx > track3DistRecoVtxCut){continue;}
+      if(shower1DistRecoVtx > shower1DistRecoVtxCut){continue;}
+      
+      if(track1Track2Dist > track1Track2DistCut){continue;}
+      if(track1Track3Dist > track1Track3DistCut){continue;}
+      if(track2Track3Dist > track2Track3DistCut){continue;}
+      if(track1Shower1Dist > track1Shower1DistCut){continue;}
+      if(track2Shower1Dist > track2Shower1DistCut){continue;}
+      if(track3Shower1Dist > track3Shower1DistCut){continue;}
+
+      // apply inspec length cuts
+
+      if(track1Length > track1LengthCut){continue;}
+      if(track2Length > track2LengthCut){continue;}
+      if(track3Length > track3LengthCut){continue;}
+      if(shower1Length > shower1LengthCut){continue;}
+
       // Fill signal and background trees:
 
-      if(sampleType == 0){sigTree->Fill();}
-      if(sampleType == 2){bkgTree->Fill();}
+      if(sampleType == 0){nSig++; sigTree->Fill();}
+      if(sampleType == 2){nBkg++; bkgTree->Fill();}
       
    }
+
+   int nBad = nBadSig + nBadBkg;
+   std::cout<<"Dropped <<"<<nBad<<" events ("<<nBadSig<<" signal, "<<nBadBkg<<" background)"<<std::endl;
+   std::cout<<"Total signal left = "<<nSig<<" events"<<std::endl;
+   std::cout<<"Total background left = "<<nBkg<<" events"<<std::endl; 
 
    sigFile->cd();
    sigTree->Write("sigTree");
