@@ -147,7 +147,7 @@ int TMVAClassification( TString myMethodList = "" )
    TTree *backgroundTree     = (TTree*)backgroundInput->Get("bkgTree");
  
    // Create a ROOT output file where TMVA will store ntuples, histograms, etc.
-   TString outfileName("TMVAC.root");
+   TString outfileName("TMVAC_5.root");
    std::unique_ptr<TFile> outputFile{TFile::Open(outfileName, "RECREATE")};
    if (!outputFile || outputFile->IsZombie()) {
       throw std::runtime_error("ERROR: could not open output file");
@@ -178,13 +178,13 @@ int TMVAClassification( TString myMethodList = "" )
    // note that you may also use variable expressions, such as: "3*var1/var2*abs(var3)"
    // [all types of expressions that can also be parsed by TTree::Draw( "expression" )]
    // 4 lengths
-   dataloader->AddVariable( "track1Length", 'F' );
+  // dataloader->AddVariable( "track1Length", 'F' );
    dataloader->AddVariable( "track2Length", 'F');
-   dataloader->AddVariable( "track3Length", 'F');
+   //dataloader->AddVariable( "track3Length", 'F');
    dataloader->AddVariable("shower1Length", 'F');
 
    // 12 start positions (4 x 3)
-   dataloader->AddVariable("track1StartPosX", 'F');
+/*   dataloader->AddVariable("track1StartPosX", 'F');
    dataloader->AddVariable("track1StartPosY", 'F');
    dataloader->AddVariable("track1StartPosZ", 'F');
    dataloader->AddVariable("track2StartPosX", 'F');
@@ -196,42 +196,42 @@ int TMVAClassification( TString myMethodList = "" )
    dataloader->AddVariable("shower1StartPosX", 'F');
    dataloader->AddVariable("shower1StartPosY", 'F');
    dataloader->AddVariable("shower1StartPosZ", 'F');
-
+*/
    // 12 start directions (4 x 3)
-   dataloader->AddVariable("track1StartDirX", 'F');
-   dataloader->AddVariable("track1StartDirY", 'F');
-   dataloader->AddVariable("track1StartDirZ", 'F');
-   dataloader->AddVariable("track2StartDirX", 'F');
-   dataloader->AddVariable("track2StartDirY", 'F');
-   dataloader->AddVariable("track2StartDirZ", 'F');
-   dataloader->AddVariable("track3StartDirX", 'F');
-   dataloader->AddVariable("track3StartDirY", 'F');
-   dataloader->AddVariable("track3StartDirZ", 'F');
-   dataloader->AddVariable("shower1DirX", 'F');
+  // dataloader->AddVariable("track1StartDirX", 'F');
+  // dataloader->AddVariable("track1StartDirY", 'F');
+   //dataloader->AddVariable("track1StartDirZ", 'F');
+   //dataloader->AddVariable("track2StartDirX", 'F');
+   //dataloader->AddVariable("track2StartDirY", 'F');
+   //dataloader->AddVariable("track2StartDirZ", 'F');
+   //dataloader->AddVariable("track3StartDirX", 'F');
+   //dataloader->AddVariable("track3StartDirY", 'F');
+  // dataloader->AddVariable("track3StartDirZ", 'F');
+   //dataloader->AddVariable("shower1DirX", 'F');
    dataloader->AddVariable("shower1DirY", 'F');
-   dataloader->AddVariable("shower1DirZ", 'F');
+   //dataloader->AddVariable("shower1DirZ", 'F');
 
    // 4 distances to reco vtx
-   dataloader->AddVariable("track1DistRecoVtx", 'F');
-   dataloader->AddVariable("track2DistRecoVtx", 'F');
-   dataloader->AddVariable("track3DistRecoVtx", 'F');
-   dataloader->AddVariable("shower1DistRecoVtx", 'F');
+   //dataloader->AddVariable("track1DistRecoVtx", 'F');
+   //dataloader->AddVariable("track2DistRecoVtx", 'F');
+   //dataloader->AddVariable("track3DistRecoVtx", 'F');
+ //  dataloader->AddVariable("shower1DistRecoVtx", 'F');
 
    // 6 relative angles
-   dataloader->AddVariable("track1Track2Angle", 'F');
+   //dataloader->AddVariable("track1Track2Angle", 'F');
    dataloader->AddVariable("track1Track3Angle", 'F');
    dataloader->AddVariable("track2Track3Angle", 'F');
-   dataloader->AddVariable("track1Shower1Angle", 'F');
-   dataloader->AddVariable("track2Shower1Angle", 'F');
-   dataloader->AddVariable("track3Shower1Angle", 'F');
+   //dataloader->AddVariable("track1Shower1Angle", 'F');
+   //dataloader->AddVariable("track2Shower1Angle", 'F');
+   //dataloader->AddVariable("track3Shower1Angle", 'F');
 
    // 6 relative distances
-   dataloader->AddVariable("track1Track2Dist", 'F');
-   dataloader->AddVariable("track1Track3Dist", 'F');
-   dataloader->AddVariable("track2Track3Dist", 'F');
-   dataloader->AddVariable("track1Shower1Dist", 'F');
-   dataloader->AddVariable("track2Shower1Dist", 'F');
-   dataloader->AddVariable("track3Shower1Dist", 'F');
+   //dataloader->AddVariable("track1Track2Dist", 'F');
+   //dataloader->AddVariable("track1Track3Dist", 'F');
+   //dataloader->AddVariable("track2Track3Dist", 'F');
+  // dataloader->AddVariable("track1Shower1Dist", 'F');
+   //dataloader->AddVariable("track2Shower1Dist", 'F');
+   //dataloader->AddVariable("track3Shower1Dist", 'F');
 
    // total = 6 + 6 + 4 + 12 + 12 + 4 = 44 variables
  

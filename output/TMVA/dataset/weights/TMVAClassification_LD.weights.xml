@@ -4,11 +4,11 @@
     <Info name="TMVA Release" value="4.2.1 [262657]"/>
     <Info name="ROOT Release" value="6.38/00 [402944]"/>
     <Info name="Creator" value="ooconnor"/>
-    <Info name="Date" value="Fri Mar 13 17:07:40 2026"/>
+    <Info name="Date" value="Mon Mar 16 15:07:44 2026"/>
     <Info name="Host" value="Linux buildvm-x86-26.rdu3.fedoraproject.org 6.17.1-300.fc43.x86_64 #1 SMP PREEMPT_DYNAMIC Mon Oct 6 15:37:21 UTC 2025 x86_64 x86_64 x86_64 GNU/Linux"/>
     <Info name="Dir" value="/home/lar/ooconnor/hyperons/srcs/sbndcode/sbndcode/Hyperons/output/TMVA"/>
-    <Info name="Training events" value="1180"/>
-    <Info name="TrainingTime" value="4.41420078e-02"/>
+    <Info name="Training events" value="1657"/>
+    <Info name="TrainingTime" value="3.36718559e-03"/>
     <Info name="AnalysisType" value="Classification"/>
   </GeneralInfo>
   <Options>
@@ -19,51 +19,12 @@
     <Option name="CreateMVAPdfs" modified="Yes">True</Option>
     <Option name="IgnoreNegWeightsInTraining" modified="No">False</Option>
   </Options>
-  <Variables NVar="44">
-    <Variable VarIndex="0" Expression="track1Length" Label="track1Length" Title="track1Length" Unit="" Internal="track1Length" Type="F" Min="6.60223007e+00" Max="4.96360382e+02"/>
-    <Variable VarIndex="1" Expression="track2Length" Label="track2Length" Title="track2Length" Unit="" Internal="track2Length" Type="F" Min="6.68267310e-01" Max="1.21635262e+02"/>
-    <Variable VarIndex="2" Expression="track3Length" Label="track3Length" Title="track3Length" Unit="" Internal="track3Length" Type="F" Min="4.12237436e-01" Max="3.88627434e+01"/>
-    <Variable VarIndex="3" Expression="shower1Length" Label="shower1Length" Title="shower1Length" Unit="" Internal="shower1Length" Type="F" Min="2.77372867e-01" Max="6.49242554e+01"/>
-    <Variable VarIndex="4" Expression="track1StartPosX" Label="track1StartPosX" Title="track1StartPosX" Unit="" Internal="track1StartPosX" Type="F" Min="-1.80002808e+02" Max="1.78600708e+02"/>
-    <Variable VarIndex="5" Expression="track1StartPosY" Label="track1StartPosY" Title="track1StartPosY" Unit="" Internal="track1StartPosY" Type="F" Min="-1.78465851e+02" Max="1.79862885e+02"/>
-    <Variable VarIndex="6" Expression="track1StartPosZ" Label="track1StartPosZ" Title="track1StartPosZ" Unit="" Internal="track1StartPosZ" Type="F" Min="1.23797226e+01" Max="4.48472046e+02"/>
-    <Variable VarIndex="7" Expression="track2StartPosX" Label="track2StartPosX" Title="track2StartPosX" Unit="" Internal="track2StartPosX" Type="F" Min="-1.78250961e+02" Max="1.78541199e+02"/>
-    <Variable VarIndex="8" Expression="track2StartPosY" Label="track2StartPosY" Title="track2StartPosY" Unit="" Internal="track2StartPosY" Type="F" Min="-1.78170731e+02" Max="1.78766769e+02"/>
-    <Variable VarIndex="9" Expression="track2StartPosZ" Label="track2StartPosZ" Title="track2StartPosZ" Unit="" Internal="track2StartPosZ" Type="F" Min="1.12616081e+01" Max="4.49381073e+02"/>
-    <Variable VarIndex="10" Expression="track3StartPosX" Label="track3StartPosX" Title="track3StartPosX" Unit="" Internal="track3StartPosX" Type="F" Min="-1.78559509e+02" Max="1.79122559e+02"/>
-    <Variable VarIndex="11" Expression="track3StartPosY" Label="track3StartPosY" Title="track3StartPosY" Unit="" Internal="track3StartPosY" Type="F" Min="-1.78273117e+02" Max="1.79014130e+02"/>
-    <Variable VarIndex="12" Expression="track3StartPosZ" Label="track3StartPosZ" Title="track3StartPosZ" Unit="" Internal="track3StartPosZ" Type="F" Min="9.94157314e+00" Max="4.49016327e+02"/>
-    <Variable VarIndex="13" Expression="shower1StartPosX" Label="shower1StartPosX" Title="shower1StartPosX" Unit="" Internal="shower1StartPosX" Type="F" Min="-1.79858627e+02" Max="1.79431137e+02"/>
-    <Variable VarIndex="14" Expression="shower1StartPosY" Label="shower1StartPosY" Title="shower1StartPosY" Unit="" Internal="shower1StartPosY" Type="F" Min="-1.79978729e+02" Max="1.79786865e+02"/>
-    <Variable VarIndex="15" Expression="shower1StartPosZ" Label="shower1StartPosZ" Title="shower1StartPosZ" Unit="" Internal="shower1StartPosZ" Type="F" Min="1.21829844e+01" Max="4.49399994e+02"/>
-    <Variable VarIndex="16" Expression="track1StartDirX" Label="track1StartDirX" Title="track1StartDirX" Unit="" Internal="track1StartDirX" Type="F" Min="-9.95330334e-01" Max="9.92457569e-01"/>
-    <Variable VarIndex="17" Expression="track1StartDirY" Label="track1StartDirY" Title="track1StartDirY" Unit="" Internal="track1StartDirY" Type="F" Min="-9.92119730e-01" Max="9.93378341e-01"/>
-    <Variable VarIndex="18" Expression="track1StartDirZ" Label="track1StartDirZ" Title="track1StartDirZ" Unit="" Internal="track1StartDirZ" Type="F" Min="-9.99631286e-01" Max="9.98943806e-01"/>
-    <Variable VarIndex="19" Expression="track2StartDirX" Label="track2StartDirX" Title="track2StartDirX" Unit="" Internal="track2StartDirX" Type="F" Min="-9.90601361e-01" Max="9.98715162e-01"/>
-    <Variable VarIndex="20" Expression="track2StartDirY" Label="track2StartDirY" Title="track2StartDirY" Unit="" Internal="track2StartDirY" Type="F" Min="-9.98021603e-01" Max="9.99431849e-01"/>
-    <Variable VarIndex="21" Expression="track2StartDirZ" Label="track2StartDirZ" Title="track2StartDirZ" Unit="" Internal="track2StartDirZ" Type="F" Min="-9.99366760e-01" Max="9.99609947e-01"/>
-    <Variable VarIndex="22" Expression="track3StartDirX" Label="track3StartDirX" Title="track3StartDirX" Unit="" Internal="track3StartDirX" Type="F" Min="-9.80553567e-01" Max="9.93002176e-01"/>
-    <Variable VarIndex="23" Expression="track3StartDirY" Label="track3StartDirY" Title="track3StartDirY" Unit="" Internal="track3StartDirY" Type="F" Min="-1.00000000e+00" Max="9.99867022e-01"/>
-    <Variable VarIndex="24" Expression="track3StartDirZ" Label="track3StartDirZ" Title="track3StartDirZ" Unit="" Internal="track3StartDirZ" Type="F" Min="-9.97544706e-01" Max="9.99991298e-01"/>
-    <Variable VarIndex="25" Expression="shower1DirX" Label="shower1DirX" Title="shower1DirX" Unit="" Internal="shower1DirX" Type="F" Min="-9.93727028e-01" Max="9.97467101e-01"/>
-    <Variable VarIndex="26" Expression="shower1DirY" Label="shower1DirY" Title="shower1DirY" Unit="" Internal="shower1DirY" Type="F" Min="-9.99887228e-01" Max="9.99898136e-01"/>
-    <Variable VarIndex="27" Expression="shower1DirZ" Label="shower1DirZ" Title="shower1DirZ" Unit="" Internal="shower1DirZ" Type="F" Min="-9.98255849e-01" Max="9.99600112e-01"/>
-    <Variable VarIndex="28" Expression="track1DistRecoVtx" Label="track1DistRecoVtx" Title="track1DistRecoVtx" Unit="" Internal="track1DistRecoVtx" Type="F" Min="2.37985868e-02" Max="3.98177314e+00"/>
-    <Variable VarIndex="29" Expression="track2DistRecoVtx" Label="track2DistRecoVtx" Title="track2DistRecoVtx" Unit="" Internal="track2DistRecoVtx" Type="F" Min="4.64399159e-02" Max="9.78038883e+00"/>
-    <Variable VarIndex="30" Expression="track3DistRecoVtx" Label="track3DistRecoVtx" Title="track3DistRecoVtx" Unit="" Internal="track3DistRecoVtx" Type="F" Min="3.56111303e-02" Max="1.19819937e+01"/>
-    <Variable VarIndex="31" Expression="shower1DistRecoVtx" Label="shower1DistRecoVtx" Title="shower1DistRecoVtx" Unit="" Internal="shower1DistRecoVtx" Type="F" Min="4.03059646e-02" Max="7.86243668e+01"/>
-    <Variable VarIndex="32" Expression="track1Track2Angle" Label="track1Track2Angle" Title="track1Track2Angle" Unit="" Internal="track1Track2Angle" Type="F" Min="1.44185424e-01" Max="3.13272953e+00"/>
-    <Variable VarIndex="33" Expression="track1Track3Angle" Label="track1Track3Angle" Title="track1Track3Angle" Unit="" Internal="track1Track3Angle" Type="F" Min="3.96595672e-02" Max="3.12610054e+00"/>
-    <Variable VarIndex="34" Expression="track2Track3Angle" Label="track2Track3Angle" Title="track2Track3Angle" Unit="" Internal="track2Track3Angle" Type="F" Min="5.76848537e-02" Max="3.11595345e+00"/>
-    <Variable VarIndex="35" Expression="track1Shower1Angle" Label="track1Shower1Angle" Title="track1Shower1Angle" Unit="" Internal="track1Shower1Angle" Type="F" Min="2.28180531e-02" Max="3.13737035e+00"/>
-    <Variable VarIndex="36" Expression="track2Shower1Angle" Label="track2Shower1Angle" Title="track2Shower1Angle" Unit="" Internal="track2Shower1Angle" Type="F" Min="2.74586026e-02" Max="3.10767269e+00"/>
-    <Variable VarIndex="37" Expression="track3Shower1Angle" Label="track3Shower1Angle" Title="track3Shower1Angle" Unit="" Internal="track3Shower1Angle" Type="F" Min="3.97528596e-02" Max="3.12469959e+00"/>
-    <Variable VarIndex="38" Expression="track1Track2Dist" Label="track1Track2Dist" Title="track1Track2Dist" Unit="" Internal="track1Track2Dist" Type="F" Min="5.61579615e-02" Max="9.81249905e+00"/>
-    <Variable VarIndex="39" Expression="track1Track3Dist" Label="track1Track3Dist" Title="track1Track3Dist" Unit="" Internal="track1Track3Dist" Type="F" Min="7.00156316e-02" Max="1.19644547e+01"/>
-    <Variable VarIndex="40" Expression="track2Track3Dist" Label="track2Track3Dist" Title="track2Track3Dist" Unit="" Internal="track2Track3Dist" Type="F" Min="5.17720133e-02" Max="9.77556896e+00"/>
-    <Variable VarIndex="41" Expression="track1Shower1Dist" Label="track1Shower1Dist" Title="track1Shower1Dist" Unit="" Internal="track1Shower1Dist" Type="F" Min="2.06579074e-01" Max="7.84287415e+01"/>
-    <Variable VarIndex="42" Expression="track2Shower1Dist" Label="track2Shower1Dist" Title="track2Shower1Dist" Unit="" Internal="track2Shower1Dist" Type="F" Min="1.91956028e-01" Max="7.86626205e+01"/>
-    <Variable VarIndex="43" Expression="track3Shower1Dist" Label="track3Shower1Dist" Title="track3Shower1Dist" Unit="" Internal="track3Shower1Dist" Type="F" Min="1.14796884e-01" Max="7.91389771e+01"/>
+  <Variables NVar="5">
+    <Variable VarIndex="0" Expression="track2Length" Label="track2Length" Title="track2Length" Unit="" Internal="track2Length" Type="F" Min="6.68267310e-01" Max="1.21635262e+02"/>
+    <Variable VarIndex="1" Expression="shower1Length" Label="shower1Length" Title="shower1Length" Unit="" Internal="shower1Length" Type="F" Min="2.77372867e-01" Max="6.49242554e+01"/>
+    <Variable VarIndex="2" Expression="shower1DirY" Label="shower1DirY" Title="shower1DirY" Unit="" Internal="shower1DirY" Type="F" Min="-9.99887228e-01" Max="9.99870479e-01"/>
+    <Variable VarIndex="3" Expression="track1Track3Angle" Label="track1Track3Angle" Title="track1Track3Angle" Unit="" Internal="track1Track3Angle" Type="F" Min="3.96595672e-02" Max="3.12610054e+00"/>
+    <Variable VarIndex="4" Expression="track2Track3Angle" Label="track2Track3Angle" Title="track2Track3Angle" Unit="" Internal="track2Track3Angle" Type="F" Min="6.72778711e-02" Max="3.11595345e+00"/>
   </Variables>
   <Spectators NSpec="0"/>
   <Classes NClass="2">
@@ -73,61 +34,22 @@
   <Transformations NTransformations="0"/>
   <MVAPdfs>
     <PDF Name="LD_PDFSig" MinNSmooth="10" MaxNSmooth="10" InterpolMethod="2" KDE_type="1" KDE_iter="1" KDE_border="1" KDE_finefactor="1.0000000000000000e+00">
-      <Histogram Name="LD_tr_S_original" NBins="50" XMin="-9.8347538709640503e-01" XMax="1.4180172681808472e+00" HasEquidistantBins="1">
-        0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 6.67320010e-02 0.00000000e+00 6.67320010e-02 0.00000000e+00 6.67320010e-02 1.33464002e-01 2.66928004e-01 1.33464002e-01 3.33660005e-01 6.67320010e-01 1.33464002e+00 1.46810402e+00 1.46810402e+00 1.60156802e+00 2.13542403e+00 1.33464002e+00 1.66830002e+00 1.53483602e+00 1.26790802e+00 7.34052011e-01 1.53483602e+00 8.67516013e-01 4.00392006e-01 6.00588009e-01 3.33660005e-01 2.66928004e-01 2.00196003e-01 0.00000000e+00 0.00000000e+00 1.33464002e-01 6.67320010e-02 0.00000000e+00 1.33464002e-01 0.00000000e+00 0.00000000e+00 
+      <Histogram Name="LD_tr_S_original" NBins="50" XMin="-9.3728989362716675e-01" XMax="5.9860694408416748e-01" HasEquidistantBins="1">
+        0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 1.65040658e-01 1.23780493e-01 2.88821151e-01 2.06300822e-01 2.06300822e-01 1.65040658e-01 4.12601645e-01 2.47560987e-01 4.53861809e-01 8.25203290e-01 7.83943125e-01 4.95121974e-01 6.18902467e-01 8.25203290e-01 1.44410576e+00 1.73292691e+00 1.89796757e+00 2.51687003e+00 3.13577250e+00 3.17703266e+00 2.22804888e+00 2.10426839e+00 1.27906510e+00 9.48983783e-01 9.48983783e-01 8.25203290e-01 8.66463454e-01 6.18902467e-01 6.18902467e-01 4.53861809e-01 5.36382138e-01 2.47560987e-01 3.30081316e-01 2.88821151e-01 1.23780493e-01 1.65040658e-01 8.25203290e-02 8.25203290e-02 4.12601645e-02 4.12601645e-02 
       </Histogram>
     </PDF>
     <PDF Name="LD_PDFBkg" MinNSmooth="10" MaxNSmooth="10" InterpolMethod="2" KDE_type="1" KDE_iter="1" KDE_border="1" KDE_finefactor="1.0000000000000000e+00">
-      <Histogram Name="LD_tr_B_original" NBins="50" XMin="-9.8347538709640503e-01" XMax="1.4180172681808472e+00" HasEquidistantBins="1">
-        2.40142841e-02 2.40142841e-02 2.40142841e-02 2.40142841e-02 9.60571364e-02 9.60571364e-02 4.80285682e-02 1.20071420e-01 1.68099989e-01 1.68099989e-01 1.92114273e-01 4.08242830e-01 3.36199977e-01 8.16485659e-01 9.12542796e-01 1.22472849e+00 1.10465707e+00 1.12867135e+00 1.51289990e+00 1.84909988e+00 1.53691418e+00 1.70501417e+00 1.48888561e+00 1.17669992e+00 1.36881419e+00 6.96414239e-01 1.00859993e+00 5.28314250e-01 3.12185693e-01 1.44085705e-01 1.92114273e-01 1.20071420e-01 9.60571364e-02 4.80285682e-02 0.00000000e+00 2.40142841e-02 4.80285682e-02 2.40142841e-02 2.40142841e-02 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 
+      <Histogram Name="LD_tr_B_original" NBins="50" XMin="-9.3728989362716675e-01" XMax="5.9860694408416748e-01" HasEquidistantBins="1">
+        3.75481774e-02 0.00000000e+00 1.12644532e-01 0.00000000e+00 1.50192709e-01 3.75481774e-02 3.75481774e-02 1.12644532e-01 1.50192709e-01 4.88126306e-01 6.00770838e-01 5.63222660e-01 9.76252611e-01 1.16399350e+00 1.35173439e+00 1.46437892e+00 1.65211980e+00 1.38928256e+00 2.10269793e+00 1.83986069e+00 1.38928256e+00 1.61457163e+00 1.61457163e+00 2.14024611e+00 1.57702345e+00 1.50192709e+00 1.83986069e+00 1.05134897e+00 1.31418621e+00 7.88511725e-01 7.13415370e-01 5.25674483e-01 4.88126306e-01 3.00385419e-01 2.25289064e-01 3.00385419e-01 3.37933596e-01 1.12644532e-01 7.50963547e-02 1.12644532e-01 3.75481774e-02 3.75481774e-02 1.12644532e-01 3.75481774e-02 3.75481774e-02 0.00000000e+00 3.75481774e-02 0.00000000e+00 0.00000000e+00 0.00000000e+00 
       </Histogram>
     </PDF>
   </MVAPdfs>
-  <Weights NOut="1" NCoeff="45">
-    <Coefficient IndexOut="0" IndexCoeff="0" Value="-2.3930875274579416e-01"/>
-    <Coefficient IndexOut="0" IndexCoeff="1" Value="1.9760906037959765e-04"/>
-    <Coefficient IndexOut="0" IndexCoeff="2" Value="-5.1103534961696728e-03"/>
-    <Coefficient IndexOut="0" IndexCoeff="3" Value="-2.5632901833684022e-03"/>
-    <Coefficient IndexOut="0" IndexCoeff="4" Value="5.0246232747039668e-03"/>
-    <Coefficient IndexOut="0" IndexCoeff="5" Value="-1.7348657856663587e-02"/>
-    <Coefficient IndexOut="0" IndexCoeff="6" Value="1.5222928379879708e-02"/>
-    <Coefficient IndexOut="0" IndexCoeff="7" Value="-6.9654645442207216e-02"/>
-    <Coefficient IndexOut="0" IndexCoeff="8" Value="2.2202859133744757e-02"/>
-    <Coefficient IndexOut="0" IndexCoeff="9" Value="-5.2728980861683344e-03"/>
-    <Coefficient IndexOut="0" IndexCoeff="10" Value="3.0297844893967252e-02"/>
-    <Coefficient IndexOut="0" IndexCoeff="11" Value="-6.0837220623409793e-03"/>
-    <Coefficient IndexOut="0" IndexCoeff="12" Value="-1.0061144125134758e-02"/>
-    <Coefficient IndexOut="0" IndexCoeff="13" Value="4.3934674195150902e-02"/>
-    <Coefficient IndexOut="0" IndexCoeff="14" Value="1.4107297064648689e-03"/>
-    <Coefficient IndexOut="0" IndexCoeff="15" Value="2.6455800458332832e-04"/>
-    <Coefficient IndexOut="0" IndexCoeff="16" Value="-4.4820944938973525e-03"/>
-    <Coefficient IndexOut="0" IndexCoeff="17" Value="4.1153135042503564e-02"/>
-    <Coefficient IndexOut="0" IndexCoeff="18" Value="-3.4102872132868306e-02"/>
-    <Coefficient IndexOut="0" IndexCoeff="19" Value="3.7293727412322747e-01"/>
-    <Coefficient IndexOut="0" IndexCoeff="20" Value="-2.6647856166714723e-02"/>
-    <Coefficient IndexOut="0" IndexCoeff="21" Value="5.3149536463353131e-02"/>
-    <Coefficient IndexOut="0" IndexCoeff="22" Value="1.9762832565230282e-01"/>
-    <Coefficient IndexOut="0" IndexCoeff="23" Value="-5.5270111947139933e-02"/>
-    <Coefficient IndexOut="0" IndexCoeff="24" Value="1.9973159113504835e-02"/>
-    <Coefficient IndexOut="0" IndexCoeff="25" Value="-1.1768722018785649e-03"/>
-    <Coefficient IndexOut="0" IndexCoeff="26" Value="-2.2257453573079622e-02"/>
-    <Coefficient IndexOut="0" IndexCoeff="27" Value="-4.0148653051915145e-02"/>
-    <Coefficient IndexOut="0" IndexCoeff="28" Value="9.8630109996119208e-02"/>
-    <Coefficient IndexOut="0" IndexCoeff="29" Value="2.0455907809074469e-02"/>
-    <Coefficient IndexOut="0" IndexCoeff="30" Value="-1.5251972037586103e-02"/>
-    <Coefficient IndexOut="0" IndexCoeff="31" Value="2.0268063977805451e-02"/>
-    <Coefficient IndexOut="0" IndexCoeff="32" Value="9.6684379120667074e-02"/>
-    <Coefficient IndexOut="0" IndexCoeff="33" Value="3.6482526921807479e-02"/>
-    <Coefficient IndexOut="0" IndexCoeff="34" Value="3.0003174168591329e-04"/>
-    <Coefficient IndexOut="0" IndexCoeff="35" Value="-1.1670528711779815e-01"/>
-    <Coefficient IndexOut="0" IndexCoeff="36" Value="5.6084377761319804e-02"/>
-    <Coefficient IndexOut="0" IndexCoeff="37" Value="-2.2394185247258669e-03"/>
-    <Coefficient IndexOut="0" IndexCoeff="38" Value="-1.6854011650927703e-02"/>
-    <Coefficient IndexOut="0" IndexCoeff="39" Value="3.1493893836074149e-02"/>
-    <Coefficient IndexOut="0" IndexCoeff="40" Value="-2.0369999847403925e-02"/>
-    <Coefficient IndexOut="0" IndexCoeff="41" Value="-1.1378859646916206e-02"/>
-    <Coefficient IndexOut="0" IndexCoeff="42" Value="-8.6448230621078981e-02"/>
-    <Coefficient IndexOut="0" IndexCoeff="43" Value="-8.4129398041428161e-03"/>
-    <Coefficient IndexOut="0" IndexCoeff="44" Value="3.8577361109037867e-03"/>
+  <Weights NOut="1" NCoeff="6">
+    <Coefficient IndexOut="0" IndexCoeff="0" Value="1.6097641725328415e-01"/>
+    <Coefficient IndexOut="0" IndexCoeff="1" Value="-5.2433546690304556e-03"/>
+    <Coefficient IndexOut="0" IndexCoeff="2" Value="1.0376313786086673e-02"/>
+    <Coefficient IndexOut="0" IndexCoeff="3" Value="5.5835853809067576e-04"/>
+    <Coefficient IndexOut="0" IndexCoeff="4" Value="-3.2650484037224869e-02"/>
+    <Coefficient IndexOut="0" IndexCoeff="5" Value="-2.2000935373914809e-01"/>
   </Weights>
 </MethodSetup>

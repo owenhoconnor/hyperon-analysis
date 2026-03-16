@@ -10,10 +10,10 @@ Method         : LD::LD
 TMVA Release   : 4.2.1         [262657]
 ROOT Release   : 6.38/00       [402944]
 Creator        : ooconnor
-Date           : Fri Mar 13 17:07:40 2026
+Date           : Mon Mar 16 15:07:44 2026
 Host           : Linux buildvm-x86-26.rdu3.fedoraproject.org 6.17.1-300.fc43.x86_64 #1 SMP PREEMPT_DYNAMIC Mon Oct 6 15:37:21 UTC 2025 x86_64 x86_64 x86_64 GNU/Linux
 Dir            : /home/lar/ooconnor/hyperons/srcs/sbndcode/sbndcode/Hyperons/output/TMVA
-Training events: 1180
+Training events: 1657
 Analysis type  : [Classification]
 
 
@@ -32,51 +32,12 @@ IgnoreNegWeightsInTraining: "False" [Events with negative weights are ignored in
 
 #VAR -*-*-*-*-*-*-*-*-*-*-*-* variables *-*-*-*-*-*-*-*-*-*-*-*-
 
-NVar 44
-track1Length                  track1Length                  track1Length                  track1Length                                                    'F'    [6.60223007202,496.36038208]
+NVar 5
 track2Length                  track2Length                  track2Length                  track2Length                                                    'F'    [0.668267309666,121.635261536]
-track3Length                  track3Length                  track3Length                  track3Length                                                    'F'    [0.412237435579,38.8627433777]
 shower1Length                 shower1Length                 shower1Length                 shower1Length                                                   'F'    [0.277372866869,64.9242553711]
-track1StartPosX               track1StartPosX               track1StartPosX               track1StartPosX                                                 'F'    [-180.002807617,178.600708008]
-track1StartPosY               track1StartPosY               track1StartPosY               track1StartPosY                                                 'F'    [-178.46585083,179.862884521]
-track1StartPosZ               track1StartPosZ               track1StartPosZ               track1StartPosZ                                                 'F'    [12.3797225952,448.472045898]
-track2StartPosX               track2StartPosX               track2StartPosX               track2StartPosX                                                 'F'    [-178.250961304,178.54119873]
-track2StartPosY               track2StartPosY               track2StartPosY               track2StartPosY                                                 'F'    [-178.170730591,178.766769409]
-track2StartPosZ               track2StartPosZ               track2StartPosZ               track2StartPosZ                                                 'F'    [11.2616081238,449.381072998]
-track3StartPosX               track3StartPosX               track3StartPosX               track3StartPosX                                                 'F'    [-178.559509277,179.122558594]
-track3StartPosY               track3StartPosY               track3StartPosY               track3StartPosY                                                 'F'    [-178.273117065,179.014129639]
-track3StartPosZ               track3StartPosZ               track3StartPosZ               track3StartPosZ                                                 'F'    [9.94157314301,449.016326904]
-shower1StartPosX              shower1StartPosX              shower1StartPosX              shower1StartPosX                                                'F'    [-179.858627319,179.431137085]
-shower1StartPosY              shower1StartPosY              shower1StartPosY              shower1StartPosY                                                'F'    [-179.978729248,179.786865234]
-shower1StartPosZ              shower1StartPosZ              shower1StartPosZ              shower1StartPosZ                                                'F'    [12.1829843521,449.399993896]
-track1StartDirX               track1StartDirX               track1StartDirX               track1StartDirX                                                 'F'    [-0.99533033371,0.992457568645]
-track1StartDirY               track1StartDirY               track1StartDirY               track1StartDirY                                                 'F'    [-0.992119729519,0.993378341198]
-track1StartDirZ               track1StartDirZ               track1StartDirZ               track1StartDirZ                                                 'F'    [-0.999631285667,0.998943805695]
-track2StartDirX               track2StartDirX               track2StartDirX               track2StartDirX                                                 'F'    [-0.990601360798,0.998715162277]
-track2StartDirY               track2StartDirY               track2StartDirY               track2StartDirY                                                 'F'    [-0.998021602631,0.999431848526]
-track2StartDirZ               track2StartDirZ               track2StartDirZ               track2StartDirZ                                                 'F'    [-0.999366760254,0.999609947205]
-track3StartDirX               track3StartDirX               track3StartDirX               track3StartDirX                                                 'F'    [-0.98055356741,0.993002176285]
-track3StartDirY               track3StartDirY               track3StartDirY               track3StartDirY                                                 'F'    [-1,0.999867022038]
-track3StartDirZ               track3StartDirZ               track3StartDirZ               track3StartDirZ                                                 'F'    [-0.997544705868,0.999991297722]
-shower1DirX                   shower1DirX                   shower1DirX                   shower1DirX                                                     'F'    [-0.99372702837,0.99746710062]
-shower1DirY                   shower1DirY                   shower1DirY                   shower1DirY                                                     'F'    [-0.999887228012,0.999898135662]
-shower1DirZ                   shower1DirZ                   shower1DirZ                   shower1DirZ                                                     'F'    [-0.998255848885,0.999600112438]
-track1DistRecoVtx             track1DistRecoVtx             track1DistRecoVtx             track1DistRecoVtx                                               'F'    [0.0237985868007,3.98177313805]
-track2DistRecoVtx             track2DistRecoVtx             track2DistRecoVtx             track2DistRecoVtx                                               'F'    [0.0464399158955,9.78038883209]
-track3DistRecoVtx             track3DistRecoVtx             track3DistRecoVtx             track3DistRecoVtx                                               'F'    [0.0356111302972,11.9819936752]
-shower1DistRecoVtx            shower1DistRecoVtx            shower1DistRecoVtx            shower1DistRecoVtx                                              'F'    [0.0403059646487,78.6243667603]
-track1Track2Angle             track1Track2Angle             track1Track2Angle             track1Track2Angle                                               'F'    [0.144185423851,3.13272953033]
+shower1DirY                   shower1DirY                   shower1DirY                   shower1DirY                                                     'F'    [-0.999887228012,0.999870479107]
 track1Track3Angle             track1Track3Angle             track1Track3Angle             track1Track3Angle                                               'F'    [0.0396595671773,3.12610054016]
-track2Track3Angle             track2Track3Angle             track2Track3Angle             track2Track3Angle                                               'F'    [0.057684853673,3.11595344543]
-track1Shower1Angle            track1Shower1Angle            track1Shower1Angle            track1Shower1Angle                                              'F'    [0.0228180531412,3.13737034798]
-track2Shower1Angle            track2Shower1Angle            track2Shower1Angle            track2Shower1Angle                                              'F'    [0.0274586025625,3.10767269135]
-track3Shower1Angle            track3Shower1Angle            track3Shower1Angle            track3Shower1Angle                                              'F'    [0.0397528596222,3.12469959259]
-track1Track2Dist              track1Track2Dist              track1Track2Dist              track1Track2Dist                                                'F'    [0.0561579614878,9.81249904633]
-track1Track3Dist              track1Track3Dist              track1Track3Dist              track1Track3Dist                                                'F'    [0.0700156316161,11.9644546509]
-track2Track3Dist              track2Track3Dist              track2Track3Dist              track2Track3Dist                                                'F'    [0.0517720133066,9.7755689621]
-track1Shower1Dist             track1Shower1Dist             track1Shower1Dist             track1Shower1Dist                                               'F'    [0.206579074264,78.4287414551]
-track2Shower1Dist             track2Shower1Dist             track2Shower1Dist             track2Shower1Dist                                               'F'    [0.191956028342,78.6626205444]
-track3Shower1Dist             track3Shower1Dist             track3Shower1Dist             track3Shower1Dist                                               'F'    [0.114796884358,79.1389770508]
+track2Track3Angle             track2Track3Angle             track2Track3Angle             track2Track3Angle                                               'F'    [0.0672778710723,3.11595344543]
 NSpec 0
 
 
@@ -120,10 +81,10 @@ class ReadLD : public IClassifierReader {
    ReadLD( std::vector<std::string>& theInputVars )
       : IClassifierReader(),
         fClassName( "ReadLD" ),
-        fNvars( 44 )
+        fNvars( 5 )
    {
       // the training input variables
-      const char* inputVars[] = { "track1Length", "track2Length", "track3Length", "shower1Length", "track1StartPosX", "track1StartPosY", "track1StartPosZ", "track2StartPosX", "track2StartPosY", "track2StartPosZ", "track3StartPosX", "track3StartPosY", "track3StartPosZ", "shower1StartPosX", "shower1StartPosY", "shower1StartPosZ", "track1StartDirX", "track1StartDirY", "track1StartDirZ", "track2StartDirX", "track2StartDirY", "track2StartDirZ", "track3StartDirX", "track3StartDirY", "track3StartDirZ", "shower1DirX", "shower1DirY", "shower1DirZ", "track1DistRecoVtx", "track2DistRecoVtx", "track3DistRecoVtx", "shower1DistRecoVtx", "track1Track2Angle", "track1Track3Angle", "track2Track3Angle", "track1Shower1Angle", "track2Shower1Angle", "track3Shower1Angle", "track1Track2Dist", "track1Track3Dist", "track2Track3Dist", "track1Shower1Dist", "track2Shower1Dist", "track3Shower1Dist" };
+      const char* inputVars[] = { "track2Length", "shower1Length", "shower1DirY", "track1Track3Angle", "track2Track3Angle" };
 
       // sanity checks
       if (theInputVars.size() <= 0) {
@@ -157,84 +118,6 @@ class ReadLD : public IClassifierReader {
       fVmax[3] = 0;
       fVmin[4] = 0;
       fVmax[4] = 0;
-      fVmin[5] = 0;
-      fVmax[5] = 0;
-      fVmin[6] = 0;
-      fVmax[6] = 0;
-      fVmin[7] = 0;
-      fVmax[7] = 0;
-      fVmin[8] = 0;
-      fVmax[8] = 0;
-      fVmin[9] = 0;
-      fVmax[9] = 0;
-      fVmin[10] = 0;
-      fVmax[10] = 0;
-      fVmin[11] = 0;
-      fVmax[11] = 0;
-      fVmin[12] = 0;
-      fVmax[12] = 0;
-      fVmin[13] = 0;
-      fVmax[13] = 0;
-      fVmin[14] = 0;
-      fVmax[14] = 0;
-      fVmin[15] = 0;
-      fVmax[15] = 0;
-      fVmin[16] = 0;
-      fVmax[16] = 0;
-      fVmin[17] = 0;
-      fVmax[17] = 0;
-      fVmin[18] = 0;
-      fVmax[18] = 0;
-      fVmin[19] = 0;
-      fVmax[19] = 0;
-      fVmin[20] = 0;
-      fVmax[20] = 0;
-      fVmin[21] = 0;
-      fVmax[21] = 0;
-      fVmin[22] = 0;
-      fVmax[22] = 0;
-      fVmin[23] = 0;
-      fVmax[23] = 0;
-      fVmin[24] = 0;
-      fVmax[24] = 0;
-      fVmin[25] = 0;
-      fVmax[25] = 0;
-      fVmin[26] = 0;
-      fVmax[26] = 0;
-      fVmin[27] = 0;
-      fVmax[27] = 0;
-      fVmin[28] = 0;
-      fVmax[28] = 0;
-      fVmin[29] = 0;
-      fVmax[29] = 0;
-      fVmin[30] = 0;
-      fVmax[30] = 0;
-      fVmin[31] = 0;
-      fVmax[31] = 0;
-      fVmin[32] = 0;
-      fVmax[32] = 0;
-      fVmin[33] = 0;
-      fVmax[33] = 0;
-      fVmin[34] = 0;
-      fVmax[34] = 0;
-      fVmin[35] = 0;
-      fVmax[35] = 0;
-      fVmin[36] = 0;
-      fVmax[36] = 0;
-      fVmin[37] = 0;
-      fVmax[37] = 0;
-      fVmin[38] = 0;
-      fVmax[38] = 0;
-      fVmin[39] = 0;
-      fVmax[39] = 0;
-      fVmin[40] = 0;
-      fVmax[40] = 0;
-      fVmin[41] = 0;
-      fVmax[41] = 0;
-      fVmin[42] = 0;
-      fVmax[42] = 0;
-      fVmin[43] = 0;
-      fVmax[43] = 0;
 
       // initialize input variable types
       fType[0] = 'F';
@@ -242,45 +125,6 @@ class ReadLD : public IClassifierReader {
       fType[2] = 'F';
       fType[3] = 'F';
       fType[4] = 'F';
-      fType[5] = 'F';
-      fType[6] = 'F';
-      fType[7] = 'F';
-      fType[8] = 'F';
-      fType[9] = 'F';
-      fType[10] = 'F';
-      fType[11] = 'F';
-      fType[12] = 'F';
-      fType[13] = 'F';
-      fType[14] = 'F';
-      fType[15] = 'F';
-      fType[16] = 'F';
-      fType[17] = 'F';
-      fType[18] = 'F';
-      fType[19] = 'F';
-      fType[20] = 'F';
-      fType[21] = 'F';
-      fType[22] = 'F';
-      fType[23] = 'F';
-      fType[24] = 'F';
-      fType[25] = 'F';
-      fType[26] = 'F';
-      fType[27] = 'F';
-      fType[28] = 'F';
-      fType[29] = 'F';
-      fType[30] = 'F';
-      fType[31] = 'F';
-      fType[32] = 'F';
-      fType[33] = 'F';
-      fType[34] = 'F';
-      fType[35] = 'F';
-      fType[36] = 'F';
-      fType[37] = 'F';
-      fType[38] = 'F';
-      fType[39] = 'F';
-      fType[40] = 'F';
-      fType[41] = 'F';
-      fType[42] = 'F';
-      fType[43] = 'F';
 
       // initialize constants
       Initialize();
@@ -310,15 +154,15 @@ class ReadLD : public IClassifierReader {
    char   GetType( int ivar ) const { return fType[ivar]; }
 
    // normalisation of input variables
-   double fVmin[44];
-   double fVmax[44];
+   double fVmin[5];
+   double fVmax[5];
    double NormVariable( double x, double xmin, double xmax ) const {
       // normalise to output range: [-1, 1]
       return 2*(x - xmin)/(xmax - xmin) - 1.0;
    }
 
    // type of input variable: 'F' or 'I'
-   char   fType[44];
+   char   fType[5];
 
    // initialize internal variables
    void Initialize();
@@ -330,51 +174,12 @@ class ReadLD : public IClassifierReader {
 
 inline void ReadLD::Initialize() 
 {
-   fLDCoefficients.push_back( -0.239308752746 );
-   fLDCoefficients.push_back( 0.00019760906038 );
-   fLDCoefficients.push_back( -0.00511035349617 );
-   fLDCoefficients.push_back( -0.00256329018337 );
-   fLDCoefficients.push_back( 0.0050246232747 );
-   fLDCoefficients.push_back( -0.0173486578567 );
-   fLDCoefficients.push_back( 0.0152229283799 );
-   fLDCoefficients.push_back( -0.0696546454422 );
-   fLDCoefficients.push_back( 0.0222028591337 );
-   fLDCoefficients.push_back( -0.00527289808617 );
-   fLDCoefficients.push_back( 0.030297844894 );
-   fLDCoefficients.push_back( -0.00608372206234 );
-   fLDCoefficients.push_back( -0.0100611441251 );
-   fLDCoefficients.push_back( 0.0439346741952 );
-   fLDCoefficients.push_back( 0.00141072970646 );
-   fLDCoefficients.push_back( 0.000264558004583 );
-   fLDCoefficients.push_back( -0.0044820944939 );
-   fLDCoefficients.push_back( 0.0411531350425 );
-   fLDCoefficients.push_back( -0.0341028721329 );
-   fLDCoefficients.push_back( 0.372937274123 );
-   fLDCoefficients.push_back( -0.0266478561667 );
-   fLDCoefficients.push_back( 0.0531495364634 );
-   fLDCoefficients.push_back( 0.197628325652 );
-   fLDCoefficients.push_back( -0.0552701119471 );
-   fLDCoefficients.push_back( 0.0199731591135 );
-   fLDCoefficients.push_back( -0.00117687220188 );
-   fLDCoefficients.push_back( -0.0222574535731 );
-   fLDCoefficients.push_back( -0.0401486530519 );
-   fLDCoefficients.push_back( 0.0986301099961 );
-   fLDCoefficients.push_back( 0.0204559078091 );
-   fLDCoefficients.push_back( -0.0152519720376 );
-   fLDCoefficients.push_back( 0.0202680639778 );
-   fLDCoefficients.push_back( 0.0966843791207 );
-   fLDCoefficients.push_back( 0.0364825269218 );
-   fLDCoefficients.push_back( 0.000300031741686 );
-   fLDCoefficients.push_back( -0.116705287118 );
-   fLDCoefficients.push_back( 0.0560843777613 );
-   fLDCoefficients.push_back( -0.00223941852473 );
-   fLDCoefficients.push_back( -0.0168540116509 );
-   fLDCoefficients.push_back( 0.0314938938361 );
-   fLDCoefficients.push_back( -0.0203699998474 );
-   fLDCoefficients.push_back( -0.0113788596469 );
-   fLDCoefficients.push_back( -0.0864482306211 );
-   fLDCoefficients.push_back( -0.00841293980414 );
-   fLDCoefficients.push_back( 0.0038577361109 );
+   fLDCoefficients.push_back( 0.160976417253 );
+   fLDCoefficients.push_back( -0.00524335466903 );
+   fLDCoefficients.push_back( 0.0103763137861 );
+   fLDCoefficients.push_back( 0.000558358538091 );
+   fLDCoefficients.push_back( -0.0326504840372 );
+   fLDCoefficients.push_back( -0.220009353739 );
 
    // sanity check
    if (fLDCoefficients.size() != fNvars+1) {
