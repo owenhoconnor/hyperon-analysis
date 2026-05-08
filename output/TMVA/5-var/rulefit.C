@@ -3094,16 +3094,16 @@ void rulefit()
    sigEffi__15->SetLineColor(TColor::GetColor("#0000ee"));
    sigEffi__15->SetLineWidth(3);
    sigEffi__15->GetXaxis()->SetTitle("Cut value applied on RuleFit output");
-   sigEffi__15->GetXaxis()->SetLabelOffset(0.01200000010430813);
-   sigEffi__15->GetXaxis()->SetLabelSize(0.03999999910593033);
-   sigEffi__15->GetXaxis()->SetTitleSize(0.04500000178813934);
+   sigEffi__15->GetXaxis()->SetLabelOffset(0.012);
+   sigEffi__15->GetXaxis()->SetLabelSize(0.03);
+   sigEffi__15->GetXaxis()->SetTitleSize(0.04);
    sigEffi__15->GetXaxis()->SetTitleOffset(1.25);
 
    sigEffi__15->GetYaxis()->SetTitle("Efficiency");
-   sigEffi__15->GetYaxis()->SetLabelOffset(0.01200000010430813);
-   sigEffi__15->GetYaxis()->SetLabelSize(0.03999999910593033);
-   sigEffi__15->GetYaxis()->SetTitleSize(0.04500000178813934);
-   sigEffi__15->GetYaxis()->SetTitleOffset(1.220000028610229);
+   sigEffi__15->GetYaxis()->SetLabelOffset(0.01);
+   sigEffi__15->GetYaxis()->SetLabelSize(0.03);
+   sigEffi__15->GetYaxis()->SetTitleSize(0.04);
+   sigEffi__15->GetYaxis()->SetTitleOffset(0.9);
    sigEffi__15->GetXaxis()->SetLabelFont(42);
    sigEffi__15->GetXaxis()->SetTitleOffset(1);
    sigEffi__15->GetXaxis()->SetTitleFont(42);
@@ -7275,7 +7275,7 @@ void rulefit()
    gaxis->SetTextColor(TColor::GetColor("#00aa00"));
    gaxis->SetTitle("Significance");
    gaxis->SetLabelOffset(0.005);
-   gaxis->SetLabelSize(0.04);
+   gaxis->SetLabelSize(0.03);
    gaxis->SetLabelColor(TColor::GetColor("#00aa00"));
    gaxis->SetTickSize(0.03);
    gaxis->SetTitleOffset(1);
