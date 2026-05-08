@@ -1053,7 +1053,7 @@ void rulefit()
    effpurS_RuleFit__13->GetZaxis()->SetLabelSize(0.03999999910593033);
    effpurS_RuleFit__13->GetZaxis()->SetTitleSize(0.03999999910593033);
    effpurS_RuleFit__13->GetZaxis()->SetTitleOffset(1);
-   effpurS_RuleFit__13->Draw("histl");
+  // effpurS_RuleFit__13->Draw("histl");
    
    TH1F *purS_RuleFit__14 = new TH1F("purS_RuleFit", "purS_RuleFit", 10000, -1.748000144958496, 1.055475221405029);
    std::vector<Double_t> purS_RuleFit__14_vect15{
@@ -2080,7 +2080,7 @@ void rulefit()
    purS_RuleFit__14->GetZaxis()->SetLabelSize(0.03999999910593033);
    purS_RuleFit__14->GetZaxis()->SetTitleSize(0.03999999910593033);
    purS_RuleFit__14->GetZaxis()->SetTitleOffset(1);
-   purS_RuleFit__14->Draw("samehistl");
+ //  purS_RuleFit__14->Draw("samehistl");
    
    TH1D *sigEffi__15 = new TH1D("sigEffi", "Cut efficiencies for RuleFit classifier", 10000, -1.748000144958496, 1.055475221405029);
    std::vector<Double_t> sigEffi__15_vect16{
@@ -3093,6 +3093,17 @@ void rulefit()
    sigEffi__15->SetFillStyle(0);
    sigEffi__15->SetLineColor(TColor::GetColor("#0000ee"));
    sigEffi__15->SetLineWidth(3);
+   sigEffi__15->GetXaxis()->SetTitle("Cut value applied on RuleFit output");
+   sigEffi__15->GetXaxis()->SetLabelOffset(0.01200000010430813);
+   sigEffi__15->GetXaxis()->SetLabelSize(0.03999999910593033);
+   sigEffi__15->GetXaxis()->SetTitleSize(0.04500000178813934);
+   sigEffi__15->GetXaxis()->SetTitleOffset(1.25);
+
+   sigEffi__15->GetYaxis()->SetTitle("Efficiency");
+   sigEffi__15->GetYaxis()->SetLabelOffset(0.01200000010430813);
+   sigEffi__15->GetYaxis()->SetLabelSize(0.03999999910593033);
+   sigEffi__15->GetYaxis()->SetTitleSize(0.04500000178813934);
+   sigEffi__15->GetYaxis()->SetTitleOffset(1.220000028610229);
    sigEffi__15->GetXaxis()->SetLabelFont(42);
    sigEffi__15->GetXaxis()->SetTitleOffset(1);
    sigEffi__15->GetXaxis()->SetTitleFont(42);
@@ -3101,7 +3112,7 @@ void rulefit()
    sigEffi__15->GetZaxis()->SetLabelFont(42);
    sigEffi__15->GetZaxis()->SetTitleOffset(1);
    sigEffi__15->GetZaxis()->SetTitleFont(42);
-   sigEffi__15->Draw("samehistl");
+   sigEffi__15->Draw("histl");
    
    TH1D *bgdEffi__16 = new TH1D("bgdEffi", "MVA_RuleFit (background)", 10000, -1.748000144958496, 1.055475221405029);
    std::vector<Double_t> bgdEffi__16_vect17{
@@ -7185,7 +7196,7 @@ void rulefit()
    effpurS_RuleFit__18->GetZaxis()->SetLabelSize(0.03999999910593033);
    effpurS_RuleFit__18->GetZaxis()->SetTitleSize(0.03999999910593033);
    effpurS_RuleFit__18->GetZaxis()->SetTitleOffset(1);
-   effpurS_RuleFit__18->Draw("sameaxis");
+   //effpurS_RuleFit__18->Draw("sameaxis");
    
    TLegend *leg = new TLegend(0.108, 0.8, 0.508, 0.92, nullptr, "brNDC");
    leg->SetBorderSize(1);
@@ -7208,6 +7219,7 @@ void rulefit()
    leg = new TLegend(0.508, 0.8, 0.9, 0.92, nullptr, "brNDC");
    leg->SetBorderSize(1);
    leg->SetTextFont(62);
+   leg->SetTextSize(0.04);
    leg->SetLineColor(TColor::GetColor("#7d8b9d"));
    leg->SetLineStyle(1);
    leg->SetLineWidth(1);
