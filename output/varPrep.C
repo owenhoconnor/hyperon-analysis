@@ -166,24 +166,55 @@ void varPrep::Loop()
 
    // define distance cut thresholds based on visual inspection of distributions
 
-   int track1DistRecoVtxCut = 4;
-   int track2DistRecoVtxCut = 10;
-   int track3DistRecoVtxCut = 12;
-   int shower1DistRecoVtxCut = 80;
+   int track1DistRecoVtxCut = 30;
+   int track2DistRecoVtxCut = 30;
+   int track3DistRecoVtxCut = 30;
+   int shower1DistRecoVtxCut = 150;
 
-   int track1Track2DistCut = 10;
-   int track1Track3DistCut = 12;
-   int track2Track3DistCut = 10;
-   int track1Shower1DistCut = 80;
-   int track2Shower1DistCut = 80;
-   int track3Shower1DistCut = 80;
+   int track1Track2DistCut = 25;
+   int track1Track3DistCut = 25;
+   int track2Track3DistCut = 25;
+   int track1Shower1DistCut = 150;
+   int track2Shower1DistCut = 150;
+   int track3Shower1DistCut = 150;
 
    // define length cut thresholds
 
    int track1LengthCut = 500;
    int track2LengthCut = 125;
-   int track3LengthCut = 40;
-   int shower1LengthCut = 65;
+   int track3LengthCut = 60;
+   int shower1LengthCut = 80;
+
+   // define counters for cuts
+
+   int nTrk1DistRecoVtxCut = 0;
+   int nTrk2DistRecoVtxCut = 0;
+   int nTrk3DistRecoVtxCut = 0;
+   int nShwr1DistRecoVtxCut = 0;
+   int nTrk1Trk2DistCut = 0;
+   int nTrk1Trk3DistCut = 0;
+   int nTrk2Trk3DistCut = 0;
+   int nTrk1Shwr1DistCut = 0;
+   int nTrk2Shwr1DistCut = 0;
+   int nTrk3Shwr1DistCut = 0;
+   int nTrk1LengthCut = 0;
+   int nTrk2LengthCut = 0;
+   int nTrk3LengthCut = 0;
+   int nShwr1LengthCut = 0;
+
+   int nBadTrack = 0;
+   int nBadShower = 0;
+
+   int nBadTrkStartSig = 0;
+   int nBadTrkStartBkg = 0;
+   int nBadTrkDirSig = 0;
+   int nBadTrkDirBkg = 0;
+   int nBadShwrDirSig = 0;
+   int nBadShwrDirBkg = 0;
+   int nBadShwrStartSig = 0;
+   int nBadShwrStartBkg = 0;
+   int nBadTrkShwrSig = 0;
+   int nBadTrkShwrBkg = 0;
 
    Long64_t nentries = fChain->GetEntriesFast();
 
@@ -210,27 +241,41 @@ void varPrep::Loop()
       for (int i = 0; i < trackLengths->size(); i++){
 	//      std::cout<<"track "<<i<<" start position = "<<trackStartPositionX->at(i)<<", "<<trackStartPositionY->at(i)<<", "<<trackStartPositionZ->at(i)<<std::endl;
 	      if(trackStartPositionX->at(i) > 180 || std::abs(trackStartPositionY->at(i)) > 180
-			      || trackStartPositionZ->at(i) < 0 || trackStartPositionZ->at(i) > 450){IsBadTrack = true;}
+			      || trackStartPositionZ->at(i) < 0 || trackStartPositionZ->at(i) > 450){
+		      if(sampleType == 0){nBadTrkStartSig++;}
+		      if(sampleType == 2){nBadTrkStartBkg++;} 
+		      IsBadTrack = true;
+	      }
       }
 
       //std::cout<<"shower start position is "<<showerStartPositionX->at(0)<<", "<<showerStartPositionY->at(0)<<", "<<showerStartPositionZ<<std::endl; 
       if(std::abs(showerStartPositionX->at(0)) > 180 || std::abs(showerStartPositionY->at(0)) > 180 
-			      || showerStartPositionZ->at(0) < 10 || showerStartPositionZ->at(0) > 450){IsBadShower = true;}
+			      || showerStartPositionZ->at(0) < 10 || showerStartPositionZ->at(0) > 450){
+	      IsBadShower = true;
+	      if(sampleType == 0){nBadShwrStartSig++;}
+	      if(sampleType == 2){nBadShwrStartBkg++;}
+      }
 
-      // flag is any tracks or shower directions are outside cosine range
+      // flag if any tracks or shower directions are outside cosine range
       for (int i = 0; i < trackLengths->size(); i++){
 	  std::cout<<"track "<<i<<" direction is "<<trackStartDirX->at(i)<<", "<<trackStartDirY->at(i)<<", "<<trackStartDirZ->at(i)<<std::endl;
 	  if(std::abs(trackStartDirX->at(i)) > 1 || std::abs(trackStartDirY->at(i)) > 1 || std::abs(trackStartDirZ->at(i)) > 1){
 		  IsBadTrack = true;
+		  if(sampleType == 0){nBadTrkDirSig++;}
+		  if(sampleType == 2){nBadTrkDirBkg++;}
 		  //std::cout<<"bad track due to direction out of cosine range"<<std::endl;
 	  }
       }
 
-      if(std::abs(showerDirX->at(0)) > 1 || std::abs(showerDirY->at(0)) > 1 || std::abs(showerDirZ->at(0)) > 1){IsBadShower = true;}
+      if(std::abs(showerDirX->at(0)) > 1 || std::abs(showerDirY->at(0)) > 1 || std::abs(showerDirZ->at(0)) > 1){
+	      if(sampleType == 0){nBadShwrDirSig++;}
+	      if(sampleType == 2){nBadShwrDirBkg++;} 
+	      IsBadShower = true;
+      }
 
       if(IsBadTrack || IsBadShower){
-	      if(sampleType==0){nBadSig++;}
-	      if(sampleType==2){nBadBkg++;} 
+	      if(sampleType==0){nBadTrkShwrSig++; nBadSig++;}
+	      if(sampleType==2){nBadTrkShwrBkg++; nBadBkg++;} 
 	      continue;
       } // exclude events that have any tracks or showers outside reco fv
 
@@ -321,24 +366,67 @@ void varPrep::Loop()
 
       // apply visual inspec distance cuts
       
-      if (track1DistRecoVtx > track1DistRecoVtxCut){continue;}
-      if(track2DistRecoVtx > track2DistRecoVtxCut){continue;}
-      if(track3DistRecoVtx > track3DistRecoVtxCut){continue;}
-      if(shower1DistRecoVtx > shower1DistRecoVtxCut){continue;}
+      if (track1DistRecoVtx > track1DistRecoVtxCut){
+	     if(sampleType==0){nBadSig++; nTrk1DistRecoVtxCut++;}
+	     if(sampleType==2){nBadBkg++;}
+	      continue;
+      }
+      if(track2DistRecoVtx > track2DistRecoVtxCut){
+	      if(sampleType==0){nBadSig++; nTrk2DistRecoVtxCut++;}
+	      if(sampleType==2){nBadBkg++;}
+	      continue;}
+      if(track3DistRecoVtx > track3DistRecoVtxCut){
+	      if(sampleType==0){nBadSig++; nTrk3DistRecoVtxCut++;}
+	      if(sampleType==2){nBadBkg++;}
+	      continue;}
+      if(shower1DistRecoVtx > shower1DistRecoVtxCut){
+	      if(sampleType==0){nBadSig++; nShwr1DistRecoVtxCut++;}
+	      if(sampleType==2){nBadBkg++;}
+	      continue;}
       
-      if(track1Track2Dist > track1Track2DistCut){continue;}
-      if(track1Track3Dist > track1Track3DistCut){continue;}
-      if(track2Track3Dist > track2Track3DistCut){continue;}
-      if(track1Shower1Dist > track1Shower1DistCut){continue;}
-      if(track2Shower1Dist > track2Shower1DistCut){continue;}
-      if(track3Shower1Dist > track3Shower1DistCut){continue;}
+      if(track1Track2Dist > track1Track2DistCut){
+	      if(sampleType==0){nBadSig++; nTrk1Trk2DistCut++;}
+	      if(sampleType==2){nBadBkg++;}
+	      continue;}
+      if(track1Track3Dist > track1Track3DistCut){
+	      if(sampleType==0){nBadSig++; nTrk1Trk3DistCut++;}
+	      if(sampleType==2){nBadBkg++;}
+	      continue;}
+      if(track2Track3Dist > track2Track3DistCut){
+	      if(sampleType==0){nBadSig++; nTrk2Trk3DistCut++;}
+	      if(sampleType==2){nBadBkg++;}
+	      continue;}
+      if(track1Shower1Dist > track1Shower1DistCut){
+	      if(sampleType==0){nBadSig++; nTrk1Shwr1DistCut++;}
+	      if(sampleType==2){nBadBkg++;}
+	      continue;}
+      if(track2Shower1Dist > track2Shower1DistCut){
+	      if(sampleType==0){nBadSig++; nTrk2Shwr1DistCut++;}
+	      if(sampleType==2){nBadBkg++;}
+	      continue;}
+      if(track3Shower1Dist > track3Shower1DistCut){
+	     if(sampleType==0){nBadSig++; nTrk3Shwr1DistCut++;}
+	     if(sampleType==2){nBadBkg++;}
+	      continue;}
 
       // apply inspec length cuts
 
-      if(track1Length > track1LengthCut){continue;}
-      if(track2Length > track2LengthCut){continue;}
-      if(track3Length > track3LengthCut){continue;}
-      if(shower1Length > shower1LengthCut){continue;}
+      if(track1Length > track1LengthCut){
+	     if(sampleType==0){nBadSig++; nTrk1LengthCut++;}
+	     if(sampleType==2){nBadBkg++;}
+	      continue;}
+      if(track2Length > track2LengthCut){
+	     if(sampleType==0){nBadSig++; nTrk2LengthCut++;}
+	     if(sampleType==2){nBadBkg++;}
+	      continue;}
+      if(track3Length > track3LengthCut){
+	      if(sampleType==0){nBadSig++; nTrk3LengthCut++;}
+	      if(sampleType==2){nBadBkg++;}
+	      continue;}
+      if(shower1Length > shower1LengthCut){
+	      if(sampleType==0){nBadSig++; nShwr1LengthCut++;}
+	      if(sampleType==2){nBadBkg++;}
+	      continue;}
 
       // Fill signal and background trees:
 
@@ -348,7 +436,34 @@ void varPrep::Loop()
    }
 
    int nBad = nBadSig + nBadBkg;
-   std::cout<<"Dropped <<"<<nBad<<" events ("<<nBadSig<<" signal, "<<nBadBkg<<" background)"<<std::endl;
+   int nBadTrkStart = nBadTrkStartSig + nBadTrkStartBkg;
+   int nBadTrkDir = nBadTrkDirSig + nBadTrkDirBkg;
+   int nBadShwrStart = nBadShwrStartSig + nBadShwrStartBkg;
+   int nBadShwrDir = nBadShwrDirSig + nBadShwrDirBkg;
+   int nBadLengths = nTrk1LengthCut + nTrk2LengthCut + nTrk3LengthCut + nShwr1LengthCut;
+   int nBadDistRecoVtx = nTrk1DistRecoVtxCut + nTrk2DistRecoVtxCut + nTrk3DistRecoVtxCut + nShwr1DistRecoVtxCut;
+
+   std::cout<<"Dropped "<<nBad<<" events ("<<nBadSig<<" signal, "<<nBadBkg<<" background)"<<std::endl;
+   std::cout<<"Dropped "<<nBadTrkStart<<" events due to track start outside FV("<<nBadTrkStartSig<< "signal, "<<nBadTrkStartBkg<<" background)"<<std::endl;
+   std::cout<<"Dropped "<<nBadShwrStart<<"events due to shower start outside FV ("<<nBadShwrStartSig<<" signal, "<<nBadShwrStartBkg<<" background)"<<std::endl;
+   std::cout<<"Dropped "<<nBadTrkDir<<" events due to track dir outside cosine range("<<nBadTrkDirSig<<"signal, "<<nBadTrkDirBkg<<" background)"<<std::endl;
+   std::cout<<"Dropped "<<nBadShwrDir<<" events due to shower dir outside cosine range("<<nBadShwrDirSig<<"signal, "<<nBadShwrDirBkg<<" background)"<<std::endl;
+   std::cout<<"Dropped "<<nBadLengths<<" events because of track/shower lengths cut"<<std::endl;
+   std::cout<<"Dropped "<<nBadDistRecoVtx<<" events because of distance to reco vertex cut"<<std::endl;
+   std::cout<<"nTrk1DistRecoVtxCut =  "<<nTrk1DistRecoVtxCut<<std::endl;
+   std::cout<<"nTrk2DistRecoVtxCut = "<<nTrk2DistRecoVtxCut<<std::endl;
+   std::cout<<"nTrk3DistRecoVtxCut = "<<nTrk3DistRecoVtxCut<<std::endl;
+   std::cout<<"nShwr1DistRecoVtxCut = "<<nShwr1DistRecoVtxCut<<std::endl;
+   std::cout<<"nTrk1Trk2DistCut = "<<nTrk1Trk2DistCut<<std::endl;
+   std::cout<<"nTrk1Trk3DistCut = "<<nTrk1Trk3DistCut<<std::endl;
+   std::cout<<"nTrk2Trk3DistCut = "<<nTrk2Trk3DistCut<<std::endl;
+   std::cout<<"nTrk1Shwr1DistCut = "<<nTrk1Shwr1DistCut<<std::endl;
+   std::cout<<"nTrk2Shwr1DistCut = "<<nTrk2Shwr1DistCut<<std::endl;
+   std::cout<<"nTrk3Shwr1DistCut = "<<nTrk3Shwr1DistCut<<std::endl;
+   std::cout<<"nTrk1LengthCut = "<<nTrk1LengthCut<<std::endl;
+   std::cout<<"nTrk2LengthCut = "<<nTrk2LengthCut<<std::endl;
+   std::cout<<"nTrk3LengthCut = "<<nTrk3LengthCut<<std::endl;
+   std::cout<<"nShwr1LengthCut = "<<nShwr1LengthCut<<std::endl;
    std::cout<<"Total signal left = "<<nSig<<" events"<<std::endl;
    std::cout<<"Total background left = "<<nBkg<<" events"<<std::endl; 
 

@@ -48,8 +48,8 @@ void signalDef::Loop()
    Samples[2] = "Background";
    
    int nEvents[3] = {0};
-   nEvents[0] = 56344; // number of events in hyperon files
-   nEvents[1] = nEvents[0]; // hyperons
+   nEvents[0] = 141422; // number of events in all hyperon files
+   nEvents[1] = nEvents[0]; // hyperon events
    nEvents[2] = 209009 + nEvents[0]; // num of events in bkg files + num of events in hyp files
    
 
@@ -59,15 +59,13 @@ void signalDef::Loop()
    PoT[2] = 8.875e15; // pot per bkg file
    PoT[3] = 1e21; // total pot
 
-   double nHyperonFiles = 1776.;
+   double nHyperonFiles = 2636.8;
    double nBkgFiles = 2236.;
 
    double scale[3] = {0};
-   scale[0] = 0.035131; //PoT[3] / (nHyperonFiles * PoT[0]); // sigma
-   scale[1] = 0.035131; //PoT[3] / (nHyperonFiles * PoT[1]); // hyperons 
+   scale[0] = PoT[3] / (nHyperonFiles * PoT[0]); // sigma
+   scale[1] = PoT[3] / (nHyperonFiles * PoT[1]); // hyperons 
    scale[2] = PoT[3] / (nBkgFiles * PoT[2]); // bkg
-   std::cout<<"SIGMA and HYPERON SCALE = "<<scale[0]<<std::endl;
-   std::cout<<"BACKGROUND SCALE = "<<scale[2]<<std::endl;
 
    const int nCuts = 4;
    TString CutName[nCuts];
@@ -99,7 +97,19 @@ void signalDef::Loop()
    VarName[14] = "gammaTrackDistToVtx";
 
    TH1F *Hist[nVars][3][nCuts];
-   TH2F *hTracksShowers = new TH2F("nTracks v nShowers", "", 100, -1, -1, 100, -1, -1);
+
+   int MaxTracks = 6;
+   int MaxShowers = 6;
+
+   TH2F *hTracksShowersSig = new TH2F("hTracksShowersSig", ";num of Tracks;num of Showers",
+		   MaxTracks + 1, -0.5, MaxTracks + 0.5,
+		   MaxShowers + 1, -0.5, MaxShowers + 0.5);
+   hTracksShowersSig->SetDirectory(nullptr);
+
+   TH2F *hTracksShowersBkg = new TH2F("nTracksShowersBkg", ";num of Tracks;num of Showers",
+		   MaxTracks + 1, -0.5, MaxTracks + 0.5,
+		   MaxShowers + 1, -0.5, MaxShowers + 0.5);
+   hTracksShowersBkg->SetDirectory(nullptr); 
 
    for (int s = 0; s < 3; s++){ // samples
 	  for (int v = 0; v < nVars; v++){ // variables
@@ -137,6 +147,9 @@ void signalDef::Loop()
    int sampleType;
    signalTree->Branch("sampleType", &sampleType);
    bkgTree->Branch("sampleType", &sampleType);
+
+   int nSig = 0;
+   int nBkg = 0;
 
    Long64_t nentries = fChain->GetEntriesFast();
 
@@ -292,7 +305,6 @@ void signalDef::Loop()
 			nGoodSigma++;
 			std::cout<<"signal event, nSignal = "<<nGoodSigma<<std::endl;
 			IsSignal = true;
-		        hTracksShowers->Fill(trackCount, showerCount);
 	    }
 	   // if (IsLambda){
 	//	nLambda++;
@@ -307,6 +319,8 @@ void signalDef::Loop()
       if(IsSignal && jentry < nEvents[0] + 1){ // if signal and we're still within range of hyperon file events
 	  s=0;
 	  sampleType=0;
+	  nSig++;
+	  hTracksShowersSig->Fill(trackCount, showerCount);
       }
       if(!IsSignal && jentry < nEvents[0] + 1){ // if not signal but we're still within range of hyperon file events (other hyperons)
 	      s=1;
@@ -315,6 +329,8 @@ void signalDef::Loop()
       if(!IsSignal && jentry > nEvents[0]){ // now within range of bkg events, exclude rare signal
           s=2;
 	  sampleType=2;
+	  nBkg++;
+	  hTracksShowersBkg->Fill(trackCount, showerCount);
       }	
       if(IsSignal && jentry > nEvents[0]){continue;} // if there's signal in bkg range, ignore
 
@@ -399,6 +415,62 @@ void signalDef::Loop()
      
    } // end event loop
 
+   TCanvas *c1 = new TCanvas("c1", "Track-Shower Topology", 2000, 2000);
+   c1->SetRightMargin(0.15);
+   c1->SetLeftMargin(0.15);
+   c1->SetBottomMargin(0.15);
+
+   hTracksShowersSig->GetXaxis()->SetTitle("Number of tracks");
+   hTracksShowersSig->GetYaxis()->SetTitle("Number of showers");
+   hTracksShowersSig->GetZaxis()->SetTitle("Events");
+
+   hTracksShowersSig->GetXaxis()->CenterTitle();
+   hTracksShowersSig->GetYaxis()->CenterTitle();
+
+   hTracksShowersSig->GetXaxis()->SetTitleSize(0.04);
+   hTracksShowersSig->GetYaxis()->SetTitleSize(0.04);
+   hTracksShowersSig->GetZaxis()->SetTitleSize(0.04);
+
+   hTracksShowersSig->GetXaxis()->SetLabelSize(0.04);
+   hTracksShowersSig->GetYaxis()->SetLabelSize(0.04);
+   hTracksShowersSig->GetZaxis()->SetLabelSize(0.04);
+
+   hTracksShowersSig->GetXaxis()->SetNdivisions(MaxTracks + 1, 0, 0, kTRUE);
+   hTracksShowersSig->GetYaxis()->SetNdivisions(MaxShowers + 1, 0, 0, kTRUE);
+
+   gStyle->SetPalette(kAlpine);
+   gStyle->SetOptStat(0);
+   hTracksShowersSig->Draw("COLZ TEXT");
+   c1->Print("plots/nTracksShowersSig.png");
+
+   TCanvas *c2 = new TCanvas("c2", "Background Track-Shower Topology", 2000, 2000);
+   c2->SetRightMargin(0.15);
+   c2->SetLeftMargin(0.15);
+   c2->SetBottomMargin(0.15);
+
+   hTracksShowersBkg->GetXaxis()->SetTitle("Number of tracks");
+   hTracksShowersBkg->GetYaxis()->SetTitle("Number of showers");
+   hTracksShowersBkg->GetZaxis()->SetTitle("Events");
+
+   hTracksShowersBkg->GetXaxis()->CenterTitle();
+   hTracksShowersBkg->GetYaxis()->CenterTitle();
+
+   hTracksShowersBkg->GetXaxis()->SetTitleSize(0.04);
+   hTracksShowersBkg->GetYaxis()->SetTitleSize(0.04);
+   hTracksShowersBkg->GetZaxis()->SetTitleSize(0.04);
+
+   hTracksShowersBkg->GetXaxis()->SetLabelSize(0.04);
+   hTracksShowersBkg->GetYaxis()->SetLabelSize(0.04);
+   hTracksShowersBkg->GetZaxis()->SetLabelSize(0.04);
+
+   hTracksShowersBkg->GetXaxis()->SetNdivisions(MaxTracks + 1, 0, 0, kTRUE);
+   hTracksShowersBkg->GetYaxis()->SetNdivisions(MaxShowers + 1, 0, 0, kTRUE);
+
+   gStyle->SetPalette(kViridis);
+   gStyle->SetOptStat(0);
+   hTracksShowersBkg->Draw("COLZ TEXT");
+   c2->Print("plots/nTracksShowersBkg.png");
+
    sigFile->cd();
    signalTree->Write("preTree"); // Write signal tree and close file
    sigFile->Close();
@@ -424,11 +496,12 @@ void signalDef::Loop()
     c2->Clear();
   }
 */
-   TCanvas *c3 = new TCanvas("c3", "", 3000, 3000);
-   hTracksShowers->Draw("text");
-   c3->Print("plots/ntracks_v_nshowers.png");
+  // TCanvas *c3 = new TCanvas("c3", "", 3000, 3000);
+   //hTracksShowers->Draw("text");
+   //c3->Print("plots/ntracks_v_nshowers.png");
 
-   std::cout<<"num of good sigma: "<<nGoodSigma<<std::endl;
-   std::cout<<"sigma scale = "<<scale[0]<<std::endl;
-   std::cout<<"bkg scale = "<<scale[2]<<std::endl;
+   std::cout<<"# Signal =  "<<nSig<<std::endl;
+   std::cout<<"# Background = "<<nBkg<<std::endl;
+   std::cout<<"Signal scale = "<<scale[0]<<std::endl;
+   std::cout<<"Background scale = "<<scale[2]<<std::endl;
 }

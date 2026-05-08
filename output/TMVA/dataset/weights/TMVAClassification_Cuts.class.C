@@ -10,10 +10,10 @@ Method         : Cuts::Cuts
 TMVA Release   : 4.2.1         [262657]
 ROOT Release   : 6.38/00       [402944]
 Creator        : ooconnor
-Date           : Tue Feb  3 10:45:36 2026
+Date           : Mon Apr  6 11:05:52 2026
 Host           : Linux buildvm-x86-26.rdu3.fedoraproject.org 6.17.1-300.fc43.x86_64 #1 SMP PREEMPT_DYNAMIC Mon Oct 6 15:37:21 UTC 2025 x86_64 x86_64 x86_64 GNU/Linux
-Dir            : /home/lar/ooconnor/larsoft_testing/srcs/sbndcode/sbndcode/Workshop/Analysis/output/TMVA
-Training events: 296
+Dir            : /home/lar/ooconnor/hyperons/srcs/sbndcode/sbndcode/Hyperons/output/TMVA
+Training events: 1980
 Analysis type  : [Classification]
 
 
@@ -34,27 +34,135 @@ CutRangeMin[0]: "-1.000000e+00" [Minimum of allowed cut range (set per variable)
     CutRangeMin[2]: "-1.000000e+00"
     CutRangeMin[3]: "-1.000000e+00"
     CutRangeMin[4]: "-1.000000e+00"
+    CutRangeMin[5]: "-1.000000e+00"
+    CutRangeMin[6]: "-1.000000e+00"
+    CutRangeMin[7]: "-1.000000e+00"
+    CutRangeMin[8]: "-1.000000e+00"
+    CutRangeMin[9]: "-1.000000e+00"
+    CutRangeMin[10]: "-1.000000e+00"
+    CutRangeMin[11]: "-1.000000e+00"
+    CutRangeMin[12]: "-1.000000e+00"
+    CutRangeMin[13]: "-1.000000e+00"
+    CutRangeMin[14]: "-1.000000e+00"
+    CutRangeMin[15]: "-1.000000e+00"
+    CutRangeMin[16]: "-1.000000e+00"
+    CutRangeMin[17]: "-1.000000e+00"
+    CutRangeMin[18]: "-1.000000e+00"
+    CutRangeMin[19]: "-1.000000e+00"
+    CutRangeMin[20]: "-1.000000e+00"
+    CutRangeMin[21]: "-1.000000e+00"
+    CutRangeMin[22]: "-1.000000e+00"
+    CutRangeMin[23]: "-1.000000e+00"
+    CutRangeMin[24]: "-1.000000e+00"
+    CutRangeMin[25]: "-1.000000e+00"
+    CutRangeMin[26]: "-1.000000e+00"
+    CutRangeMin[27]: "-1.000000e+00"
+    CutRangeMin[28]: "-1.000000e+00"
+    CutRangeMin[29]: "-1.000000e+00"
+    CutRangeMin[30]: "-1.000000e+00"
+    CutRangeMin[31]: "-1.000000e+00"
 CutRangeMax[0]: "-1.000000e+00" [Maximum of allowed cut range (set per variable)]
     CutRangeMax[1]: "-1.000000e+00"
     CutRangeMax[2]: "-1.000000e+00"
     CutRangeMax[3]: "-1.000000e+00"
     CutRangeMax[4]: "-1.000000e+00"
+    CutRangeMax[5]: "-1.000000e+00"
+    CutRangeMax[6]: "-1.000000e+00"
+    CutRangeMax[7]: "-1.000000e+00"
+    CutRangeMax[8]: "-1.000000e+00"
+    CutRangeMax[9]: "-1.000000e+00"
+    CutRangeMax[10]: "-1.000000e+00"
+    CutRangeMax[11]: "-1.000000e+00"
+    CutRangeMax[12]: "-1.000000e+00"
+    CutRangeMax[13]: "-1.000000e+00"
+    CutRangeMax[14]: "-1.000000e+00"
+    CutRangeMax[15]: "-1.000000e+00"
+    CutRangeMax[16]: "-1.000000e+00"
+    CutRangeMax[17]: "-1.000000e+00"
+    CutRangeMax[18]: "-1.000000e+00"
+    CutRangeMax[19]: "-1.000000e+00"
+    CutRangeMax[20]: "-1.000000e+00"
+    CutRangeMax[21]: "-1.000000e+00"
+    CutRangeMax[22]: "-1.000000e+00"
+    CutRangeMax[23]: "-1.000000e+00"
+    CutRangeMax[24]: "-1.000000e+00"
+    CutRangeMax[25]: "-1.000000e+00"
+    CutRangeMax[26]: "-1.000000e+00"
+    CutRangeMax[27]: "-1.000000e+00"
+    CutRangeMax[28]: "-1.000000e+00"
+    CutRangeMax[29]: "-1.000000e+00"
+    CutRangeMax[30]: "-1.000000e+00"
+    CutRangeMax[31]: "-1.000000e+00"
 VarProp[0]: "FSmart" [Categorisation of cuts]
     VarProp[1]: "FSmart"
     VarProp[2]: "FSmart"
     VarProp[3]: "FSmart"
     VarProp[4]: "FSmart"
+    VarProp[5]: "FSmart"
+    VarProp[6]: "FSmart"
+    VarProp[7]: "FSmart"
+    VarProp[8]: "FSmart"
+    VarProp[9]: "FSmart"
+    VarProp[10]: "FSmart"
+    VarProp[11]: "FSmart"
+    VarProp[12]: "FSmart"
+    VarProp[13]: "FSmart"
+    VarProp[14]: "FSmart"
+    VarProp[15]: "FSmart"
+    VarProp[16]: "FSmart"
+    VarProp[17]: "FSmart"
+    VarProp[18]: "FSmart"
+    VarProp[19]: "FSmart"
+    VarProp[20]: "FSmart"
+    VarProp[21]: "FSmart"
+    VarProp[22]: "FSmart"
+    VarProp[23]: "FSmart"
+    VarProp[24]: "FSmart"
+    VarProp[25]: "FSmart"
+    VarProp[26]: "FSmart"
+    VarProp[27]: "FSmart"
+    VarProp[28]: "FSmart"
+    VarProp[29]: "FSmart"
+    VarProp[30]: "FSmart"
+    VarProp[31]: "FSmart"
 ##
 
 
 #VAR -*-*-*-*-*-*-*-*-*-*-*-* variables *-*-*-*-*-*-*-*-*-*-*-*-
 
-NVar 5
-trackCount                    trackCount                    trackCount                    trackCount                                                      'F'    [0,5]
-showerCount                   showerCount                   showerCount                   showerCount                                                     'F'    [0,7]
-RecoVertexX                   RecoVertexX                   RecoVertexX                   RecoVertexX                                                     'F'    [-9999,201.21421814]
-RecoVertexY                   RecoVertexY                   RecoVertexY                   RecoVertexY                                                     'F'    [-9999,203.759918213]
-RecoVertexZ                   RecoVertexZ                   RecoVertexZ                   RecoVertexZ                                                     'F'    [-9999,504.029144287]
+NVar 32
+track1Length                  track1Length                  track1Length                  track1Length                                                    'F'    [3.3750936985,497.482116699]
+track2Length                  track2Length                  track2Length                  track2Length                                                    'F'    [0.668267309666,124.048629761]
+track3Length                  track3Length                  track3Length                  track3Length                                                    'F'    [0.216892331839,59.6913223267]
+shower1Length                 shower1Length                 shower1Length                 shower1Length                                                   'F'    [0.288653701544,79.4986419678]
+track1StartDirX               track1StartDirX               track1StartDirX               track1StartDirX                                                 'F'    [-0.996992707253,0.997194826603]
+track1StartDirY               track1StartDirY               track1StartDirY               track1StartDirY                                                 'F'    [-0.992119729519,0.998312830925]
+track1StartDirZ               track1StartDirZ               track1StartDirZ               track1StartDirZ                                                 'F'    [-0.998379170895,0.999814867973]
+track2StartDirX               track2StartDirX               track2StartDirX               track2StartDirX                                                 'F'    [-0.999767065048,0.993617773056]
+track2StartDirY               track2StartDirY               track2StartDirY               track2StartDirY                                                 'F'    [-0.996999800205,0.997133076191]
+track2StartDirZ               track2StartDirZ               track2StartDirZ               track2StartDirZ                                                 'F'    [-0.999366760254,0.999572038651]
+track3StartDirX               track3StartDirX               track3StartDirX               track3StartDirX                                                 'F'    [-0.985143780708,0.999216675758]
+track3StartDirY               track3StartDirY               track3StartDirY               track3StartDirY                                                 'F'    [-1,0.998889923096]
+track3StartDirZ               track3StartDirZ               track3StartDirZ               track3StartDirZ                                                 'F'    [-0.999650120735,0.999991297722]
+shower1DirX                   shower1DirX                   shower1DirX                   shower1DirX                                                     'F'    [-0.999896168709,0.997747778893]
+shower1DirY                   shower1DirY                   shower1DirY                   shower1DirY                                                     'F'    [-0.999887228012,0.999979555607]
+shower1DirZ                   shower1DirZ                   shower1DirZ                   shower1DirZ                                                     'F'    [-0.999977707863,0.999600112438]
+track1DistRecoVtx             track1DistRecoVtx             track1DistRecoVtx             track1DistRecoVtx                                               'F'    [0.00780916493386,21.3518218994]
+track2DistRecoVtx             track2DistRecoVtx             track2DistRecoVtx             track2DistRecoVtx                                               'F'    [0.0401425473392,24.7521018982]
+track3DistRecoVtx             track3DistRecoVtx             track3DistRecoVtx             track3DistRecoVtx                                               'F'    [0.0389196760952,23.402261734]
+shower1DistRecoVtx            shower1DistRecoVtx            shower1DistRecoVtx            shower1DistRecoVtx                                              'F'    [0.080524072051,145.794692993]
+track1Track2Angle             track1Track2Angle             track1Track2Angle             track1Track2Angle                                               'F'    [0.0271168034524,3.12710142136]
+track1Track3Angle             track1Track3Angle             track1Track3Angle             track1Track3Angle                                               'F'    [0.0317326337099,3.12610054016]
+track2Track3Angle             track2Track3Angle             track2Track3Angle             track2Track3Angle                                               'F'    [0.0874138325453,3.13083386421]
+track1Shower1Angle            track1Shower1Angle            track1Shower1Angle            track1Shower1Angle                                              'F'    [0.0256664715707,3.13105106354]
+track2Shower1Angle            track2Shower1Angle            track2Shower1Angle            track2Shower1Angle                                              'F'    [0.0217770617455,3.11840891838]
+track3Shower1Angle            track3Shower1Angle            track3Shower1Angle            track3Shower1Angle                                              'F'    [0.0397528596222,3.12469959259]
+track1Track2Dist              track1Track2Dist              track1Track2Dist              track1Track2Dist                                                'F'    [0.0596877634525,23.1157016754]
+track1Track3Dist              track1Track3Dist              track1Track3Dist              track1Track3Dist                                                'F'    [0.0814367309213,23.5304908752]
+track2Track3Dist              track2Track3Dist              track2Track3Dist              track2Track3Dist                                                'F'    [0.069206610322,24.8198566437]
+track1Shower1Dist             track1Shower1Dist             track1Shower1Dist             track1Shower1Dist                                               'F'    [0.136097967625,145.820327759]
+track2Shower1Dist             track2Shower1Dist             track2Shower1Dist             track2Shower1Dist                                               'F'    [0.194910004735,145.924835205]
+track3Shower1Dist             track3Shower1Dist             track3Shower1Dist             track3Shower1Dist                                               'F'    [0.221913710237,146.716842651]
 NSpec 0
 
 
@@ -98,10 +206,10 @@ class ReadCuts : public IClassifierReader {
    ReadCuts( std::vector<std::string>& theInputVars )
       : IClassifierReader(),
         fClassName( "ReadCuts" ),
-        fNvars( 5 )
+        fNvars( 32 )
    {
       // the training input variables
-      const char* inputVars[] = { "trackCount", "showerCount", "RecoVertexX", "RecoVertexY", "RecoVertexZ" };
+      const char* inputVars[] = { "track1Length", "track2Length", "track3Length", "shower1Length", "track1StartDirX", "track1StartDirY", "track1StartDirZ", "track2StartDirX", "track2StartDirY", "track2StartDirZ", "track3StartDirX", "track3StartDirY", "track3StartDirZ", "shower1DirX", "shower1DirY", "shower1DirZ", "track1DistRecoVtx", "track2DistRecoVtx", "track3DistRecoVtx", "shower1DistRecoVtx", "track1Track2Angle", "track1Track3Angle", "track2Track3Angle", "track1Shower1Angle", "track2Shower1Angle", "track3Shower1Angle", "track1Track2Dist", "track1Track3Dist", "track2Track3Dist", "track1Shower1Dist", "track2Shower1Dist", "track3Shower1Dist" };
 
       // sanity checks
       if (theInputVars.size() <= 0) {
@@ -135,6 +243,60 @@ class ReadCuts : public IClassifierReader {
       fVmax[3] = 0;
       fVmin[4] = 0;
       fVmax[4] = 0;
+      fVmin[5] = 0;
+      fVmax[5] = 0;
+      fVmin[6] = 0;
+      fVmax[6] = 0;
+      fVmin[7] = 0;
+      fVmax[7] = 0;
+      fVmin[8] = 0;
+      fVmax[8] = 0;
+      fVmin[9] = 0;
+      fVmax[9] = 0;
+      fVmin[10] = 0;
+      fVmax[10] = 0;
+      fVmin[11] = 0;
+      fVmax[11] = 0;
+      fVmin[12] = 0;
+      fVmax[12] = 0;
+      fVmin[13] = 0;
+      fVmax[13] = 0;
+      fVmin[14] = 0;
+      fVmax[14] = 0;
+      fVmin[15] = 0;
+      fVmax[15] = 0;
+      fVmin[16] = 0;
+      fVmax[16] = 0;
+      fVmin[17] = 0;
+      fVmax[17] = 0;
+      fVmin[18] = 0;
+      fVmax[18] = 0;
+      fVmin[19] = 0;
+      fVmax[19] = 0;
+      fVmin[20] = 0;
+      fVmax[20] = 0;
+      fVmin[21] = 0;
+      fVmax[21] = 0;
+      fVmin[22] = 0;
+      fVmax[22] = 0;
+      fVmin[23] = 0;
+      fVmax[23] = 0;
+      fVmin[24] = 0;
+      fVmax[24] = 0;
+      fVmin[25] = 0;
+      fVmax[25] = 0;
+      fVmin[26] = 0;
+      fVmax[26] = 0;
+      fVmin[27] = 0;
+      fVmax[27] = 0;
+      fVmin[28] = 0;
+      fVmax[28] = 0;
+      fVmin[29] = 0;
+      fVmax[29] = 0;
+      fVmin[30] = 0;
+      fVmax[30] = 0;
+      fVmin[31] = 0;
+      fVmax[31] = 0;
 
       // initialize input variable types
       fType[0] = 'F';
@@ -142,6 +304,33 @@ class ReadCuts : public IClassifierReader {
       fType[2] = 'F';
       fType[3] = 'F';
       fType[4] = 'F';
+      fType[5] = 'F';
+      fType[6] = 'F';
+      fType[7] = 'F';
+      fType[8] = 'F';
+      fType[9] = 'F';
+      fType[10] = 'F';
+      fType[11] = 'F';
+      fType[12] = 'F';
+      fType[13] = 'F';
+      fType[14] = 'F';
+      fType[15] = 'F';
+      fType[16] = 'F';
+      fType[17] = 'F';
+      fType[18] = 'F';
+      fType[19] = 'F';
+      fType[20] = 'F';
+      fType[21] = 'F';
+      fType[22] = 'F';
+      fType[23] = 'F';
+      fType[24] = 'F';
+      fType[25] = 'F';
+      fType[26] = 'F';
+      fType[27] = 'F';
+      fType[28] = 'F';
+      fType[29] = 'F';
+      fType[30] = 'F';
+      fType[31] = 'F';
 
       // initialize constants
       Initialize();
@@ -171,15 +360,15 @@ class ReadCuts : public IClassifierReader {
    char   GetType( int ivar ) const { return fType[ivar]; }
 
    // normalisation of input variables
-   double fVmin[5];
-   double fVmax[5];
+   double fVmin[32];
+   double fVmax[32];
    double NormVariable( double x, double xmin, double xmax ) const {
       // normalise to output range: [-1, 1]
       return 2*(x - xmin)/(xmax - xmin) - 1.0;
    }
 
    // type of input variable: 'F' or 'I'
-   char   fType[5];
+   char   fType[32];
 
    // initialize internal variables
    void Initialize();

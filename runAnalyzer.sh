@@ -39,11 +39,15 @@ pid2=$!
 run_batch thirdbatch /data/sbnd/hyperons_new/thirdbatch &
 pid3=$!
 
+run_batch fourthbatch /data/sbnd/hyperons_new/fourhtbatch &
+pid4=$!
+
 status=0
 
 wait $pid1 || status=1
 wait $pid2 || status=1
 wait $pid3 || status=1
+wait $pid4 || status=1
 
 if [[ $status -ne 0 ]]; then
   echo "[$(date)] At least one batch failed. Check logs in $LOGDIR/"
@@ -55,6 +59,7 @@ echo "[$(date)] All jobs finished"
 hadd -f "$OUTDIR/hyperons.root" \
   "$WORKDIR/firstbatch/analysisOutput.root" \
   "$WORKDIR/secondbatch/analysisOutput.root" \
-  "$WORKDIR/thirdbatch/analysisOutput.root"
+  "$WORKDIR/thirdbatch/analysisOutput.root" \
+  "$WORKDIR/fourthbatch/analysisOutput.root"
 
 echo "[$(date)] Merged output written to $OUTDIR/hyperons.root"

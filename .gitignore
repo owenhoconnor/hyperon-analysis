@@ -1,6 +1,10 @@
 *.root
 *.db
 *.log
+*.xml
 output/*.root
 output/*.db
 output/*.log
+output/*.xml
+output/TMVA/*.xml
+
