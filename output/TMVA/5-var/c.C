@@ -64,6 +64,7 @@ void c()
       if (MVA_Likelihood_rejBvsS__2_vect0[bin])
          MVA_Likelihood_rejBvsS__2->SetBinContent(bin, MVA_Likelihood_rejBvsS__2_vect0[bin]);
    MVA_Likelihood_rejBvsS__2->SetEntries(100);
+   MVA_Likelihood_rejBvsS__2->SetLineColor(kBlack);
    MVA_Likelihood_rejBvsS__2->SetLineWidth(3);
    MVA_Likelihood_rejBvsS__2->GetXaxis()->SetTitle("Signal eff");
    MVA_Likelihood_rejBvsS__2->GetXaxis()->SetLabelFont(42);
@@ -95,7 +96,7 @@ void c()
       if (MVA_LikelihoodPCA_rejBvsS__3_vect1[bin])
          MVA_LikelihoodPCA_rejBvsS__3->SetBinContent(bin, MVA_LikelihoodPCA_rejBvsS__3_vect1[bin]);
    MVA_LikelihoodPCA_rejBvsS__3->SetEntries(100);
-   MVA_LikelihoodPCA_rejBvsS__3->SetLineColor(2);
+   MVA_LikelihoodPCA_rejBvsS__3->SetLineColor(kCyan+2);
    MVA_LikelihoodPCA_rejBvsS__3->SetLineWidth(3);
    MVA_LikelihoodPCA_rejBvsS__3->GetXaxis()->SetTitle("Signal eff");
    MVA_LikelihoodPCA_rejBvsS__3->GetXaxis()->SetLabelFont(42);
@@ -127,7 +128,7 @@ void c()
       if (MVA_KNN_rejBvsS__4_vect2[bin])
          MVA_KNN_rejBvsS__4->SetBinContent(bin, MVA_KNN_rejBvsS__4_vect2[bin]);
    MVA_KNN_rejBvsS__4->SetEntries(100);
-   MVA_KNN_rejBvsS__4->SetLineColor(3);
+   MVA_KNN_rejBvsS__4->SetLineColor(kMagenta+1);
    MVA_KNN_rejBvsS__4->SetLineWidth(3);
    MVA_KNN_rejBvsS__4->GetXaxis()->SetTitle("Signal eff");
    MVA_KNN_rejBvsS__4->GetXaxis()->SetLabelFont(42);
@@ -159,7 +160,7 @@ void c()
       if (MVA_LD_rejBvsS__5_vect3[bin])
          MVA_LD_rejBvsS__5->SetBinContent(bin, MVA_LD_rejBvsS__5_vect3[bin]);
    MVA_LD_rejBvsS__5->SetEntries(100);
-   MVA_LD_rejBvsS__5->SetLineColor(4);
+   MVA_LD_rejBvsS__5->SetLineColor(kViolet+1);
    MVA_LD_rejBvsS__5->SetLineWidth(3);
    MVA_LD_rejBvsS__5->GetXaxis()->SetTitle("Signal eff");
    MVA_LD_rejBvsS__5->GetXaxis()->SetLabelFont(42);
@@ -191,7 +192,7 @@ void c()
       if (MVA_MLPBNN_rejBvsS__6_vect4[bin])
          MVA_MLPBNN_rejBvsS__6->SetBinContent(bin, MVA_MLPBNN_rejBvsS__6_vect4[bin]);
    MVA_MLPBNN_rejBvsS__6->SetEntries(100);
-   MVA_MLPBNN_rejBvsS__6->SetLineColor(6);
+   MVA_MLPBNN_rejBvsS__6->SetLineColor(kRed);
    MVA_MLPBNN_rejBvsS__6->SetLineWidth(3);
    MVA_MLPBNN_rejBvsS__6->GetXaxis()->SetTitle("Signal eff");
    MVA_MLPBNN_rejBvsS__6->GetXaxis()->SetLabelFont(42);
@@ -223,7 +224,7 @@ void c()
       if (MVA_SVM_rejBvsS__7_vect5[bin])
          MVA_SVM_rejBvsS__7->SetBinContent(bin, MVA_SVM_rejBvsS__7_vect5[bin]);
    MVA_SVM_rejBvsS__7->SetEntries(100);
-   MVA_SVM_rejBvsS__7->SetLineColor(7);
+   MVA_SVM_rejBvsS__7->SetLineColor(kOrange+7);
    MVA_SVM_rejBvsS__7->SetLineWidth(3);
    MVA_SVM_rejBvsS__7->GetXaxis()->SetTitle("Signal eff");
    MVA_SVM_rejBvsS__7->GetXaxis()->SetLabelFont(42);
@@ -255,7 +256,7 @@ void c()
       if (MVA_BDT_rejBvsS__8_vect6[bin])
          MVA_BDT_rejBvsS__8->SetBinContent(bin, MVA_BDT_rejBvsS__8_vect6[bin]);
    MVA_BDT_rejBvsS__8->SetEntries(100);
-   MVA_BDT_rejBvsS__8->SetLineColor(8);
+   MVA_BDT_rejBvsS__8->SetLineColor(kBlue);
    MVA_BDT_rejBvsS__8->SetLineWidth(3);
    MVA_BDT_rejBvsS__8->GetXaxis()->SetTitle("Signal eff");
    MVA_BDT_rejBvsS__8->GetXaxis()->SetLabelFont(42);
@@ -287,7 +288,7 @@ void c()
       if (MVA_RuleFit_rejBvsS__9_vect7[bin])
          MVA_RuleFit_rejBvsS__9->SetBinContent(bin, MVA_RuleFit_rejBvsS__9_vect7[bin]);
    MVA_RuleFit_rejBvsS__9->SetEntries(100);
-   MVA_RuleFit_rejBvsS__9->SetLineColor(9);
+   MVA_RuleFit_rejBvsS__9->SetLineColor(kGreen+2);
    MVA_RuleFit_rejBvsS__9->SetLineWidth(3);
    MVA_RuleFit_rejBvsS__9->GetXaxis()->SetTitle("Signal eff");
    MVA_RuleFit_rejBvsS__9->GetXaxis()->SetLabelFont(42);
@@ -333,34 +334,35 @@ void c()
    TLegendEntry *legentry = leg->AddEntry("NULL","MVA Method:","h");
    legentry->SetTextFont(62);
    legentry = leg->AddEntry("MVA_BDT_rejBvsS","BDT","l");
-   legentry->SetLineColor(8);
+   legentry->SetLineColor(kBlue);
    legentry->SetLineWidth(3);
    legentry->SetTextFont(62);
    legentry = leg->AddEntry("MVA_MLPBNN_rejBvsS","MLPBNN","l");
-   legentry->SetLineColor(6);
+   legentry->SetLineColor(kRed);
    legentry->SetLineWidth(3);
    legentry->SetTextFont(62);
    legentry = leg->AddEntry("MVA_RuleFit_rejBvsS","RuleFit","l");
-   legentry->SetLineColor(9);
+   legentry->SetLineColor(kGreen+2);
    legentry->SetLineWidth(3);
    legentry->SetTextFont(62);
    legentry = leg->AddEntry("MVA_KNN_rejBvsS","KNN","l");
-   legentry->SetLineColor(3);
+   legentry->SetLineColor(kMagenta+1);
    legentry->SetLineWidth(3);
    legentry->SetTextFont(62);
    legentry = leg->AddEntry("MVA_SVM_rejBvsS","SVM","l");
-   legentry->SetLineColor(7);
+   legentry->SetLineColor(kOrange+7);
    legentry->SetLineWidth(3);
    legentry->SetTextFont(62);
    legentry = leg->AddEntry("MVA_Likelihood_rejBvsS","Likelihood","l");
+   legentry->SetLineColor(kBlack);
    legentry->SetLineWidth(3);
    legentry->SetTextFont(62);
    legentry = leg->AddEntry("MVA_LikelihoodPCA_rejBvsS","LikelihoodPCA","l");
-   legentry->SetLineColor(2);
+   legentry->SetLineColor(kCyan+2);
    legentry->SetLineWidth(3);
    legentry->SetTextFont(62);
    legentry = leg->AddEntry("MVA_LD_rejBvsS","LD","l");
-   legentry->SetLineColor(4);
+   legentry->SetLineColor(kViolet+1);
    legentry->SetLineWidth(3);
    legentry->SetTextFont(62);
    leg->Draw("same");
@@ -375,4 +377,6 @@ void c()
    pt->Draw("blNDC");
    c->Modified();
    c->SetSelected(c);
+
+   c->SaveAs("roc_5.pdf");
 }
