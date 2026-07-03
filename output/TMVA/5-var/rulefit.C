@@ -7197,6 +7197,29 @@ void rulefit()
    effpurS_RuleFit__18->GetZaxis()->SetTitleSize(0.03999999910593033);
    effpurS_RuleFit__18->GetZaxis()->SetTitleOffset(1);
    //effpurS_RuleFit__18->Draw("sameaxis");
+   sigEffi__15->GetXaxis()->SetTitle("Cut value applied on RuleFit output");
+   sigEffi__15->GetXaxis()->SetLabelOffset(0.012);
+   sigEffi__15->GetXaxis()->SetLabelSize(0.03);
+   sigEffi__15->GetXaxis()->SetTitleSize(0.04);
+   sigEffi__15->GetXaxis()->SetTitleOffset(1.25);
+
+   sigEffi__15->GetYaxis()->SetTitle("Efficiency");
+   sigEffi__15->GetYaxis()->SetLabelOffset(0.01);
+   sigEffi__15->GetYaxis()->SetLabelSize(0.03);
+   sigEffi__15->GetYaxis()->SetTitleSize(0.04);
+   sigEffi__15->GetYaxis()->SetTitleOffset(0.9);
+   sigEffi__15->GetXaxis()->SetLabelFont(42);
+   sigEffi__15->GetXaxis()->SetTitleOffset(1);
+   sigEffi__15->GetXaxis()->SetTitleFont(42);
+   sigEffi__15->GetYaxis()->SetLabelFont(42);
+   sigEffi__15->GetYaxis()->SetTitleFont(42);
+   sigEffi__15->GetZaxis()->SetLabelFont(42);
+   sigEffi__15->GetZaxis()->SetTitleOffset(1);
+   sigEffi__15->GetZaxis()->SetTitleFont(42);
+   sigEffi__15->Draw("histl");
+   bgdEffi__16->Draw("samehistl");
+   significance_RuleFit__17->Draw("samehistl");
+
    
    TLegend *leg = new TLegend(0.108, 0.8, 0.508, 0.92, nullptr, "brNDC");
    leg->SetBorderSize(1);
@@ -7216,6 +7239,7 @@ void rulefit()
    legentry->SetTextFont(62);
    leg->Draw("same");
    
+// BEGIN_AUTO_SIG_LEGEND
    leg = new TLegend(0.508, 0.8, 0.9, 0.92, nullptr, "brNDC");
    leg->SetBorderSize(1);
    leg->SetTextFont(62);
@@ -7225,41 +7249,34 @@ void rulefit()
    leg->SetLineWidth(1);
    leg->SetFillColor(0);
    leg->SetFillStyle(1);
-  /* legentry = leg->AddEntry("purS_RuleFit","Signal purity","L");
-   legentry->SetLineColor(TColor::GetColor("#0000ee"));
-   legentry->SetLineStyle(5);
-   legentry->SetLineWidth(2);
-   legentry->SetTextFont(62);
-   legentry = leg->AddEntry("effpurS_RuleFit","Signal efficiency*purity","L");
-   legentry->SetLineColor(TColor::GetColor("#0000ee"));
-   legentry->SetLineStyle(6);
-   legentry->SetLineWidth(2);
-   legentry->SetTextFont(62); */
+
    legentry = leg->AddEntry("significance_RuleFit","S/#sqrt{S+B}","L");
    legentry->SetLineColor(TColor::GetColor("#00aa00"));
    legentry->SetLineWidth(3);
    legentry->SetTextFont(62);
+
    leg->Draw("same");
+// END_AUTO_SIG_LEGEND
    TLine *line = new TLine(-1.748, 1, 1.05548, 1);
    line->Draw();
  /*  TLatex *tex = new TLatex(0.15, 0.23, "For 26 signal and 104955 background");
-   tex->SetTextSize(0.033);
-   tex->SetLineColor(TColor::GetColor("#7d8b9d"));
-   tex->SetLineWidth(2);
-   tex->SetNDC();
-   tex->Draw();
-   tex = new TLatex(0.15, 0.19, "events the maximum S/#sqrt{S+B} is");
-   tex->SetTextSize(0.033);
-   tex->SetLineColor(TColor::GetColor("#7d8b9d"));
-   tex->SetLineWidth(2);
-   tex->SetNDC();
-   tex->Draw();
-   tex = new TLatex(0.15, 0.15, "0.5038 when cutting at 0.9951");
-   tex->SetTextSize(0.033);
-   tex->SetLineColor(TColor::GetColor("#7d8b9d"));
-   tex->SetLineWidth(2);
-   tex->SetNDC();
-   tex->Draw();
+   // tex->SetTextSize(0.033);
+   // tex->SetLineColor(TColor::GetColor("#7d8b9d"));
+   // tex->SetLineWidth(2);
+   // tex->SetNDC();
+   // tex->Draw();
+   // tex = new TLatex(0.15, 0.19, "events the maximum S/#sqrt{S+B} is");
+   // tex->SetTextSize(0.033);
+   // tex->SetLineColor(TColor::GetColor("#7d8b9d"));
+   // tex->SetLineWidth(2);
+   // tex->SetNDC();
+   // tex->Draw();
+   // tex = new TLatex(0.15, 0.15, "0.5038 when cutting at 0.9951");
+   // tex->SetTextSize(0.033);
+   // tex->SetLineColor(TColor::GetColor("#7d8b9d"));
+   // tex->SetLineWidth(2);
+   // tex->SetNDC();
+   // tex->Draw();
   */ 
    TPaveText *pt = new TPaveText(0.01, 0.935541, 0.695552, 0.995, "blNDC");
    pt->SetName("title");
@@ -7286,4 +7303,7 @@ void rulefit()
 
    canvas8->SaveAs("effs_RuleFit_5.pdf");
    canvas8->SaveAs("effs_RuleFit_5.png");
+// BEGIN_AUTO_SAVEAS
+   canvas8->SaveAs("effs_RuleFit_5.pdf");
+// END_AUTO_SAVEAS
 }

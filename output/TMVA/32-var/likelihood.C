@@ -1,7 +1,7 @@
 #ifdef __CLING__
 #pragma cling optimize(0)
 #endif
-void canvas1()
+void likelihood()
 {
 //=========Macro generated from canvas: canvas1/Cut efficiencies for Likelihood classifier
 //=========  (Fri May  8 19:52:41 2026) by ROOT version 6.38.04
@@ -1053,7 +1053,7 @@ void canvas1()
    effpurS_Likelihood__43->GetZaxis()->SetLabelSize(0.03999999910593033);
    effpurS_Likelihood__43->GetZaxis()->SetTitleSize(0.03999999910593033);
    effpurS_Likelihood__43->GetZaxis()->SetTitleOffset(1);
-   effpurS_Likelihood__43->Draw("histl");
+   // effpurS_Likelihood__43->Draw("histl");
    
    TH1F *purS_Likelihood__44 = new TH1F("purS_Likelihood", "purS_Likelihood", 10000, -3.07580828666687, 2.402920232543944);
    std::vector<Double_t> purS_Likelihood__44_vect50{
@@ -2080,7 +2080,7 @@ void canvas1()
    purS_Likelihood__44->GetZaxis()->SetLabelSize(0.03999999910593033);
    purS_Likelihood__44->GetZaxis()->SetTitleSize(0.03999999910593033);
    purS_Likelihood__44->GetZaxis()->SetTitleOffset(1);
-   purS_Likelihood__44->Draw("samehistl");
+   // purS_Likelihood__44->Draw("samehistl");
    
    TH1D *sigEffi__45 = new TH1D("sigEffi", "Cut efficiencies for Likelihood classifier", 10000, -3.07580828666687, 2.402920232543945);
    std::vector<Double_t> sigEffi__45_vect51{
@@ -7185,7 +7185,30 @@ void canvas1()
    effpurS_Likelihood__48->GetZaxis()->SetLabelSize(0.03999999910593033);
    effpurS_Likelihood__48->GetZaxis()->SetTitleSize(0.03999999910593033);
    effpurS_Likelihood__48->GetZaxis()->SetTitleOffset(1);
-   effpurS_Likelihood__48->Draw("sameaxis");
+   // effpurS_Likelihood__48->Draw("sameaxis");
+   sigEffi__45->GetXaxis()->SetTitle("Cut value applied on Likelihood output");
+   sigEffi__45->GetXaxis()->SetLabelOffset(0.012);
+   sigEffi__45->GetXaxis()->SetLabelSize(0.03);
+   sigEffi__45->GetXaxis()->SetTitleSize(0.04);
+   sigEffi__45->GetXaxis()->SetTitleOffset(1.25);
+
+   sigEffi__45->GetYaxis()->SetTitle("Efficiency");
+   sigEffi__45->GetYaxis()->SetLabelOffset(0.01);
+   sigEffi__45->GetYaxis()->SetLabelSize(0.03);
+   sigEffi__45->GetYaxis()->SetTitleSize(0.04);
+   sigEffi__45->GetYaxis()->SetTitleOffset(0.9);
+   sigEffi__45->GetXaxis()->SetLabelFont(42);
+   sigEffi__45->GetXaxis()->SetTitleOffset(1);
+   sigEffi__45->GetXaxis()->SetTitleFont(42);
+   sigEffi__45->GetYaxis()->SetLabelFont(42);
+   sigEffi__45->GetYaxis()->SetTitleFont(42);
+   sigEffi__45->GetZaxis()->SetLabelFont(42);
+   sigEffi__45->GetZaxis()->SetTitleOffset(1);
+   sigEffi__45->GetZaxis()->SetTitleFont(42);
+   sigEffi__45->Draw("histl");
+   bgdEffi__46->Draw("samehistl");
+   significance_Likelihood__47->Draw("samehistl");
+
    
    TLegend *leg = new TLegend(0.108, 0.8, 0.508, 0.92, nullptr, "brNDC");
    leg->SetBorderSize(1);
@@ -7205,49 +7228,44 @@ void canvas1()
    legentry->SetTextFont(62);
    leg->Draw("same");
    
+// BEGIN_AUTO_SIG_LEGEND
    leg = new TLegend(0.508, 0.8, 0.9, 0.92, nullptr, "brNDC");
    leg->SetBorderSize(1);
    leg->SetTextFont(62);
+   leg->SetTextSize(0.04);
    leg->SetLineColor(TColor::GetColor("#7d8b9d"));
    leg->SetLineStyle(1);
    leg->SetLineWidth(1);
    leg->SetFillColor(0);
    leg->SetFillStyle(1);
-   legentry = leg->AddEntry("purS_Likelihood","Signal purity","L");
-   legentry->SetLineColor(TColor::GetColor("#0000ee"));
-   legentry->SetLineStyle(5);
-   legentry->SetLineWidth(2);
-   legentry->SetTextFont(62);
-   legentry = leg->AddEntry("effpurS_Likelihood","Signal efficiency*purity","L");
-   legentry->SetLineColor(TColor::GetColor("#0000ee"));
-   legentry->SetLineStyle(6);
-   legentry->SetLineWidth(2);
-   legentry->SetTextFont(62);
+
    legentry = leg->AddEntry("significance_Likelihood","S/#sqrt{S+B}","L");
    legentry->SetLineColor(TColor::GetColor("#00aa00"));
    legentry->SetLineWidth(3);
    legentry->SetTextFont(62);
+
    leg->Draw("same");
+// END_AUTO_SIG_LEGEND
    TLine *line = new TLine(-3.07581, 1, 2.40292, 1);
    line->Draw();
-   TLatex *tex = new TLatex(0.15, 0.23, "For 26 signal and 104955 background");
-   tex->SetTextSize(0.033);
-   tex->SetLineColor(TColor::GetColor("#7d8b9d"));
-   tex->SetLineWidth(2);
-   tex->SetNDC();
-   tex->Draw();
-   tex = new TLatex(0.15, 0.19, "events the maximum S/#sqrt{S+B} is");
-   tex->SetTextSize(0.033);
-   tex->SetLineColor(TColor::GetColor("#7d8b9d"));
-   tex->SetLineWidth(2);
-   tex->SetNDC();
-   tex->Draw();
-   tex = new TLatex(0.15, 0.15, "0.2041 when cutting at 0.5273");
-   tex->SetTextSize(0.033);
-   tex->SetLineColor(TColor::GetColor("#7d8b9d"));
-   tex->SetLineWidth(2);
-   tex->SetNDC();
-   tex->Draw();
+   // TLatex *tex = new TLatex(0.15, 0.23, "For 26 signal and 104955 background");
+   // tex->SetTextSize(0.033);
+   // tex->SetLineColor(TColor::GetColor("#7d8b9d"));
+   // tex->SetLineWidth(2);
+   // tex->SetNDC();
+   // tex->Draw();
+   // tex = new TLatex(0.15, 0.19, "events the maximum S/#sqrt{S+B} is");
+   // tex->SetTextSize(0.033);
+   // tex->SetLineColor(TColor::GetColor("#7d8b9d"));
+   // tex->SetLineWidth(2);
+   // tex->SetNDC();
+   // tex->Draw();
+   // tex = new TLatex(0.15, 0.15, "0.2041 when cutting at 0.5273");
+   // tex->SetTextSize(0.033);
+   // tex->SetLineColor(TColor::GetColor("#7d8b9d"));
+   // tex->SetLineWidth(2);
+   // tex->SetNDC();
+   // tex->Draw();
    
    TPaveText *pt = new TPaveText(0.01, 0.935541, 0.695552, 0.995, "blNDC");
    pt->SetName("title");
@@ -7263,7 +7281,7 @@ void canvas1()
    gaxis->SetTextColor(TColor::GetColor("#00aa00"));
    gaxis->SetTitle("Significance");
    gaxis->SetLabelOffset(0.005);
-   gaxis->SetLabelSize(0.04);
+   gaxis->SetLabelSize(0.03);
    gaxis->SetLabelColor(TColor::GetColor("#00aa00"));
    gaxis->SetTickSize(0.03);
    gaxis->SetTitleOffset(1);
@@ -7271,4 +7289,7 @@ void canvas1()
    gaxis->Draw();
    canvas1->Modified();
    canvas1->SetSelected(canvas1);
+// BEGIN_AUTO_SAVEAS
+   canvas1->SaveAs("effs_Likelihood_32.pdf");
+// END_AUTO_SAVEAS
 }

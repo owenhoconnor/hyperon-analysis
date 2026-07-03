@@ -29,36 +29,36 @@ void TMVAClassificationApplication( TString myMethodList = "" )
    std::map<std::string,int> Use;
  
    // Cut optimisation
-   Use["Cuts"]            = 1;
-   Use["CutsD"]           = 1;
+   Use["Cuts"]            = 0;
+   Use["CutsD"]           = 0;
    Use["CutsPCA"]         = 0;
    Use["CutsGA"]          = 0;
    Use["CutsSA"]          = 0;
    //
    // 1-dimensional likelihood ("naive Bayes estimator")
-   Use["Likelihood"]      = 1;
+   Use["Likelihood"]      = 0;
    Use["LikelihoodD"]     = 0; // the "D" extension indicates decorrelated input variables (see option strings)
-   Use["LikelihoodPCA"]   = 1; // the "PCA" extension indicates PCA-transformed input variables (see option strings)
+   Use["LikelihoodPCA"]   = 0; // the "PCA" extension indicates PCA-transformed input variables (see option strings)
    Use["LikelihoodKDE"]   = 0;
    Use["LikelihoodMIX"]   = 0;
    //
    // Mutidimensional likelihood and Nearest-Neighbour methods
-   Use["PDERS"]           = 1;
+   Use["PDERS"]           = 0;
    Use["PDERSD"]          = 0;
    Use["PDERSPCA"]        = 0;
-   Use["PDEFoam"]         = 1;
+   Use["PDEFoam"]         = 0;
    Use["PDEFoamBoost"]    = 0; // uses generalised MVA method boosting
-   Use["KNN"]             = 1; // k-nearest neighbour method
+   Use["KNN"]             = 0; // k-nearest neighbour method
    //
    // Linear Discriminant Analysis
-   Use["LD"]              = 1; // Linear Discriminant identical to Fisher
+   Use["LD"]              = 0; // Linear Discriminant identical to Fisher
    Use["Fisher"]          = 0;
    Use["FisherG"]         = 0;
    Use["BoostedFisher"]   = 0; // uses generalised MVA method boosting
    Use["HMatrix"]         = 0;
    //
    // Function Discriminant analysis
-   Use["FDA_GA"]          = 1; // minimisation of user-defined function using Genetics Algorithm
+   Use["FDA_GA"]          = 0; // minimisation of user-defined function using Genetics Algorithm
    Use["FDA_SA"]          = 0;
    Use["FDA_MC"]          = 0;
    Use["FDA_MT"]          = 0;
@@ -68,14 +68,14 @@ void TMVAClassificationApplication( TString myMethodList = "" )
    // Neural Networks (all are feed-forward Multilayer Perceptrons)
    Use["MLP"]             = 0; // Recommended ANN
    Use["MLPBFGS"]         = 0; // Recommended ANN with optional training method
-   Use["MLPBNN"]          = 1; // Recommended ANN with BFGS training method and bayesian regulator
+   Use["MLPBNN"]          = 0; // Recommended ANN with BFGS training method and bayesian regulator
    Use["CFMlpANN"]        = 0; // Depreciated ANN from ALEPH
    Use["TMlpANN"]         = 0; // ROOT's own ANN
    Use["DNN_CPU"] = 0;         // CUDA-accelerated DNN training.
    Use["DNN_GPU"] = 0;         // Multi-core accelerated DNN.
    //
    // Support Vector Machine
-   Use["SVM"]             = 1;
+   Use["SVM"]             = 0;
    //
    // Boosted Decision Trees
    Use["BDT"]             = 1; // uses Adaptive Boost
@@ -85,7 +85,7 @@ void TMVAClassificationApplication( TString myMethodList = "" )
    Use["BDTF"]            = 0; // allow usage of fisher discriminant for node splitting
    //
    // Friedman's RuleFit method, ie, an optimised series of cuts ("rules")
-   Use["RuleFit"]         = 1;
+   Use["RuleFit"]         = 0;
    // ---------------------------------------------------------------
    Use["Plugin"]          = 0;
    Use["Category"]        = 0;
@@ -125,12 +125,75 @@ void TMVAClassificationApplication( TString myMethodList = "" )
  
    // Create a set of variables and declare them to the reader
    // - the variable names MUST corresponds in name and type to those given in the weight file(s) used
-   Float_t var1, var2;
-   Float_t var3, var4;
-   reader->AddVariable( "myvar1 := var1+var2", &var1 );
+   Float_t track1Length, track2Length, track3Length, shower1Length; 
+   Float_t track1StartDirX, track1StartDirY, track1StartDirZ;
+   Float_t track2StartDirX, track2StartDirY, track2StartDirZ;
+   Float_t track3StartDirX, track3StartDirY, track3StartDirZ;
+   Float_t shower1DirX, shower1DirY, shower1DirZ;
+   Float_t track1DistRecoVtx, track2DistRecoVtx, track3DistRecoVtx, shower1DistRecoVtx;
+   Float_t track1Track2Angle, track1Track3Angle, track2Track3Angle;
+   Float_t track1Shower1Angle, track2Shower1Angle, track3Shower1Angle;
+   Float_t track1Track2Dist, track1Track3Dist, track2Track3Dist;
+   Float_t track1Shower1Dist, track2Shower1Dist, track3Shower1Dist;
+/*/   reader->AddVariable( "myvar1 := var1+var2", &var1 );
    reader->AddVariable( "myvar2 := var1-var2", &var2 );
    reader->AddVariable( "var3",                &var3 );
    reader->AddVariable( "var4",                &var4 );
+*/
+   reader->AddVariable( "track1Length", &track1Length);
+   reader->AddVariable( "track2Length", &track2Length);
+   reader->AddVariable( "track3Length", &track3Length);
+   reader->AddVariable("shower1Length", &shower1Length);
+
+ /*  // 12 start positions (4 x 3)
+   dataloader->AddVariable("track1StartPosX", 'F');
+   dataloader->AddVariable("track1StartPosY", 'F');
+   dataloader->AddVariable("track1StartPosZ", 'F');
+   dataloader->AddVariable("track2StartPosX", 'F');
+   dataloader->AddVariable("track2StartPosY", 'F');
+   dataloader->AddVariable("track2StartPosZ", 'F');
+   dataloader->AddVariable("track3StartPosX", 'F');
+   dataloader->AddVariable("track3StartPosY", 'F');
+   dataloader->AddVariable("track3StartPosZ", 'F');
+   dataloader->AddVariable("shower1StartPosX", 'F');
+   dataloader->AddVariable("shower1StartPosY", 'F');
+   dataloader->AddVariable("shower1StartPosZ", 'F');
+*/
+   // 12 start directions (4 x 3)
+   reader->AddVariable("track1StartDirX", &track1StartDirX);
+   reader->AddVariable("track1StartDirY", &track1StartDirY);
+   reader->AddVariable("track1StartDirZ", &track1StartDirZ);
+   reader->AddVariable("track2StartDirX", &track2StartDirX);
+   reader->AddVariable("track2StartDirY", &track2StartDirY);
+   reader->AddVariable("track2StartDirZ", &track2StartDirZ);
+   reader->AddVariable("track3StartDirX", &track3StartDirX);
+   reader->AddVariable("track3StartDirY", &track3StartDirY);
+   reader->AddVariable("track3StartDirZ", &track3StartDirZ);
+   reader->AddVariable("shower1DirX", &shower1DirX);
+   reader->AddVariable("shower1DirY", &shower1DirY);
+   reader->AddVariable("shower1DirZ", &shower1DirZ);
+
+   // 4 distances to reco vtx
+   reader->AddVariable("track1DistRecoVtx", &track1DistRecoVtx);
+   reader->AddVariable("track2DistRecoVtx", &track2DistRecoVtx);
+   reader->AddVariable("track3DistRecoVtx", &track3DistRecoVtx);
+   reader->AddVariable("shower1DistRecoVtx", &shower1DistRecoVtx);
+
+   // 6 relative angles
+   reader->AddVariable("track1Track2Angle", &track1Track2Angle);
+   reader->AddVariable("track1Track3Angle", &track1Track3Angle);
+   reader->AddVariable("track2Track3Angle", &track2Track3Angle);
+   reader->AddVariable("track1Shower1Angle", &track1Shower1Angle);
+   reader->AddVariable("track2Shower1Angle", &track2Shower1Angle);
+   reader->AddVariable("track3Shower1Angle", &track3Shower1Angle);
+
+   // 6 relative distances
+   reader->AddVariable("track1Track2Dist", &track1Track2Dist);
+   reader->AddVariable("track1Track3Dist", &track1Track3Dist);
+   reader->AddVariable("track2Track3Dist", &track2Track3Dist);
+   reader->AddVariable("track1Shower1Dist", &track1Shower1Dist);
+   reader->AddVariable("track2Shower1Dist", &track2Shower1Dist);
+   reader->AddVariable("track3Shower1Dist", &track3Shower1Dist);
  
    // Spectator variables declared in the training have to be added to the reader, too
    //Float_t spec1,spec2;
@@ -253,7 +316,7 @@ void TMVAClassificationApplication( TString myMethodList = "" )
    // we'll later on use only the "signal" events for the test in this example.
    //
    TFile *input(nullptr);
-   TString fname = "./hyperonAnalysis.root";
+   TString fname = "../prepSig.root";
    if (!gSystem->AccessPathName( fname )) {
       input = TFile::Open( fname ); // check if file in local directory exists
    }
@@ -271,13 +334,42 @@ void TMVAClassificationApplication( TString myMethodList = "" )
    //   but of course you can use different ones and copy the values inside the event loop
    //
    std::cout << "--- Select signal sample" << std::endl;
-   TTree* signalTree = (TTree*)input->Get("TreeS");
-   Float_t userVar1, userVar2;
-   signalTree->SetBranchAddress( "var1", &userVar1 );
-   signalTree->SetBranchAddress( "var2", &userVar2 );
-   signalTree->SetBranchAddress( "var3", &var3 );
-   signalTree->SetBranchAddress( "var4", &var4 );
- 
+   TTree* signalTree = (TTree*)input->Get("sigTree");
+
+   signalTree->SetBranchAddress( "track1Length", &track1Length);
+   signalTree->SetBranchAddress( "track2Length", &track2Length );
+   signalTree->SetBranchAddress( "track3Length", &track3Length );
+   signalTree->SetBranchAddress( "shower1Length", &shower1Length );
+   signalTree->SetBranchAddress( "track1StartDirX", &track1StartDirX );
+   signalTree->SetBranchAddress( "track1StartDirY", &track1StartDirY );
+   signalTree->SetBranchAddress( "track1StartDirZ", &track1StartDirZ );
+   signalTree->SetBranchAddress( "track2StartDirX", &track2StartDirX );
+   signalTree->SetBranchAddress( "track2StartDirY", &track2StartDirY );
+   signalTree->SetBranchAddress( "track2StartDirZ", &track2StartDirZ );
+   signalTree->SetBranchAddress( "track3StartDirX", &track3StartDirX );
+   signalTree->SetBranchAddress( "track3StartDirY", &track3StartDirY);
+   signalTree->SetBranchAddress( "track3StartDirZ", &track3StartDirZ );
+   signalTree->SetBranchAddress( "shower1DirX", &shower1DirX );
+   signalTree->SetBranchAddress( "shower1DirY", &shower1DirY );
+   signalTree->SetBranchAddress( "shower1DirZ", &shower1DirZ );
+   signalTree->SetBranchAddress( "track1DistRecoVtx", &track1DistRecoVtx);
+   signalTree->SetBranchAddress( "track2DistRecoVtx", &track2DistRecoVtx );
+   signalTree->SetBranchAddress( "track2DistRecoVtx", &track2DistRecoVtx);
+   signalTree->SetBranchAddress( "track3DistRecoVtx", &track3DistRecoVtx);
+   signalTree->SetBranchAddress( "shower1DistRecoVtx", &shower1DistRecoVtx);
+   signalTree->SetBranchAddress( "track1Track2Angle", &track1Track2Angle);
+
+   signalTree->SetBranchAddress( "track1Track3Angle", &track1Track3Angle);
+   signalTree->SetBranchAddress( "track2Track3Angle", &track2Track3Angle );
+   signalTree->SetBranchAddress( "track1Shower1Angle", &track1Shower1Angle );
+   signalTree->SetBranchAddress( "track2Shower1Angle", &track2Shower1Angle );
+   signalTree->SetBranchAddress( "track3Shower1Angle", &track3Shower1Angle);
+   signalTree->SetBranchAddress( "track1Track2Dist", &track1Track2Dist );
+   signalTree->SetBranchAddress( "track1Track3Dist", &track1Track3Dist );
+   signalTree->SetBranchAddress( "track2Track3Dist", &track2Track3Dist );
+   signalTree->SetBranchAddress( "track1Shower1Dist", &track1Shower1Dist );
+   signalTree->SetBranchAddress( "track2Shower1Dist", &track2Shower1Dist);
+   signalTree->SetBranchAddress( "track3Shower1Dist", &track3Shower1Dist);
    // Efficiency calculator for cut method
    Int_t    nSelCutsGA = 0;
    Double_t effS       = 0.7;

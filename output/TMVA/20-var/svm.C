@@ -1,7 +1,7 @@
 #ifdef __CLING__
 #pragma cling optimize(0)
 #endif
-void canvas6()
+void svm()
 {
 //=========Macro generated from canvas: canvas6/Cut efficiencies for SVM classifier
 //=========  (Fri May  8 19:47:11 2026) by ROOT version 6.38.04
@@ -1053,7 +1053,7 @@ void canvas6()
    effpurS_SVM__13->GetZaxis()->SetLabelSize(0.03999999910593033);
    effpurS_SVM__13->GetZaxis()->SetTitleSize(0.03999999910593033);
    effpurS_SVM__13->GetZaxis()->SetTitleOffset(1);
-   effpurS_SVM__13->Draw("histl");
+   // effpurS_SVM__13->Draw("histl");
    
    TH1F *purS_SVM__14 = new TH1F("purS_SVM", "purS_SVM", 10000, 0.04761740937829018, 0.9754590852355955);
    std::vector<Double_t> purS_SVM__14_vect15{
@@ -2080,7 +2080,7 @@ void canvas6()
    purS_SVM__14->GetZaxis()->SetLabelSize(0.03999999910593033);
    purS_SVM__14->GetZaxis()->SetTitleSize(0.03999999910593033);
    purS_SVM__14->GetZaxis()->SetTitleOffset(1);
-   purS_SVM__14->Draw("samehistl");
+   // purS_SVM__14->Draw("samehistl");
    
    TH1D *sigEffi__15 = new TH1D("sigEffi", "Cut efficiencies for SVM classifier", 10000, 0.04761740937829018, 0.9754590852355957);
    std::vector<Double_t> sigEffi__15_vect16{
@@ -7185,7 +7185,30 @@ void canvas6()
    effpurS_SVM__18->GetZaxis()->SetLabelSize(0.03999999910593033);
    effpurS_SVM__18->GetZaxis()->SetTitleSize(0.03999999910593033);
    effpurS_SVM__18->GetZaxis()->SetTitleOffset(1);
-   effpurS_SVM__18->Draw("sameaxis");
+   // effpurS_SVM__18->Draw("sameaxis");
+   sigEffi__15->GetXaxis()->SetTitle("Cut value applied on SVM output");
+   sigEffi__15->GetXaxis()->SetLabelOffset(0.012);
+   sigEffi__15->GetXaxis()->SetLabelSize(0.03);
+   sigEffi__15->GetXaxis()->SetTitleSize(0.04);
+   sigEffi__15->GetXaxis()->SetTitleOffset(1.25);
+
+   sigEffi__15->GetYaxis()->SetTitle("Efficiency");
+   sigEffi__15->GetYaxis()->SetLabelOffset(0.01);
+   sigEffi__15->GetYaxis()->SetLabelSize(0.03);
+   sigEffi__15->GetYaxis()->SetTitleSize(0.04);
+   sigEffi__15->GetYaxis()->SetTitleOffset(0.9);
+   sigEffi__15->GetXaxis()->SetLabelFont(42);
+   sigEffi__15->GetXaxis()->SetTitleOffset(1);
+   sigEffi__15->GetXaxis()->SetTitleFont(42);
+   sigEffi__15->GetYaxis()->SetLabelFont(42);
+   sigEffi__15->GetYaxis()->SetTitleFont(42);
+   sigEffi__15->GetZaxis()->SetLabelFont(42);
+   sigEffi__15->GetZaxis()->SetTitleOffset(1);
+   sigEffi__15->GetZaxis()->SetTitleFont(42);
+   sigEffi__15->Draw("histl");
+   bgdEffi__16->Draw("samehistl");
+   significance_SVM__17->Draw("samehistl");
+
    
    TLegend *leg = new TLegend(0.108, 0.8, 0.508, 0.92, nullptr, "brNDC");
    leg->SetBorderSize(1);
@@ -7205,49 +7228,44 @@ void canvas6()
    legentry->SetTextFont(62);
    leg->Draw("same");
    
+// BEGIN_AUTO_SIG_LEGEND
    leg = new TLegend(0.508, 0.8, 0.9, 0.92, nullptr, "brNDC");
    leg->SetBorderSize(1);
    leg->SetTextFont(62);
+   leg->SetTextSize(0.04);
    leg->SetLineColor(TColor::GetColor("#7d8b9d"));
    leg->SetLineStyle(1);
    leg->SetLineWidth(1);
    leg->SetFillColor(0);
    leg->SetFillStyle(1);
-   legentry = leg->AddEntry("purS_SVM","Signal purity","L");
-   legentry->SetLineColor(TColor::GetColor("#0000ee"));
-   legentry->SetLineStyle(5);
-   legentry->SetLineWidth(2);
-   legentry->SetTextFont(62);
-   legentry = leg->AddEntry("effpurS_SVM","Signal efficiency*purity","L");
-   legentry->SetLineColor(TColor::GetColor("#0000ee"));
-   legentry->SetLineStyle(6);
-   legentry->SetLineWidth(2);
-   legentry->SetTextFont(62);
+
    legentry = leg->AddEntry("significance_SVM","S/#sqrt{S+B}","L");
    legentry->SetLineColor(TColor::GetColor("#00aa00"));
    legentry->SetLineWidth(3);
    legentry->SetTextFont(62);
+
    leg->Draw("same");
+// END_AUTO_SIG_LEGEND
    TLine *line = new TLine(0.0476174, 1, 0.975459, 1);
    line->Draw();
-   TLatex *tex = new TLatex(0.15, 0.23, "For 26 signal and 104955 background");
-   tex->SetTextSize(0.033);
-   tex->SetLineColor(TColor::GetColor("#7d8b9d"));
-   tex->SetLineWidth(2);
-   tex->SetNDC();
-   tex->Draw();
-   tex = new TLatex(0.15, 0.19, "events the maximum S/#sqrt{S+B} is");
-   tex->SetTextSize(0.033);
-   tex->SetLineColor(TColor::GetColor("#7d8b9d"));
-   tex->SetLineWidth(2);
-   tex->SetNDC();
-   tex->Draw();
-   tex = new TLatex(0.15, 0.15, "2.0013 when cutting at 0.8895");
-   tex->SetTextSize(0.033);
-   tex->SetLineColor(TColor::GetColor("#7d8b9d"));
-   tex->SetLineWidth(2);
-   tex->SetNDC();
-   tex->Draw();
+   // TLatex *tex = new TLatex(0.15, 0.23, "For 26 signal and 104955 background");
+   // tex->SetTextSize(0.033);
+   // tex->SetLineColor(TColor::GetColor("#7d8b9d"));
+   // tex->SetLineWidth(2);
+   // tex->SetNDC();
+   // tex->Draw();
+   // tex = new TLatex(0.15, 0.19, "events the maximum S/#sqrt{S+B} is");
+   // tex->SetTextSize(0.033);
+   // tex->SetLineColor(TColor::GetColor("#7d8b9d"));
+   // tex->SetLineWidth(2);
+   // tex->SetNDC();
+   // tex->Draw();
+   // tex = new TLatex(0.15, 0.15, "2.0013 when cutting at 0.8895");
+   // tex->SetTextSize(0.033);
+   // tex->SetLineColor(TColor::GetColor("#7d8b9d"));
+   // tex->SetLineWidth(2);
+   // tex->SetNDC();
+   // tex->Draw();
    
    TPaveText *pt = new TPaveText(0.01, 0.935541, 0.695552, 0.995, "blNDC");
    pt->SetName("title");
@@ -7263,7 +7281,7 @@ void canvas6()
    gaxis->SetTextColor(TColor::GetColor("#00aa00"));
    gaxis->SetTitle("Significance");
    gaxis->SetLabelOffset(0.005);
-   gaxis->SetLabelSize(0.04);
+   gaxis->SetLabelSize(0.03);
    gaxis->SetLabelColor(TColor::GetColor("#00aa00"));
    gaxis->SetTickSize(0.03);
    gaxis->SetTitleOffset(1);
@@ -7271,4 +7289,7 @@ void canvas6()
    gaxis->Draw();
    canvas6->Modified();
    canvas6->SetSelected(canvas6);
+// BEGIN_AUTO_SAVEAS
+   canvas6->SaveAs("effs_SVM_20.pdf");
+// END_AUTO_SAVEAS
 }
