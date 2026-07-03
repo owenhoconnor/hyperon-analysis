@@ -30,16 +30,16 @@ run_batch () {
   echo "[$(date)] Finished $name"
 }
 
-run_batch firstbatch /data/sbnd/hyperons_new/firstbatch &
+run_batch firstbatch /data/sbnd/hyperons_antinumu/firstbatch &
 pid1=$!
 
-run_batch secondbatch /data/sbnd/hyperons_new/secondbatch &
+run_batch secondbatch /data/sbnd/hyperons_antinumu/secondbatch &
 pid2=$!
 
-run_batch thirdbatch /data/sbnd/hyperons_new/thirdbatch &
+run_batch thirdbatch /data/sbnd/hyperons_antinumu/thirdbatch &
 pid3=$!
 
-run_batch fourthbatch /data/sbnd/hyperons_new/fourhtbatch &
+run_batch fourthbatch /data/sbnd/hyperons_antinumu/fourhtbatch &
 pid4=$!
 
 status=0

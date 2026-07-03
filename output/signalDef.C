@@ -144,9 +144,25 @@ void signalDef::Loop()
    bkgTree->SetName("preTree");
    bkgTree->SetDirectory(bkgFile);
 
+   TFile *unlabFile = TFile::Open("unlabTree.root", "RECREATE");
+   
+   if (!unlabFile || unlabFile->IsZombie()){
+	std::cerr<<"Could not open file!"<<std::endl;
+	return;
+   }
+
+  unlabFile->cd();
+  TTree *unlabTree = fChain->CloneTree(0);
+  unlabTree->SetName("unlabTree");
+  unlabTree->SetDirectory(unlabFile);
+
    int sampleType;
+   bool isSignal;
+
    signalTree->Branch("sampleType", &sampleType);
    bkgTree->Branch("sampleType", &sampleType);
+   unlabTree->Branch("sampleType", &sampleType);
+   unlabTree->Branch("isSignal", &isSignal);
 
    int nSig = 0;
    int nBkg = 0;
@@ -319,16 +335,19 @@ void signalDef::Loop()
       if(IsSignal && jentry < nEvents[0] + 1){ // if signal and we're still within range of hyperon file events
 	  s=0;
 	  sampleType=0;
+          isSignal=true;
 	  nSig++;
 	  hTracksShowersSig->Fill(trackCount, showerCount);
       }
       if(!IsSignal && jentry < nEvents[0] + 1){ // if not signal but we're still within range of hyperon file events (other hyperons)
 	      s=1;
 	      sampleType=1;
+              isSignal=false;
       }
       if(!IsSignal && jentry > nEvents[0]){ // now within range of bkg events, exclude rare signal
           s=2;
 	  sampleType=2;
+          isSignal=false;
 	  nBkg++;
 	  hTracksShowersBkg->Fill(trackCount, showerCount);
       }	
@@ -361,6 +380,7 @@ void signalDef::Loop()
 	      if(showerStartPositionZ->at(i) < 0){IsBadShower = true;} 
       }*/
       if (IsInRecoFV && trackCount == 3 && showerCount == 1 && !IsBadShower){
+              unlabTree->Fill();
 	      if(s==0){signalTree->Fill();}
 	      if(s==2){bkgTree->Fill();}
       }
@@ -442,6 +462,7 @@ void signalDef::Loop()
    gStyle->SetOptStat(0);
    hTracksShowersSig->Draw("COLZ TEXT");
    c1->Print("plots/nTracksShowersSig.png");
+   c1->SaveAs("plots/nTracksShowersSig.C");
 
    TCanvas *c2 = new TCanvas("c2", "Background Track-Shower Topology", 2000, 2000);
    c2->SetRightMargin(0.15);
@@ -466,10 +487,11 @@ void signalDef::Loop()
    hTracksShowersBkg->GetXaxis()->SetNdivisions(MaxTracks + 1, 0, 0, kTRUE);
    hTracksShowersBkg->GetYaxis()->SetNdivisions(MaxShowers + 1, 0, 0, kTRUE);
 
-   gStyle->SetPalette(kViridis);
+   gStyle->SetPalette(kAlpine);
    gStyle->SetOptStat(0);
    hTracksShowersBkg->Draw("COLZ TEXT");
    c2->Print("plots/nTracksShowersBkg.png");
+   c2->SaveAs("plots/nTracksShowersBkg.C");
 
    sigFile->cd();
    signalTree->Write("preTree"); // Write signal tree and close file
@@ -480,6 +502,11 @@ void signalDef::Loop()
    bkgTree->Write("preTree"); // write bkg tree
    bkgFile->Close();
    delete bkgFile;
+
+   unlabFile->cd();
+   unlabTree->Write("unlabTree"); // write unlabelled true
+   unlabFile->Close();
+   delete unlabFile;
 
 /*   TCanvas *c2 = new TCanvas("c2","",5000,2000); // Print results to a canvas
 

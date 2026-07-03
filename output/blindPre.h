@@ -1,12 +1,12 @@
 //////////////////////////////////////////////////////////
 // This class has been automatically generated on
-// Fri Feb 13 15:25:29 2026 by ROOT version 6.38.00
+// Fri Jun 26 15:11:28 2026 by ROOT version 6.38.04
 // from TTree tree/Output TTree
-// found on file: hyperonAnalysisSIG.root
+// found on file: firstbatch.root
 //////////////////////////////////////////////////////////
 
-#ifndef signalPreselect_h
-#define signalPreselect_h
+#ifndef blindPre_h
+#define blindPre_h
 
 #include <TROOT.h>
 #include <TChain.h>
@@ -16,7 +16,7 @@
 #include "vector"
 #include "vector"
 
-class signalPreselect {
+class blindPre {
 public :
    TTree          *fChain;   //!pointer to the analyzed TTree or TChain
    Int_t           fCurrent; //!current Tree number in a TChain
@@ -42,7 +42,7 @@ public :
    Int_t           trackCount;
    Int_t           showerCount;
    vector<int>     *TrackIDs;
-   vector<float>   *TrackLengths;
+   vector<float>   *trackLengths;
    Float_t         RecoVertexX;
    Float_t         RecoVertexY;
    Float_t         RecoVertexZ;
@@ -59,9 +59,29 @@ public :
    vector<float>   *trackEndPositionX;
    vector<float>   *trackEndPositionY;
    vector<float>   *trackEndPositionZ;
+   vector<float>   *trackStartDirX;
+   vector<float>   *trackStartDirY;
+   vector<float>   *trackStartDirZ;
+   vector<float>   *trackEndDirX;
+   vector<float>   *trackEndDirY;
+   vector<float>   *trackEndDirZ;
+   vector<float>   *trackVertexDirX;
+   vector<float>   *trackVertexDirY;
+   vector<float>   *trackVertexDirZ;
+   vector<float>   *trackTheta;
+   vector<float>   *trackPhi;
+   vector<float>   *showerLengths;
+   vector<float>   *showerStartPositionX;
+   vector<float>   *showerStartPositionY;
+   vector<float>   *showerStartPositionZ;
+   vector<float>   *showerDirX;
+   vector<float>   *showerDirY;
+   vector<float>   *showerDirZ;
    vector<int>     *pfpTrackPDG;
    vector<int>     *pfpShowerPDG;
    vector<int>     *pfpPDG;
+   Int_t           sampleType;
+   Bool_t          isSignal;
 
    // List of branches
    TBranch        *b_eventID;   //!
@@ -82,7 +102,7 @@ public :
    TBranch        *b_trackCount;   //!
    TBranch        *b_showerCount;   //!
    TBranch        *b_TrackIDs;   //!
-   TBranch        *b_TrackLengths;   //!
+   TBranch        *b_trackLengths;   //!
    TBranch        *b_RecoVertexX;   //!
    TBranch        *b_RecoVertexY;   //!
    TBranch        *b_RecoVertexZ;   //!
@@ -99,12 +119,32 @@ public :
    TBranch        *b_trackEndPositionX;   //!
    TBranch        *b_trackEndPositionY;   //!
    TBranch        *b_trackEndPositionZ;   //!
+   TBranch        *b_trackStartDirX;   //!
+   TBranch        *b_trackStartDirY;   //!
+   TBranch        *b_trackStartDirZ;   //!
+   TBranch        *b_trackEndDirX;   //!
+   TBranch        *b_trackEndDirY;   //!
+   TBranch        *b_trackEndDirZ;   //!
+   TBranch        *b_trackVertexDirX;   //!
+   TBranch        *b_trackVertexDirY;   //!
+   TBranch        *b_trackVertexDirZ;   //!
+   TBranch        *b_trackTheta;   //!
+   TBranch        *b_trackPhi;   //!
+   TBranch        *b_showerLengths;   //!
+   TBranch        *b_showerStartPositionX;   //!
+   TBranch        *b_showerStartPositionY;   //!
+   TBranch        *b_showerStartPositionZ;   //!
+   TBranch        *b_showerDirX;   //!
+   TBranch        *b_showerDirY;   //!
+   TBranch        *b_showerDirZ;   //!
    TBranch        *b_pfpTrackPDG;   //!
    TBranch        *b_pfpShowerPDG;   //!
-   TBranch        *b_pfpPDG; //!
+   TBranch        *b_pfpPDG;   //!
+   TBranch        *b_sampleType; //!
+   TBranch        *b_isSignal; //!
 
-   signalPreselect(TTree *tree=0);
-   virtual ~signalPreselect();
+   blindPre(TTree *tree=0);
+   virtual ~blindPre();
    virtual Int_t    Cut(Long64_t entry);
    virtual Int_t    GetEntry(Long64_t entry);
    virtual Long64_t LoadTree(Long64_t entry);
@@ -116,35 +156,36 @@ public :
 
 #endif
 
-#ifdef signalPreselect_cxx
-signalPreselect::signalPreselect(TTree *tree) : fChain(0) 
+#ifdef blindPre_cxx
+blindPre::blindPre(TTree *tree) : fChain(0) 
 {
 // if parameter tree is not specified (or zero), connect the file
 // used to generate this class and read the Tree.
    if (tree == 0) {
-      TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("TreeS.root");
+      TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("firstbatch.root");
       if (!f || !f->IsOpen()) {
-         f = new TFile("TreeS.root");
+         f = new TFile("firstbatch.root");
       }
-      f->GetObject("TreeS",tree);
+      TDirectory * dir = (TDirectory*)f->Get("firstbatch.root:/ana");
+      dir->GetObject("tree",tree);
 
    }
    Init(tree);
 }
 
-signalPreselect::~signalPreselect()
+blindPre::~blindPre()
 {
    if (!fChain) return;
    delete fChain->GetCurrentFile();
 }
 
-Int_t signalPreselect::GetEntry(Long64_t entry)
+Int_t blindPre::GetEntry(Long64_t entry)
 {
 // Read contents of entry.
    if (!fChain) return 0;
    return fChain->GetEntry(entry);
 }
-Long64_t signalPreselect::LoadTree(Long64_t entry)
+Long64_t blindPre::LoadTree(Long64_t entry)
 {
 // Set the environment to read one entry
    if (!fChain) return -5;
@@ -157,7 +198,7 @@ Long64_t signalPreselect::LoadTree(Long64_t entry)
    return centry;
 }
 
-void signalPreselect::Init(TTree *tree)
+void blindPre::Init(TTree *tree)
 {
    // The Init() function is called when the selector needs to initialize
    // a new tree or chain. Typically here the branch addresses and branch
@@ -176,7 +217,7 @@ void signalPreselect::Init(TTree *tree)
    vertexSize = 0;
    daughterSize = 0;
    TrackIDs = 0;
-   TrackLengths = 0;
+   trackLengths = 0;
    DistanceToRecoVertex = 0;
    nuScores = 0;
    trackScores = 0;
@@ -190,9 +231,29 @@ void signalPreselect::Init(TTree *tree)
    trackEndPositionX = 0;
    trackEndPositionY = 0;
    trackEndPositionZ = 0;
+   trackStartDirX = 0;
+   trackStartDirY = 0;
+   trackStartDirZ = 0;
+   trackEndDirX = 0;
+   trackEndDirY = 0;
+   trackEndDirZ = 0;
+   trackVertexDirX = 0;
+   trackVertexDirY = 0;
+   trackVertexDirZ = 0;
+   trackTheta = 0;
+   trackPhi = 0;
+   showerLengths = 0;
+   showerStartPositionX = 0;
+   showerStartPositionY = 0;
+   showerStartPositionZ = 0;
+   showerDirX = 0;
+   showerDirY = 0;
+   showerDirZ = 0;
    pfpTrackPDG = 0;
    pfpShowerPDG = 0;
    pfpPDG = 0;
+   sampleType = 0;
+   isSignal = 0;
    // Set branch addresses and branch pointers
    if (!tree) return;
    fChain = tree;
@@ -217,7 +278,7 @@ void signalPreselect::Init(TTree *tree)
    fChain->SetBranchAddress("trackCount", &trackCount, &b_trackCount);
    fChain->SetBranchAddress("showerCount", &showerCount, &b_showerCount);
    fChain->SetBranchAddress("TrackIDs", &TrackIDs, &b_TrackIDs);
-   fChain->SetBranchAddress("TrackLengths", &TrackLengths, &b_TrackLengths);
+   fChain->SetBranchAddress("trackLengths", &trackLengths, &b_trackLengths);
    fChain->SetBranchAddress("RecoVertexX", &RecoVertexX, &b_RecoVertexX);
    fChain->SetBranchAddress("RecoVertexY", &RecoVertexY, &b_RecoVertexY);
    fChain->SetBranchAddress("RecoVertexZ", &RecoVertexZ, &b_RecoVertexZ);
@@ -234,13 +295,33 @@ void signalPreselect::Init(TTree *tree)
    fChain->SetBranchAddress("trackEndPositionX", &trackEndPositionX, &b_trackEndPositionX);
    fChain->SetBranchAddress("trackEndPositionY", &trackEndPositionY, &b_trackEndPositionY);
    fChain->SetBranchAddress("trackEndPositionZ", &trackEndPositionZ, &b_trackEndPositionZ);
+   fChain->SetBranchAddress("trackStartDirX", &trackStartDirX, &b_trackStartDirX);
+   fChain->SetBranchAddress("trackStartDirY", &trackStartDirY, &b_trackStartDirY);
+   fChain->SetBranchAddress("trackStartDirZ", &trackStartDirZ, &b_trackStartDirZ);
+   fChain->SetBranchAddress("trackEndDirX", &trackEndDirX, &b_trackEndDirX);
+   fChain->SetBranchAddress("trackEndDirY", &trackEndDirY, &b_trackEndDirY);
+   fChain->SetBranchAddress("trackEndDirZ", &trackEndDirZ, &b_trackEndDirZ);
+   fChain->SetBranchAddress("trackVertexDirX", &trackVertexDirX, &b_trackVertexDirX);
+   fChain->SetBranchAddress("trackVertexDirY", &trackVertexDirY, &b_trackVertexDirY);
+   fChain->SetBranchAddress("trackVertexDirZ", &trackVertexDirZ, &b_trackVertexDirZ);
+   fChain->SetBranchAddress("trackTheta", &trackTheta, &b_trackTheta);
+   fChain->SetBranchAddress("trackPhi", &trackPhi, &b_trackPhi);
+   fChain->SetBranchAddress("showerLengths", &showerLengths, &b_showerLengths);
+   fChain->SetBranchAddress("showerStartPositionX", &showerStartPositionX, &b_showerStartPositionX);
+   fChain->SetBranchAddress("showerStartPositionY", &showerStartPositionY, &b_showerStartPositionY);
+   fChain->SetBranchAddress("showerStartPositionZ", &showerStartPositionZ, &b_showerStartPositionZ);
+   fChain->SetBranchAddress("showerDirX", &showerDirX, &b_showerDirX);
+   fChain->SetBranchAddress("showerDirY", &showerDirY, &b_showerDirY);
+   fChain->SetBranchAddress("showerDirZ", &showerDirZ, &b_showerDirZ);
    fChain->SetBranchAddress("pfpTrackPDG", &pfpTrackPDG, &b_pfpTrackPDG);
    fChain->SetBranchAddress("pfpShowerPDG", &pfpShowerPDG, &b_pfpShowerPDG);
    fChain->SetBranchAddress("pfpPDG", &pfpPDG, &b_pfpPDG);
+   fChain->SetBranchAddress("sampleType", &sampleType, &b_sampleType);
+   fChain->SetBranchAddress("isSignal", &isSignal, &b_isSignal);
    Notify();
 }
 
-bool signalPreselect::Notify()
+bool blindPre::Notify()
 {
    // The Notify() function is called when a new file is opened. This
    // can be for a new TTree in a TChain. It is normally not necessary to make changes
@@ -250,18 +331,18 @@ bool signalPreselect::Notify()
    return true;
 }
 
-void signalPreselect::Show(Long64_t entry)
+void blindPre::Show(Long64_t entry)
 {
 // Print contents of entry.
 // If entry is not specified, print current entry
    if (!fChain) return;
    fChain->Show(entry);
 }
-Int_t signalPreselect::Cut(Long64_t entry)
+Int_t blindPre::Cut(Long64_t entry)
 {
 // This function may be called from Loop.
 // returns  1 if entry is accepted.
 // returns -1 otherwise.
    return 1;
 }
-#endif // #ifdef signalPreselect_cxx
+#endif // #ifdef blindPre_cxx
