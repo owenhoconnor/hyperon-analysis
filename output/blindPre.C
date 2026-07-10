@@ -89,6 +89,8 @@ void blindPre::Loop()
    float track3Shower1Dist;
 
    bool IsSignal;
+   std::vector<float> TrueP;
+   std::vector<int> TruePDG;
 
    // Tracks, shower lengths
    validTree->Branch("track1Length", &track1Length);
@@ -157,6 +159,10 @@ void blindPre::Loop()
 // track signal
 
    validTree->Branch("IsSignal", &IsSignal);
+
+// trueP and truePDG
+   validTree->Branch("TrueP", &TrueP);
+   validTree->Branch("TruePDG", &TruePDG);
 
    int nSig = 0;
    int nBkg = 0;
@@ -397,6 +403,16 @@ void blindPre::Loop()
 	      continue;}
 
       IsSignal = isSignal;
+
+      for (int i; i < trueP->size(); i++){
+      	TrueP.push_back(trueP->at(i));
+      }
+
+      for (int j; j < truePDG->size(); j++){
+      	TruePDG.push_back(truePDG->at(j));
+      }
+      std::cout<<"TrueP size is "<<TrueP.size()<<std:endl;
+      std::cout<<"TruePDG size is "<<TruePDG.size()<<std::endl;
 
       // Fill validation tree:
 
