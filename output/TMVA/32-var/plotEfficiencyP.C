@@ -31,15 +31,15 @@ void plotEffVsMomentum(
         return;
     }
 
-    std::vector<int>   *truePDG = nullptr;
-    std::vector<float> *trueP   = nullptr;
+    std::vector<int>   *TruePDG = nullptr;
+    std::vector<float> *TrueP   = nullptr;
 
-    Bool_t isSignal = false;
+    Bool_t IsSignal = false;
     Bool_t PassBDT  = false;
 
-    t->SetBranchAddress("truePDG", &truePDG);
-    t->SetBranchAddress("trueP",   &trueP);
-    t->SetBranchAddress("isSignal", &isSignal);
+    t->SetBranchAddress("TruePDG", &TruePDG);
+    t->SetBranchAddress("TrueP",   &TrueP);
+    t->SetBranchAddress("IsSignal", &IsSignal);
     t->SetBranchAddress("PassBDT",  &PassBDT);
 
     gStyle->SetOptStat(0);
@@ -74,14 +74,14 @@ void plotEffVsMomentum(
         t->GetEntry(i);
 
         // We want signal efficiency, so denominator is true signal events only.
-        if (!isSignal) continue;
+        if (!IsSignal) continue;
 
-        if (!truePDG || !trueP) continue;
+        if (!TruePDG || !TrueP) continue;
 
-        if (truePDG->size() != trueP->size()) {
-            std::cerr << "WARNING: truePDG and trueP size mismatch in entry "
-                      << i << ": " << truePDG->size()
-                      << " vs " << trueP->size() << std::endl;
+        if (TruePDG->size() != TrueP->size()) {
+            std::cerr << "WARNING: TruePDG and TrueP size mismatch in entry "
+                      << i << ": " << TruePDG->size()
+                      << " vs " << TrueP->size() << std::endl;
             continue;
         }
 
@@ -95,9 +95,9 @@ void plotEffVsMomentum(
         float pProton = -999.f;
         float pPion   = -999.f;
 
-        for (size_t j = 0; j < truePDG->size(); ++j) {
-            int pdg = truePDG->at(j);
-            float p = trueP->at(j);
+        for (size_t j = 0; j < TruePDG->size(); ++j) {
+            int pdg = TruePDG->at(j);
+            float p = TrueP->at(j);
 
             if (pdg == 22 && !foundPhoton) {
                 pPhoton = p;
