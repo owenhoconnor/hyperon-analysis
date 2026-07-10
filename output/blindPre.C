@@ -404,15 +404,18 @@ void blindPre::Loop()
 
       IsSignal = isSignal;
 
-      for (int i; i < trueP->size(); i++){
-      	TrueP.push_back(trueP->at(i));
+      if (!trueP || !truePDG){
+	      std::cout<<"null trueP or truePDG pointer"<<std::endl;
+	      continue;
       }
 
-      for (int j; j < truePDG->size(); j++){
-      	TruePDG.push_back(truePDG->at(j));
+      if (trueP->size() != truePDG->size()){
+	      std::cout<<"truth array size mismatch"<<std::endl;
+              continue;
       }
-      std::cout<<"TrueP size is "<<TrueP.size()<<std:endl;
-      std::cout<<"TruePDG size is "<<TruePDG.size()<<std::endl;
+
+      TrueP = *trueP;
+      TruePDG = *truePDG;
 
       // Fill validation tree:
 
