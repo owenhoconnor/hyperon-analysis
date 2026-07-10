@@ -1,8 +1,5 @@
 root -l -b -x << EOF
 .L plotEfficiencyP.C
-TChain *chain = new TChain("unlabTree")
-chain->Add("unlabTree.root")
-blindPre t(chain)
-t.Loop()
+plotEffVsMomentum("validTree_BDT.root", "validTree_BDT");
 .q
 EOF
