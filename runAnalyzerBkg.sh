@@ -3,13 +3,13 @@ set -euo pipefail
 shopt -s nullglob
 
 FCL="run_analyzeEvents.fcl"
-SRC_DIR="/data/sbnd/background"
+SRC_DIR="/data/sbnd/prod_2026"
 NBATCH=10
 
 LOGDIR="logs_bkg"
 WORKDIR="jobs_bkg"
 PROJDIR="/home/lar/ooconnor/hyperons/srcs/sbndcode/sbndcode/Hyperons"
-MERGED_OUT="mergedBkg.root"
+MERGED_OUT="anaOut_prod2026.root"
 TREE_OUT="analysisOutput.root"
 
 mkdir -p "$LOGDIR" "$WORKDIR"

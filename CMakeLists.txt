@@ -3,6 +3,9 @@ art_make(  MODULE_LIBRARIES  larpandora::LArPandoraInterface
                              lardataobj::RecoBase
                              lardataobj::AnalysisBase
                              larreco::RecoAlg
+ 			     larsim::Utils
+			     larsim::MCCheater_ParticleInventoryService_service
+                             larsim::MCCheater_BackTrackerService_service
 
                              art::Framework_Core
                              art::Framework_Principal

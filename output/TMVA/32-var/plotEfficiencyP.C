@@ -114,7 +114,7 @@ void plotEffVsMomentum(
 
         for (size_t j = 0; j < TruePDG->size(); ++j) {
             int pdg = TruePDG->at(j);
-            float p = TrueP->at(j) * 1000;
+            float p = TrueP->at(j);
 
 	    std::cout<<"PDG at index "<<j<<" is "<<pdg<<std::endl;
 

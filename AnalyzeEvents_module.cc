@@ -207,6 +207,8 @@ void hyperon::AnalyzeEvents::analyze(art::Event const& evt)
  fEventID = evt.id().event(); 
  std::cout<<"Event# "<<evt.id().event()<<std::endl;
 
+ auto const clockData = art::ServiceHandle<detinfo::DetectorClocksService const>()->DataFor(evt);
+
  // Clear reco parameters
  fTrackIDs.clear();
  fTrackLengths.clear();
@@ -293,6 +295,31 @@ void hyperon::AnalyzeEvents::analyze(art::Event const& evt)
 	   std::cerr<<"No slices found in this event!"<<std::endl;
 	   return;
    }
+
+
+// Define helper function to get hits from PFP
+   auto getPFPHits =
+    [&](const art::Ptr<recob::PFParticle>& pfp)
+    {
+        std::vector<art::Ptr<recob::Hit>> pfpHits;
+
+        const std::vector<art::Ptr<recob::Cluster>> clusters =
+            pfpClusterAssoc.at(pfp.key());
+
+        for (const art::Ptr<recob::Cluster>& cluster : clusters) {
+
+            const std::vector<art::Ptr<recob::Hit>> clusterHits =
+                clusterHitAssoc.at(cluster.key());
+
+            pfpHits.insert(
+                pfpHits.end(),
+                clusterHits.begin(),
+                clusterHits.end()
+            );
+        }
+
+        return pfpHits;
+    };
 
 // Filling our neutrino hierarchy variables
 
@@ -642,7 +669,7 @@ if (nuSliceKey < 0){
 
 
 // Tracks reco -> truth matching
-std::cout<<"========= Track Truth Matching =========="<<std::endl;
+/* std::cout<<"========= Track Truth Matching =========="<<std::endl;
 fTruePfpPDG.clear();
 fTrueTrackPDG.clear();
 fMuonTrackScores.clear();
@@ -758,7 +785,7 @@ for (const auto& track : tracks) { // loop over tracks (is this really necessary
 		// fIsLongestTrack.push_back(track->ID() == fLongestTrackID);
                // fIsClosestTrack.push_back(track->ID() == fClosestTrackID);
 
-		/* if (track->ID() == fLongestTrackID) {
+*/		/* if (track->ID() == fLongestTrackID) {
                         fLongestTrackTruePDG = mcParticle->PdgCode();
                         longestTrackCount++;
                         longestTrackPDGCounts[mcParticle->PdgCode()]++;
@@ -794,15 +821,16 @@ for (const auto& track : tracks) { // loop over tracks (is this really necessary
                                   << ", Match Quality: " << matchQuality
                                   << std::endl;
          	           	}	
-*/
+*//*
 				//}
 			}
 		}
 	} // end loop over tracks
 } // end loop over slice PFPs
+*/
 
 
-
+/*
 //Showers reco -> truth matching
 std::cout<<"======== Shower Truth Matching ==========="<<std::endl;
 fTrueShowerPDG.clear();
@@ -886,8 +914,113 @@ for (size_t i_hit = 0; i_hit < showerHits.size(); i_hit++) { // loop over shower
 			  << ", Match Quality: "<<matchQuality << std::endl;
             }
         }
-}
+}*/
 
+
+// PFP Truth Matching (rewrite from above where it's separated by track/shower)
+// USE TRUTHMATCHUTILS.h that DOM WROTE INSTEAD OF THE ABOVE GARBAGE
+
+
+std::cout<<"========= PFP Truth Matching =========="<<std::endl;
+
+fTruePfpPDG.clear();
+
+constexpr bool rollupUnsavedIDs = true;
+
+// loop over PFPs in nuSlice
+for (const art::Ptr<recob::PFParticle>& pfp : nuSlicePFPs) {
+
+    // Only truth-match direct neutrino children.
+    if (pfp->Parent() != static_cast<std::size_t>(nuID)) {
+        continue;
+    }
+
+    // get vector of pfpHits from helper function
+    const std::vector<art::Ptr<recob::Hit>> pfpHits = getPFPHits(pfp);
+
+    // Always store one value per selected PFP so the vectors stay aligned.
+    int truePDG = -9999;
+    int trueTrackID = -9999;
+    float hitMatchFraction = -1.0f;
+
+    if (pfpHits.empty()) {
+        std::cerr
+            << "No hits found for PFP key "
+            << pfp.key()
+            << std::endl;
+
+        fTruePfpPDG.push_back(truePDG);
+        continue;
+    }
+
+    const TruthMatchUtils::G4ID g4ID =
+        TruthMatchUtils::TrueParticleIDFromTotalRecoHits(
+            clockData,
+            pfpHits,
+            rollupUnsavedIDs
+        );
+
+    if (!TruthMatchUtils::Valid(g4ID)) {
+        std::cerr
+            << "No valid truth match for PFP key "
+            << pfp.key()
+            << ", containing "
+            << pfpHits.size()
+            << " hits"
+            << std::endl;
+
+        fTruePfpPDG.push_back(truePDG);
+        continue;
+    }
+
+    const simb::MCParticle* trueParticle =
+        particleInventory->TrackIdToParticle_P(g4ID);
+
+    if (!trueParticle) {
+        std::cerr
+            << "No saved MCParticle found for G4 ID "
+            << g4ID
+            << std::endl;
+
+        fTruePfpPDG.push_back(truePDG);
+        continue;
+    }
+
+    truePDG = trueParticle->PdgCode();
+    trueTrackID = trueParticle->TrackId();
+
+    // Optional hit-count purity consistent with TruthMatchUtils.
+    std::size_t nMatchedHits = 0;
+
+    for (const art::Ptr<recob::Hit>& hit : pfpHits) {
+
+        const TruthMatchUtils::G4ID hitG4ID =
+            TruthMatchUtils::TrueParticleID(
+                clockData,
+                hit,
+                rollupUnsavedIDs
+            );
+
+        if (TruthMatchUtils::Valid(hitG4ID) &&
+            hitG4ID == g4ID) {
+            ++nMatchedHits;
+        }
+    }
+
+    hitMatchFraction =
+        static_cast<float>(nMatchedHits) /
+        static_cast<float>(pfpHits.size());
+
+    fTruePfpPDG.push_back(truePDG);
+
+    std::cout
+        << "PFP key: " << pfp.key()
+        << ", number of hits: " << pfpHits.size()
+        << ", true PDG: " << truePDG
+        << ", true TrackId: " << trueTrackID
+        << ", matched hit fraction: " << hitMatchFraction
+        << std::endl;
+}
 
 // MCTRUTH PARAMETERS
 
@@ -917,7 +1050,7 @@ for (size_t i_hit = 0; i_hit < showerHits.size(); i_hit++) { // loop over shower
        {
            art::Ptr<simb::MCParticle> mcParticle(assocParticles.at(i_mcpart));
 	  // std::cout<<"mcParticle mother is "<<mcParticle->Mother()<<std::endl;
-           if(mcParticle->Mother()!=0) continue; // 10000000 for bkg files, 0 for hyperon files
+           if(mcParticle->Mother()!=10000000) continue; // 10000000 for bkg files, 0 for hyperon files
 
            std::cout<<"--Particle at index " << i_mcpart <<"at mclist index "<<i_truth<< " has pdg: " << mcParticle->PdgCode() 
 		    <<" has momentum: " << mcParticle->P()<<" Mother: "<<mcParticle->Mother()
@@ -1165,8 +1298,8 @@ void hyperon::AnalyzeEvents::beginJob()
   fTree->Branch("showerDirZ", &fShowerDirZ);
 
   // truth matching
-  fTree->Branch("pfpTrackPDG", &fTrueTrackPDG);
-  fTree->Branch("pfpShowerPDG", &fTrueShowerPDG);
+  //fTree->Branch("pfpTrackPDG", &fTrueTrackPDG);
+  //fTree->Branch("pfpShowerPDG", &fTrueShowerPDG);
   fTree->Branch("pfpPDG", &fTruePfpPDG);
 
   //Histograms
