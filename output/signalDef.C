@@ -49,8 +49,8 @@ void signalDef::Loop()
    
    int nEvents[3] = {0};
    nEvents[0] = 141422; // number of events in all hyperon files
-   nEvents[1] = nEvents[0]; // hyperon events
-   nEvents[2] = 209009 + nEvents[0]; // num of events in bkg files + num of events in hyp files
+   nEvents[1] = nEvents[0]; // any hyperon event
+   nEvents[2] = 210977 + nEvents[0]; // num of events in bkg files + num of events in hyp files
    
 
    double PoT[4] = {0};
@@ -60,7 +60,7 @@ void signalDef::Loop()
    PoT[3] = 1e21; // total pot
 
    double nHyperonFiles = 2636.8;
-   double nBkgFiles = 2236.;
+   double nBkgFiles = 3659.;
 
    double scale[3] = {0};
    scale[0] = PoT[3] / (nHyperonFiles * PoT[0]); // sigma
@@ -120,7 +120,7 @@ void signalDef::Loop()
    }
    
 
-   TFile *sigFile = TFile::Open("TreeS.root", "RECREATE");
+   TFile *sigFile = TFile::Open("/data/ooconnor/sbnd/hyperons/preselection_output/signalDef_output_sig.root", "RECREATE");
 
    if (!sigFile || sigFile->IsZombie()){
 	   std::cerr<<"Could not open file!"<<std::endl;
@@ -129,10 +129,10 @@ void signalDef::Loop()
 
    sigFile->cd();
    TTree *signalTree = fChain->CloneTree(0);
-   signalTree->SetName("preTree");
+   signalTree->SetName("tree");
    signalTree->SetDirectory(sigFile);
 
-   TFile *bkgFile = TFile::Open("TreeB.root", "RECREATE");
+   TFile *bkgFile = TFile::Open("/data/ooconnor/sbnd/hyperons/preselection_output/signalDef_output_bkg.root", "RECREATE");
 
    if (!bkgFile || bkgFile->IsZombie()){
 	   std::cerr<<"Could not open file!"<<std::endl;
@@ -141,10 +141,10 @@ void signalDef::Loop()
 
    bkgFile->cd();
    TTree *bkgTree = fChain->CloneTree(0);
-   bkgTree->SetName("preTree");
+   bkgTree->SetName("tree");
    bkgTree->SetDirectory(bkgFile);
 
-   TFile *unlabFile = TFile::Open("unlabTree.root", "RECREATE");
+   TFile *unlabFile = TFile::Open("/data/ooconnor/sbnd/hyperons/preselection_output/unlabTree.root", "RECREATE");
    
    if (!unlabFile || unlabFile->IsZombie()){
 	std::cerr<<"Could not open file!"<<std::endl;
@@ -210,7 +210,7 @@ void signalDef::Loop()
       int sumCounter = 0;
       int daughterCounter = 0;
 
-      std::cout<<"****************** new event ********************"<<std::endl;
+      std::cout<<"****************** new event #" << jentry<< " ********************"<<std::endl;
       std::cout<<"trackStartPosition size = "<<trackStartPositionX->size()<<std::endl;
       std::cout<<"distance to reco vertex size = "<<DistanceToRecoVertex->size()<<std::endl;
       std::cout<<"TrackLengths size = "<<trackLengths->size()<<std::endl;
@@ -494,12 +494,12 @@ void signalDef::Loop()
    c2->SaveAs("plots/nTracksShowersBkg.C");
 
    sigFile->cd();
-   signalTree->Write("preTree"); // Write signal tree and close file
+   signalTree->Write("tree"); // Write signal tree and close file
    sigFile->Close();
    delete sigFile;
 
    bkgFile->cd();
-   bkgTree->Write("preTree"); // write bkg tree
+   bkgTree->Write("tree"); // write bkg tree
    bkgFile->Close();
    delete bkgFile;
 

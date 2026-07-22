@@ -8,12 +8,12 @@
 
 Method         : LD::LD
 TMVA Release   : 4.2.1         [262657]
-ROOT Release   : 6.38/04       [402948]
+ROOT Release   : 6.40/02       [403458]
 Creator        : ooconnor
-Date           : Tue May  5 15:16:12 2026
-Host           : Linux buildvm-x86-29.rdu3.fedoraproject.org 6.18.7-200.fc43.x86_64 #1 SMP PREEMPT_DYNAMIC Fri Jan 23 16:42:34 UTC 2026 x86_64 x86_64 x86_64 GNU/Linux
+Date           : Wed Jul 22 12:28:32 2026
+Host           : Linux buildhw-x86-08.rdu3.fedoraproject.org 7.0.10-201.fc44.x86_64 #1 SMP PREEMPT_DYNAMIC Wed May 27 13:57:41 UTC 2026 x86_64 x86_64 x86_64 GNU/Linux
 Dir            : /home/lar/ooconnor/hyperons/srcs/sbndcode/sbndcode/Hyperons/output/TMVA/44-var
-Training events: 1980
+Training events: 1692
 Analysis type  : [Classification]
 
 
@@ -33,50 +33,50 @@ IgnoreNegWeightsInTraining: "False" [Events with negative weights are ignored in
 #VAR -*-*-*-*-*-*-*-*-*-*-*-* variables *-*-*-*-*-*-*-*-*-*-*-*-
 
 NVar 44
-track1Length                  track1Length                  track1Length                  track1Length                                                    'F'    [3.3750936985,497.482116699]
-track2Length                  track2Length                  track2Length                  track2Length                                                    'F'    [0.668267309666,124.048629761]
-track3Length                  track3Length                  track3Length                  track3Length                                                    'F'    [0.216892331839,59.6913223267]
-shower1Length                 shower1Length                 shower1Length                 shower1Length                                                   'F'    [0.288653701544,79.4986419678]
-track1StartPosX               track1StartPosX               track1StartPosX               track1StartPosX                                                 'F'    [-179.433944702,178.916015625]
-track1StartPosY               track1StartPosY               track1StartPosY               track1StartPosY                                                 'F'    [-179.165420532,179.862884521]
-track1StartPosZ               track1StartPosZ               track1StartPosZ               track1StartPosZ                                                 'F'    [11.2613458633,448.472045898]
+track1Length                  track1Length                  track1Length                  track1Length                                                    'F'    [7.33393287659,497.482116699]
+track2Length                  track2Length                  track2Length                  track2Length                                                    'F'    [0.683150887489,123.739303589]
+track3Length                  track3Length                  track3Length                  track3Length                                                    'F'    [0.216892331839,57.867401123]
+shower1Length                 shower1Length                 shower1Length                 shower1Length                                                   'F'    [0.27361536026,79.4986419678]
+track1StartPosX               track1StartPosX               track1StartPosX               track1StartPosX                                                 'F'    [-180.186538696,178.7628479]
+track1StartPosY               track1StartPosY               track1StartPosY               track1StartPosY                                                 'F'    [-179.319534302,179.799804688]
+track1StartPosZ               track1StartPosZ               track1StartPosZ               track1StartPosZ                                                 'F'    [11.7916879654,449.336975098]
 track2StartPosX               track2StartPosX               track2StartPosX               track2StartPosX                                                 'F'    [-184.143035889,179.033325195]
-track2StartPosY               track2StartPosY               track2StartPosY               track2StartPosY                                                 'F'    [-179.187866211,179.388000488]
-track2StartPosZ               track2StartPosZ               track2StartPosZ               track2StartPosZ                                                 'F'    [1.57719552517,449.460479736]
+track2StartPosY               track2StartPosY               track2StartPosY               track2StartPosY                                                 'F'    [-179.547027588,179.388000488]
+track2StartPosZ               track2StartPosZ               track2StartPosZ               track2StartPosZ                                                 'F'    [10.4146785736,449.460479736]
 track3StartPosX               track3StartPosX               track3StartPosX               track3StartPosX                                                 'F'    [-189.040328979,179.923812866]
-track3StartPosY               track3StartPosY               track3StartPosY               track3StartPosY                                                 'F'    [-179.719909668,179.430679321]
-track3StartPosZ               track3StartPosZ               track3StartPosZ               track3StartPosZ                                                 'F'    [10.7707462311,449.016326904]
+track3StartPosY               track3StartPosY               track3StartPosY               track3StartPosY                                                 'F'    [-178.589492798,179.430679321]
+track3StartPosZ               track3StartPosZ               track3StartPosZ               track3StartPosZ                                                 'F'    [8.91545963287,449.498199463]
 shower1StartPosX              shower1StartPosX              shower1StartPosX              shower1StartPosX                                                'F'    [-179.858627319,179.88949585]
-shower1StartPosY              shower1StartPosY              shower1StartPosY              shower1StartPosY                                                'F'    [-179.989151001,179.786865234]
-shower1StartPosZ              shower1StartPosZ              shower1StartPosZ              shower1StartPosZ                                                'F'    [10.9723749161,449.200012207]
-track1StartDirX               track1StartDirX               track1StartDirX               track1StartDirX                                                 'F'    [-0.996992707253,0.997194826603]
-track1StartDirY               track1StartDirY               track1StartDirY               track1StartDirY                                                 'F'    [-0.992119729519,0.998312830925]
-track1StartDirZ               track1StartDirZ               track1StartDirZ               track1StartDirZ                                                 'F'    [-0.998379170895,0.999814867973]
-track2StartDirX               track2StartDirX               track2StartDirX               track2StartDirX                                                 'F'    [-0.999767065048,0.993617773056]
-track2StartDirY               track2StartDirY               track2StartDirY               track2StartDirY                                                 'F'    [-0.996999800205,0.997133076191]
-track2StartDirZ               track2StartDirZ               track2StartDirZ               track2StartDirZ                                                 'F'    [-0.999366760254,0.999572038651]
-track3StartDirX               track3StartDirX               track3StartDirX               track3StartDirX                                                 'F'    [-0.985143780708,0.999216675758]
-track3StartDirY               track3StartDirY               track3StartDirY               track3StartDirY                                                 'F'    [-1,0.998889923096]
+shower1StartPosY              shower1StartPosY              shower1StartPosY              shower1StartPosY                                                'F'    [-179.960083008,179.960083008]
+shower1StartPosZ              shower1StartPosZ              shower1StartPosZ              shower1StartPosZ                                                'F'    [10.2999973297,450]
+track1StartDirX               track1StartDirX               track1StartDirX               track1StartDirX                                                 'F'    [-0.998579978943,0.979828178883]
+track1StartDirY               track1StartDirY               track1StartDirY               track1StartDirY                                                 'F'    [-0.998742222786,0.991557955742]
+track1StartDirZ               track1StartDirZ               track1StartDirZ               track1StartDirZ                                                 'F'    [-0.9913610816,0.999958515167]
+track2StartDirX               track2StartDirX               track2StartDirX               track2StartDirX                                                 'F'    [-0.999767065048,0.997966349125]
+track2StartDirY               track2StartDirY               track2StartDirY               track2StartDirY                                                 'F'    [-0.993577957153,0.999500989914]
+track2StartDirZ               track2StartDirZ               track2StartDirZ               track2StartDirZ                                                 'F'    [-0.993504941463,0.999074459076]
+track3StartDirX               track3StartDirX               track3StartDirX               track3StartDirX                                                 'F'    [-0.995975494385,0.999216675758]
+track3StartDirY               track3StartDirY               track3StartDirY               track3StartDirY                                                 'F'    [-0.999849736691,0.999198257923]
 track3StartDirZ               track3StartDirZ               track3StartDirZ               track3StartDirZ                                                 'F'    [-0.999650120735,0.999991297722]
-shower1DirX                   shower1DirX                   shower1DirX                   shower1DirX                                                     'F'    [-0.999896168709,0.997747778893]
-shower1DirY                   shower1DirY                   shower1DirY                   shower1DirY                                                     'F'    [-0.999887228012,0.999979555607]
-shower1DirZ                   shower1DirZ                   shower1DirZ                   shower1DirZ                                                     'F'    [-0.999977707863,0.999600112438]
-track1DistRecoVtx             track1DistRecoVtx             track1DistRecoVtx             track1DistRecoVtx                                               'F'    [0.00780916493386,21.3518218994]
-track2DistRecoVtx             track2DistRecoVtx             track2DistRecoVtx             track2DistRecoVtx                                               'F'    [0.0401425473392,24.7521018982]
-track3DistRecoVtx             track3DistRecoVtx             track3DistRecoVtx             track3DistRecoVtx                                               'F'    [0.0389196760952,23.402261734]
-shower1DistRecoVtx            shower1DistRecoVtx            shower1DistRecoVtx            shower1DistRecoVtx                                              'F'    [0.080524072051,145.794692993]
-track1Track2Angle             track1Track2Angle             track1Track2Angle             track1Track2Angle                                               'F'    [0.0271168034524,3.12710142136]
-track1Track3Angle             track1Track3Angle             track1Track3Angle             track1Track3Angle                                               'F'    [0.0317326337099,3.12610054016]
-track2Track3Angle             track2Track3Angle             track2Track3Angle             track2Track3Angle                                               'F'    [0.0874138325453,3.13083386421]
-track1Shower1Angle            track1Shower1Angle            track1Shower1Angle            track1Shower1Angle                                              'F'    [0.0256664715707,3.13105106354]
-track2Shower1Angle            track2Shower1Angle            track2Shower1Angle            track2Shower1Angle                                              'F'    [0.0217770617455,3.11840891838]
-track3Shower1Angle            track3Shower1Angle            track3Shower1Angle            track3Shower1Angle                                              'F'    [0.0397528596222,3.12469959259]
-track1Track2Dist              track1Track2Dist              track1Track2Dist              track1Track2Dist                                                'F'    [0.0596877634525,23.1157016754]
-track1Track3Dist              track1Track3Dist              track1Track3Dist              track1Track3Dist                                                'F'    [0.0814367309213,23.5304908752]
-track2Track3Dist              track2Track3Dist              track2Track3Dist              track2Track3Dist                                                'F'    [0.069206610322,24.8198566437]
-track1Shower1Dist             track1Shower1Dist             track1Shower1Dist             track1Shower1Dist                                               'F'    [0.136097967625,145.820327759]
-track2Shower1Dist             track2Shower1Dist             track2Shower1Dist             track2Shower1Dist                                               'F'    [0.194910004735,145.924835205]
-track3Shower1Dist             track3Shower1Dist             track3Shower1Dist             track3Shower1Dist                                               'F'    [0.221913710237,146.716842651]
+shower1DirX                   shower1DirX                   shower1DirX                   shower1DirX                                                     'F'    [-0.999537050724,0.998606026173]
+shower1DirY                   shower1DirY                   shower1DirY                   shower1DirY                                                     'F'    [-0.999999523163,0.999979555607]
+shower1DirZ                   shower1DirZ                   shower1DirZ                   shower1DirZ                                                     'F'    [-0.999928534031,0.999025404453]
+track1DistRecoVtx             track1DistRecoVtx             track1DistRecoVtx             track1DistRecoVtx                                               'F'    [0.011263561435,24.1892757416]
+track2DistRecoVtx             track2DistRecoVtx             track2DistRecoVtx             track2DistRecoVtx                                               'F'    [0.0300045255572,23.0639324188]
+track3DistRecoVtx             track3DistRecoVtx             track3DistRecoVtx             track3DistRecoVtx                                               'F'    [0.0615230388939,24.6800708771]
+shower1DistRecoVtx            shower1DistRecoVtx            shower1DistRecoVtx            shower1DistRecoVtx                                              'F'    [0.126927226782,149.187347412]
+track1Track2Angle             track1Track2Angle             track1Track2Angle             track1Track2Angle                                               'F'    [0.0231973510236,3.13524246216]
+track1Track3Angle             track1Track3Angle             track1Track3Angle             track1Track3Angle                                               'F'    [0.0317326337099,3.12213802338]
+track2Track3Angle             track2Track3Angle             track2Track3Angle             track2Track3Angle                                               'F'    [0.0874138325453,3.10517930984]
+track1Shower1Angle            track1Shower1Angle            track1Shower1Angle            track1Shower1Angle                                              'F'    [0.0611684918404,3.10714864731]
+track2Shower1Angle            track2Shower1Angle            track2Shower1Angle            track2Shower1Angle                                              'F'    [0.077812589705,3.11840891838]
+track3Shower1Angle            track3Shower1Angle            track3Shower1Angle            track3Shower1Angle                                              'F'    [0.0440997816622,3.12356185913]
+track1Track2Dist              track1Track2Dist              track1Track2Dist              track1Track2Dist                                                'F'    [0.0726580917835,23.1783218384]
+track1Track3Dist              track1Track3Dist              track1Track3Dist              track1Track3Dist                                                'F'    [0.144009947777,24.7737579346]
+track2Track3Dist              track2Track3Dist              track2Track3Dist              track2Track3Dist                                                'F'    [0.0504532456398,24.8198566437]
+track1Shower1Dist             track1Shower1Dist             track1Shower1Dist             track1Shower1Dist                                               'F'    [0.0657141432166,149.308837891]
+track2Shower1Dist             track2Shower1Dist             track2Shower1Dist             track2Shower1Dist                                               'F'    [0.107110396028,148.995269775]
+track3Shower1Dist             track3Shower1Dist             track3Shower1Dist             track3Shower1Dist                                               'F'    [0.249850794673,149.143753052]
 NSpec 0
 
 
@@ -330,51 +330,51 @@ class ReadLD : public IClassifierReader {
 
 inline void ReadLD::Initialize() 
 {
-   fLDCoefficients.push_back( -0.197537338608 );
-   fLDCoefficients.push_back( 0.000133385806502 );
-   fLDCoefficients.push_back( -0.00553935175309 );
-   fLDCoefficients.push_back( -0.00201125639829 );
-   fLDCoefficients.push_back( 0.00367950365668 );
-   fLDCoefficients.push_back( -0.00263272307768 );
-   fLDCoefficients.push_back( -0.00501188694632 );
-   fLDCoefficients.push_back( -0.0155381936206 );
-   fLDCoefficients.push_back( -0.0023464035084 );
-   fLDCoefficients.push_back( 2.8320147043e-05 );
-   fLDCoefficients.push_back( 0.0095959974307 );
-   fLDCoefficients.push_back( 0.00523298456459 );
-   fLDCoefficients.push_back( 0.00527860342246 );
-   fLDCoefficients.push_back( 0.00870702732003 );
-   fLDCoefficients.push_back( -0.000130903583684 );
-   fLDCoefficients.push_back( -0.000312880217093 );
-   fLDCoefficients.push_back( -0.00270292833924 );
-   fLDCoefficients.push_back( -0.0101927563641 );
-   fLDCoefficients.push_back( -0.0161201079896 );
-   fLDCoefficients.push_back( 0.413241441304 );
-   fLDCoefficients.push_back( 0.0179596912996 );
-   fLDCoefficients.push_back( 0.0148542500904 );
-   fLDCoefficients.push_back( 0.160490374157 );
-   fLDCoefficients.push_back( -0.0379944224719 );
-   fLDCoefficients.push_back( 0.00632248700115 );
-   fLDCoefficients.push_back( 0.0307759577915 );
-   fLDCoefficients.push_back( 0.00312000931914 );
-   fLDCoefficients.push_back( -0.00270770072014 );
-   fLDCoefficients.push_back( 0.104791875387 );
-   fLDCoefficients.push_back( 0.0161575361708 );
-   fLDCoefficients.push_back( 0.00707333055037 );
-   fLDCoefficients.push_back( 0.0411133250795 );
-   fLDCoefficients.push_back( 0.0216413021594 );
-   fLDCoefficients.push_back( 0.0266713439466 );
-   fLDCoefficients.push_back( 0.019005760962 );
-   fLDCoefficients.push_back( -0.129036042885 );
-   fLDCoefficients.push_back( 0.0396271386395 );
-   fLDCoefficients.push_back( -0.000481974684071 );
-   fLDCoefficients.push_back( -0.0149606462925 );
-   fLDCoefficients.push_back( 0.0212249376098 );
-   fLDCoefficients.push_back( -0.0133792650931 );
-   fLDCoefficients.push_back( -0.0194312884292 );
-   fLDCoefficients.push_back( -0.00373437319131 );
-   fLDCoefficients.push_back( -0.00858183269045 );
-   fLDCoefficients.push_back( -0.00793652336517 );
+   fLDCoefficients.push_back( -0.27353626571 );
+   fLDCoefficients.push_back( 0.000340829525836 );
+   fLDCoefficients.push_back( -0.00490223788219 );
+   fLDCoefficients.push_back( -0.0025836383331 );
+   fLDCoefficients.push_back( 0.00373325578871 );
+   fLDCoefficients.push_back( -0.00304374361669 );
+   fLDCoefficients.push_back( -0.00505815282854 );
+   fLDCoefficients.push_back( -0.0172183970296 );
+   fLDCoefficients.push_back( -0.0061263552559 );
+   fLDCoefficients.push_back( 0.0081661605478 );
+   fLDCoefficients.push_back( 0.00549808533448 );
+   fLDCoefficients.push_back( 0.0092336691229 );
+   fLDCoefficients.push_back( -0.00194898511666 );
+   fLDCoefficients.push_back( 0.0142004727265 );
+   fLDCoefficients.push_back( 5.89122222344e-05 );
+   fLDCoefficients.push_back( -0.00112406663611 );
+   fLDCoefficients.push_back( -0.00233269721491 );
+   fLDCoefficients.push_back( -0.0097673216247 );
+   fLDCoefficients.push_back( -0.026806696075 );
+   fLDCoefficients.push_back( 0.376708595161 );
+   fLDCoefficients.push_back( -0.00494811060404 );
+   fLDCoefficients.push_back( 0.0241853360611 );
+   fLDCoefficients.push_back( 0.196781378813 );
+   fLDCoefficients.push_back( -0.0337651285836 );
+   fLDCoefficients.push_back( 0.0196221495749 );
+   fLDCoefficients.push_back( 0.0543934653914 );
+   fLDCoefficients.push_back( 0.00374161230019 );
+   fLDCoefficients.push_back( -0.00933672611688 );
+   fLDCoefficients.push_back( 0.0870233430438 );
+   fLDCoefficients.push_back( 0.013604350103 );
+   fLDCoefficients.push_back( 0.00454560093876 );
+   fLDCoefficients.push_back( 0.0432688649848 );
+   fLDCoefficients.push_back( 0.0169479312201 );
+   fLDCoefficients.push_back( 0.0446371226378 );
+   fLDCoefficients.push_back( 0.0205232217151 );
+   fLDCoefficients.push_back( -0.123916546656 );
+   fLDCoefficients.push_back( 0.0588652183683 );
+   fLDCoefficients.push_back( 0.0103763083645 );
+   fLDCoefficients.push_back( -0.00450868363405 );
+   fLDCoefficients.push_back( 0.0209499182411 );
+   fLDCoefficients.push_back( -0.0194929987847 );
+   fLDCoefficients.push_back( -0.0152270216141 );
+   fLDCoefficients.push_back( -0.0029505773298 );
+   fLDCoefficients.push_back( -4.34326008008e-05 );
+   fLDCoefficients.push_back( -0.0126550657438 );
 
    // sanity check
    if (fLDCoefficients.size() != fNvars+1) {

@@ -4,7 +4,7 @@
 void nTracksShowersSig()
 {
 //=========Macro generated from canvas: c1/Track-Shower Topology
-//=========  (Thu Jul  2 16:44:21 2026) by ROOT version 6.38.04
+//=========  (Wed Jul 22 15:11:07 2026) by ROOT version 6.40.02
    TCanvas *c1 = new TCanvas("c1", "Track-Shower Topology", 0, 0, 2000, 2000);
    gStyle->SetOptFit(0);
    gStyle->SetOptStat(0);
@@ -12,13 +12,12 @@ void nTracksShowersSig()
    TColor::SetPalette(63, nullptr);
    c1->Range(-2,-1.9,8,7.433333);
    c1->SetFillColor(0);
+   c1->SetFillStyle(1001);
    c1->SetBorderMode(0);
    c1->SetBorderSize(2);
    c1->SetLeftMargin(0.15);
    c1->SetRightMargin(0.15);
    c1->SetBottomMargin(0.15);
-   c1->SetFrameBorderMode(0);
-   c1->SetFrameBorderMode(0);
    
    TH2F *hTracksShowersSig = new TH2F("hTracksShowersSig", "", 7, -0.5, 6.5, 7, -0.5, 6.5);
    hTracksShowersSig->SetBinContent(11,349);
@@ -75,6 +74,8 @@ void nTracksShowersSig()
    palette->SetFillColor(TColor::GetColor("#efefd7"));
    palette->SetFillStyle(1001);
    hTracksShowersSig->GetListOfFunctions()->Add(palette,"br");
+   hTracksShowersSig->SetFillColor(0);
+   hTracksShowersSig->SetFillStyle(1001);
    hTracksShowersSig->SetLineColor(TColor::GetColor("#000099"));
    hTracksShowersSig->GetXaxis()->SetTitle("Number of tracks");
    hTracksShowersSig->GetXaxis()->CenterTitle(true);

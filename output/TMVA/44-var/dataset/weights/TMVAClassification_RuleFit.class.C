@@ -8,12 +8,12 @@
 
 Method         : RuleFit::RuleFit
 TMVA Release   : 4.2.1         [262657]
-ROOT Release   : 6.38/04       [402948]
+ROOT Release   : 6.40/02       [403458]
 Creator        : ooconnor
-Date           : Tue May  5 15:23:57 2026
-Host           : Linux buildvm-x86-29.rdu3.fedoraproject.org 6.18.7-200.fc43.x86_64 #1 SMP PREEMPT_DYNAMIC Fri Jan 23 16:42:34 UTC 2026 x86_64 x86_64 x86_64 GNU/Linux
+Date           : Wed Jul 22 12:43:04 2026
+Host           : Linux buildhw-x86-08.rdu3.fedoraproject.org 7.0.10-201.fc44.x86_64 #1 SMP PREEMPT_DYNAMIC Wed May 27 13:57:41 UTC 2026 x86_64 x86_64 x86_64 GNU/Linux
 Dir            : /home/lar/ooconnor/hyperons/srcs/sbndcode/sbndcode/Hyperons/output/TMVA/44-var
-Training events: 1980
+Training events: 1692
 Analysis type  : [Classification]
 
 
@@ -52,50 +52,50 @@ RFNendnodes: "4" [RFF: Average number of end nodes]
 #VAR -*-*-*-*-*-*-*-*-*-*-*-* variables *-*-*-*-*-*-*-*-*-*-*-*-
 
 NVar 44
-track1Length                  track1Length                  track1Length                  track1Length                                                    'F'    [3.3750936985,497.482116699]
-track2Length                  track2Length                  track2Length                  track2Length                                                    'F'    [0.668267309666,124.048629761]
-track3Length                  track3Length                  track3Length                  track3Length                                                    'F'    [0.216892331839,59.6913223267]
-shower1Length                 shower1Length                 shower1Length                 shower1Length                                                   'F'    [0.288653701544,79.4986419678]
-track1StartPosX               track1StartPosX               track1StartPosX               track1StartPosX                                                 'F'    [-179.433944702,178.916015625]
-track1StartPosY               track1StartPosY               track1StartPosY               track1StartPosY                                                 'F'    [-179.165420532,179.862884521]
-track1StartPosZ               track1StartPosZ               track1StartPosZ               track1StartPosZ                                                 'F'    [11.2613458633,448.472045898]
+track1Length                  track1Length                  track1Length                  track1Length                                                    'F'    [7.33393287659,497.482116699]
+track2Length                  track2Length                  track2Length                  track2Length                                                    'F'    [0.683150887489,123.739303589]
+track3Length                  track3Length                  track3Length                  track3Length                                                    'F'    [0.216892331839,57.867401123]
+shower1Length                 shower1Length                 shower1Length                 shower1Length                                                   'F'    [0.27361536026,79.4986419678]
+track1StartPosX               track1StartPosX               track1StartPosX               track1StartPosX                                                 'F'    [-180.186538696,178.7628479]
+track1StartPosY               track1StartPosY               track1StartPosY               track1StartPosY                                                 'F'    [-179.319534302,179.799804688]
+track1StartPosZ               track1StartPosZ               track1StartPosZ               track1StartPosZ                                                 'F'    [11.7916879654,449.336975098]
 track2StartPosX               track2StartPosX               track2StartPosX               track2StartPosX                                                 'F'    [-184.143035889,179.033325195]
-track2StartPosY               track2StartPosY               track2StartPosY               track2StartPosY                                                 'F'    [-179.187866211,179.388000488]
-track2StartPosZ               track2StartPosZ               track2StartPosZ               track2StartPosZ                                                 'F'    [1.57719552517,449.460479736]
+track2StartPosY               track2StartPosY               track2StartPosY               track2StartPosY                                                 'F'    [-179.547027588,179.388000488]
+track2StartPosZ               track2StartPosZ               track2StartPosZ               track2StartPosZ                                                 'F'    [10.4146785736,449.460479736]
 track3StartPosX               track3StartPosX               track3StartPosX               track3StartPosX                                                 'F'    [-189.040328979,179.923812866]
-track3StartPosY               track3StartPosY               track3StartPosY               track3StartPosY                                                 'F'    [-179.719909668,179.430679321]
-track3StartPosZ               track3StartPosZ               track3StartPosZ               track3StartPosZ                                                 'F'    [10.7707462311,449.016326904]
+track3StartPosY               track3StartPosY               track3StartPosY               track3StartPosY                                                 'F'    [-178.589492798,179.430679321]
+track3StartPosZ               track3StartPosZ               track3StartPosZ               track3StartPosZ                                                 'F'    [8.91545963287,449.498199463]
 shower1StartPosX              shower1StartPosX              shower1StartPosX              shower1StartPosX                                                'F'    [-179.858627319,179.88949585]
-shower1StartPosY              shower1StartPosY              shower1StartPosY              shower1StartPosY                                                'F'    [-179.989151001,179.786865234]
-shower1StartPosZ              shower1StartPosZ              shower1StartPosZ              shower1StartPosZ                                                'F'    [10.9723749161,449.200012207]
-track1StartDirX               track1StartDirX               track1StartDirX               track1StartDirX                                                 'F'    [-0.996992707253,0.997194826603]
-track1StartDirY               track1StartDirY               track1StartDirY               track1StartDirY                                                 'F'    [-0.992119729519,0.998312830925]
-track1StartDirZ               track1StartDirZ               track1StartDirZ               track1StartDirZ                                                 'F'    [-0.998379170895,0.999814867973]
-track2StartDirX               track2StartDirX               track2StartDirX               track2StartDirX                                                 'F'    [-0.999767065048,0.993617773056]
-track2StartDirY               track2StartDirY               track2StartDirY               track2StartDirY                                                 'F'    [-0.996999800205,0.997133076191]
-track2StartDirZ               track2StartDirZ               track2StartDirZ               track2StartDirZ                                                 'F'    [-0.999366760254,0.999572038651]
-track3StartDirX               track3StartDirX               track3StartDirX               track3StartDirX                                                 'F'    [-0.985143780708,0.999216675758]
-track3StartDirY               track3StartDirY               track3StartDirY               track3StartDirY                                                 'F'    [-1,0.998889923096]
+shower1StartPosY              shower1StartPosY              shower1StartPosY              shower1StartPosY                                                'F'    [-179.960083008,179.960083008]
+shower1StartPosZ              shower1StartPosZ              shower1StartPosZ              shower1StartPosZ                                                'F'    [10.2999973297,450]
+track1StartDirX               track1StartDirX               track1StartDirX               track1StartDirX                                                 'F'    [-0.998579978943,0.979828178883]
+track1StartDirY               track1StartDirY               track1StartDirY               track1StartDirY                                                 'F'    [-0.998742222786,0.991557955742]
+track1StartDirZ               track1StartDirZ               track1StartDirZ               track1StartDirZ                                                 'F'    [-0.9913610816,0.999958515167]
+track2StartDirX               track2StartDirX               track2StartDirX               track2StartDirX                                                 'F'    [-0.999767065048,0.997966349125]
+track2StartDirY               track2StartDirY               track2StartDirY               track2StartDirY                                                 'F'    [-0.993577957153,0.999500989914]
+track2StartDirZ               track2StartDirZ               track2StartDirZ               track2StartDirZ                                                 'F'    [-0.993504941463,0.999074459076]
+track3StartDirX               track3StartDirX               track3StartDirX               track3StartDirX                                                 'F'    [-0.995975494385,0.999216675758]
+track3StartDirY               track3StartDirY               track3StartDirY               track3StartDirY                                                 'F'    [-0.999849736691,0.999198257923]
 track3StartDirZ               track3StartDirZ               track3StartDirZ               track3StartDirZ                                                 'F'    [-0.999650120735,0.999991297722]
-shower1DirX                   shower1DirX                   shower1DirX                   shower1DirX                                                     'F'    [-0.999896168709,0.997747778893]
-shower1DirY                   shower1DirY                   shower1DirY                   shower1DirY                                                     'F'    [-0.999887228012,0.999979555607]
-shower1DirZ                   shower1DirZ                   shower1DirZ                   shower1DirZ                                                     'F'    [-0.999977707863,0.999600112438]
-track1DistRecoVtx             track1DistRecoVtx             track1DistRecoVtx             track1DistRecoVtx                                               'F'    [0.00780916493386,21.3518218994]
-track2DistRecoVtx             track2DistRecoVtx             track2DistRecoVtx             track2DistRecoVtx                                               'F'    [0.0401425473392,24.7521018982]
-track3DistRecoVtx             track3DistRecoVtx             track3DistRecoVtx             track3DistRecoVtx                                               'F'    [0.0389196760952,23.402261734]
-shower1DistRecoVtx            shower1DistRecoVtx            shower1DistRecoVtx            shower1DistRecoVtx                                              'F'    [0.080524072051,145.794692993]
-track1Track2Angle             track1Track2Angle             track1Track2Angle             track1Track2Angle                                               'F'    [0.0271168034524,3.12710142136]
-track1Track3Angle             track1Track3Angle             track1Track3Angle             track1Track3Angle                                               'F'    [0.0317326337099,3.12610054016]
-track2Track3Angle             track2Track3Angle             track2Track3Angle             track2Track3Angle                                               'F'    [0.0874138325453,3.13083386421]
-track1Shower1Angle            track1Shower1Angle            track1Shower1Angle            track1Shower1Angle                                              'F'    [0.0256664715707,3.13105106354]
-track2Shower1Angle            track2Shower1Angle            track2Shower1Angle            track2Shower1Angle                                              'F'    [0.0217770617455,3.11840891838]
-track3Shower1Angle            track3Shower1Angle            track3Shower1Angle            track3Shower1Angle                                              'F'    [0.0397528596222,3.12469959259]
-track1Track2Dist              track1Track2Dist              track1Track2Dist              track1Track2Dist                                                'F'    [0.0596877634525,23.1157016754]
-track1Track3Dist              track1Track3Dist              track1Track3Dist              track1Track3Dist                                                'F'    [0.0814367309213,23.5304908752]
-track2Track3Dist              track2Track3Dist              track2Track3Dist              track2Track3Dist                                                'F'    [0.069206610322,24.8198566437]
-track1Shower1Dist             track1Shower1Dist             track1Shower1Dist             track1Shower1Dist                                               'F'    [0.136097967625,145.820327759]
-track2Shower1Dist             track2Shower1Dist             track2Shower1Dist             track2Shower1Dist                                               'F'    [0.194910004735,145.924835205]
-track3Shower1Dist             track3Shower1Dist             track3Shower1Dist             track3Shower1Dist                                               'F'    [0.221913710237,146.716842651]
+shower1DirX                   shower1DirX                   shower1DirX                   shower1DirX                                                     'F'    [-0.999537050724,0.998606026173]
+shower1DirY                   shower1DirY                   shower1DirY                   shower1DirY                                                     'F'    [-0.999999523163,0.999979555607]
+shower1DirZ                   shower1DirZ                   shower1DirZ                   shower1DirZ                                                     'F'    [-0.999928534031,0.999025404453]
+track1DistRecoVtx             track1DistRecoVtx             track1DistRecoVtx             track1DistRecoVtx                                               'F'    [0.011263561435,24.1892757416]
+track2DistRecoVtx             track2DistRecoVtx             track2DistRecoVtx             track2DistRecoVtx                                               'F'    [0.0300045255572,23.0639324188]
+track3DistRecoVtx             track3DistRecoVtx             track3DistRecoVtx             track3DistRecoVtx                                               'F'    [0.0615230388939,24.6800708771]
+shower1DistRecoVtx            shower1DistRecoVtx            shower1DistRecoVtx            shower1DistRecoVtx                                              'F'    [0.126927226782,149.187347412]
+track1Track2Angle             track1Track2Angle             track1Track2Angle             track1Track2Angle                                               'F'    [0.0231973510236,3.13524246216]
+track1Track3Angle             track1Track3Angle             track1Track3Angle             track1Track3Angle                                               'F'    [0.0317326337099,3.12213802338]
+track2Track3Angle             track2Track3Angle             track2Track3Angle             track2Track3Angle                                               'F'    [0.0874138325453,3.10517930984]
+track1Shower1Angle            track1Shower1Angle            track1Shower1Angle            track1Shower1Angle                                              'F'    [0.0611684918404,3.10714864731]
+track2Shower1Angle            track2Shower1Angle            track2Shower1Angle            track2Shower1Angle                                              'F'    [0.077812589705,3.11840891838]
+track3Shower1Angle            track3Shower1Angle            track3Shower1Angle            track3Shower1Angle                                              'F'    [0.0440997816622,3.12356185913]
+track1Track2Dist              track1Track2Dist              track1Track2Dist              track1Track2Dist                                                'F'    [0.0726580917835,23.1783218384]
+track1Track3Dist              track1Track3Dist              track1Track3Dist              track1Track3Dist                                                'F'    [0.144009947777,24.7737579346]
+track2Track3Dist              track2Track3Dist              track2Track3Dist              track2Track3Dist                                                'F'    [0.0504532456398,24.8198566437]
+track1Shower1Dist             track1Shower1Dist             track1Shower1Dist             track1Shower1Dist                                               'F'    [0.0657141432166,149.308837891]
+track2Shower1Dist             track2Shower1Dist             track2Shower1Dist             track2Shower1Dist                                               'F'    [0.107110396028,148.995269775]
+track3Shower1Dist             track3Shower1Dist             track3Shower1Dist             track3Shower1Dist                                               'F'    [0.249850794673,149.143753052]
 NSpec 0
 
 
@@ -349,113 +349,124 @@ class ReadRuleFit : public IClassifierReader {
 void   ReadRuleFit::Initialize(){}
 void   ReadRuleFit::Clear(){}
 double ReadRuleFit::GetMvaValue__( const std::vector<double>& inputValues ) const {
-   double rval=-0.0276799137;
+   double rval=-1.408837668;
    //
    // here follows all rules ordered in importance (most important first)
    // at the end of each line, the relative importance of the rule is given
    //
-   if ((inputValues[31]<2.425075531)&&(inputValues[43]<42.0776062)) rval+=-0.3679827115;   // importance = 0.919
-   if ((inputValues[32]<2.24139142)&&(inputValues[34]<0.9569624066)&&(6.834903717<inputValues[43])) rval+=0.3279981053;   // importance = 0.773
-   if ((inputValues[3]<7.832462311)) rval+=-0.2340424116;   // importance = 0.648
-   if ((2.425075531<inputValues[31])&&(inputValues[43]<42.0776062)) rval+=0.2169716611;   // importance = 0.609
-   if ((0.8095106483<inputValues[18])&&(inputValues[40]<2.42641139)) rval+=0.2127162372;   // importance = 0.590
-   if ((7.832462311<inputValues[3])) rval+=0.2053943239;   // importance = 0.569
-   if ((inputValues[29]<2.393662453)&&(inputValues[30]<1.151285291)) rval+=-0.2086239587;   // importance = 0.566
-   if ((1.196133256<inputValues[32])&&(inputValues[38]<1.157593131)) rval+=-0.2253682973;   // importance = 0.531
-   if ((inputValues[30]<2.263999939)) rval+=-0.1908013322;   // importance = 0.511
-   if ((inputValues[1]<24.16928864)&&(0.6773825288<inputValues[30])&&(inputValues[32]<2.24139142)&&(0.9569624066<inputValues[34])&&(inputValues[40]<2.41149044)) rval+=0.2150715618;   // importance = 0.501
-   if ((inputValues[1]<23.42126274)&&(inputValues[6]<386.0133667)&&(-30.91283989<inputValues[10])&&(0.9056471586<inputValues[18])) rval+=0.2523193396;   // importance = 0.461
-   if ((24.16928864<inputValues[1])&&(inputValues[32]<2.24139142)&&(0.9569624066<inputValues[34])&&(inputValues[38]<2.255927801)) rval+=-0.1881125777;   // importance = 0.375
-   if ((inputValues[29]<2.393662453)) rval+=-0.1237452764;   // importance = 0.320
-   if ((inputValues[2]<20.04170227)&&(0.238071546<inputValues[21])&&(inputValues[33]<1.541231632)&&(inputValues[34]<1.787982583)) rval+=0.1141332431;   // importance = 0.316
-   if ((inputValues[8]<-25.51249504)&&(inputValues[37]<1.361872911)) rval+=0.1398383051;   // importance = 0.309
-   if ((1.391736746<inputValues[34])) rval+=-0.107710162;   // importance = 0.304
-   if ((24.16928864<inputValues[1])&&(inputValues[32]<2.24139142)&&(0.9569624066<inputValues[34])) rval+=-0.1251739635;   // importance = 0.293
-   if ((inputValues[29]<2.393662453)&&(inputValues[30]<4.414189816)&&(inputValues[40]<3.605013847)) rval+=-0.106725318;   // importance = 0.291
-   if ((inputValues[38]<4.451309681)) rval+=-0.1271530585;   // importance = 0.284
-   if ((0.9128267169<inputValues[32])) rval+=0.1141605485;   // importance = 0.282
-   if ((inputValues[3]<7.832462311)&&(1.101887226<inputValues[34])) rval+=-0.1108817612;   // importance = 0.278
-   if ((inputValues[1]<23.42126274)&&(inputValues[6]<386.0133667)&&(-30.91283989<inputValues[10])&&(inputValues[18]<0.9056471586)) rval+=-0.1324332752;   // importance = 0.271
-   if ((2.42641139<inputValues[40])) rval+=-0.1057252635;   // importance = 0.270
-   if ((2.263999939<inputValues[30])) rval+=0.08987212749;   // importance = 0.241
-   if ((inputValues[32]<2.24139142)&&(inputValues[34]<0.9569624066)&&(inputValues[43]<6.834903717)) rval+=-0.1474788084;   // importance = 0.238
-   if ((inputValues[27]<0.3330741823)) rval+=-0.07888901752;   // importance = 0.223
-   if ((inputValues[2]<20.04170227)&&(0.238071546<inputValues[21])) rval+=0.08364718392;   // importance = 0.216
-   if ((inputValues[1]<24.16928864)&&(inputValues[32]<2.24139142)&&(0.9569624066<inputValues[34])) rval+=0.07586580022;   // importance = 0.211
-   if ((inputValues[1]<29.88163757)&&(0.8367107511<inputValues[29])&&(inputValues[30]<1.155841112)&&(inputValues[43]<7.197862625)) rval+=-0.1292010198;   // importance = 0.198
-   if ((inputValues[39]<1.198058367)) rval+=-0.07255976085;   // importance = 0.195
-   if ((-25.42500114<inputValues[13])&&(219.6522064<inputValues[15])&&(1.361872911<inputValues[37])) rval+=0.07955154596;   // importance = 0.165
-   if ((inputValues[1]<12.47065258)&&(inputValues[3]<11.14969921)&&(inputValues[6]<386.0133667)&&(inputValues[10]<-30.91283989)) rval+=-0.1105517402;   // importance = 0.160
-   if ((inputValues[9]<330.2403259)&&(inputValues[15]<219.6522064)&&(1.361872911<inputValues[37])) rval+=-0.0600836288;   // importance = 0.154
-   if ((inputValues[15]<219.6522064)&&(1.361872911<inputValues[37])) rval+=-0.0600836288;   // importance = 0.154
-   if ((inputValues[17]<0.0529522188)&&(inputValues[25]<-0.5242666602)) rval+=-0.06610665453;   // importance = 0.128
-   if ((inputValues[34]<1.391736746)) rval+=0.03632092008;   // importance = 0.103
-   if ((inputValues[1]<18.44228935)&&(inputValues[18]<0.5240544081)&&(1.151152492<inputValues[29])) rval+=-0.08866829563;   // importance = 0.100
-   if ((0.2385980934<inputValues[18])) rval+=0.0529858265;   // importance = 0.094
-   if ((1.361872911<inputValues[37])) rval+=-0.03215070911;   // importance = 0.091
-   if ((-9.526371002<inputValues[13])&&(0.3338111043<inputValues[27])&&(inputValues[32]<0.9128267169)&&(inputValues[34]<1.971435785)) rval+=-0.08602964226;   // importance = 0.089
-   if ((1.198058367<inputValues[39])) rval+=0.03191684306;   // importance = 0.086
-   if ((inputValues[1]<47.67031097)&&(inputValues[18]<0.2385980934)&&(inputValues[24]<0.8088559508)&&(inputValues[37]<1.742861152)) rval+=-0.08062490174;   // importance = 0.086
-   if ((0.3330741823<inputValues[27])&&(inputValues[41]<7.122433186)) rval+=0.0374931196;   // importance = 0.082
-   if ((inputValues[32]<1.196133256)&&(inputValues[38]<1.157593131)) rval+=-0.04186711023;   // importance = 0.081
-   if ((inputValues[18]<0.5240544081)&&(inputValues[29]<1.151152492)) rval+=-0.04258906084;   // importance = 0.080
-   if ((inputValues[20]<-0.5222062469)) rval+=-0.03806858991;   // importance = 0.080
-   if ((inputValues[17]<0.6191828251)&&(inputValues[26]<-0.1417738944)&&(0.768486917<inputValues[33])&&(inputValues[41]<69.50954437)) rval+=0.02921324765;   // importance = 0.076
-   if ((inputValues[2]<20.04170227)&&(0.238071546<inputValues[21])&&(1.541231632<inputValues[33])) rval+=0.02684326922;   // importance = 0.069
-   if ((2.393662453<inputValues[29])) rval+=0.02675117774;   // importance = 0.069
-   if ((inputValues[2]<20.04170227)&&(0.238071546<inputValues[21])&&(inputValues[33]<1.541231632)) rval+=0.02311569272;   // importance = 0.065
-   if ((inputValues[40]<2.42641139)) rval+=0.02463674256;   // importance = 0.063
-   if ((inputValues[17]<0.6191828251)&&(inputValues[41]<69.50954437)) rval+=0.03032442519;   // importance = 0.062
-   if ((inputValues[32]<2.24139142)&&(inputValues[34]<0.9569624066)) rval+=0.02157723158;   // importance = 0.057
-   if ((20.04170227<inputValues[2])&&(0.9569624066<inputValues[34])) rval+=-0.04353768801;   // importance = 0.056
-   if ((inputValues[32]<2.24139142)&&(0.9569624066<inputValues[34])) rval+=0.01999315968;   // importance = 0.056
-   if ((-0.5222062469<inputValues[20])) rval+=0.02394721958;   // importance = 0.050
-   if ((inputValues[32]<2.24139142)) rval+=0.02850584377;   // importance = 0.047
-   if ((0.3330741823<inputValues[27])&&(7.122433186<inputValues[41])) rval+=0.01819498718;   // importance = 0.046
-   if ((inputValues[18]<0.2385980934)) rval+=-0.02463989188;   // importance = 0.044
-   if ((0.8109633327<inputValues[18])&&(2.393662453<inputValues[29])&&(inputValues[36]<1.528510571)&&(2.851207733<inputValues[43])) rval+=-0.02538439517;   // importance = 0.041
-   if ((2.393662453<inputValues[29])&&(7.197862625<inputValues[43])) rval+=0.01616164723;   // importance = 0.037
-   if ((219.1283875<inputValues[15])&&(inputValues[34]<1.391736746)) rval+=0.01295903941;   // importance = 0.034
-   if ((inputValues[2]<20.04170227)) rval+=0.01836548432;   // importance = 0.034
-   if ((inputValues[15]<221.5095215)&&(inputValues[27]<0.3338111043)&&(inputValues[32]<0.9128267169)&&(inputValues[34]<1.971435785)) rval+=-0.02345070301;   // importance = 0.033
-   if ((0.0529522188<inputValues[17])&&(inputValues[25]<-0.5242666602)) rval+=0.01808191074;   // importance = 0.031
-   if ((inputValues[41]<69.50954437)) rval+=0.02160655094;   // importance = 0.030
-   if ((0.3330741823<inputValues[27])) rval+=0.01039547023;   // importance = 0.029
-   if ((inputValues[17]<0.6191828251)&&(0.768486917<inputValues[33])&&(inputValues[41]<69.50954437)) rval+=0.01049500905;   // importance = 0.028
-   if ((inputValues[1]<12.47065258)&&(11.14969921<inputValues[3])&&(inputValues[6]<386.0133667)&&(inputValues[10]<-30.91283989)) rval+=0.01968848073;   // importance = 0.027
-   if ((inputValues[6]<386.0133667)) rval+=0.01352037385;   // importance = 0.026
-   if ((24.16928864<inputValues[1])&&(inputValues[32]<2.24139142)&&(0.9569624066<inputValues[34])&&(2.255927801<inputValues[38])) rval+=0.008767770867;   // importance = 0.013
-   if ((inputValues[1]<24.16928864)&&(inputValues[30]<0.6773825288)&&(inputValues[32]<2.24139142)&&(0.9569624066<inputValues[34])&&(inputValues[40]<2.41149044)) rval+=-0.006196898378;   // importance = 0.010
-   if ((inputValues[6]<386.0133667)&&(-30.91283989<inputValues[10])) rval+=0.003296305616;   // importance = 0.009
-   if ((inputValues[7]<-28.1426487)&&(inputValues[27]<0.3330741823)) rval+=-0.002943695626;   // importance = 0.007
-   if ((2.393662453<inputValues[29])&&(inputValues[43]<7.197862625)) rval+=0.003891779458;   // importance = 0.006
-   if ((283.6835938<inputValues[12])&&(inputValues[32]<2.24139142)&&(inputValues[34]<0.9569624066)&&(inputValues[43]<6.834903717)) rval+=-0.003871768358;   // importance = 0.004
-   if ((inputValues[13]<-25.42500114)&&(219.6522064<inputValues[15])&&(1.361872911<inputValues[37])) rval+=-0.0009801690921;   // importance = 0.002
+   if ((4.046235561<inputValues[3])) rval+=0.3258983821;   // importance = 0.617
+   if ((7.197022915<inputValues[42])) rval+=0.2347180408;   // importance = 0.562
+   if ((77.35510254<inputValues[0])&&(3.427876949<inputValues[41])&&(inputValues[41]<71.13386536)) rval+=0.2295264002;   // importance = 0.555
+   if ((9.025535583<inputValues[1])&&(inputValues[1]<35.84205246)) rval+=0.2153611406;   // importance = 0.518
+   if ((inputValues[42]<7.197022915)) rval+=-0.2146286669;   // importance = 0.514
+   if ((0.4310100675<inputValues[18])&&(inputValues[34]<1.274573922)) rval+=0.1727456014;   // importance = 0.413
+   if ((inputValues[3]<22.02938843)&&(0.6205432415<inputValues[18])) rval+=0.1551543088;   // importance = 0.373
+   if ((10.31787205<inputValues[3])&&(0.715551734<inputValues[18])&&(1.233834863<inputValues[30])) rval+=0.1701552711;   // importance = 0.353
+   if ((0.4297660589<inputValues[21])) rval+=0.1637701294;   // importance = 0.352
+   if ((inputValues[15]<387.1856995)&&(inputValues[17]<0.5176769495)) rval+=0.1669951777;   // importance = 0.348
+   if ((inputValues[41]<42.70660782)&&(2.303953648<inputValues[42])) rval+=0.1175795123;   // importance = 0.271
+   if ((1.172927737<inputValues[38])) rval+=0.1138697024;   // importance = 0.266
+   if ((1.233834863<inputValues[30])&&(1.172927737<inputValues[38])) rval+=0.1087922815;   // importance = 0.257
+   if ((inputValues[41]<42.70660782)&&(inputValues[42]<2.303953648)) rval+=-0.1330506258;   // importance = 0.255
+   if ((1.086059332<inputValues[34])&&(inputValues[42]<7.197022915)) rval+=-0.1101401916;   // importance = 0.244
+   if ((-0.4241268337<inputValues[20])) rval+=0.1208359953;   // importance = 0.242
+   if ((77.35510254<inputValues[0])&&(inputValues[41]<71.13386536)) rval+=0.1027627779;   // importance = 0.233
+   if ((inputValues[3]<7.818855762)&&(inputValues[30]<1.233834863)) rval+=-0.1202788197;   // importance = 0.231
+   if ((inputValues[21]<0.1451118588)) rval+=-0.1148155098;   // importance = 0.211
+   if ((inputValues[20]<-0.4241268337)) rval+=-0.09926388013;   // importance = 0.199
+   if ((10.31787205<inputValues[3])&&(0.715551734<inputValues[18])&&(0.6266446114<inputValues[21])&&(1.233834863<inputValues[30])) rval+=0.1074333551;   // importance = 0.184
+   if ((inputValues[21]<0.3348813355)&&(0.9107803106<inputValues[32])) rval+=-0.09279507172;   // importance = 0.184
+   if ((0.715551734<inputValues[18])&&(1.233834863<inputValues[30])) rval+=0.07549780613;   // importance = 0.178
+   if ((10.28695393<inputValues[3])&&(inputValues[3]<15.36409664)&&(inputValues[15]<387.1856995)&&(inputValues[17]<0.5176769495)&&(-0.7140720487<inputValues[26])) rval+=0.1027368133;   // importance = 0.167
+   if ((73.13550568<inputValues[9])&&(inputValues[22]<0.02749273926)) rval+=0.06700713127;   // importance = 0.161
+   if ((1.233834863<inputValues[30])) rval+=0.06204504155;   // importance = 0.149
+   if ((inputValues[41]<71.13386536)) rval+=0.1179844414;   // importance = 0.147
+   if ((7.580634117<inputValues[3])&&(inputValues[18]<0.715551734)&&(1.233834863<inputValues[30])) rval+=0.09483894361;   // importance = 0.136
+   if ((inputValues[38]<1.172927737)) rval+=-0.05772790212;   // importance = 0.135
+   if ((inputValues[21]<0.4297660589)&&(1.237038732<inputValues[34])) rval+=-0.06978077386;   // importance = 0.133
+   if ((inputValues[3]<22.02938843)&&(inputValues[18]<0.6205432415)) rval+=-0.06546514414;   // importance = 0.133
+   if ((inputValues[3]<10.31787205)&&(0.715551734<inputValues[18])&&(1.233834863<inputValues[30])) rval+=-0.07663753846;   // importance = 0.130
+   if ((inputValues[30]<1.233834863)&&(inputValues[41]<14.41773319)) rval+=-0.05734768063;   // importance = 0.125
+   if ((inputValues[30]<1.233834863)) rval+=-0.05130229852;   // importance = 0.123
+   if ((73.13550568<inputValues[9])) rval+=0.06856268398;   // importance = 0.115
+   if ((inputValues[1]<35.84205246)&&(1.222452283<inputValues[35])) rval+=0.04581895814;   // importance = 0.111
+   if ((inputValues[9]<73.13550568)) rval+=-0.06457850206;   // importance = 0.109
+   if ((-0.1433387995<inputValues[23])&&(inputValues[38]<1.172927737)) rval+=-0.05346757613;   // importance = 0.106
+   if ((inputValues[15]<387.1856995)&&(inputValues[17]<0.5176769495)&&(inputValues[26]<-0.7140720487)) rval+=0.07306951942;   // importance = 0.105
+   if ((inputValues[18]<0.4310100675)) rval+=-0.05555718566;   // importance = 0.102
+   if ((71.13386536<inputValues[41])) rval+=-0.07903826014;   // importance = 0.098
+   if ((inputValues[3]<7.818855762)&&(1.15906918<inputValues[29])&&(inputValues[30]<1.233834863)) rval+=-0.07660785423;   // importance = 0.093
+   if ((inputValues[1]<35.84205246)&&(inputValues[35]<1.222452283)) rval+=-0.04129378279;   // importance = 0.092
+   if ((inputValues[34]<1.086059332)&&(inputValues[42]<7.197022915)) rval+=-0.05391561456;   // importance = 0.087
+   if ((387.1856995<inputValues[15])&&(inputValues[25]<0.142328009)) rval+=-0.07211564679;   // importance = 0.087
+   if ((inputValues[3]<7.580634117)&&(inputValues[18]<0.715551734)&&(1.233834863<inputValues[30])) rval+=-0.07233251272;   // importance = 0.086
+   if ((5.54259634<inputValues[2])&&(1.233834863<inputValues[30])) rval+=0.03991336158;   // importance = 0.084
+   if ((7.818855762<inputValues[3])&&(inputValues[30]<1.233834863)) rval+=0.03698956023;   // importance = 0.078
+   if ((inputValues[3]<22.02938843)) rval+=0.03202440241;   // importance = 0.064
+   if ((6.542967796<inputValues[1])&&(inputValues[17]<-0.06164392829)&&(inputValues[26]<0.7142682672)&&(1.07868588<inputValues[34])&&(inputValues[35]<2.050014973)) rval+=-0.03246225901;   // importance = 0.058
+   if ((inputValues[1]<35.84205246)) rval+=0.02776234474;   // importance = 0.054
+   if ((inputValues[1]<17.6740284)&&(inputValues[3]<7.818855762)&&(1.15906918<inputValues[29])&&(inputValues[30]<1.233834863)) rval+=-0.06092978911;   // importance = 0.053
+   if ((inputValues[16]<-0.1512182653)&&(inputValues[21]<0.1451118588)) rval+=-0.04150495278;   // importance = 0.046
+   if ((77.35510254<inputValues[0])&&(0.04750372469<inputValues[26])&&(inputValues[41]<71.13386536)) rval+=0.01929035806;   // importance = 0.043
+   if ((0.1465358287<inputValues[18])) rval+=0.0296321776;   // importance = 0.041
+   if ((0.4310100675<inputValues[18])&&(1.274573922<inputValues[34])) rval+=-0.01681626782;   // importance = 0.040
+   if ((inputValues[24]<0.3334441483)&&(inputValues[30]<1.233834863)&&(2.210404873<inputValues[40])) rval+=0.03822721777;   // importance = 0.039
+   if ((6.542967796<inputValues[1])&&(0.7142682672<inputValues[26])) rval+=-0.02521388809;   // importance = 0.037
+   if ((inputValues[37]<1.510510325)&&(inputValues[41]<42.70660782)&&(inputValues[42]<2.303953648)) rval+=-0.02592770452;   // importance = 0.035
+   if ((6.542967796<inputValues[1])&&(-0.06164392829<inputValues[17])&&(inputValues[26]<0.7142682672)&&(inputValues[35]<2.050014973)) rval+=0.01489433799;   // importance = 0.033
+   if ((7.818855762<inputValues[3])&&(inputValues[30]<1.233834863)&&(2.023113251<inputValues[38])) rval+=0.02225309141;   // importance = 0.029
+   if ((inputValues[3]<15.36409664)&&(inputValues[37]<1.510510325)&&(inputValues[41]<42.70660782)&&(inputValues[42]<2.303953648)) rval+=-0.02230543294;   // importance = 0.026
+   if ((77.35510254<inputValues[0])&&(inputValues[26]<0.04750372469)&&(inputValues[41]<71.13386536)) rval+=-0.01013005009;   // importance = 0.023
+   if ((inputValues[1]<18.29898834)&&(inputValues[3]<7.580634117)&&(inputValues[18]<0.715551734)&&(1.233834863<inputValues[30])) rval+=-0.02687423008;   // importance = 0.022
+   if ((10.28695393<inputValues[3])&&(inputValues[3]<15.36409664)&&(inputValues[15]<387.1856995)&&(inputValues[17]<0.5176769495)&&(inputValues[22]<0.04690494388)&&(-0.04712063447<inputValues[23])&&(-0.7140720487<inputValues[26])) rval+=0.02174989906;   // importance = 0.021
+   if ((1.510510325<inputValues[37])&&(inputValues[40]<2.46161437)&&(inputValues[41]<42.70660782)&&(inputValues[42]<2.303953648)) rval+=-0.01507107322;   // importance = 0.021
+   if ((6.542967796<inputValues[1])) rval+=-0.01115462936;   // importance = 0.020
+   if ((inputValues[0]<77.35510254)&&(inputValues[41]<71.13386536)) rval+=0.008107817549;   // importance = 0.017
+   if ((inputValues[1]<18.29898834)&&(inputValues[3]<7.580634117)&&(inputValues[18]<0.715551734)&&(1.233834863<inputValues[30])&&(inputValues[34]<1.549328208)) rval+=-0.02034329872;   // importance = 0.013
+   if ((1.510510325<inputValues[37])&&(2.46161437<inputValues[40])&&(inputValues[41]<42.70660782)&&(inputValues[42]<2.303953648)) rval+=0.0185992695;   // importance = 0.013
+   if ((inputValues[2]<5.54259634)&&(1.233834863<inputValues[30])) rval+=-0.0044984262;   // importance = 0.010
+   if ((387.1856995<inputValues[15])&&(0.142328009<inputValues[25])) rval+=0.008144230647;   // importance = 0.010
+   if ((inputValues[24]<0.3334441483)&&(inputValues[30]<1.233834863)&&(inputValues[40]<2.210404873)) rval+=-0.003955112464;   // importance = 0.007
+   if ((10.28695393<inputValues[3])&&(inputValues[3]<15.36409664)&&(inputValues[15]<387.1856995)&&(inputValues[17]<0.5176769495)&&(inputValues[22]<0.04690494388)&&(inputValues[23]<-0.04712063447)&&(-0.7140720487<inputValues[26])) rval+=-0.008515307693;   // importance = 0.007
+   if ((0.3334441483<inputValues[24])&&(inputValues[30]<1.233834863)) rval+=-0.002787371604;   // importance = 0.006
+   if ((inputValues[9]<73.13550568)&&(3.578458548<inputValues[30])) rval+=-0.006150450635;   // importance = 0.005
+   if ((10.28695393<inputValues[3])&&(inputValues[3]<15.36409664)&&(inputValues[15]<387.1856995)&&(inputValues[17]<0.5176769495)&&(0.04690494388<inputValues[22])&&(-0.7140720487<inputValues[26])) rval+=0.003695138714;   // importance = 0.004
+   if ((inputValues[3]<7.818855762)&&(inputValues[29]<1.15906918)&&(inputValues[30]<1.233834863)) rval+=-0.001939959975;   // importance = 0.003
+   if ((1.510510325<inputValues[37])&&(inputValues[41]<42.70660782)&&(inputValues[42]<2.303953648)) rval+=-0.001961219941;   // importance = 0.003
+   if ((inputValues[15]<387.1856995)&&(inputValues[17]<0.5176769495)&&(-0.7140720487<inputValues[26])) rval+=0.001241334159;   // importance = 0.003
+   if ((inputValues[24]<0.3334441483)&&(inputValues[30]<1.233834863)) rval+=0.001286937325;   // importance = 0.003
+   if ((inputValues[15]<387.1856995)&&(0.5176769495<inputValues[17])) rval+=-0.001228203164;   // importance = 0.002
+   if ((inputValues[0]<77.35510254)&&(0.9050194621<inputValues[18])&&(inputValues[39]<3.54339385)&&(inputValues[41]<71.13386536)) rval+=0.001819094527;   // importance = 0.002
+   if ((inputValues[3]<15.36409664)&&(inputValues[34]<1.289341927)&&(inputValues[37]<1.510510325)&&(inputValues[41]<42.70660782)&&(inputValues[42]<2.303953648)) rval+=-0.002514078547;   // importance = 0.002
+   if ((inputValues[0]<77.35510254)&&(inputValues[1]<21.69705582)&&(inputValues[3]<19.03873253)&&(inputValues[18]<0.9050194621)&&(inputValues[41]<71.13386536)) rval+=-0.001083775166;   // importance = 0.002
    //
    // here follows all linear terms
    // at the end of each line, the relative importance of the term is given
    //
-   rval+=-0.008510757826*std::min( double(90.09757233), std::max( double(inputValues[1]), double(2.630207777)));   // importance = 1.000
-   rval+=-0.003427332797*std::min( double(60.35718536), std::max( double(inputValues[3]), double(0.7427457571)));   // importance = 0.281
-   rval+=0.000159984153*std::min( double(164.9534454), std::max( double(inputValues[13]), double(-167.5578613)));   // importance = 0.088
-   rval+=-0.0004117931476*std::min( double(436.1000061), std::max( double(inputValues[15]), double(25.06266975)));   // importance = 0.291
-   rval+=0.3398606308*std::min( double(0.9935266972), std::max( double(inputValues[18]), double(-0.4796173573)));   // importance = 0.672
-   rval+=0.02096865951*std::min( double(0.8770466447), std::max( double(inputValues[19]), double(-0.8680047393)));   // importance = 0.059
-   rval+=0.180421014*std::min( double(0.9859226942), std::max( double(inputValues[21]), double(-0.8076567054)));   // importance = 0.470
-   rval+=-0.00311742508*std::min( double(0.8530104756), std::max( double(inputValues[22]), double(-0.8533505201)));   // importance = 0.008
-   rval+=-0.02544282638*std::min( double(0.9582400918), std::max( double(inputValues[23]), double(-0.9363761544)));   // importance = 0.079
-   rval+=-0.01789283004*std::min( double(0.9486940503), std::max( double(inputValues[25]), double(-0.9502962232)));   // importance = 0.058
-   rval+=-0.009889370168*std::min( double(0.9476596117), std::max( double(inputValues[26]), double(-0.9608693719)));   // importance = 0.032
-   rval+=0.05012002543*std::min( double(0.9708767533), std::max( double(inputValues[27]), double(-0.9018543959)));   // importance = 0.159
-   rval+=0.032724775*std::min( double(12.56948757), std::max( double(inputValues[30]), double(0.1584659964)));   // importance = 0.507
-   rval+=-0.02679747974*std::min( double(2.705393791), std::max( double(inputValues[32]), double(0.3359494507)));   // importance = 0.087
-   rval+=0.001661090124*std::min( double(2.915082693), std::max( double(inputValues[33]), double(0.3232592642)));   // importance = 0.006
-   rval+=-0.002392055527*std::min( double(2.84872961), std::max( double(inputValues[34]), double(0.3305999041)));   // importance = 0.009
-   rval+=0.004549863097*std::min( double(2.815346479), std::max( double(inputValues[35]), double(0.318862021)));   // importance = 0.017
-   rval+=-0.02522435473*std::min( double(2.782522678), std::max( double(inputValues[36]), double(0.3019272387)));   // importance = 0.094
-   rval+=0.01694703418*std::min( double(15.11154938), std::max( double(inputValues[38]), double(0.3424428999)));   // importance = 0.315
-   rval+=0.00122547081*std::min( double(13.82998657), std::max( double(inputValues[39]), double(0.3677895069)));   // importance = 0.021
-   rval+=-0.0252767495*std::min( double(14.57144833), std::max( double(inputValues[40]), double(0.2697948813)));   // importance = 0.421
+   rval+=-0.01088968941*std::min( double(89.83015442), std::max( double(inputValues[1]), double(2.323999405)));   // importance = 1.000
+   rval+=0.002994041149*std::min( double(59.01704407), std::max( double(inputValues[3]), double(0.7182680964)));   // importance = 0.194
+   rval+=0.000334613438*std::min( double(160.9493408), std::max( double(inputValues[4]), double(-169.390686)));   // importance = 0.146
+   rval+=0.0003337045498*std::min( double(159.847702), std::max( double(inputValues[10]), double(-169.5206451)));   // importance = 0.146
+   rval+=-0.004130193259*std::min( double(0.8306432962), std::max( double(inputValues[16]), double(-0.8465212584)));   // importance = 0.008
+   rval+=0.01297171563*std::min( double(0.8657307029), std::max( double(inputValues[17]), double(-0.8419342041)));   // importance = 0.025
+   rval+=0.2214360385*std::min( double(0.9943262339), std::max( double(inputValues[18]), double(-0.5362510681)));   // importance = 0.361
+   rval+=-0.03089056173*std::min( double(0.8672233224), std::max( double(inputValues[19]), double(-0.8536092043)));   // importance = 0.067
+   rval+=0.0795686334*std::min( double(0.9898736477), std::max( double(inputValues[21]), double(-0.8466820717)));   // importance = 0.171
+   rval+=-0.05178418727*std::min( double(0.886764884), std::max( double(inputValues[22]), double(-0.8658852577)));   // importance = 0.108
+   rval+=0.02952102366*std::min( double(0.9870297909), std::max( double(inputValues[24]), double(-0.9543865919)));   // importance = 0.080
+   rval+=0.02240772535*std::min( double(0.9539957047), std::max( double(inputValues[25]), double(-0.9401003718)));   // importance = 0.057
+   rval+=-0.04022557514*std::min( double(0.9321054816), std::max( double(inputValues[26]), double(-0.9617919922)));   // importance = 0.102
+   rval+=0.1506304378*std::min( double(0.9755465388), std::max( double(inputValues[27]), double(-0.902797401)));   // importance = 0.378
+   rval+=-0.03808867285*std::min( double(6.27139616), std::max( double(inputValues[28]), double(0.07370368391)));   // importance = 0.214
+   rval+=0.02050538673*std::min( double(13.1483984), std::max( double(inputValues[29]), double(0.1173386872)));   // importance = 0.266
+   rval+=0.02681507748*std::min( double(13.08842087), std::max( double(inputValues[30]), double(0.1780343503)));   // importance = 0.341
+   rval+=-0.007513745195*std::min( double(2.70396328), std::max( double(inputValues[32]), double(0.364184171)));   // importance = 0.020
+   rval+=-0.003944910385*std::min( double(2.916611671), std::max( double(inputValues[33]), double(0.2984236181)));   // importance = 0.012
+   rval+=-0.07221635749*std::min( double(2.867123127), std::max( double(inputValues[34]), double(0.3216027915)));   // importance = 0.228
+   rval+=0.002963483115*std::min( double(2.76059103), std::max( double(inputValues[35]), double(0.2500258684)));   // importance = 0.009
+   rval+=-0.04359420563*std::min( double(2.785741806), std::max( double(inputValues[37]), double(0.2994615436)));   // importance = 0.135
+   rval+=0.02553863936*std::min( double(14.69891834), std::max( double(inputValues[38]), double(0.2925896645)));   // importance = 0.369
+   rval+=-0.003268258007*std::min( double(13.91036129), std::max( double(inputValues[40]), double(0.2895931005)));   // importance = 0.041
    return rval;
 }
 inline double ReadRuleFit::GetMvaValue( const std::vector<double>& inputValues ) const

@@ -1,0 +1,342 @@
+//////////////////////////////////////////////////////////
+// This class has been automatically generated on
+// Thu Mar 12 18:21:47 2026 by ROOT version 6.38.00
+// from TTree preTree/Output TTree
+// found on file: TreeS.root
+//////////////////////////////////////////////////////////
+
+#ifndef tmvaPrep_h
+#define tmvaPrep_h
+
+#include <TROOT.h>
+#include <TChain.h>
+#include <TFile.h>
+
+// Header file for the classes stored in the TTree if any.
+#include "vector"
+#include "vector"
+
+class tmvaPrep {
+public :
+   TTree          *fChain;   //!pointer to the analyzed TTree or TChain
+   Int_t           fCurrent; //!current Tree number in a TChain
+
+// Fixed size dimensions of array or collections stored in the TTree if any.
+
+   // Declaration of leaf types
+   UInt_t          eventID;
+   vector<float>   *trueP;
+   vector<int>     *truePDG;
+   vector<int>     *daughterPDG;
+   vector<int>     *motherPDG;
+   vector<float>   *vertexX;
+   vector<float>   *vertexY;
+   vector<float>   *vertexZ;
+   vector<int>     *vertexSize;
+   vector<int>     *daughterSize;
+   Float_t         isoVertexX;
+   Float_t         isoVertexY;
+   Float_t         isoVertexZ;
+   Int_t           nPFParticles;
+   Int_t           nPrimaryChildren;
+   Int_t           trackCount;
+   Int_t           showerCount;
+   vector<int>     *TrackIDs;
+   vector<float>   *trackLengths;
+   Float_t         RecoVertexX;
+   Float_t         RecoVertexY;
+   Float_t         RecoVertexZ;
+   vector<float>   *DistanceToRecoVertex;
+   vector<float>   *nuScores;
+   vector<float>   *trackScores;
+   vector<float>   *muonTrackScores;
+   vector<float>   *protonTrackScores;
+   vector<float>   *pionTrackScores;
+   vector<float>   *NeutrinoNuScores;
+   vector<float>   *trackStartPositionX;
+   vector<float>   *trackStartPositionY;
+   vector<float>   *trackStartPositionZ;
+   vector<float>   *trackEndPositionX;
+   vector<float>   *trackEndPositionY;
+   vector<float>   *trackEndPositionZ;
+   vector<float>   *trackStartDirX;
+   vector<float>   *trackStartDirY;
+   vector<float>   *trackStartDirZ;
+   vector<float>   *trackEndDirX;
+   vector<float>   *trackEndDirY;
+   vector<float>   *trackEndDirZ;
+   vector<float>   *trackVertexDirX;
+   vector<float>   *trackVertexDirY;
+   vector<float>   *trackVertexDirZ;
+   vector<float>   *trackTheta;
+   vector<float>   *trackPhi;
+   vector<float>   *showerLengths;
+   vector<float>   *showerStartPositionX;
+   vector<float>   *showerStartPositionY;
+   vector<float>   *showerStartPositionZ;
+   vector<float>   *showerDirX;
+   vector<float>   *showerDirY;
+   vector<float>   *showerDirZ;
+   vector<int>     *pfpTrackPDG;
+   vector<int>     *pfpShowerPDG;
+   vector<int>     *pfpPDG;
+   Int_t           sampleType;
+
+   // List of branches
+   TBranch        *b_eventID;   //!
+   TBranch        *b_trueP;   //!
+   TBranch        *b_truePDG;   //!
+   TBranch        *b_daughterPDG;   //!
+   TBranch        *b_motherPDG;   //!
+   TBranch        *b_vertexX;   //!
+   TBranch        *b_vertexY;   //!
+   TBranch        *b_vertexZ;   //!
+   TBranch        *b_vertexSize;   //!
+   TBranch        *b_daughterSize;   //!
+   TBranch        *b_isoVertexX;   //!
+   TBranch        *b_isoVertexY;   //!
+   TBranch        *b_isoVertexZ;   //!
+   TBranch        *b_nPFParticles;   //!
+   TBranch        *b_nPrimaryChildren;   //!
+   TBranch        *b_trackCount;   //!
+   TBranch        *b_showerCount;   //!
+   TBranch        *b_TrackIDs;   //!
+   TBranch        *b_trackLengths;   //!
+   TBranch        *b_RecoVertexX;   //!
+   TBranch        *b_RecoVertexY;   //!
+   TBranch        *b_RecoVertexZ;   //!
+   TBranch        *b_DistanceToRecoVertex;   //!
+   TBranch        *b_nuScores;   //!
+   TBranch        *b_trackScores;   //!
+   TBranch        *b_muonTrackScores;   //!
+   TBranch        *b_protonTrackScores;   //!
+   TBranch        *b_pionTrackScores;   //!
+   TBranch        *b_NeutrinoNuScores;   //!
+   TBranch        *b_trackStartPositionX;   //!
+   TBranch        *b_trackStartPositionY;   //!
+   TBranch        *b_trackStartPositionZ;   //!
+   TBranch        *b_trackEndPositionX;   //!
+   TBranch        *b_trackEndPositionY;   //!
+   TBranch        *b_trackEndPositionZ;   //!
+   TBranch        *b_trackStartDirX;   //!
+   TBranch        *b_trackStartDirY;   //!
+   TBranch        *b_trackStartDirZ;   //!
+   TBranch        *b_trackEndDirX;   //!
+   TBranch        *b_trackEndDirY;   //!
+   TBranch        *b_trackEndDirZ;   //!
+   TBranch        *b_trackVertexDirX;   //!
+   TBranch        *b_trackVertexDirY;   //!
+   TBranch        *b_trackVertexDirZ;   //!
+   TBranch        *b_trackTheta;   //!
+   TBranch        *b_trackPhi;   //!
+   TBranch        *b_showerLengths;   //!
+   TBranch        *b_showerStartPositionX;   //!
+   TBranch        *b_showerStartPositionY;   //!
+   TBranch        *b_showerStartPositionZ;   //!
+   TBranch        *b_showerDirX;   //!
+   TBranch        *b_showerDirY;   //!
+   TBranch        *b_showerDirZ;   //!
+   TBranch        *b_pfpTrackPDG;   //!
+   TBranch        *b_pfpShowerPDG;   //!
+   TBranch        *b_pfpPDG;   //!
+   TBranch        *b_sampleType;   //!
+
+   tmvaPrep(TTree *tree=0);
+   virtual ~tmvaPrep();
+   virtual Int_t    Cut(Long64_t entry);
+   virtual Int_t    GetEntry(Long64_t entry);
+   virtual Long64_t LoadTree(Long64_t entry);
+   virtual void     Init(TTree *tree);
+   virtual void     Loop();
+   virtual bool     Notify();
+   virtual void     Show(Long64_t entry = -1);
+};
+
+#endif
+
+#ifdef tmvaPrep_cxx
+tmvaPrep::tmvaPrep(TTree *tree) : fChain(0) 
+{
+// if parameter tree is not specified (or zero), connect the file
+// used to generate this class and read the Tree.
+   if (tree == 0) {
+      TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("TreeS.root");
+      if (!f || !f->IsOpen()) {
+         f = new TFile("TreeS.root");
+      }
+      f->GetObject("preTree",tree);
+
+   }
+   Init(tree);
+}
+
+tmvaPrep::~tmvaPrep()
+{
+   if (!fChain) return;
+   delete fChain->GetCurrentFile();
+}
+
+Int_t tmvaPrep::GetEntry(Long64_t entry)
+{
+// Read contents of entry.
+   if (!fChain) return 0;
+   return fChain->GetEntry(entry);
+}
+Long64_t tmvaPrep::LoadTree(Long64_t entry)
+{
+// Set the environment to read one entry
+   if (!fChain) return -5;
+   Long64_t centry = fChain->LoadTree(entry);
+   if (centry < 0) return centry;
+   if (fChain->GetTreeNumber() != fCurrent) {
+      fCurrent = fChain->GetTreeNumber();
+      Notify();
+   }
+   return centry;
+}
+
+void tmvaPrep::Init(TTree *tree)
+{
+   // The Init() function is called when the selector needs to initialize
+   // a new tree or chain. Typically here the branch addresses and branch
+   // pointers of the tree will be set.
+   // It is normally not necessary to make changes to the generated
+   // code, but the routine can be extended by the user if needed.
+
+   // Set object pointer
+   trueP = 0;
+   truePDG = 0;
+   daughterPDG = 0;
+   motherPDG = 0;
+   vertexX = 0;
+   vertexY = 0;
+   vertexZ = 0;
+   vertexSize = 0;
+   daughterSize = 0;
+   TrackIDs = 0;
+   trackLengths = 0;
+   DistanceToRecoVertex = 0;
+   nuScores = 0;
+   trackScores = 0;
+   muonTrackScores = 0;
+   protonTrackScores = 0;
+   pionTrackScores = 0;
+   NeutrinoNuScores = 0;
+   trackStartPositionX = 0;
+   trackStartPositionY = 0;
+   trackStartPositionZ = 0;
+   trackEndPositionX = 0;
+   trackEndPositionY = 0;
+   trackEndPositionZ = 0;
+   trackStartDirX = 0;
+   trackStartDirY = 0;
+   trackStartDirZ = 0;
+   trackEndDirX = 0;
+   trackEndDirY = 0;
+   trackEndDirZ = 0;
+   trackVertexDirX = 0;
+   trackVertexDirY = 0;
+   trackVertexDirZ = 0;
+   trackTheta = 0;
+   trackPhi = 0;
+   showerLengths = 0;
+   showerStartPositionX = 0;
+   showerStartPositionY = 0;
+   showerStartPositionZ = 0;
+   showerDirX = 0;
+   showerDirY = 0;
+   showerDirZ = 0;
+   pfpTrackPDG = 0;
+   pfpShowerPDG = 0;
+   pfpPDG = 0;
+   // Set branch addresses and branch pointers
+   if (!tree) return;
+   fChain = tree;
+   fCurrent = -1;
+   fChain->SetMakeClass(1);
+
+   fChain->SetBranchAddress("eventID", &eventID, &b_eventID);
+   fChain->SetBranchAddress("trueP", &trueP, &b_trueP);
+   fChain->SetBranchAddress("truePDG", &truePDG, &b_truePDG);
+   fChain->SetBranchAddress("daughterPDG", &daughterPDG, &b_daughterPDG);
+   fChain->SetBranchAddress("motherPDG", &motherPDG, &b_motherPDG);
+   fChain->SetBranchAddress("vertexX", &vertexX, &b_vertexX);
+   fChain->SetBranchAddress("vertexY", &vertexY, &b_vertexY);
+   fChain->SetBranchAddress("vertexZ", &vertexZ, &b_vertexZ);
+   fChain->SetBranchAddress("vertexSize", &vertexSize, &b_vertexSize);
+   fChain->SetBranchAddress("daughterSize", &daughterSize, &b_daughterSize);
+   fChain->SetBranchAddress("isoVertexX", &isoVertexX, &b_isoVertexX);
+   fChain->SetBranchAddress("isoVertexY", &isoVertexY, &b_isoVertexY);
+   fChain->SetBranchAddress("isoVertexZ", &isoVertexZ, &b_isoVertexZ);
+   fChain->SetBranchAddress("nPFParticles", &nPFParticles, &b_nPFParticles);
+   fChain->SetBranchAddress("nPrimaryChildren", &nPrimaryChildren, &b_nPrimaryChildren);
+   fChain->SetBranchAddress("trackCount", &trackCount, &b_trackCount);
+   fChain->SetBranchAddress("showerCount", &showerCount, &b_showerCount);
+   fChain->SetBranchAddress("TrackIDs", &TrackIDs, &b_TrackIDs);
+   fChain->SetBranchAddress("trackLengths", &trackLengths, &b_trackLengths);
+   fChain->SetBranchAddress("RecoVertexX", &RecoVertexX, &b_RecoVertexX);
+   fChain->SetBranchAddress("RecoVertexY", &RecoVertexY, &b_RecoVertexY);
+   fChain->SetBranchAddress("RecoVertexZ", &RecoVertexZ, &b_RecoVertexZ);
+   fChain->SetBranchAddress("DistanceToRecoVertex", &DistanceToRecoVertex, &b_DistanceToRecoVertex);
+   fChain->SetBranchAddress("nuScores", &nuScores, &b_nuScores);
+   fChain->SetBranchAddress("trackScores", &trackScores, &b_trackScores);
+   fChain->SetBranchAddress("muonTrackScores", &muonTrackScores, &b_muonTrackScores);
+   fChain->SetBranchAddress("protonTrackScores", &protonTrackScores, &b_protonTrackScores);
+   fChain->SetBranchAddress("pionTrackScores", &pionTrackScores, &b_pionTrackScores);
+   fChain->SetBranchAddress("NeutrinoNuScores", &NeutrinoNuScores, &b_NeutrinoNuScores);
+   fChain->SetBranchAddress("trackStartPositionX", &trackStartPositionX, &b_trackStartPositionX);
+   fChain->SetBranchAddress("trackStartPositionY", &trackStartPositionY, &b_trackStartPositionY);
+   fChain->SetBranchAddress("trackStartPositionZ", &trackStartPositionZ, &b_trackStartPositionZ);
+   fChain->SetBranchAddress("trackEndPositionX", &trackEndPositionX, &b_trackEndPositionX);
+   fChain->SetBranchAddress("trackEndPositionY", &trackEndPositionY, &b_trackEndPositionY);
+   fChain->SetBranchAddress("trackEndPositionZ", &trackEndPositionZ, &b_trackEndPositionZ);
+   fChain->SetBranchAddress("trackStartDirX", &trackStartDirX, &b_trackStartDirX);
+   fChain->SetBranchAddress("trackStartDirY", &trackStartDirY, &b_trackStartDirY);
+   fChain->SetBranchAddress("trackStartDirZ", &trackStartDirZ, &b_trackStartDirZ);
+   fChain->SetBranchAddress("trackEndDirX", &trackEndDirX, &b_trackEndDirX);
+   fChain->SetBranchAddress("trackEndDirY", &trackEndDirY, &b_trackEndDirY);
+   fChain->SetBranchAddress("trackEndDirZ", &trackEndDirZ, &b_trackEndDirZ);
+   fChain->SetBranchAddress("trackVertexDirX", &trackVertexDirX, &b_trackVertexDirX);
+   fChain->SetBranchAddress("trackVertexDirY", &trackVertexDirY, &b_trackVertexDirY);
+   fChain->SetBranchAddress("trackVertexDirZ", &trackVertexDirZ, &b_trackVertexDirZ);
+   fChain->SetBranchAddress("trackTheta", &trackTheta, &b_trackTheta);
+   fChain->SetBranchAddress("trackPhi", &trackPhi, &b_trackPhi);
+   fChain->SetBranchAddress("showerLengths", &showerLengths, &b_showerLengths);
+   fChain->SetBranchAddress("showerStartPositionX", &showerStartPositionX, &b_showerStartPositionX);
+   fChain->SetBranchAddress("showerStartPositionY", &showerStartPositionY, &b_showerStartPositionY);
+   fChain->SetBranchAddress("showerStartPositionZ", &showerStartPositionZ, &b_showerStartPositionZ);
+   fChain->SetBranchAddress("showerDirX", &showerDirX, &b_showerDirX);
+   fChain->SetBranchAddress("showerDirY", &showerDirY, &b_showerDirY);
+   fChain->SetBranchAddress("showerDirZ", &showerDirZ, &b_showerDirZ);
+   fChain->SetBranchAddress("pfpTrackPDG", &pfpTrackPDG, &b_pfpTrackPDG);
+   fChain->SetBranchAddress("pfpShowerPDG", &pfpShowerPDG, &b_pfpShowerPDG);
+   fChain->SetBranchAddress("pfpPDG", &pfpPDG, &b_pfpPDG);
+   fChain->SetBranchAddress("sampleType", &sampleType, &b_sampleType);
+   Notify();
+}
+
+bool tmvaPrep::Notify()
+{
+   // The Notify() function is called when a new file is opened. This
+   // can be for a new TTree in a TChain. It is normally not necessary to make changes
+   // to the generated code, but the routine can be extended by the
+   // user if needed. The return value is currently not used.
+
+   return true;
+}
+
+void tmvaPrep::Show(Long64_t entry)
+{
+// Print contents of entry.
+// If entry is not specified, print current entry
+   if (!fChain) return;
+   fChain->Show(entry);
+}
+Int_t tmvaPrep::Cut(Long64_t entry)
+{
+// This function may be called from Loop.
+// returns  1 if entry is accepted.
+// returns -1 otherwise.
+   return 1;
+}
+#endif // #ifdef tmvaPrep_cxx
