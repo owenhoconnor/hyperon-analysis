@@ -129,8 +129,8 @@ int TMVAClassification_44( TString myMethodList = "" )
  
    // Read training and test data
    // (it is also possible to use ASCII format as input -> see TMVA Users Guide)
-   TString signalInputFile = "../../prepSig.root";
-   TString backgroundInputFile = "../../prepBkg.root";
+   TString signalInputFile = "/data/ooconnor/sbnd/hyperons/preselection_output/tmvaSample_sig.root";
+   TString backgroundInputFile = "/data/ooconnor/sbnd/hyperons/preselection_output/tmvaSample_bkg.root"";
    std::unique_ptr<TFile> signalInput{TFile::Open(signalInputFile)};
    std::unique_ptr<TFile> backgroundInput{TFile::Open(backgroundInputFile)};
    if (!signalInput || signalInput->IsZombie()) {
