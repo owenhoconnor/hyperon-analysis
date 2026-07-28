@@ -130,7 +130,7 @@ int TMVAClassification_44( TString myMethodList = "" )
    // Read training and test data
    // (it is also possible to use ASCII format as input -> see TMVA Users Guide)
    TString signalInputFile = "/data/ooconnor/sbnd/hyperons/preselection_output/tmvaSample_sig.root";
-   TString backgroundInputFile = "/data/ooconnor/sbnd/hyperons/preselection_output/tmvaSample_bkg.root"";
+   TString backgroundInputFile = "/data/ooconnor/sbnd/hyperons/preselection_output/tmvaSample_bkg.root";
    std::unique_ptr<TFile> signalInput{TFile::Open(signalInputFile)};
    std::unique_ptr<TFile> backgroundInput{TFile::Open(backgroundInputFile)};
    if (!signalInput || signalInput->IsZombie()) {
@@ -314,8 +314,10 @@ int TMVAClassification_44( TString myMethodList = "" )
    //
    std::cout<<" Signal entries: "<<signalTree->GetEntries()<<std::endl;
    std::cout<<" Background entries: "<<backgroundTree->GetEntries()<<std::endl;
+
+   // TRYING 75:25 TRAIN:TEST SPLIT FOR HIGHER STATS
    dataloader->PrepareTrainingAndTestTree( mycuts, mycutb,
-                                        "SplitMode=Random:NormMode=EqualNumEvents:!V" );
+                                        "nTrain_Signal=1406:nTrain_Background=1133:nTest_Signal=469:nTest_Background=378:SplitMode=Random:NormMode=EqualNumEvents:!V" );
  
    // ### Book MVA methods
    //

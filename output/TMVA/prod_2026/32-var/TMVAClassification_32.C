@@ -129,8 +129,8 @@ int TMVAClassification_32( TString myMethodList = "" )
  
    // Read training and test data
    // (it is also possible to use ASCII format as input -> see TMVA Users Guide)
-   TString signalInputFile = "../prepSig.root";
-   TString backgroundInputFile = "../prepBkg.root";
+   TString signalInputFile = "/data/ooconnor/sbnd/hyperons/preselection_output/tmvaSample_sig.root";
+   TString backgroundInputFile = "/data/ooconnor/sbnd/hyperons/preselection_output/tmvaSample_bkg.root";
    std::unique_ptr<TFile> signalInput{TFile::Open(signalInputFile)};
    std::unique_ptr<TFile> backgroundInput{TFile::Open(backgroundInputFile)};
    if (!signalInput || signalInput->IsZombie()) {
@@ -183,8 +183,8 @@ int TMVAClassification_32( TString myMethodList = "" )
    dataloader->AddVariable( "track3Length", 'F');
    dataloader->AddVariable("shower1Length", 'F');
 
- /*  // 12 start positions (4 x 3)
-   dataloader->AddVariable("track1StartPosX", 'F');
+   // 12 start positions (4 x 3)
+/*   dataloader->AddVariable("track1StartPosX", 'F');
    dataloader->AddVariable("track1StartPosY", 'F');
    dataloader->AddVariable("track1StartPosZ", 'F');
    dataloader->AddVariable("track2StartPosX", 'F');
@@ -233,7 +233,7 @@ int TMVAClassification_32( TString myMethodList = "" )
    dataloader->AddVariable("track2Shower1Dist", 'F');
    dataloader->AddVariable("track3Shower1Dist", 'F');
 
-   // total = 6 + 6 + 4 + 12 + 4 = 32 variables
+   // total = 6 + 6 + 4 + 12 + 12 + 4 = 44 variables
  
    // You can add so-called "Spectator variables", which are not used in the MVA training,
    // but will appear in the final "TestTree" produced by TMVA. This TestTree will contain the
@@ -314,8 +314,10 @@ int TMVAClassification_32( TString myMethodList = "" )
    //
    std::cout<<" Signal entries: "<<signalTree->GetEntries()<<std::endl;
    std::cout<<" Background entries: "<<backgroundTree->GetEntries()<<std::endl;
+
+   // TRYING 75:25 TRAIN:TEST SPLIT FOR HIGHER TRAINING STATS
    dataloader->PrepareTrainingAndTestTree( mycuts, mycutb,
-                                        "SplitMode=Random:NormMode=EqualNumEvents:!V" );
+                                        "nTrain_Signal=1406:nTrain_Background=1133:nTest_Signal=469:nTest_Background=378:SplitMode=Random:NormMode=EqualNumEvents:!V" );
  
    // ### Book MVA methods
    //

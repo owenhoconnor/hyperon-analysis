@@ -166,6 +166,10 @@ void signalDef::Loop()
 
    int nSig = 0;
    int nBkg = 0;
+   int nInRecoFVSig = 0;
+   int nInRecoFVBkg = 0;
+   int nGoodTopoSig = 0;
+   int nGoodTopoBkg = 0;
 
    Long64_t nentries = fChain->GetEntriesFast();
 
@@ -316,7 +320,7 @@ void signalDef::Loop()
 
       // SIGNAL DEFINITION
       
-      if (IsInFV && IsAntiMuon && !IsKaonp && !IsKaonm && !IsKaon0){
+      if (IsInFV && IsAntiMuon && IsPhoton && IsLambda && !IsKaonp && !IsKaonm && !IsKaon0){
 	      if (IsGoodSigma){
 			nGoodSigma++;
 			std::cout<<"signal event, nSignal = "<<nGoodSigma<<std::endl;
@@ -379,10 +383,21 @@ void signalDef::Loop()
 	      if(std::abs(showerStartPositionY->at(i)) > 180){IsBadShower = true;}
 	      if(showerStartPositionZ->at(i) < 0){IsBadShower = true;} 
       }*/
-      if (IsInRecoFV && trackCount == 3 && showerCount == 1 && !IsBadShower){
-              unlabTree->Fill();
-	      if(s==0){signalTree->Fill();}
-	      if(s==2){bkgTree->Fill();}
+
+      if(IsInRecoFV){
+	  if(s==0){nInRecoFVSig++;}
+	  if(s==2){nInRecoFVBkg++;}
+          if(trackCount == 3 && showerCount == 1 && !IsBadShower){
+                  unlabTree->Fill();
+	          if(s==0){
+			  nGoodTopoSig++;
+			  signalTree->Fill();
+		  }
+	          if(s==2){
+			  nGoodTopoBkg++;
+			  bkgTree->Fill();
+		  }
+              }
       }
 
       Cuts[0] = true;
@@ -529,6 +544,10 @@ void signalDef::Loop()
 
    std::cout<<"# Signal =  "<<nSig<<std::endl;
    std::cout<<"# Background = "<<nBkg<<std::endl;
+   std::cout<<"# Signal after reco FV cut = "<<nInRecoFVSig<<std::endl;
+   std::cout<<"# Background after reco FV cut = "<<nInRecoFVBkg<<std::endl;
+   std::cout<<"# Signal after 3+1 topo cut = "<<nGoodTopoSig<<std::endl;
+   std::cout<<"# Background after 3+1 topo cut = "<<nGoodTopoBkg<<std::endl;
    std::cout<<"Signal scale = "<<scale[0]<<std::endl;
    std::cout<<"Background scale = "<<scale[2]<<std::endl;
 }

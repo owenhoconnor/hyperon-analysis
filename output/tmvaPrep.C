@@ -464,6 +464,7 @@ void tmvaPrep::Loop()
    std::cout<<"nTrk2LengthCut = "<<nTrk2LengthCut<<std::endl;
    std::cout<<"nTrk3LengthCut = "<<nTrk3LengthCut<<std::endl;
    std::cout<<"nShwr1LengthCut = "<<nShwr1LengthCut<<std::endl;
+   std::cout<<"Signal left after track/shower start outside FV = "<<std::endl;
    std::cout<<"Total signal left = "<<nSig<<" events"<<std::endl;
    std::cout<<"Total background left = "<<nBkg<<" events"<<std::endl; 
 

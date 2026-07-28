@@ -107,7 +107,6 @@ private:
    int nSingleEvents = 0;
    int nTotEvents = 0;
    int nMCParticles = 0;
-   float isoVertexX, isoVertexY, isoVertexZ;
    bool fFoundRecoVertex;
 
   TTree *fTree;
@@ -130,6 +129,9 @@ private:
   std::vector<float> vertexZ;
   std::vector<int> vertexSize;
   std::vector<int> daughterSize;
+  std::vector<int> trueCCNC;
+  std::vector<int> trueIntMode;
+  std::vector<int> trueIntType;
 
   // reco parameters
   std::vector<int> fTrackIDs;
@@ -1028,12 +1030,13 @@ for (const art::Ptr<recob::PFParticle>& pfp : nuSlicePFPs) {
    nTotEvents++;
    vertexSize.push_back(0);
 
-   //if (mclist.size() > 1){
-//	nMultiEvents++;
-  // }
+   if (mclist.size() > 1){
+	nMultiEvents++;
+   }
 
-  //if (mclist.size() == 1)
-//	nSingleEvents++;
+  if (mclist.size() == 1){
+	nSingleEvents++;
+  }
 
    for (size_t i_truth = 0; i_truth < mclist.size(); i_truth++)
    {
@@ -1041,6 +1044,13 @@ for (const art::Ptr<recob::PFParticle>& pfp : nuSlicePFPs) {
 	   
        art::Ptr<simb::MCTruth> truth(mclist.at(i_truth));
        std::cout<<"Neutrino at index " << i_truth << " has pdg: " << truth->GetNeutrino().Nu().PdgCode() << std::endl;
+       std::cout<<"Neutrino interaction mode: "<<truth->GetNeutrino().Mode() << std::endl;
+       std::cout<<"Neutrino interaction type: "<<truth->GetNeutrino().InteractionType() << std::endl;
+       std::cout<<"Neutrino CCNC type: "<< truth->GetNeutrino().CCNC() << std::endl;
+
+       trueCCNC.push_back(truth-GetNeutrino().CCNC());
+       trueIntMode.push_back(truth->GetNeutrino().Mode());
+       trueIntType.push_back(truth->GetNeutrino().InteractionType());
 
  //      int lambda=0,mu=0, mubar=0,kaonp=0,kaonm=0,kaon0=0,proton=0,neutron=0,pip=0,pim=0,pi0=0;
  //      int sigmap=0, sigma0=0, sigmam=0;
@@ -1049,8 +1059,10 @@ for (const art::Ptr<recob::PFParticle>& pfp : nuSlicePFPs) {
        for (size_t i_mcpart = 0; i_mcpart < assocParticles.size(); i_mcpart++)
        {
            art::Ptr<simb::MCParticle> mcParticle(assocParticles.at(i_mcpart));
-	  // std::cout<<"mcParticle mother is "<<mcParticle->Mother()<<std::endl;
-           if(mcParticle->Mother()!=10000000) continue; // 10000000 for bkg files, 0 for hyperon files
+	   std::cout<<"mcParticle trackID is "<<mcParticle->TrackId()<<std::endl;
+	   std::cout<<"mcParticle mother TrackID is "<<mcParticle->Mother()<<std::endl;
+
+           if(mcParticle->Mother()!=10000000) continue; // 10000000 for beam files, 0 for filt hyp files (neutrino track ID)
 
            std::cout<<"--Particle at index " << i_mcpart <<"at mclist index "<<i_truth<< " has pdg: " << mcParticle->PdgCode() 
 		    <<" has momentum: " << mcParticle->P()<<" Mother: "<<mcParticle->Mother()
@@ -1058,27 +1070,19 @@ for (const art::Ptr<recob::PFParticle>& pfp : nuSlicePFPs) {
 		    <<" TrackId: " << mcParticle->TrackId()<< std::endl;
            trueP.push_back(mcParticle->P()); 
 	   truePDG.push_back(mcParticle->PdgCode());
-	   motherPDG.push_back(mcParticle->Mother());
-	   nMCParticles++; // count num of saved mc particles in each interaction vertex
+	   motherPDG.push_back(mcParticle->Mother()); // WRONG
+	   nMCParticles++; // count num of saved mc particles in each interaction vertex, should be same as assocParticles.size()
 	  // Get interaction vertices
 	  if (mcParticle->NumberTrajectoryPoints()>0) {
 		 auto const& startPoint = mcParticle->Position(0);
 		 vertexX.push_back(startPoint.X());
 		 vertexY.push_back(startPoint.Y());
 		 vertexZ.push_back(startPoint.Z());
-
-		 isoVertexX = startPoint.X();
-                 isoVertexY = startPoint.Y();
- 		 isoVertexZ = startPoint.Z();
 	  }
 	  else{ // Store placeholders if no trajectory points for consistency
 		  vertexX.push_back(-9999.);
 		  vertexY.push_back(-9999.);
 		  vertexZ.push_back(-9999.);
-
-		  isoVertexX = -9999.;
-		  isoVertexY = -9999.;
-		  isoVertexZ = -9999.;
 	  }
 
 	  // Daughter information
@@ -1174,17 +1178,16 @@ for (const art::Ptr<recob::PFParticle>& pfp : nuSlicePFPs) {
    
 //std::cout<<"***************************"<<std::endl;
 //std::cout<<vertexSize.size()<<std::endl;
-//std::cout<<"isoVertex X is: "<<isoVertexX<<", isoVertexY is "<<isoVertexY<<", isoVertexZ is: "<<isoVertexZ<<std::endl;
 
-//double multiRatio = double(nMultiEvents) / double(nTotEvents);
-//double singleRatio = double(nSingleEvents) / double(nTotEvents);
-//double sanityCheck = multiRatio + singleRatio;
-//std::cout<<"num of multi int events = "<<nMultiEvents<<std::endl;
-//std::cout<<"num of single int events = "<<nSingleEvents<<std::endl;
-//std::cout<<"num of total events = "<<nTotEvents<<std::endl;
-//std::cout<<"running ratio of multi int events = "<<multiRatio<<std::endl;
-//std::cout<<"running ratio of single int events = "<<singleRatio<<std::endl;
-//std::cout<<"sanity check 1 = "<<sanityCheck<<std::endl;
+double multiRatio = double(nMultiEvents) / double(nTotEvents);
+double singleRatio = double(nSingleEvents) / double(nTotEvents);
+double sanityCheck = multiRatio + singleRatio;
+std::cout<<"num of multi int events = "<<nMultiEvents<<std::endl;
+std::cout<<"num of single int events = "<<nSingleEvents<<std::endl;
+std::cout<<"num of total events = "<<nTotEvents<<std::endl;
+std::cout<<"running ratio of multi int events = "<<multiRatio<<std::endl;
+std::cout<<"running ratio of single int events = "<<singleRatio<<std::endl;
+std::cout<<"sanity check 1 = "<<sanityCheck<<std::endl;
 
 std::cout<<"num of good lambdas = "<<goodLambda<<std::endl;
 std::cout<<"num of good sigmas = "<<goodSigma<<std::endl;
@@ -1250,9 +1253,9 @@ void hyperon::AnalyzeEvents::beginJob()
   fTree->Branch("vertexZ", &vertexZ);
   fTree->Branch("vertexSize", &vertexSize);
   fTree->Branch("daughterSize", &daughterSize);
-  fTree->Branch("isoVertexX", &isoVertexX);
-  fTree->Branch("isoVertexY", &isoVertexY);
-  fTree->Branch("isoVertexZ", &isoVertexZ);
+  fTree->Branch("trueCCNC", &trueCCNC);
+  fTree->Branch("trueIntMode", &trueIntMode);
+  fTree->Branch("trueIntType", &trueIntType);
 
 
   // reco parameters
