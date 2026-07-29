@@ -1093,6 +1093,7 @@ for (const art::Ptr<recob::PFParticle>& pfp : nuSlicePFPs) {
 	  for (size_t i = 0; i < assocParticles.size(); ++i){
 		  if (assocParticles.at(i)->TrackId() == daughterTrackID){
 			  int daughterPdgCode = assocParticles.at(i)->PdgCode();
+			  // OPTION 1: here, set daughter = assocParticles.at(i), loop through granddaughters and do same thing 
 			  daughterPDG.push_back(daughterPdgCode); // save all interaction particle daughter pdgs in one array
 			  break;
 		  }
