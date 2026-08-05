@@ -4,7 +4,7 @@
 void nTracksShowersSig()
 {
 //=========Macro generated from canvas: c1/Track-Shower Topology
-//=========  (Thu Jul 23 22:55:39 2026) by ROOT version 6.40.02
+//=========  (Thu Jul 30 15:13:53 2026) by ROOT version 6.40.02
    TCanvas *c1 = new TCanvas("c1", "Track-Shower Topology", 0, 0, 2000, 2000);
    gStyle->SetOptFit(0);
    gStyle->SetOptStat(0);
@@ -20,40 +20,6 @@ void nTracksShowersSig()
    c1->SetBottomMargin(0.15);
    
    TH2F *hTracksShowersSig = new TH2F("hTracksShowersSig", "", 7, -0.5, 6.5, 7, -0.5, 6.5);
-   hTracksShowersSig->SetBinContent(11,349);
-   hTracksShowersSig->SetBinContent(12,628);
-   hTracksShowersSig->SetBinContent(13,589);
-   hTracksShowersSig->SetBinContent(14,179);
-   hTracksShowersSig->SetBinContent(15,12);
-   hTracksShowersSig->SetBinContent(16,1);
-   hTracksShowersSig->SetBinContent(20,1352);
-   hTracksShowersSig->SetBinContent(21,2728);
-   hTracksShowersSig->SetBinContent(22,2189);
-   hTracksShowersSig->SetBinContent(23,187);
-   hTracksShowersSig->SetBinContent(24,8);
-   hTracksShowersSig->SetBinContent(25,1);
-   hTracksShowersSig->SetBinContent(29,2437);
-   hTracksShowersSig->SetBinContent(30,1946);
-   hTracksShowersSig->SetBinContent(31,555);
-   hTracksShowersSig->SetBinContent(32,61);
-   hTracksShowersSig->SetBinContent(33,1);
-   hTracksShowersSig->SetBinContent(38,2165);
-   hTracksShowersSig->SetBinContent(39,615);
-   hTracksShowersSig->SetBinContent(40,99);
-   hTracksShowersSig->SetBinContent(41,10);
-   hTracksShowersSig->SetBinContent(42,1);
-   hTracksShowersSig->SetBinContent(47,475);
-   hTracksShowersSig->SetBinContent(48,123);
-   hTracksShowersSig->SetBinContent(49,20);
-   hTracksShowersSig->SetBinContent(50,6);
-   hTracksShowersSig->SetBinContent(56,73);
-   hTracksShowersSig->SetBinContent(57,10);
-   hTracksShowersSig->SetBinContent(58,2);
-   hTracksShowersSig->SetBinContent(65,5);
-   hTracksShowersSig->SetBinContent(66,2);
-   hTracksShowersSig->SetBinContent(67,1);
-   hTracksShowersSig->SetBinContent(74,1);
-   hTracksShowersSig->SetEntries(16831);
    hTracksShowersSig->SetDirectory(nullptr);
    hTracksShowersSig->SetContour(20);
    
@@ -71,7 +37,7 @@ void nTracksShowersSig()
    palette->SetTitleColor(1);
    palette->SetTitleFont(42);
    palette->SetTitle("Events");
-   palette->SetFillColor(TColor::GetColor("#efefd7"));
+   palette->SetFillColor(TColor::GetColor("#687557"));
    palette->SetFillStyle(1001);
    hTracksShowersSig->GetListOfFunctions()->Add(palette,"br");
    hTracksShowersSig->SetFillColor(0);

@@ -37,6 +37,9 @@ public :
    Float_t         isoVertexX;
    Float_t         isoVertexY;
    Float_t         isoVertexZ;
+   vector<int>     *trueIntType;
+   vector<int>     *trueIntMode;
+   vector<int>     *trueCCNC;
    Int_t           nPFParticles;
    Int_t           nPrimaryChildren;
    Int_t           trackCount;
@@ -77,8 +80,8 @@ public :
    vector<float>   *showerDirX;
    vector<float>   *showerDirY;
    vector<float>   *showerDirZ;
-   vector<int>     *pfpTrackPDG;
-   vector<int>     *pfpShowerPDG;
+//   vector<int>     *pfpTrackPDG;
+  // vector<int>     *pfpShowerPDG;
    vector<int>     *pfpPDG;
 
    // List of branches
@@ -95,6 +98,9 @@ public :
    TBranch        *b_isoVertexX;   //!
    TBranch        *b_isoVertexY;   //!
    TBranch        *b_isoVertexZ;   //!
+   TBranch        *b_trueIntType;  //!
+   TBranch        *b_trueIntMode;  //!
+   TBranch        *b_trueCCNC;     //!
    TBranch        *b_nPFParticles;   //!
    TBranch        *b_nPrimaryChildren;   //!
    TBranch        *b_trackCount;   //!
@@ -135,8 +141,8 @@ public :
    TBranch        *b_showerDirX;   //!
    TBranch        *b_showerDirY;   //!
    TBranch        *b_showerDirZ;   //!
-   TBranch        *b_pfpTrackPDG;   //!
-   TBranch        *b_pfpShowerPDG;   //!
+   //TBranch        *b_pfpTrackPDG;   //!
+   //TBranch        *b_pfpShowerPDG;   //!
    TBranch        *b_pfpPDG;   //!
 
    signalDef(TTree *tree=0);
@@ -212,6 +218,9 @@ void signalDef::Init(TTree *tree)
    vertexZ = 0;
    vertexSize = 0;
    daughterSize = 0;
+   trueIntType = 0;
+   trueIntMode = 0;
+   trueCCNC = 0;
    TrackIDs = 0;
    trackLengths = 0;
    DistanceToRecoVertex = 0;
@@ -245,8 +254,8 @@ void signalDef::Init(TTree *tree)
    showerDirX = 0;
    showerDirY = 0;
    showerDirZ = 0;
-   pfpTrackPDG = 0;
-   pfpShowerPDG = 0;
+  // pfpTrackPDG = 0;
+  // pfpShowerPDG = 0;
    pfpPDG = 0;
    // Set branch addresses and branch pointers
    if (!tree) return;
@@ -267,6 +276,9 @@ void signalDef::Init(TTree *tree)
    fChain->SetBranchAddress("isoVertexX", &isoVertexX, &b_isoVertexX);
    fChain->SetBranchAddress("isoVertexY", &isoVertexY, &b_isoVertexY);
    fChain->SetBranchAddress("isoVertexZ", &isoVertexZ, &b_isoVertexZ);
+   fChain->SetBranchAddress("trueIntType", &trueIntType, &b_trueIntType);
+   fChain->SetBranchAddress("trueIntMode", &trueIntMode, &b_trueIntMode);
+   fChain->SetBranchAddress("trueCCNC", &trueCCNC, &b_trueCCNC);
    fChain->SetBranchAddress("nPFParticles", &nPFParticles, &b_nPFParticles);
    fChain->SetBranchAddress("nPrimaryChildren", &nPrimaryChildren, &b_nPrimaryChildren);
    fChain->SetBranchAddress("trackCount", &trackCount, &b_trackCount);
@@ -307,8 +319,8 @@ void signalDef::Init(TTree *tree)
    fChain->SetBranchAddress("showerDirX", &showerDirX, &b_showerDirX);
    fChain->SetBranchAddress("showerDirY", &showerDirY, &b_showerDirY);
    fChain->SetBranchAddress("showerDirZ", &showerDirZ, &b_showerDirZ);
-   fChain->SetBranchAddress("pfpTrackPDG", &pfpTrackPDG, &b_pfpTrackPDG);
-   fChain->SetBranchAddress("pfpShowerPDG", &pfpShowerPDG, &b_pfpShowerPDG);
+   //fChain->SetBranchAddress("pfpTrackPDG", &pfpTrackPDG, &b_pfpTrackPDG);
+   //fChain->SetBranchAddress("pfpShowerPDG", &pfpShowerPDG, &b_pfpShowerPDG);
    fChain->SetBranchAddress("pfpPDG", &pfpPDG, &b_pfpPDG);
    Notify();
 }

@@ -216,6 +216,16 @@ void tmvaPrep::Loop()
    int nBadTrkShwrSig = 0;
    int nBadTrkShwrBkg = 0;
 
+   // define histograms
+
+
+   TH1F *hTrueIntMode = new TH1F("hTrueIntMode", "", 10, -1, -1);
+   hTrueIntMode->SetDirectory(nullptr);
+   TH1F *hTrueIntType = new TH1F("hTrueIntType", "", 10, -1, -1);
+   hTrueIntType->SetDirectory(nullptr);
+   TH1F *hTrueCCNC = new TH1F("hTrueCCNC", "", 10, -1, -1);
+   hTrueCCNC->SetDirectory(nullptr);
+
    Long64_t nentries = fChain->GetEntriesFast();
 
    Long64_t nbytes = 0, nb = 0;
@@ -431,7 +441,24 @@ void tmvaPrep::Loop()
       // Fill signal and background trees:
 
       if(sampleType == 0){nSig++; sigTree->Fill();}
-      if(sampleType == 2){nBkg++; bkgTree->Fill();}
+      if(sampleType == 2){
+	      nBkg++;
+	      bkgTree->Fill();
+      
+      	      for (int i = 0; i < trueIntMode->size(); i++){
+		      int intMode = trueIntMode->at(i);
+		      int intType = trueIntType->at(i);
+		      int ccnc = trueCCNC->at(i);
+
+		      std::cout<<"Interaction Mode = "<<intMode<<std::endl;
+		      std::cout<<"Interaction Type = "<<intType<<std::endl;
+		      std::cout<<"CCNC = "<<ccnc<<std::endl;
+		      hTrueIntMode->Fill(intMode);
+		      hTrueIntType->Fill(intType);
+		      hTrueCCNC->Fill(ccnc);
+	      }
+      
+      }
       
    }
 
@@ -477,5 +504,103 @@ void tmvaPrep::Loop()
    bkgTree->Write("bkgTree");
    bkgFile->Close();
    delete bkgFile;
+
+   std::vector<int> nonEmptyBins;
+
+for (int bin = 1;
+     bin <= hTrueIntMode->GetNbinsX();
+     ++bin) {
+
+    if (hTrueIntMode->GetBinContent(bin) != 0) {
+        nonEmptyBins.push_back(bin);
+    }
+}
+
+TH1F* hTrueIntModeCompact = new TH1F(
+    "hTrueIntModeCompact",
+    "",
+    static_cast<int>(nonEmptyBins.size()),
+    0.0,
+    static_cast<double>(nonEmptyBins.size())
+);
+
+for (std::size_t i = 0; i < nonEmptyBins.size(); ++i) {
+
+    const int oldBin = nonEmptyBins[i];
+    const int newBin = static_cast<int>(i) + 1;
+
+    hTrueIntModeCompact->SetBinContent(
+        newBin,
+        hTrueIntMode->GetBinContent(oldBin)
+    );
+
+    hTrueIntModeCompact->SetBinError(
+        newBin,
+        hTrueIntMode->GetBinError(oldBin)
+    );
+
+    const char* oldLabel =
+        hTrueIntMode->GetXaxis()->GetBinLabel(oldBin);
+
+    hTrueIntModeCompact->GetXaxis()->SetBinLabel(
+        newBin,
+        oldLabel
+    );
+}
+
+   TCanvas *c1 = new TCanvas("c1", "True Interaction Type", 2000, 2000);
+//   c1->SetRightMargin(0.15);
+  // c1->SetLeftMargin(0.15);
+  // c1->SetBottomMargin(0.15);
+
+   //hTrueIntType->GetXaxis()->SetTitle("Interaction Type");
+  // hTrueIntType->GetYaxis()->SetTitle("#");
+
+  // hTrueIntType->GetXaxis()->CenterTitle();
+   //hTrueIntType->GetYaxis()->CenterTitle();
+
+   //hTrueIntType->GetXaxis()->SetTitleSize(0.04);
+   //hTrueIntType->GetYaxis()->SetTitleSize(0.04);
+
+   //hTrueIntType->GetXaxis()->SetLabelSize(0.04);
+   //hTrueIntType->GetYaxis()->SetLabelSize(0.04);
+
+   //gStyle->SetPalette(kAlpine);
+   //gStyle->SetOptStat(0);
+   //
+   hTrueIntType->Draw("HIST");
+   c1->Print("plots/trueBeamIntType.png");
+   c1->SaveAs("plots/trueBeamIntType.C");
+
+   TCanvas *c2 = new TCanvas("c2", "True Interaction Mode", 2000, 2000);
+
+   //hTrueIntMode->GetXAxis()->SetTitle("Interaction Mode");
+   hTrueIntMode->GetXaxis()->SetBinLabel(1, "QE");
+   hTrueIntMode->GetXaxis()->SetBinLabel(2, "RES");
+   hTrueIntMode->GetXaxis()->SetBinLabel(3, "DIS");
+   hTrueIntMode->GetXaxis()->SetBinLabel(4, "Coh");
+   hTrueIntMode->GetXaxis()->SetBinLabel(5, "Coh Elastic");
+   hTrueIntMode->GetXaxis()->SetBinLabel(6, "e Scatter");
+   hTrueIntMode->GetXaxis()->SetBinLabel(7, "IMD Annih");
+   hTrueIntMode->GetXaxis()->SetBinLabel(8, "Inverse Beta");
+   hTrueIntMode->GetXaxis()->SetBinLabel(9, "Glashow Res");
+   hTrueIntMode->GetXaxis()->SetBinLabel(10, "AMNuGamma");
+   hTrueIntMode->Draw("HIST");
+   c2->Print("plots/trueBeamIntMode.png");
+   c2->SaveAs("plots/trueBeamIntMode.C");
+
+
+   TCanvas *c3 = new TCanvas("c3", "True CCNC", 2000, 2000);
+
+  // hTrueCCNC->GetXAxis()->SetTitle("CCNC");
+   hTrueCCNC->Draw("HIST");
+   c3->Print("plots/trueBeamCCNC.png");
+   c3->SaveAs("plots/trueBeamCCNC.C");
+
+   TCanvas *c4 = new TCanvas("c4", "True Interaction Mode Compact", 2000, 2000);
+   hTrueIntModeCompact->LabelsOption("v", "X");
+   hTrueIntModeCompact->Draw("HIST TEXT0");
+   c4->Print("plots/trueIntModeCompact.png");
+   c4->SaveAs("plots/trueIntModeCompact.C");
 
 }

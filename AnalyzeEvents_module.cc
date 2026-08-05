@@ -1048,7 +1048,7 @@ for (const art::Ptr<recob::PFParticle>& pfp : nuSlicePFPs) {
        std::cout<<"Neutrino interaction type: "<<truth->GetNeutrino().InteractionType() << std::endl;
        std::cout<<"Neutrino CCNC type: "<< truth->GetNeutrino().CCNC() << std::endl;
 
-       trueCCNC.push_back(truth-GetNeutrino().CCNC());
+       trueCCNC.push_back(truth->GetNeutrino().CCNC());
        trueIntMode.push_back(truth->GetNeutrino().Mode());
        trueIntType.push_back(truth->GetNeutrino().InteractionType());
 
@@ -1232,6 +1232,9 @@ std::cout<<"****************************************************************"<<s
  vertexZ.clear();
  vertexSize.clear();
  daughterSize.clear();
+ trueIntMode.clear();
+ trueIntType.clear();
+ trueCCNC.clear();
 }
 
 

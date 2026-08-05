@@ -37,6 +37,9 @@ public :
    Float_t         isoVertexX;
    Float_t         isoVertexY;
    Float_t         isoVertexZ;
+   vector<int>     *trueIntType;
+   vector<int>     *trueIntMode;
+   vector<int>     *trueCCNC;
    Int_t           nPFParticles;
    Int_t           nPrimaryChildren;
    Int_t           trackCount;
@@ -96,6 +99,9 @@ public :
    TBranch        *b_isoVertexX;   //!
    TBranch        *b_isoVertexY;   //!
    TBranch        *b_isoVertexZ;   //!
+   TBranch        *b_trueIntType;  //!
+   TBranch        *b_trueIntMode;  //!
+   TBranch        *b_trueCCNC;     //!
    TBranch        *b_nPFParticles;   //!
    TBranch        *b_nPrimaryChildren;   //!
    TBranch        *b_trackCount;   //!
@@ -214,6 +220,9 @@ void tmvaPrep::Init(TTree *tree)
    vertexSize = 0;
    daughterSize = 0;
    TrackIDs = 0;
+   trueIntType = 0;
+   trueIntMode = 0;
+   trueCCNC = 0;
    trackLengths = 0;
    DistanceToRecoVertex = 0;
    nuScores = 0;
@@ -268,6 +277,9 @@ void tmvaPrep::Init(TTree *tree)
    fChain->SetBranchAddress("isoVertexX", &isoVertexX, &b_isoVertexX);
    fChain->SetBranchAddress("isoVertexY", &isoVertexY, &b_isoVertexY);
    fChain->SetBranchAddress("isoVertexZ", &isoVertexZ, &b_isoVertexZ);
+   fChain->SetBranchAddress("trueIntType", &trueIntType, &b_trueIntType);
+   fChain->SetBranchAddress("trueIntMode", &trueIntMode, &b_trueIntMode);
+   fChain->SetBranchAddress("trueCCNC", &trueCCNC, &b_trueCCNC);
    fChain->SetBranchAddress("nPFParticles", &nPFParticles, &b_nPFParticles);
    fChain->SetBranchAddress("nPrimaryChildren", &nPrimaryChildren, &b_nPrimaryChildren);
    fChain->SetBranchAddress("trackCount", &trackCount, &b_trackCount);

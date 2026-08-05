@@ -4,12 +4,12 @@
 void nTracksShowersBkg()
 {
 //=========Macro generated from canvas: c2/Background Track-Shower Topology
-//=========  (Thu Jul 23 22:55:39 2026) by ROOT version 6.40.02
+//=========  (Thu Jul 30 15:13:53 2026) by ROOT version 6.40.02
    TCanvas *c2 = new TCanvas("c2", "Background Track-Shower Topology", 0, 0, 2000, 2000);
    gStyle->SetOptFit(0);
    gStyle->SetOptStat(0);
    gStyle->SetOptTitle(1);
-   TColor::SetPalette(63, nullptr);
+   TColor::SetPalette(68, nullptr);
    c2->Range(-2,-1.9,8,7.433333);
    c2->SetFillColor(0);
    c2->SetFillStyle(1001);
@@ -20,40 +20,40 @@ void nTracksShowersBkg()
    c2->SetBottomMargin(0.15);
    
    TH2F *nTracksShowersBkg = new TH2F("nTracksShowersBkg", "", 7, -0.5, 6.5, 7, -0.5, 6.5);
-   nTracksShowersBkg->SetBinContent(11,92028);
-   nTracksShowersBkg->SetBinContent(12,44850);
-   nTracksShowersBkg->SetBinContent(13,12840);
-   nTracksShowersBkg->SetBinContent(14,3286);
-   nTracksShowersBkg->SetBinContent(15,646);
-   nTracksShowersBkg->SetBinContent(16,148);
-   nTracksShowersBkg->SetBinContent(17,33);
+   nTracksShowersBkg->SetBinContent(11,91724);
+   nTracksShowersBkg->SetBinContent(12,44684);
+   nTracksShowersBkg->SetBinContent(13,12801);
+   nTracksShowersBkg->SetBinContent(14,3276);
+   nTracksShowersBkg->SetBinContent(15,644);
+   nTracksShowersBkg->SetBinContent(16,147);
+   nTracksShowersBkg->SetBinContent(17,32);
    nTracksShowersBkg->SetBinContent(19,6);
-   nTracksShowersBkg->SetBinContent(20,24611);
-   nTracksShowersBkg->SetBinContent(21,12588);
-   nTracksShowersBkg->SetBinContent(22,4236);
-   nTracksShowersBkg->SetBinContent(23,1274);
-   nTracksShowersBkg->SetBinContent(24,340);
+   nTracksShowersBkg->SetBinContent(20,24533);
+   nTracksShowersBkg->SetBinContent(21,12543);
+   nTracksShowersBkg->SetBinContent(22,4223);
+   nTracksShowersBkg->SetBinContent(23,1266);
+   nTracksShowersBkg->SetBinContent(24,339);
    nTracksShowersBkg->SetBinContent(25,79);
    nTracksShowersBkg->SetBinContent(26,23);
    nTracksShowersBkg->SetBinContent(28,12);
-   nTracksShowersBkg->SetBinContent(29,4865);
-   nTracksShowersBkg->SetBinContent(30,3384);
-   nTracksShowersBkg->SetBinContent(31,1531);
-   nTracksShowersBkg->SetBinContent(32,448);
-   nTracksShowersBkg->SetBinContent(33,141);
+   nTracksShowersBkg->SetBinContent(29,4845);
+   nTracksShowersBkg->SetBinContent(30,3376);
+   nTracksShowersBkg->SetBinContent(31,1524);
+   nTracksShowersBkg->SetBinContent(32,445);
+   nTracksShowersBkg->SetBinContent(33,140);
    nTracksShowersBkg->SetBinContent(34,54);
    nTracksShowersBkg->SetBinContent(35,14);
    nTracksShowersBkg->SetBinContent(37,6);
-   nTracksShowersBkg->SetBinContent(38,947);
-   nTracksShowersBkg->SetBinContent(39,897);
-   nTracksShowersBkg->SetBinContent(40,458);
-   nTracksShowersBkg->SetBinContent(41,180);
+   nTracksShowersBkg->SetBinContent(38,946);
+   nTracksShowersBkg->SetBinContent(39,893);
+   nTracksShowersBkg->SetBinContent(40,457);
+   nTracksShowersBkg->SetBinContent(41,179);
    nTracksShowersBkg->SetBinContent(42,68);
    nTracksShowersBkg->SetBinContent(43,27);
    nTracksShowersBkg->SetBinContent(44,11);
    nTracksShowersBkg->SetBinContent(46,1);
    nTracksShowersBkg->SetBinContent(47,217);
-   nTracksShowersBkg->SetBinContent(48,243);
+   nTracksShowersBkg->SetBinContent(48,242);
    nTracksShowersBkg->SetBinContent(49,130);
    nTracksShowersBkg->SetBinContent(50,64);
    nTracksShowersBkg->SetBinContent(51,22);
@@ -76,7 +76,7 @@ void nTracksShowersBkg()
    nTracksShowersBkg->SetBinContent(77,1);
    nTracksShowersBkg->SetBinContent(78,1);
    nTracksShowersBkg->SetBinContent(79,2);
-   nTracksShowersBkg->SetEntries(210969);
+   nTracksShowersBkg->SetEntries(210254);
    nTracksShowersBkg->SetDirectory(nullptr);
    nTracksShowersBkg->SetContour(20);
    
@@ -94,7 +94,7 @@ void nTracksShowersBkg()
    palette->SetTitleColor(1);
    palette->SetTitleFont(42);
    palette->SetTitle("Events");
-   palette->SetFillColor(TColor::GetColor("#efefd7"));
+   palette->SetFillColor(TColor::GetColor("#ebef62"));
    palette->SetFillStyle(1001);
    nTracksShowersBkg->GetListOfFunctions()->Add(palette,"br");
    nTracksShowersBkg->SetFillColor(0);

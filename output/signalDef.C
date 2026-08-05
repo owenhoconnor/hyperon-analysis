@@ -48,7 +48,7 @@ void signalDef::Loop()
    Samples[2] = "Background";
    
    int nEvents[3] = {0};
-   nEvents[0] = 141422; // number of events in all hyperon files
+   nEvents[0] = 0; // number of events in all hyperon files
    nEvents[1] = nEvents[0]; // any hyperon event
    nEvents[2] = 210977 + nEvents[0]; // num of events in bkg files + num of events in hyp files
    
@@ -56,7 +56,7 @@ void signalDef::Loop()
    double PoT[4] = {0};
    PoT[0] = 2.69e19; // pot per hyperon file
    PoT[1] = PoT[0]; //  (hyperons)
-   PoT[2] = 8.875e15; // pot per bkg file
+   PoT[2] = 8.875e15; // pot per beam file
    PoT[3] = 1e21; // total pot
 
    double nHyperonFiles = 2636.8;
@@ -144,6 +144,18 @@ void signalDef::Loop()
    bkgTree->SetName("tree");
    bkgTree->SetDirectory(bkgFile);
 
+   TFile *beamSigFile = TFile::Open("/data/ooconnor/sbnd/hyperons/preselection_output/signalDef_output_beamSig.root", "RECREATE");
+
+   if (!beamSigFile || beamSigFile->IsZombie()){
+	   std::cerr<<"Could not open file!"<<std::endl;
+	   return;
+   }
+
+   beamSigFile->cd();
+   TTree *beamSigTree = fChain->CloneTree(0);
+   beamSigTree->SetName("tree");
+   beamSigTree->SetDirectory(beamSigFile);
+
    TFile *unlabFile = TFile::Open("/data/ooconnor/sbnd/hyperons/preselection_output/unlabTree.root", "RECREATE");
    
    if (!unlabFile || unlabFile->IsZombie()){
@@ -166,10 +178,13 @@ void signalDef::Loop()
 
    int nSig = 0;
    int nBkg = 0;
+   int nBeamSig;
    int nInRecoFVSig = 0;
    int nInRecoFVBkg = 0;
+   int nInRecoFVBeamSig = 0;
    int nGoodTopoSig = 0;
    int nGoodTopoBkg = 0;
+   int nGoodTopoBeamSig = 0;
 
    Long64_t nentries = fChain->GetEntriesFast();
 
@@ -220,8 +235,8 @@ void signalDef::Loop()
       std::cout<<"TrackLengths size = "<<trackLengths->size()<<std::endl;
       std::cout<<"trackScores size = "<<trackScores->size()<<std::endl;
       std::cout<<"trackCount = "<<trackCount<<" showerCount = "<<showerCount<<std::endl;
-      std::cout<<"pfpTrackPDG size = "<<pfpTrackPDG->size()<<std::endl;
-      std::cout<<"pfpShowerPDG size = "<<pfpShowerPDG->size()<<std::endl;
+     // std::cout<<"pfpTrackPDG size = "<<pfpTrackPDG->size()<<std::endl;
+      //std::cout<<"pfpShowerPDG size = "<<pfpShowerPDG->size()<<std::endl; THESE CURRENTLY BREAK BC IM REWRITING TRUTHMATCHING
       std::cout<<"nPFParticles = "<<nPFParticles<<std::endl;
       std::cout<<"pfpPDG size = "<<pfpPDG->size()<<std::endl;
 
@@ -320,7 +335,7 @@ void signalDef::Loop()
 
       // SIGNAL DEFINITION
       
-      if (IsInFV && IsAntiMuon && IsPhoton && IsLambda && !IsKaonp && !IsKaonm && !IsKaon0){
+      if (IsInFV && IsAntiMuon && !IsKaonp && !IsKaonm && !IsKaon0){
 	      if (IsGoodSigma){
 			nGoodSigma++;
 			std::cout<<"signal event, nSignal = "<<nGoodSigma<<std::endl;
@@ -355,7 +370,12 @@ void signalDef::Loop()
 	  nBkg++;
 	  hTracksShowersBkg->Fill(trackCount, showerCount);
       }	
-      if(IsSignal && jentry > nEvents[0]){continue;} // if there's signal in bkg range, ignore
+      if(IsSignal && jentry > nEvents[0]){ // signal events in beam range
+	      
+	      nBeamSig++;
+	      s=3; // 3 means signal in beam range
+	      isSignal=true;
+      }
 
       // Preselection
 
@@ -387,6 +407,7 @@ void signalDef::Loop()
       if(IsInRecoFV){
 	  if(s==0){nInRecoFVSig++;}
 	  if(s==2){nInRecoFVBkg++;}
+	  if(s==3){nInRecoFVBeamSig++;}
           if(trackCount == 3 && showerCount == 1 && !IsBadShower){
                   unlabTree->Fill();
 	          if(s==0){
@@ -396,6 +417,10 @@ void signalDef::Loop()
 	          if(s==2){
 			  nGoodTopoBkg++;
 			  bkgTree->Fill();
+		  }
+		  if(s==3){
+			  nGoodTopoBeamSig++;
+			  beamSigTree->Fill();
 		  }
               }
       }
@@ -502,7 +527,7 @@ void signalDef::Loop()
    hTracksShowersBkg->GetXaxis()->SetNdivisions(MaxTracks + 1, 0, 0, kTRUE);
    hTracksShowersBkg->GetYaxis()->SetNdivisions(MaxShowers + 1, 0, 0, kTRUE);
 
-   gStyle->SetPalette(kAlpine);
+   gStyle->SetPalette(kAvocado);
    gStyle->SetOptStat(0);
    hTracksShowersBkg->Draw("COLZ TEXT");
    c2->Print("plots/nTracksShowersBkg.png");
@@ -517,6 +542,11 @@ void signalDef::Loop()
    bkgTree->Write("tree"); // write bkg tree
    bkgFile->Close();
    delete bkgFile;
+
+   beamSigFile->cd();
+   beamSigTree->Write("tree");
+   beamSigFile->Close();
+   delete beamSigFile;
 
    unlabFile->cd();
    unlabTree->Write("unlabTree"); // write unlabelled true
@@ -544,10 +574,13 @@ void signalDef::Loop()
 
    std::cout<<"# Signal =  "<<nSig<<std::endl;
    std::cout<<"# Background = "<<nBkg<<std::endl;
+   std::cout<<"# Beam Signal = "<<nBeamSig<<std::endl;
    std::cout<<"# Signal after reco FV cut = "<<nInRecoFVSig<<std::endl;
    std::cout<<"# Background after reco FV cut = "<<nInRecoFVBkg<<std::endl;
+   std::cout<<"# Beam Signal after reco FV cut = "<<nInRecoFVBeamSig<<std::endl;
    std::cout<<"# Signal after 3+1 topo cut = "<<nGoodTopoSig<<std::endl;
    std::cout<<"# Background after 3+1 topo cut = "<<nGoodTopoBkg<<std::endl;
+   std::cout<<"# Beam Signal after 3+1 topo cut = "<<nGoodTopoBeamSig<<std::endl;
    std::cout<<"Signal scale = "<<scale[0]<<std::endl;
    std::cout<<"Background scale = "<<scale[2]<<std::endl;
 }
