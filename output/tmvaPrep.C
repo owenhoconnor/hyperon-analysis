@@ -429,7 +429,7 @@ void tmvaPrep::Loop()
    hTrueIntMode->SetDirectory(nullptr);
    TH1F *hTrueIntType = new TH1F("hTrueIntType", "", 10, -1, -1);
    hTrueIntType->SetDirectory(nullptr);
-   TH1F *hTrueCCNC = new TH1F("hTrueCCNC", "", 10, -1, -1);
+   TH1F *hTrueCCNC = new TH1F("hTrueCCNC", "", 2, -0.5, 1.5);
    hTrueCCNC->SetDirectory(nullptr);
 
 
@@ -807,7 +807,23 @@ for (std::size_t i = 0; i < nonEmptyBins.size(); ++i) {
    TCanvas *c3 = new TCanvas("c3", "True CCNC", 2000, 2000);
 
   // hTrueCCNC->GetXAxis()->SetTitle("CCNC");
-   hTrueCCNC->Draw("HIST");
+   hTrueCCNC->GetXaxis()->SetBinLabel(1, "CC");
+   hTrueCCNC->GetXaxis()->SetBinLabel(2, "NC");
+
+   hTrueCCNC->GetXaxis()->SetTitle("Interaction Current");
+   hTrueCCNC->GetYaxis()->SetTitle("Interactions");
+
+   hTrueCCNC->GetXaxis()->CenterTitle();
+   hTrueCCNC->GetYaxis()->CenterTitle();
+
+   hTrueCCNC->SetMinimum(0);
+
+   gStyle->SetOptStat(0);
+   hTrueCCNC->SetFillColorAlpha(kAzure + 1, 0.7);
+   hTrueCCNC->SetLineColor(kBlack);
+  hTrueCCNC->SetLineWidth(2);
+
+   hTrueCCNC->Draw("HIST TEXT0");
    c3->Print("plots/trueBeamCCNC.png");
    c3->SaveAs("plots/trueBeamCCNC.C");
 
@@ -877,7 +893,7 @@ for (std::size_t i = 0; i < nonEmptyBins.size(); ++i) {
         hTopology->GetXaxis()->CenterTitle();
         hTopology->GetYaxis()->CenterTitle();
 
-        hTopology->GetXaxis()->SetTitleOffset(1.5);
+        hTopology->GetXaxis()->SetTitleOffset(3.5);
         hTopology->GetYaxis()->SetTitleOffset(1.3);
 
         hTopology->GetXaxis()->SetLabelSize(0.035);

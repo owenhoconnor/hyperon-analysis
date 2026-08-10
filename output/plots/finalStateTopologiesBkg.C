@@ -4,7 +4,7 @@
 void finalStateTopologiesBkg()
 {
 //=========Macro generated from canvas: cTopology/Final-state topologies
-//=========  (Thu Aug  6 10:24:12 2026) by ROOT version 6.28/12
+//=========  (Mon Aug 10 13:57:24 2026) by ROOT version 6.28/12
    TCanvas *cTopology = new TCanvas("cTopology", "Final-state topologies",0,0,1800,1100);
    gStyle->SetOptStat(0);
    cTopology->Range(-2.168675,-783.0001,15.90361,1827);
@@ -36,6 +36,7 @@ void finalStateTopologiesBkg()
    hTopology__5->SetMinimum(0);
    hTopology__5->SetMaximum(1566);
    hTopology__5->SetEntries(15);
+   hTopology__5->SetStats(0);
 
    Int_t ci;      // for color index setting
    TColor *color; // for color definition with alpha
@@ -60,7 +61,7 @@ void finalStateTopologiesBkg()
    hTopology__5->GetXaxis()->SetBit(TAxis::kLabelsVert);
    hTopology__5->GetXaxis()->CenterTitle(true);
    hTopology__5->GetXaxis()->SetLabelFont(42);
-   hTopology__5->GetXaxis()->SetTitleOffset(1.5);
+   hTopology__5->GetXaxis()->SetTitleOffset(3.5);
    hTopology__5->GetXaxis()->SetTitleFont(42);
    hTopology__5->GetYaxis()->SetTitle("Interactions");
    hTopology__5->GetYaxis()->CenterTitle(true);

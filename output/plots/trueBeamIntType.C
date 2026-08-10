@@ -4,7 +4,7 @@
 void trueBeamIntType()
 {
 //=========Macro generated from canvas: c1/True Interaction Type
-//=========  (Thu Aug  6 10:24:11 2026) by ROOT version 6.28/12
+//=========  (Mon Aug 10 13:57:23 2026) by ROOT version 6.28/12
    TCanvas *c1 = new TCanvas("c1", "True Interaction Type",0,0,2000,2000);
    c1->Range(987.5,-513.8438,1112.5,4624.594);
    c1->SetFillColor(0);

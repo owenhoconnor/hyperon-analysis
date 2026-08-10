@@ -4,8 +4,9 @@
 void trueIntModeCompact()
 {
 //=========Macro generated from canvas: c4/True Interaction Mode Compact
-//=========  (Thu Aug  6 10:24:12 2026) by ROOT version 6.28/12
+//=========  (Mon Aug 10 13:57:24 2026) by ROOT version 6.28/12
    TCanvas *c4 = new TCanvas("c4", "True Interaction Mode Compact",0,0,2000,2000);
+   gStyle->SetOptStat(0);
    c4->Range(-0.5,-236.775,4.5,2130.975);
    c4->SetFillColor(0);
    c4->SetBorderMode(0);
@@ -23,23 +24,6 @@ void trueIntModeCompact()
    hTrueIntModeCompact__4->SetBinError(3,19.15724);
    hTrueIntModeCompact__4->SetBinError(4,3.162278);
    hTrueIntModeCompact__4->SetEntries(4);
-   
-   TPaveStats *ptstats = new TPaveStats(0.78,0.775,0.98,0.935,"brNDC");
-   ptstats->SetName("stats");
-   ptstats->SetBorderSize(1);
-   ptstats->SetFillColor(0);
-   ptstats->SetTextAlign(12);
-   ptstats->SetTextFont(42);
-   TText *ptstats_LaTex = ptstats->AddText("hTrueIntModeCompact");
-   ptstats_LaTex->SetTextSize(0.0368);
-   ptstats_LaTex = ptstats->AddText("Entries = 4      ");
-   ptstats_LaTex = ptstats->AddText("Mean  =      0");
-   ptstats_LaTex = ptstats->AddText("Std Dev   =      0");
-   ptstats->SetOptStat(1111);
-   ptstats->SetOptFit(0);
-   ptstats->Draw();
-   hTrueIntModeCompact__4->GetListOfFunctions()->Add(ptstats);
-   ptstats->SetParent(hTrueIntModeCompact__4);
 
    Int_t ci;      // for color index setting
    TColor *color; // for color definition with alpha
