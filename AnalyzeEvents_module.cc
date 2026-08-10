@@ -1069,7 +1069,7 @@ for (const art::Ptr<recob::PFParticle>& pfp : nuSlicePFPs) {
 	   std::cout<<"mcParticle trackID is "<<mcParticle->TrackId()<<std::endl;
 	   std::cout<<"mcParticle mother TrackID is "<<mcParticle->Mother()<<std::endl;
 
-           if(mcParticle->Mother()!=10000000) continue; // 10000000 for beam files, 0 for filt hyp files (neutrino track ID)
+           if(mcParticle->Mother()!=truth->GetNeutrino().Nu().TrackId()) continue; // 10000000 for beam files, 0 for filt hyp files (neutrino track ID)
 
            std::cout<<"--Particle at index " << i_mcpart <<"at mclist index "<<i_truth<< " has pdg: " << mcParticle->PdgCode() 
 		    <<" has momentum: " << mcParticle->P()<<" Mother: "<<mcParticle->Mother()
