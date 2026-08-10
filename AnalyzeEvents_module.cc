@@ -1054,7 +1054,7 @@ for (const art::Ptr<recob::PFParticle>& pfp : nuSlicePFPs) {
        std::cout<<"Neutrino track ID: "<<truth->GetNeutrino().Nu().TrackId() << std::endl;
 
 
-       trueNuEnergy.push_back(truth->GetNeutrino.Nu().E());
+       trueNuEnergy.push_back(truth->GetNeutrino().Nu().E());
        trueCCNC.push_back(truth->GetNeutrino().CCNC());
        trueIntMode.push_back(truth->GetNeutrino().Mode());
        trueIntType.push_back(truth->GetNeutrino().InteractionType());
