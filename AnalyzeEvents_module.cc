@@ -129,6 +129,7 @@ private:
   std::vector<float> vertexZ;
   std::vector<int> vertexSize;
   std::vector<int> daughterSize;
+  std::vector<int> trueNuEnergy;
   std::vector<int> trueCCNC;
   std::vector<int> trueIntMode;
   std::vector<int> trueIntType;
@@ -1047,7 +1048,13 @@ for (const art::Ptr<recob::PFParticle>& pfp : nuSlicePFPs) {
        std::cout<<"Neutrino interaction mode: "<<truth->GetNeutrino().Mode() << std::endl;
        std::cout<<"Neutrino interaction type: "<<truth->GetNeutrino().InteractionType() << std::endl;
        std::cout<<"Neutrino CCNC type: "<< truth->GetNeutrino().CCNC() << std::endl;
+       std::cout<<"Neutrino energy: "<<truth->GetNeutrino().Nu().E() << std::endl;
+       std::cout<<"Neutrino vertex: ("<<truth->GetNeutrino().Nu().Vx()<<", "<<truth->GetNeutrino().Nu().Vy()<<", "<<truth->GetNeutrino().Nu().Vz()<<")"<<std::endl;
+       std::cout<<"Neutrino target: "<<truth->GetNeutrino().Target() << std::endl;
+       std::cout<<"Neutrino track ID: "<<truth->GetNeutrino().Nu().TrackId() << std::endl;
 
+
+       trueNuEnergy.push_back(truth->GetNeutrino.Nu.E());
        trueCCNC.push_back(truth->GetNeutrino().CCNC());
        trueIntMode.push_back(truth->GetNeutrino().Mode());
        trueIntType.push_back(truth->GetNeutrino().InteractionType());
@@ -1232,6 +1239,7 @@ std::cout<<"****************************************************************"<<s
  vertexZ.clear();
  vertexSize.clear();
  daughterSize.clear();
+ trueNuEnergy.clear();
  trueIntMode.clear();
  trueIntType.clear();
  trueCCNC.clear();
@@ -1257,6 +1265,7 @@ void hyperon::AnalyzeEvents::beginJob()
   fTree->Branch("vertexZ", &vertexZ);
   fTree->Branch("vertexSize", &vertexSize);
   fTree->Branch("daughterSize", &daughterSize);
+  fTree->Branch("trueNuEnergy", &trueNuEnergy);
   fTree->Branch("trueCCNC", &trueCCNC);
   fTree->Branch("trueIntMode", &trueIntMode);
   fTree->Branch("trueIntType", &trueIntType);

@@ -4,6 +4,212 @@
 #include <TStyle.h>
 #include <TCanvas.h>
 
+// -----------------------------------------------------------------------------
+// Topology definitions
+// -----------------------------------------------------------------------------
+
+enum Topology {
+    kCC0Pi0P = 0,
+    kCC0Pi1P,
+    kCC0Pi2PlusP,
+    kCC1Pi0,
+    kCC1PiPlus,
+    kCC1PiMinus,
+    kCCMultiPi,
+    kCCStrange,
+
+    kNC0Pi0P,
+    kNC0Pi1P,
+    kNC0Pi2PlusP,
+    kNC1Pi0,
+    kNC1PiPlus,
+    kNC1PiMinus,
+    kNCMultiPi,
+    kNCStrange,
+
+    kOther,
+
+    kNTopologies
+};
+
+const std::array<std::string, kNTopologies> topologyLabels = {
+    "CC 0#pi, 0p",
+    "CC 0#pi, 1p",
+    "CC 0#pi, #geq2p",
+    "CC 1#pi^{0}",
+    "CC 1#pi^{+}",
+    "CC 1#pi^{-}",
+    "CC multi-#pi",
+    "CC strange",
+
+    "NC 0#pi, 0p",
+    "NC 0#pi, 1p",
+    "NC 0#pi, #geq2p",
+    "NC 1#pi^{0}",
+    "NC 1#pi^{+}",
+    "NC 1#pi^{-}",
+    "NC multi-#pi",
+    "NC strange",
+
+    "Other"
+};
+
+// -----------------------------------------------------------------------------
+// Identify strange-particle content
+// -----------------------------------------------------------------------------
+
+bool IsStrangeHadron(const int pdg){
+    const int absPDG = std::abs(pdg);
+
+    switch (absPDG) {
+        // Kaons
+        case 130:   // K_L
+        case 310:   // K_S
+        case 311:   // K0
+        case 321:   // K+
+
+        // Hyperons
+        case 3122:  // Lambda
+        case 3112:  // Sigma-
+        case 3212:  // Sigma0
+        case 3222:  // Sigma+
+        case 3312:  // Xi-
+        case 3322:  // Xi0
+        case 3334:  // Omega-
+            return true;
+
+        default:
+            return false;
+    }
+}
+
+// -----------------------------------------------------------------------------
+// Classify one interaction
+// -----------------------------------------------------------------------------
+
+int ClassifyTopology(
+    const int ccnc,
+    const std::vector<int>& truePDGs
+)
+{
+    int nProtons = 0;
+    int nNeutrons = 0;
+
+    int nPiPlus = 0;
+    int nPiMinus = 0;
+    int nPiZero = 0;
+
+    bool hasStrangeHadron = false;
+
+    for (const int pdg : truePDGs) {
+
+        switch (pdg) {
+            case 2212:
+                ++nProtons;
+                break;
+
+            case 2112:
+                ++nNeutrons;
+                break;
+
+            case 211:
+                ++nPiPlus;
+                break;
+
+            case -211:
+                ++nPiMinus;
+                break;
+
+            case 111:
+                ++nPiZero;
+                break;
+
+            default:
+                break;
+        }
+
+        if (IsStrangeHadron(pdg)) {
+            hasStrangeHadron = true;
+        }
+    }
+
+    const int nChargedPions = nPiPlus + nPiMinus;
+    const int nPions = nChargedPions + nPiZero;
+
+    // In simb::MCNeutrino:
+    //     CCNC == 0 -> charged current
+    //     CCNC == 1 -> neutral current
+
+    if (ccnc == 0) {
+
+        // Give strange interactions their own category.
+        if (hasStrangeHadron) {
+            return kCCStrange;
+        }
+
+        if (nPions == 0) {
+            if (nProtons == 0) {
+                return kCC0Pi0P;
+            }
+
+            if (nProtons == 1) {
+                return kCC0Pi1P;
+            }
+
+            return kCC0Pi2PlusP;
+        }
+
+        if (nPiZero == 1 && nChargedPions == 0) {
+            return kCC1Pi0;
+        }
+
+        if (nPiPlus == 1 && nPiMinus == 0 && nPiZero == 0) {
+            return kCC1PiPlus;
+        }
+
+        if (nPiMinus == 1 && nPiPlus == 0 && nPiZero == 0) {
+            return kCC1PiMinus;
+        }
+
+        return kCCMultiPi;
+    }
+
+    if (ccnc == 1) {
+
+        if (hasStrangeHadron) {
+            return kNCStrange;
+        }
+
+        if (nPions == 0) {
+            if (nProtons == 0) {
+                return kNC0Pi0P;
+            }
+
+            if (nProtons == 1) {
+                return kNC0Pi1P;
+            }
+
+            return kNC0Pi2PlusP;
+        }
+
+        if (nPiZero == 1 && nChargedPions == 0) {
+            return kNC1Pi0;
+        }
+
+        if (nPiPlus == 1 && nPiMinus == 0 && nPiZero == 0) {
+            return kNC1PiPlus;
+        }
+
+        if (nPiMinus == 1 && nPiPlus == 0 && nPiZero == 0) {
+            return kNC1PiMinus;
+        }
+
+        return kNCMultiPi;
+    }
+
+    return kOther;
+}
+
 void tmvaPrep::Loop()
 {
 //   In a ROOT session, you can do:
@@ -225,6 +431,10 @@ void tmvaPrep::Loop()
    hTrueIntType->SetDirectory(nullptr);
    TH1F *hTrueCCNC = new TH1F("hTrueCCNC", "", 10, -1, -1);
    hTrueCCNC->SetDirectory(nullptr);
+
+
+
+std::array<int, kNTopologies> topologyCounts{};
 
    Long64_t nentries = fChain->GetEntriesFast();
 
@@ -456,6 +666,9 @@ void tmvaPrep::Loop()
 		      hTrueIntMode->Fill(intMode);
 		      hTrueIntType->Fill(intType);
 		      hTrueCCNC->Fill(ccnc);
+
+                  const int topology = ClassifyTopology(trueCCNC->at(i), *truePDG);
+                  ++topologyCounts.at(topology);
 	      }
       
       }
@@ -603,4 +816,85 @@ for (std::size_t i = 0; i < nonEmptyBins.size(); ++i) {
    c4->Print("plots/trueIntModeCompact.png");
    c4->SaveAs("plots/trueIntModeCompact.C");
 
+   std::vector<int> populatedTopologies;
+
+    for (int topology = 0;
+        topology < kNTopologies;
+        ++topology) {
+
+        if (topologyCounts.at(topology) > 0) {
+            populatedTopologies.push_back(topology);
+        }
+    }   
+
+    TH1I* hTopology = new TH1I(
+        "hTopology",
+        "",
+        static_cast<int>(populatedTopologies.size()),
+        0.0,
+        static_cast<double>(populatedTopologies.size())
+    );
+
+    for (std::size_t i = 0;
+        i < populatedTopologies.size();
+        ++i) {
+
+        const int topology = populatedTopologies.at(i);
+        const int bin = static_cast<int>(i) + 1;
+
+        hTopology->SetBinContent(
+            bin,
+            topologyCounts.at(topology)
+        );
+
+        hTopology->GetXaxis()->SetBinLabel(
+            bin,
+            topologyLabels.at(topology).c_str()
+        );
+    }
+
+        gStyle->SetOptStat(0);
+
+        TCanvas* cTopology = new TCanvas(
+            "cTopology",
+            "Final-state topologies",
+            1800,
+            1100
+        );
+
+        cTopology->SetLeftMargin(0.12);
+        cTopology->SetRightMargin(0.05);
+        cTopology->SetBottomMargin(0.30);
+
+        hTopology->SetTitle(
+            "Background Final State Topology Distribution After Presel"
+        );
+
+        hTopology->GetXaxis()->SetTitle("True final state topology");
+        hTopology->GetYaxis()->SetTitle("Interactions");
+
+        hTopology->GetXaxis()->CenterTitle();
+        hTopology->GetYaxis()->CenterTitle();
+
+        hTopology->GetXaxis()->SetTitleOffset(1.5);
+        hTopology->GetYaxis()->SetTitleOffset(1.3);
+
+        hTopology->GetXaxis()->SetLabelSize(0.035);
+        hTopology->GetYaxis()->SetLabelSize(0.035);
+
+        hTopology->SetMinimum(0.0);
+        hTopology->SetMaximum(
+            1.20 * hTopology->GetMaximum()
+        );
+
+        // Vertical labels are usually clearest for long topology names.
+        hTopology->LabelsOption("v", "X");
+
+        hTopology->Draw("HIST TEXT0");
+
+        cTopology->Modified();
+        cTopology->Update();
+
+        cTopology->Print("plots/finalStateTopologiesBkg.png");
+        cTopology->SaveAs("plots/finalStateTopologiesBkg.C");
 }
