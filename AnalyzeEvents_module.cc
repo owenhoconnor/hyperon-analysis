@@ -120,6 +120,8 @@ private:
   int fNPrimaryParticles;
   int fNPrimaryChildren;
   // MC Truth parameters
+int fRun;       // Run number
+ int fSubRun; // Sub run number
   std::vector<float> trueP;
   std::vector<int> truePDG; 
   std::vector<int> daughterPDG;
@@ -209,6 +211,8 @@ void hyperon::AnalyzeEvents::analyze(art::Event const& evt)
   // Implementation of required member function here.
  fEventID = evt.id().event(); 
  std::cout<<"Event# "<<evt.id().event()<<std::endl;
+fRun = evt.run();
+fSubRun = evt.subRun();
 
  auto const clockData = art::ServiceHandle<detinfo::DetectorClocksService const>()->DataFor(evt);
 
@@ -1256,6 +1260,8 @@ void hyperon::AnalyzeEvents::beginJob()
   
   // MC truth parameters
   fTree->Branch("eventID", &fEventID);
+  fTree ->Branch("run", &fRun, "run/I");
+  fTree ->Branch("subrun", &fSubRun, "subrun/I");
   fTree->Branch("trueP", &trueP);
   fTree->Branch("truePDG", &truePDG);
   fTree->Branch("daughterPDG", &daughterPDG);

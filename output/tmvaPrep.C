@@ -653,6 +653,7 @@ std::array<int, kNTopologies> topologyCounts{};
       if(sampleType == 0){nSig++; sigTree->Fill();}
       if(sampleType == 2){
 	      nBkg++;
+          std::cout<<"Filling background tree for event ID "<<eventID<<std::endl;
 	      bkgTree->Fill();
       
       	      for (int i = 0; i < trueIntMode->size(); i++){
