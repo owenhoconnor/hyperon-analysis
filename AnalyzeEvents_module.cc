@@ -159,7 +159,6 @@ private:
   std::vector<int> trueCCNC;
   std::vector<int> trueIntMode;
   std::vector<int> trueIntType;
-  std::vector<int> trueNuPDG;
   std::vector<int> trueTargetPDG;
 
   std::vector<int> truePDG;
@@ -168,7 +167,7 @@ private:
   std::vector<int> trueMotherTrackID;
   std::vector<int> trueGeneration;
   std::vector<int> trueIsPrimary;
-  std::vector<int> trueDecayProduct;
+  std::vector<int> trueIsDecayProduct;
   std::vector<int> trueMCTruthIndex;
   std::vector<float> trueP;
   std::vector<float> truePx;
@@ -1167,7 +1166,6 @@ for (size_t i_truth = 0; i_truth < mclist.size(); ++i_truth)
     trueNuVtxX.push_back(nu.Vx());
     trueNuVtxY.push_back(nu.Vy());
     trueNuVtxZ.push_back(nu.Vz());
-    trueNuVtxT.push_back(nu.T());
 
 
     // -----------------------------------------------------------------------
@@ -1663,7 +1661,6 @@ std::cout<<"trueCCNC size = "<<trueCCNC.size()<<std::endl;
     trueNuVtxX.clear();
     trueNuVtxY.clear();
     trueNuVtxZ.clear();
-    trueNuVtxT.clear();
     trueNuEnergy.clear();
     trueIntMode.clear();
     trueIntType.clear();
@@ -1722,15 +1719,16 @@ void hyperon::AnalyzeEvents::beginJob()
   fTree ->Branch("run", &fRun, "run/I");
   fTree ->Branch("subrun", &fSubRun, "subrun/I");
 
-
-  fTree->Branch("vertexX", &vertexX);
-  fTree->Branch("vertexY", &vertexY);
-  fTree->Branch("vertexZ", &vertexZ);
-
+  fTree->Branch("trueNuPDG", &trueNuPDG);
+  fTree->Branch("trueNuTrackID", &trueNuTrackID);
+  fTree->Branch("trueNuVtxX", &trueNuVtxX);
+  fTree->Branch("trueNuVtxY", &trueNuVtxY);
+  fTree->Branch("trueNuVtxZ", &trueNuVtxZ);
   fTree->Branch("trueNuEnergy", &trueNuEnergy);
   fTree->Branch("trueCCNC", &trueCCNC);
   fTree->Branch("trueIntMode", &trueIntMode);
   fTree->Branch("trueIntType", &trueIntType);
+  fTree->Branch("trueTargetPDG", &trueTargetPDG);
 
   fTree->Branch("truePDG", &truePDG);
   fTree->Branch("trueTrackID", &trueTrackID);
