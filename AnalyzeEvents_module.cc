@@ -54,6 +54,33 @@
 #include <string>
 #include <exception>
 #include <fstream>
+#include <algorithm>
+#include <cctype>
+#include <cmath>
+#include <queue>
+#include <string>
+#include <unordered_map>
+#include <unordered_set>
+#include <utility>
+#include <vector>
+
+
+// Helper functions for MCTruth Saving
+
+bool IsDecayProcess(std::string process)
+{
+    std::transform(
+        process.begin(),
+        process.end(),
+        process.begin(),
+        [](unsigned char c) {
+            return std::tolower(c);
+        }
+    );
+
+    return process.find("decay") != std::string::npos;
+}
+
 
 namespace hyperon {
   class AnalyzeEvents;
@@ -120,21 +147,58 @@ private:
   int fNPrimaryParticles;
   int fNPrimaryChildren;
   // MC Truth parameters
-int fRun;       // Run number
- int fSubRun; // Sub run number
-  std::vector<float> trueP;
-  std::vector<int> truePDG; 
-  std::vector<int> daughterPDG;
-  std::vector<int> motherPDG;
-  std::vector<float> vertexX;
-  std::vector<float> vertexY;
-  std::vector<float> vertexZ;
-  std::vector<int> vertexSize;
-  std::vector<int> daughterSize;
+  int fRun;       // Run number
+  int fSubRun; // Sub run number
+ 
+  std::vector<float> trueNuVtxX;
+  std::vector<float> trueNuVtxY;
+  std::vector<float> trueNuVtxZ;
+  std::vector<int> trueNuPDG;
+  std::vector<int> trueNuTrackID;
   std::vector<int> trueNuEnergy;
   std::vector<int> trueCCNC;
   std::vector<int> trueIntMode;
   std::vector<int> trueIntType;
+  std::vector<int> trueNuPDG;
+  std::vector<int> trueTargetPDG;
+
+  std::vector<int> truePDG;
+  std::vector<int> trueTrackID; 
+  std::vector<int> trueMotherPDG;
+  std::vector<int> trueMotherTrackID;
+  std::vector<int> trueGeneration;
+  std::vector<int> trueIsPrimary;
+  std::vector<int> trueDecayProduct;
+  std::vector<int> trueMCTruthIndex;
+  std::vector<float> trueP;
+  std::vector<float> truePx;
+  std::vector<float> truePy;
+  std::vector<float> truePz;
+  std::vector<float> trueMass;
+  std::vector<float> trueE;
+  std::vector<float> trueStartX;
+  std::vector<float> trueStartY;
+  std::vector<float> trueStartZ;
+  std::vector<float> trueStartT;
+  std::vector<float> trueEndX;
+  std::vector<float> trueEndY;
+  std::vector<float> trueEndZ;
+  std::vector<float> trueEndT;
+  std::vector<float> trueEndPx;
+  std::vector<float> trueEndPy;
+  std::vector<float> trueEndPz;
+  std::vector<float> trueEndE;
+  std::vector<int> trueNTrajectoryPoints;
+  std::vector<float> trueTrajectoryLength;
+  std::vector<std::string> trueProcess;
+  std::vector<std::string> trueEndProcess;
+  std::vector<int> trueStatusCode;
+  std::vector<int> trueNDaughters;
+  std::vector<int> trueNStoredDecayDaughters;
+  std::vector<int> trueNPrimaryParticles;
+  std::vector<int> trueNSavedParticles;
+  std::vector<int> trueParticleStartIndex;
+  
 
   // reco parameters
   std::vector<int> fTrackIDs;
@@ -1029,169 +1093,527 @@ for (const art::Ptr<recob::PFParticle>& pfp : nuSlicePFPs) {
         << std::endl;
 }
 
-// MCTRUTH PARAMETERS
+// ============================================================================
+// MC TRUTH PARAMETERS
+// ============================================================================
 
-   std::cout<<"------------ MC TRUTH Parameters ----------------"<<std::endl;  
-   nTotEvents++;
-   vertexSize.push_back(0);
+std::cout<< "------------ MC TRUTH Parameters ----------------"<<std::endl;
 
-   if (mclist.size() > 1){
-	nMultiEvents++;
-   }
+++nTotEvents;
 
-  if (mclist.size() == 1){
-	nSingleEvents++;
-  }
+// ---------------------------------------------------------------------------
+// Number of MCTruth interactions in this art::Event
+// ---------------------------------------------------------------------------
 
-  std::cout<<"mclist size = "<<mclist.size()<<std::endl;
+if (mclist.size() > 1) {
+    ++nMultiEvents;
+}
 
-   for (size_t i_truth = 0; i_truth < mclist.size(); i_truth++)
-   {
-		
-	   
-       art::Ptr<simb::MCTruth> truth(mclist.at(i_truth));
-       std::cout<<"Neutrino at index " << i_truth << " has pdg: " << truth->GetNeutrino().Nu().PdgCode() << std::endl;
-       std::cout<<"Neutrino interaction mode: "<<truth->GetNeutrino().Mode() << std::endl;
-       std::cout<<"Neutrino interaction type: "<<truth->GetNeutrino().InteractionType() << std::endl;
-       std::cout<<"Neutrino CCNC type: "<< truth->GetNeutrino().CCNC() << std::endl;
-       std::cout<<"Neutrino energy: "<<truth->GetNeutrino().Nu().E() << std::endl;
-       std::cout<<"Neutrino vertex: ("<<truth->GetNeutrino().Nu().Vx()<<", "<<truth->GetNeutrino().Nu().Vy()<<", "<<truth->GetNeutrino().Nu().Vz()<<")"<<std::endl;
-       std::cout<<"Neutrino target: "<<truth->GetNeutrino().Target() << std::endl;
-       std::cout<<"Neutrino track ID: "<<truth->GetNeutrino().Nu().TrackId() << std::endl;
+if (mclist.size() == 1) {
+    ++nSingleEvents;
+}
+
+std::cout<< "mclist size = "<< mclist.size()<< std::endl;
 
 
-       trueNuEnergy.push_back(truth->GetNeutrino().Nu().E());
-       trueCCNC.push_back(truth->GetNeutrino().CCNC());
-       trueIntMode.push_back(truth->GetNeutrino().Mode());
-       trueIntType.push_back(truth->GetNeutrino().InteractionType());
+// ===========================================================================
+// Loop over neutrino interactions
+// ===========================================================================
 
- //      int lambda=0,mu=0, mubar=0,kaonp=0,kaonm=0,kaon0=0,proton=0,neutron=0,pip=0,pim=0,pi0=0;
- //      int sigmap=0, sigma0=0, sigmam=0;
-       std::vector< art::Ptr<simb::MCParticle> > assocParticles(fmpart.at(i_truth));
-       std::cout<<"assocParticles size = "<<assocParticles.size()<<std::endl;
-       for (size_t i_mcpart = 0; i_mcpart < assocParticles.size(); i_mcpart++)
-       {
-           art::Ptr<simb::MCParticle> mcParticle(assocParticles.at(i_mcpart));
-	   std::cout<<"mcParticle trackID is "<<mcParticle->TrackId()<<std::endl;
-	   std::cout<<"mcParticle mother TrackID is "<<mcParticle->Mother()<<std::endl;
+for (size_t i_truth = 0; i_truth < mclist.size(); ++i_truth)
+{
+    art::Ptr<simb::MCTruth> truth = mclist.at(i_truth);
 
-           if(mcParticle->Mother()!=truth->GetNeutrino().Nu().TrackId()) continue; // 10000000 for beam files, 0 for filt hyp files (neutrino track ID)
+    const auto& neutrino = truth->GetNeutrino();
+    const auto& nu       = neutrino.Nu();
 
-           std::cout<<"--Particle at index " << i_mcpart <<"at mclist index "<<i_truth<< " has pdg: " << mcParticle->PdgCode() 
-		    <<" has momentum: " << mcParticle->P()<<" Mother: "<<mcParticle->Mother()
-		    <<" has status: "<< mcParticle->StatusCode()<<" number trajectory points: "<< mcParticle->NumberTrajectoryPoints()
-		    <<" TrackId: " << mcParticle->TrackId()<< std::endl;
-           trueP.push_back(mcParticle->P()); 
-	   truePDG.push_back(mcParticle->PdgCode());
-	   motherPDG.push_back(mcParticle->Mother()); // WRONG, Mother() is the TrackID not the PDG
-	   nMCParticles++; // count num of saved mc particles in each interaction vertex, should be same as assocParticles.size()
-	  // Get interaction vertices
-	  if (mcParticle->NumberTrajectoryPoints()>0) {
-		 auto const& startPoint = mcParticle->Position(0);
-		 vertexX.push_back(startPoint.X());
-		 vertexY.push_back(startPoint.Y());
-		 vertexZ.push_back(startPoint.Z());
-	  }
-	  else{ // Store placeholders if no trajectory points for consistency
-		  vertexX.push_back(-9999.);
-		  vertexY.push_back(-9999.);
-		  vertexZ.push_back(-9999.);
-	  }
+    // -----------------------------------------------------------------------
+    // Save interaction-level information
+    // -----------------------------------------------------------------------
 
-	  // Daughter information
-	  daughterSize.push_back(mcParticle->NumberDaughters()); // save num of daughters for each particle for later indexing
-	  std::cout<<"num daughters = "<<mcParticle->NumberDaughters()<<std::endl;
-	  for (int i_daughter = 0; i_daughter < mcParticle->NumberDaughters(); ++i_daughter){
-		  int daughterTrackID = mcParticle->Daughter(i_daughter);
-	  for (size_t i = 0; i < assocParticles.size(); ++i){
-		  if (assocParticles.at(i)->TrackId() == daughterTrackID){
-			  int daughterPdgCode = assocParticles.at(i)->PdgCode();
-			  // OPTION 1: here, set daughter = assocParticles.at(i), loop through granddaughters and do same thing 
-			  daughterPDG.push_back(daughterPdgCode); // save all interaction particle daughter pdgs in one array
-			  break;
-		  }
-	  }
-	  }
-           
-	  if(mcParticle->PdgCode()==  13) mu++;   
-	  if(mcParticle->PdgCode()== -13) mubar++;
-	  if(mcParticle->PdgCode()== 211) pip++; 
-	  if(mcParticle->PdgCode()==-211) pim++;
-          if(mcParticle->PdgCode()== 111) pi0++;
-	  if(mcParticle->PdgCode() == 22) gamma++;
+    std::cout
+        << "\n========== MCTruth " << i_truth << " =========="<< std::endl;
 
-	  
-          if(mcParticle->PdgCode()== 321) kaonp++;
-          if(mcParticle->PdgCode()==-321) kaonm++;
-          if(mcParticle->PdgCode()== 311 || mcParticle->PdgCode() == 130 || mcParticle->PdgCode() == 310) kaon0++;
-          if(mcParticle->PdgCode()== 2212){
-		proton++;
+    std::cout<< "Neutrino PDG: "<< nu.PdgCode()<< std::endl;
 
-	  for (int i_daughter = 0; i_daughter < mcParticle->NumberDaughters(); ++i_daughter){
-		  int daughterTrackID = mcParticle->Daughter(i_daughter);
-	  for (size_t i = 0; i < assocParticles.size(); ++i){
-		  if (assocParticles.at(i)->TrackId() == daughterTrackID){
-			  int daughterPdgCode = assocParticles.at(i)->PdgCode();
-			  std::cout<<"PROTON DAUGHTER PDG = "<<daughterPdgCode<<std::endl;
-			  break;
-		 	 }
-	  	    }
-	  	}
+    std::cout<< "Interaction mode: "<< neutrino.Mode()<< std::endl;
 
-	  }
-          if(mcParticle->PdgCode()== 2112) neutron++;
-          if(mcParticle->PdgCode()== 3122){
-		  lambda++;
-		  
-	  for (int i_daughter = 0; i_daughter < mcParticle->NumberDaughters(); ++i_daughter){
-		  int daughterTrackID = mcParticle->Daughter(i_daughter);
-	  for (size_t i = 0; i < assocParticles.size(); ++i){
-		  if (assocParticles.at(i)->TrackId() == daughterTrackID){
-			  int daughterPdgCode = assocParticles.at(i)->PdgCode();
-			  std::cout<<"LAMBDA DAUGHTER PDG = "<<daughterPdgCode<<std::endl;
+    std::cout<< "Interaction type: "<< neutrino.InteractionType()<< std::endl;
 
-			  if (daughterPdgCode == 2212){
-				  std::cout<<"LAMBDA w/ PROTON DAUGHTER"<<std::endl;
-				  goodLambda++;
-			  }
-			  break;
-		 	 }
-	  	    }
-	  	}
-	  }
-          if(mcParticle->PdgCode()== 3222) sigmap++;
-          if(mcParticle->PdgCode()== 3212){
-		  sigma0++;
+    std::cout<< "CCNC: "<< neutrino.CCNC()<< std::endl;
 
-	  for (int i_daughter = 0; i_daughter < mcParticle->NumberDaughters(); ++i_daughter){
-		  int daughterTrackID = mcParticle->Daughter(i_daughter);
-	  for (size_t i = 0; i < assocParticles.size(); ++i){
-		  if (assocParticles.at(i)->TrackId() == daughterTrackID){
-			  int daughterPdgCode = assocParticles.at(i)->PdgCode();
-			  std::cout<<"SIGMA0 DAUGHTER PDG = "<<daughterPdgCode<<std::endl;
+    std::cout<< "Neutrino energy: "<< nu.E()<< std::endl;
 
-			  if (daughterPdgCode == 3122){
-				std::cout<<"SIGMA0 w/ LAMBDA DAUGHTER"<<std::endl;
-				goodSigma++;
-			  }
-			  break;
-		 	 }
-	  	    }
-	  	}
-	  }
-          if(mcParticle->PdgCode()== 3112) sigmam++;
+    std::cout<< "Neutrino vertex: ("<< nu.Vx() << ", "<< nu.Vy() << ", "<< nu.Vz() << ")"<< std::endl;
 
-	
+    std::cout<< "Target: "<< neutrino.Target()<< std::endl;
+
+    std::cout<< "Generator neutrino TrackID: "<< nu.TrackId()<< std::endl;
+
+    trueNuPDG.push_back(nu.PdgCode());
+
+    trueNuEnergy.push_back(nu.E());
+
+    trueCCNC.push_back(neutrino.CCNC());
+
+    trueIntMode.push_back(neutrino.Mode());
+
+    trueIntType.push_back(neutrino.InteractionType());
+
+    trueTargetPDG.push_back(neutrino.Target());
+
+    trueNuTrackID.push_back(nu.TrackId());
+
+    trueNuVtxX.push_back(nu.Vx());
+    trueNuVtxY.push_back(nu.Vy());
+    trueNuVtxZ.push_back(nu.Vz());
+    trueNuVtxT.push_back(nu.T());
 
 
-      }
-	vertexSize.push_back(nMCParticles); // save the number of particles at each interaction vertex
-	nMCParticles = 0; // reset counter
+    // -----------------------------------------------------------------------
+    // All simulated particles associated with THIS MCTruth interaction.
+    //
+    // This collection can be huge because it contains descendants from
+    // detector interactions, ionisation, scattering, etc.
+    // -----------------------------------------------------------------------
 
-   }
+    std::vector<art::Ptr<simb::MCParticle>> assocParticles = fmpart.at(i_truth);
+
+    std::cout<< "Total associated Geant4 MCParticles = "<< assocParticles.size()<< std::endl;
+
+    // --------------------------------------------
+    // Debugging: print out process counts for assocParticles in this MCTruth
+    // --------------------------------------------
+
+    std::map<std::string, int> processCounts;
+
+    for (const auto& particle : assocParticles)
+    {
+        if (!particle) {
+            continue;
+        }
+
+        ++processCounts[
+            particle->Process()
+        ];
+    }
+
+    std::cout
+        << "\nProcesses in MCTruth "
+        << i_truth
+        << ":"
+        << std::endl;
+
+    for (const auto& [process, count] : processCounts)
+    {
+        std::cout
+            << "    "
+            << process
+            << " : "
+            << count
+            << std::endl;
+    }
+
+    // -----------------------------------------------------------------------
+    // Build fast genealogy lookup tables
+    //
+    // particleByTrackID:
+    //
+    //     TrackID -> particle
+    //
+    // childrenByMotherID:
+    //
+    //     mother TrackID -> all stored children
+    //
+    // -----------------------------------------------------------------------
+
+    std::unordered_map<
+        int,
+        art::Ptr<simb::MCParticle>
+    > particleByTrackID;
+
+
+    std::unordered_map<
+        int,
+        std::vector<art::Ptr<simb::MCParticle>>
+    > childrenByMotherID;
+
+
+    for (const auto& particle : assocParticles)
+    {
+        if (!particle) {
+            continue;
+        }
+
+        particleByTrackID[
+            particle->TrackId()
+        ] = particle;
+
+        childrenByMotherID[
+            particle->Mother()
+        ].push_back(particle);
+    }
+
+
+    // -----------------------------------------------------------------------
+    // Save where this MCTruth starts in the flat particle vectors.
+    //
+    // This isn't essential because trueMCTruthIndex also identifies the
+    // interaction, but it makes later indexing extremely convenient.
+    // -----------------------------------------------------------------------
+
+    const int firstParticleIndex = static_cast<int>(truePDG.size());
+    trueParticleStartIndex.push_back(firstParticleIndex);
+
+    // -----------------------------------------------------------------------
+    // Find all primary particles for this interaction.
+    //
+    // LArSoft defines detector-simulation primaries with Process()=="primary".
+    // -----------------------------------------------------------------------
+
+    std::queue<
+        std::pair<
+            art::Ptr<simb::MCParticle>,
+            int
+        >
+    > particlesToProcess;
+
+    int nPrimariesThisTruth = 0;
+
+    for (const auto& particle : assocParticles)
+    {
+        if (!particle) {
+            continue;
+        }
+
+        if (particle->Process() != "primary") {
+            continue;
+        }
+
+        // generation = 0 for an interaction primary
+        particlesToProcess.push({
+            particle,
+            0
+        });
+
+        ++nPrimariesThisTruth;
+    }
+
+
+    std::cout
+        << "Primary particles = "
+        << nPrimariesThisTruth
+        << std::endl;
+
+
+    // -----------------------------------------------------------------------
+    // Avoid duplicate saving even if some bizarre genealogy occurs.
+    // -----------------------------------------------------------------------
+
+    std::unordered_set<int> savedTrackIDs;
+    int nSavedThisTruth = 0;
+
+    // =======================================================================
+    // Traverse:
+    //
+    // primary
+    //   -> decay child
+    //       -> decay child
+    //           -> ...
+    //
+    // No fixed depth.
+    // =======================================================================
+
+    while (!particlesToProcess.empty())
+    {
+        const auto current = particlesToProcess.front();
+
+        particlesToProcess.pop();
+
+        const art::Ptr<simb::MCParticle>& particle = current.first;
+
+        const int generation = current.second;
+
+        if (!particle) {
+            continue;
+        }
+
+        const int trackID = particle->TrackId();
+
+        // Already handled?
+        if (savedTrackIDs.count(trackID) != 0) {
+            continue;
+        }
+
+        savedTrackIDs.insert(trackID);
+
+
+        // -------------------------------------------------------------------
+        // Mother information
+        // -------------------------------------------------------------------
+
+        const int motherTrackID = particle->Mother();
+        int motherPDGCode = 0;
+
+        auto motherIt = particleByTrackID.find(motherTrackID); 
+
+        if (motherIt != particleByTrackID.end()) {
+            motherPDGCode = motherIt->second->PdgCode();
+        }
+
+
+        // -------------------------------------------------------------------
+        // Determine how many STORED decay children this particle has.
+        //
+        // NumberDaughters() is still worth saving separately because that is
+        // the total daughter information stored on MCParticle.
+        // -------------------------------------------------------------------
+
+        int nStoredDecayDaughters = 0;
+
+        auto childrenIt = childrenByMotherID.find(trackID);
+
+        if (childrenIt != childrenByMotherID.end())
+        {
+            for (const auto& child : childrenIt->second)
+            {
+                if (!child) {
+                    continue;
+                }
+
+                if (IsDecayProcess(child->Process())) {
+                    ++nStoredDecayDaughters;
+                }
+            }
+        }
+
+
+        // ===================================================================
+        // SAVE THIS PARTICLE
+        // ===================================================================
+
+        truePDG.push_back(particle->PdgCode());
+
+        trueTrackID.push_back(trackID);
+
+        trueMotherTrackID.push_back(motherTrackID);
+
+        trueMotherPDG.push_back(motherPDGCode);
+
+        trueMCTruthIndex.push_back(static_cast<int>(i_truth));
+
+        trueGeneration.push_back(generation);
+
+        trueIsPrimary.push_back(generation == 0);
+
+        trueIsDecayProduct.push_back(generation > 0);
+
+        // -------------------------------------------------------------------
+        // Process information
+        // -------------------------------------------------------------------
+
+        trueProcess.push_back(particle->Process());
+
+        trueEndProcess.push_back(particle->EndProcess());
+
+        trueStatusCode.push_back(particle->StatusCode());
+
+        // -------------------------------------------------------------------
+        // Daughter information
+        // -------------------------------------------------------------------
+
+        trueNDaughters.push_back(particle->NumberDaughters());
+
+        trueNStoredDecayDaughters.push_back(nStoredDecayDaughters);
+
+
+        // -------------------------------------------------------------------
+        // Particle mass
+        // -------------------------------------------------------------------
+
+        trueMass.push_back(particle->Mass());
+
+        // -------------------------------------------------------------------
+        // Trajectory / kinematic information
+        // -------------------------------------------------------------------
+
+        const unsigned int nTrajectoryPoints = particle->NumberTrajectoryPoints();
+
+        trueNTrajectoryPoints.push_back(nTrajectoryPoints);
+
+
+        if (nTrajectoryPoints > 0)
+        {
+            // Start position
+
+            trueStartX.push_back(particle->Vx());
+
+            trueStartY.push_back(particle->Vy());
+
+            trueStartZ.push_back(particle->Vz());
+
+            trueStartT.push_back(particle->T());
+
+            // Initial momentum
+
+            truePx.push_back(particle->Px());
+
+            truePy.push_back(particle->Py());
+
+            truePz.push_back(particle->Pz());
+
+            trueP.push_back(particle->P());
+
+            trueE.push_back(particle->E());
+
+            // End position
+
+            trueEndX.push_back(particle->EndX());
+
+            trueEndY.push_back(particle->EndY());
+
+            trueEndZ.push_back(particle->EndZ());
+
+            trueEndT.push_back(particle->EndT());
+
+            // End momentum
+
+            trueEndPx.push_back(particle->EndPx());
+
+            trueEndPy.push_back(particle->EndPy());
+
+            trueEndPz.push_back(particle->EndPz());
+
+            trueEndE.push_back(particle->EndE());
+
+
+            // ---------------------------------------------------------------
+            // Actual simulated trajectory length
+            // ---------------------------------------------------------------
+
+            double trajectoryLength = 0.0;
+
+            for (unsigned int iPoint = 1; iPoint < nTrajectoryPoints; ++iPoint){
+                const auto& previous = particle->Position(iPoint - 1);
+
+                const auto& currentPoint = particle->Position(iPoint);
+
+                const double dx = currentPoint.X() - previous.X();
+
+                const double dy = currentPoint.Y() - previous.Y();
+
+                const double dz = currentPoint.Z() - previous.Z();
+
+                trajectoryLength +=
+                    std::sqrt(
+                        dx * dx +
+                        dy * dy +
+                        dz * dz
+                    );
+            }
+
+            trueTrajectoryLength.push_back(trajectoryLength);
+        }
+
+        else
+        {
+            // ---------------------------------------------------------------
+            // Keep ALL flat vectors aligned.
+            // ---------------------------------------------------------------
+
+            trueStartX.push_back(-9999.);
+            trueStartY.push_back(-9999.);
+            trueStartZ.push_back(-9999.);
+            trueStartT.push_back(-9999.);
+
+            truePx.push_back(-9999.);
+            truePy.push_back(-9999.);
+            truePz.push_back(-9999.);
+            trueP.push_back(-9999.);
+            trueE.push_back(-9999.);
+
+            trueEndX.push_back(-9999.);
+            trueEndY.push_back(-9999.);
+            trueEndZ.push_back(-9999.);
+            trueEndT.push_back(-9999.);
+
+            trueEndPx.push_back(-9999.);
+            trueEndPy.push_back(-9999.);
+            trueEndPz.push_back(-9999.);
+            trueEndE.push_back(-9999.);
+
+            trueTrajectoryLength.push_back(-9999.);
+        }
+
+        ++nSavedThisTruth;
+
+        // -------------------------------------------------------------------
+        // DEBUG OUTPUT
+        // -------------------------------------------------------------------
+
+        std::cout
+            << std::string(2 * generation, ' ')
+            << "PDG = " << particle->PdgCode()
+            << " TrackID = " << trackID
+            << " Mother = " << motherTrackID
+            << " MotherPDG = " << motherPDGCode
+            << " generation = " << generation
+            << " process = " << particle->Process()
+            << " end process = " << particle->EndProcess()
+            << " daughters = " << particle->NumberDaughters()
+            << " retained decay daughters = "
+            << nStoredDecayDaughters
+            << std::endl;
+
+        // ===================================================================
+        // Look for children to retain.
+        // ===================================================================
+
+        if (childrenIt == childrenByMotherID.end()) {
+            continue;
+        }
+
+
+        for (const auto& child : childrenIt->second)
+        {
+            if (!child) {
+                continue;
+            }
+
+
+            if (!IsDecayProcess(child->Process()))
+            {
+                continue;
+            }
+
+            particlesToProcess.push({
+                child,
+                generation + 1
+            });
+        }
+    }
+
+
+    // -----------------------------------------------------------------------
+    // Interaction-level particle counts
+    // -----------------------------------------------------------------------
+
+    trueNPrimaryParticles.push_back(nPrimariesThisTruth);
+
+    trueNSavedParticles.push_back(nSavedThisTruth);
+
+
+    std::cout
+        << "Saved "
+        << nSavedThisTruth
+        << " particles for MCTruth "
+        << i_truth
+        << " ("
+        << nPrimariesThisTruth
+        << " primaries)"
+        << std::endl;
+}
    
-//std::cout<<"***************************"<<std::endl;
-//std::cout<<vertexSize.size()<<std::endl;
 
 double multiRatio = double(nMultiEvents) / double(nTotEvents);
 double singleRatio = double(nSingleEvents) / double(nTotEvents);
@@ -1203,15 +1625,9 @@ std::cout<<"running ratio of multi int events = "<<multiRatio<<std::endl;
 std::cout<<"running ratio of single int events = "<<singleRatio<<std::endl;
 std::cout<<"sanity check 1 = "<<sanityCheck<<std::endl;
 
-std::cout<<"num of good lambdas = "<<goodLambda<<std::endl;
-std::cout<<"num of good sigmas = "<<goodSigma<<std::endl;
-std::cout<<"****************************************************************"<<std::endl;
-
 
 //std::cin.get();
 //  int nGeniePrimaries = 0, nGEANTparticles = 0, nMCNeutrinos = 0;
-
-
 
 
 /*
@@ -1233,29 +1649,63 @@ std::cout<<"****************************************************************"<<s
   std::cout << std::setprecision(2) << std::fixed;
 */
 /// std::cout<<nuSliceKey<<std::endl;
- //if isSignal{
-   fTree->Fill();
- //}
 
+
+fTree->Fill();
+ 
 std::cout<<"trueNuEnergy size = "<<trueNuEnergy.size()<<std::endl;
 std::cout<<"trueIntMode size = "<<trueIntMode.size()<<std::endl;
 std::cout<<"trueIntType size = "<<trueIntType.size()<<std::endl;
 std::cout<<"trueCCNC size = "<<trueCCNC.size()<<std::endl;
-std::cout<<"vertexSize size = "<<vertexSize.size()<<std::endl;
 
- trueP.clear();
- truePDG.clear();
- daughterPDG.clear();
- motherPDG.clear();
- vertexX.clear();
- vertexY.clear();
- vertexZ.clear();
- vertexSize.clear();
- daughterSize.clear();
- trueNuEnergy.clear();
- trueIntMode.clear();
- trueIntType.clear();
- trueCCNC.clear();
+    trueNuPDG.clear();
+    trueNuTrackID.clear();
+    trueNuVtxX.clear();
+    trueNuVtxY.clear();
+    trueNuVtxZ.clear();
+    trueNuVtxT.clear();
+    trueNuEnergy.clear();
+    trueIntMode.clear();
+    trueIntType.clear();
+    trueCCNC.clear();
+    trueTargetPDG.clear();
+
+    truePDG.clear();
+    trueTrackID.clear();
+    trueMotherPDG.clear();
+    trueMotherTrackID.clear();
+    trueGeneration.clear();
+    trueIsPrimary.clear();
+    trueIsDecayProduct.clear();
+    trueMCTruthIndex.clear();
+    trueP.clear();
+    trueMass.clear();
+    trueStartX.clear();
+    trueStartY.clear();
+    trueStartZ.clear();
+    trueStartT.clear();
+    truePx.clear();
+    truePy.clear();
+    truePz.clear();
+    trueE.clear();
+    trueEndX.clear();
+    trueEndY.clear();
+    trueEndZ.clear();
+    trueEndT.clear();
+    trueEndPx.clear();
+    trueEndPy.clear();
+    trueEndPz.clear();
+    trueEndE.clear();
+    trueNTrajectoryPoints.clear();
+    trueTrajectoryLength.clear();
+    trueProcess.clear();
+    trueEndProcess.clear();
+    trueStatusCode.clear();
+    trueNDaughters.clear();
+    trueNStoredDecayDaughters.clear();
+    trueNPrimaryParticles.clear();
+    trueNSavedParticles.clear();
+    trueParticleStartIndex.clear();
 }
 
 
@@ -1271,19 +1721,53 @@ void hyperon::AnalyzeEvents::beginJob()
   fTree->Branch("eventID", &fEventID);
   fTree ->Branch("run", &fRun, "run/I");
   fTree ->Branch("subrun", &fSubRun, "subrun/I");
-  fTree->Branch("trueP", &trueP);
-  fTree->Branch("truePDG", &truePDG);
-  fTree->Branch("daughterPDG", &daughterPDG);
-  fTree->Branch("motherPDG", &motherPDG);
+
+
   fTree->Branch("vertexX", &vertexX);
   fTree->Branch("vertexY", &vertexY);
   fTree->Branch("vertexZ", &vertexZ);
-  fTree->Branch("vertexSize", &vertexSize);
-  fTree->Branch("daughterSize", &daughterSize);
+
   fTree->Branch("trueNuEnergy", &trueNuEnergy);
   fTree->Branch("trueCCNC", &trueCCNC);
   fTree->Branch("trueIntMode", &trueIntMode);
   fTree->Branch("trueIntType", &trueIntType);
+
+  fTree->Branch("truePDG", &truePDG);
+  fTree->Branch("trueTrackID", &trueTrackID);
+  fTree->Branch("trueMotherPDG", &trueMotherPDG);
+  fTree->Branch("trueMotherTrackID", &trueMotherTrackID);
+  fTree->Branch("trueGeneration", &trueGeneration);
+  fTree->Branch("trueIsPrimary", &trueIsPrimary);
+  fTree->Branch("trueIsDecayProduct", &trueIsDecayProduct);
+  fTree->Branch("trueMCTruthIndex", &trueMCTruthIndex);
+  fTree->Branch("trueP", &trueP);
+  fTree->Branch("trueMass", &trueMass);
+  fTree->Branch("trueStartX", &trueStartX);
+  fTree->Branch("trueStartY", &trueStartY);
+  fTree->Branch("trueStartZ", &trueStartZ);
+  fTree->Branch("trueStartT", &trueStartT);
+  fTree->Branch("truePx", &truePx);
+  fTree->Branch("truePy", &truePy);
+  fTree->Branch("truePz", &truePz);
+  fTree->Branch("trueE", &trueE);
+  fTree->Branch("trueEndX", &trueEndX);
+  fTree->Branch("trueEndY", &trueEndY);
+  fTree->Branch("trueEndZ", &trueEndZ);
+  fTree->Branch("trueEndT", &trueEndT);
+  fTree->Branch("trueEndPx", &trueEndPx);
+  fTree->Branch("trueEndPy", &trueEndPy);
+  fTree->Branch("trueEndPz", &trueEndPz);
+  fTree->Branch("trueEndE", &trueEndE);
+  fTree->Branch("trueNTrajectoryPoints", &trueNTrajectoryPoints);
+  fTree->Branch("trueTrajectoryLength", &trueTrajectoryLength);
+  fTree->Branch("trueProcess", &trueProcess);
+  fTree->Branch("trueEndProcess", &trueEndProcess);
+  fTree->Branch("trueStatusCode", &trueStatusCode);
+  fTree->Branch("trueNDaughters", &trueNDaughters);
+  fTree->Branch("trueNStoredDecayDaughters", &trueNStoredDecayDaughters);
+  fTree->Branch("trueNPrimaryParticles", &trueNPrimaryParticles);
+  fTree->Branch("trueNSavedParticles", &trueNSavedParticles);
+  fTree->Branch("trueParticleStartIndex", &trueParticleStartIndex);
 
 
   // reco parameters

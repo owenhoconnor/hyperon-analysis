@@ -4,7 +4,7 @@
 void nTracksShowersBkg()
 {
 //=========Macro generated from canvas: c2/Background Track-Shower Topology
-//=========  (Mon Aug 10 18:10:01 2026) by ROOT version 6.28/12
+//=========  (Tue Aug 11 11:58:53 2026) by ROOT version 6.28/12
    TCanvas *c2 = new TCanvas("c2", "Background Track-Shower Topology",0,0,2000,2000);
    gStyle->SetOptStat(0);
    c2->Range(-2,-1.9,8,7.433333);
@@ -18,40 +18,41 @@ void nTracksShowersBkg()
    c2->SetFrameBorderMode(0);
    
    TH2F *nTracksShowersBkg = new TH2F("nTracksShowersBkg","",7,-0.5,6.5,7,-0.5,6.5);
-   nTracksShowersBkg->SetBinContent(11,27);
-   nTracksShowersBkg->SetBinContent(12,12);
-   nTracksShowersBkg->SetBinContent(13,1);
-   nTracksShowersBkg->SetBinContent(14,1);
-   nTracksShowersBkg->SetBinContent(20,8);
-   nTracksShowersBkg->SetBinContent(21,2);
-   nTracksShowersBkg->SetBinContent(22,3);
+   nTracksShowersBkg->SetBinContent(11,28);
+   nTracksShowersBkg->SetBinContent(12,18);
+   nTracksShowersBkg->SetBinContent(13,2);
+   nTracksShowersBkg->SetBinContent(14,2);
+   nTracksShowersBkg->SetBinContent(20,4);
+   nTracksShowersBkg->SetBinContent(21,4);
+   nTracksShowersBkg->SetBinContent(22,1);
+   nTracksShowersBkg->SetBinContent(25,1);
    nTracksShowersBkg->SetBinContent(29,1);
-   nTracksShowersBkg->SetBinContent(32,1);
-   nTracksShowersBkg->SetBinContent(38,1);
-   nTracksShowersBkg->SetBinContent(40,1);
-   nTracksShowersBkg->SetEntries(58);
+   nTracksShowersBkg->SetBinContent(30,1);
+   nTracksShowersBkg->SetBinContent(38,2);
+   nTracksShowersBkg->SetBinContent(39,3);
+   nTracksShowersBkg->SetEntries(67);
    nTracksShowersBkg->SetDirectory(nullptr);
    nTracksShowersBkg->SetContour(20);
    nTracksShowersBkg->SetContourLevel(0,0);
-   nTracksShowersBkg->SetContourLevel(1,1.35);
-   nTracksShowersBkg->SetContourLevel(2,2.7);
-   nTracksShowersBkg->SetContourLevel(3,4.05);
-   nTracksShowersBkg->SetContourLevel(4,5.4);
-   nTracksShowersBkg->SetContourLevel(5,6.75);
-   nTracksShowersBkg->SetContourLevel(6,8.1);
-   nTracksShowersBkg->SetContourLevel(7,9.45);
-   nTracksShowersBkg->SetContourLevel(8,10.8);
-   nTracksShowersBkg->SetContourLevel(9,12.15);
-   nTracksShowersBkg->SetContourLevel(10,13.5);
-   nTracksShowersBkg->SetContourLevel(11,14.85);
-   nTracksShowersBkg->SetContourLevel(12,16.2);
-   nTracksShowersBkg->SetContourLevel(13,17.55);
-   nTracksShowersBkg->SetContourLevel(14,18.9);
-   nTracksShowersBkg->SetContourLevel(15,20.25);
-   nTracksShowersBkg->SetContourLevel(16,21.6);
-   nTracksShowersBkg->SetContourLevel(17,22.95);
-   nTracksShowersBkg->SetContourLevel(18,24.3);
-   nTracksShowersBkg->SetContourLevel(19,25.65);
+   nTracksShowersBkg->SetContourLevel(1,1.4);
+   nTracksShowersBkg->SetContourLevel(2,2.8);
+   nTracksShowersBkg->SetContourLevel(3,4.2);
+   nTracksShowersBkg->SetContourLevel(4,5.6);
+   nTracksShowersBkg->SetContourLevel(5,7);
+   nTracksShowersBkg->SetContourLevel(6,8.4);
+   nTracksShowersBkg->SetContourLevel(7,9.8);
+   nTracksShowersBkg->SetContourLevel(8,11.2);
+   nTracksShowersBkg->SetContourLevel(9,12.6);
+   nTracksShowersBkg->SetContourLevel(10,14);
+   nTracksShowersBkg->SetContourLevel(11,15.4);
+   nTracksShowersBkg->SetContourLevel(12,16.8);
+   nTracksShowersBkg->SetContourLevel(13,18.2);
+   nTracksShowersBkg->SetContourLevel(14,19.6);
+   nTracksShowersBkg->SetContourLevel(15,21);
+   nTracksShowersBkg->SetContourLevel(16,22.4);
+   nTracksShowersBkg->SetContourLevel(17,23.8);
+   nTracksShowersBkg->SetContourLevel(18,25.2);
+   nTracksShowersBkg->SetContourLevel(19,26.6);
    
    TPaletteAxis *palette = new TPaletteAxis(6.55,-0.5,7,6.5,nTracksShowersBkg);
    palette->SetNdivisions(510);

@@ -657,6 +657,12 @@ std::array<int, kNTopologies> topologyCounts{};
           //std::cout<<"Filling background tree for event ID "<<eventID<<std::endl;
 	      bkgTree->Fill();
 
+           std::cout<<"vertexSize size = "<<vertexSize->size()<<std::endl;
+           std::cout<<"trueIntMode size = "<<trueIntMode->size()<<std::endl;
+           std::cout<<"trueIntType size = "<<trueIntType->size()<<std::endl;
+           std::cout<<"trueCCNC size = "<<trueCCNC->size()<<std::endl;
+            std::cout<<"chosenMCTruthIdx = "<<chosenMCTruthIdx<<std::endl;
+
 		  int intMode = trueIntMode->at(chosenMCTruthIdx);
 		  int intType = trueIntType->at(chosenMCTruthIdx);
 		  int ccnc = trueCCNC->at(chosenMCTruthIdx);
@@ -670,6 +676,12 @@ std::array<int, kNTopologies> topologyCounts{};
 
            const int topology = ClassifyTopology(trueCCNC->at(chosenMCTruthIdx), *truePDG);
            ++topologyCounts.at(topology);
+
+            std::cout << "Topology: " << topology << std::endl;
+            std::cout<< "truePDG size = " << truePDG->size() << std::endl;
+           for (int i = 0; i < truePDG->size(); ++i) {
+               std::cout << "truePDG[" << i << "] = " << truePDG->at(i) << std::endl;
+           }
       
       }
       
