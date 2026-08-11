@@ -84,6 +84,7 @@ public :
    vector<int>     *pfpShowerPDG;
    vector<int>     *pfpPDG;
    Int_t           sampleType;
+   Int_t           chosenMCTruthIdx;
 
    // List of branches
    TBranch        *b_eventID;   //!
@@ -146,6 +147,7 @@ public :
    TBranch        *b_pfpShowerPDG;   //!
    TBranch        *b_pfpPDG;   //!
    TBranch        *b_sampleType;   //!
+   TBranch        *b_chosenMCTruthIdx;   //!
 
    tmvaPrep(TTree *tree=0);
    virtual ~tmvaPrep();
@@ -324,6 +326,7 @@ void tmvaPrep::Init(TTree *tree)
    fChain->SetBranchAddress("pfpShowerPDG", &pfpShowerPDG, &b_pfpShowerPDG);
    fChain->SetBranchAddress("pfpPDG", &pfpPDG, &b_pfpPDG);
    fChain->SetBranchAddress("sampleType", &sampleType, &b_sampleType);
+   fChain->SetBranchAddress("chosenMCTruthIdx", &chosenMCTruthIdx, &b_chosenMCTruthIdx);
    Notify();
 }
 

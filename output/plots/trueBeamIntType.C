@@ -4,20 +4,18 @@
 void trueBeamIntType()
 {
 //=========Macro generated from canvas: c1/True Interaction Type
-//=========  (Mon Aug 10 13:57:23 2026) by ROOT version 6.28/12
+//=========  (Mon Aug 10 18:14:50 2026) by ROOT version 6.28/12
    TCanvas *c1 = new TCanvas("c1", "True Interaction Type",0,0,2000,2000);
-   c1->Range(987.5,-513.8438,1112.5,4624.594);
+   c1->Range(1001.75,-0.13125,1004.25,1.18125);
    c1->SetFillColor(0);
    c1->SetBorderMode(0);
    c1->SetBorderSize(2);
    c1->SetFrameBorderMode(0);
    c1->SetFrameBorderMode(0);
    
-   TH1F *hTrueIntType__1 = new TH1F("hTrueIntType__1","",10,1000,1100);
-   hTrueIntType__1->SetBinContent(1,3915);
-   hTrueIntType__1->SetBinContent(2,8);
-   hTrueIntType__1->SetBinContent(10,377);
-   hTrueIntType__1->SetEntries(4300);
+   TH1F *hTrueIntType__1 = new TH1F("hTrueIntType__1","",10,1002,1004);
+   hTrueIntType__1->SetBinContent(6,1);
+   hTrueIntType__1->SetEntries(1);
    hTrueIntType__1->SetDirectory(nullptr);
    
    TPaveStats *ptstats = new TPaveStats(0.78,0.775,0.98,0.935,"brNDC");
@@ -28,9 +26,9 @@ void trueBeamIntType()
    ptstats->SetTextFont(42);
    TText *ptstats_LaTex = ptstats->AddText("hTrueIntType");
    ptstats_LaTex->SetTextSize(0.0368);
-   ptstats_LaTex = ptstats->AddText("Entries = 4300   ");
-   ptstats_LaTex = ptstats->AddText("Mean  =   1010");
-   ptstats_LaTex = ptstats->AddText("Std Dev   =  25.31");
+   ptstats_LaTex = ptstats->AddText("Entries = 1      ");
+   ptstats_LaTex = ptstats->AddText("Mean  =   1003");
+   ptstats_LaTex = ptstats->AddText("Std Dev   =      0");
    ptstats->SetOptStat(1111);
    ptstats->SetOptFit(0);
    ptstats->Draw();

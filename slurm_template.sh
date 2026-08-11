@@ -51,6 +51,6 @@ $APPTAINER_BIN exec -B /cvmfs,/data,/home,/opt,/run/user,/etc/hostname,/etc/host
             # Move and clean (If neccessary)
             mv analyser_output_\${i}_2026.root $OUTPUT_DIR/
             cd $WORK_DIR
-           # rm -rf \$TMP_DIR
+            rm -rf \$TMP_DIR
         done
     "

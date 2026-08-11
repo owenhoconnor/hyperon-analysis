@@ -132,7 +132,7 @@ void signalDef::Loop()
    signalTree->SetName("tree");
    signalTree->SetDirectory(sigFile);
 
-   TFile *bkgFile = TFile::Open("/data/ooconnor/sbnd/hyperons/preselection_output/signalDef_output_bkg.root", "RECREATE");
+   TFile *bkgFile = TFile::Open("/data/ooconnor/sbnd/hyperons/preselection_output/signalDef_output_bkg_test.root", "RECREATE");
 
    if (!bkgFile || bkgFile->IsZombie()){
 	   std::cerr<<"Could not open file!"<<std::endl;
@@ -171,10 +171,15 @@ void signalDef::Loop()
    int sampleType;
    bool isSignal;
 
+   int chosenMCTruthIdx;
+
    signalTree->Branch("sampleType", &sampleType);
    bkgTree->Branch("sampleType", &sampleType);
    unlabTree->Branch("sampleType", &sampleType);
    unlabTree->Branch("isSignal", &isSignal);
+
+   signalTree->Branch("chosenMCTruthIdx", &chosenMCTruthIdx);
+   bkgTree->Branch("chosenMCTruthIdx", &chosenMCTruthIdx);
 
    int nSig = 0;
    int nBkg = 0;
@@ -228,6 +233,9 @@ void signalDef::Loop()
 
       int sumCounter = 0;
       int daughterCounter = 0;
+      float shortestDist = 0;
+      int chosenVertex = 0;
+      chosenMCTruthIdx = 0;
 
       std::cout<<"****************** new event #" << jentry<< " ********************"<<std::endl;
       std::cout<<"trackStartPosition size = "<<trackStartPositionX->size()<<std::endl;
@@ -257,6 +265,16 @@ void signalDef::Loop()
 	  if (std::abs(vertexX->at(i)) < 180 && std::abs(vertexY->at(i)) < 180 && vertexZ->at(i) > 10 && vertexZ->at(i) < 450){
 		  IsInFV = true;
 	  }
+
+      TVector3 trueVtx(vertexX->at(i), vertexY->at(i), vertexZ->at(i));
+      TVector3 recoVtx(RecoVertexX, RecoVertexY, RecoVertexZ);
+      TVector3 displaceTrueToRecoVtx = trueVtx - recoVtx;
+      float distTrueToRecoVtx = displaceTrueToRecoVtx.Mag();
+      if(distTrueToRecoVtx < shortestDist || i == 0){
+         shortestDist = distTrueToRecoVtx;
+         chosenVertex = i;
+         chosenMCTruthIdx = i_vert;
+      }
 
 	  if (truePDG->at(i) == 310 || truePDG->at(i) == 130 || truePDG->at(i) == 311){
 		  IsKaon0 = true;

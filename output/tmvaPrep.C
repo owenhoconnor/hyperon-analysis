@@ -650,27 +650,26 @@ std::array<int, kNTopologies> topologyCounts{};
 
       // Fill signal and background trees:
 
+      std::cout<<"Filling trees for event ID "<<eventID<<" with sampleType "<<sampleType<<std::endl;
       if(sampleType == 0){nSig++; sigTree->Fill();}
       if(sampleType == 2){
 	      nBkg++;
-          std::cout<<"Filling background tree for event ID "<<eventID<<std::endl;
+          //std::cout<<"Filling background tree for event ID "<<eventID<<std::endl;
 	      bkgTree->Fill();
-      
-      	      for (int i = 0; i < trueIntMode->size(); i++){
-		      int intMode = trueIntMode->at(i);
-		      int intType = trueIntType->at(i);
-		      int ccnc = trueCCNC->at(i);
 
-		      std::cout<<"Interaction Mode = "<<intMode<<std::endl;
-		      std::cout<<"Interaction Type = "<<intType<<std::endl;
-		      std::cout<<"CCNC = "<<ccnc<<std::endl;
-		      hTrueIntMode->Fill(intMode);
-		      hTrueIntType->Fill(intType);
-		      hTrueCCNC->Fill(ccnc);
+		  int intMode = trueIntMode->at(chosenMCTruthIdx);
+		  int intType = trueIntType->at(chosenMCTruthIdx);
+		  int ccnc = trueCCNC->at(chosenMCTruthIdx);
 
-                  const int topology = ClassifyTopology(trueCCNC->at(i), *truePDG);
-                  ++topologyCounts.at(topology);
-	      }
+		   std::cout<<"Interaction Mode = "<<intMode<<std::endl;
+		   std::cout<<"Interaction Type = "<<intType<<std::endl;
+		   std::cout<<"CCNC = "<<ccnc<<std::endl;
+		   hTrueIntMode->Fill(intMode);
+		   hTrueIntType->Fill(intType);
+		   hTrueCCNC->Fill(ccnc);
+
+           const int topology = ClassifyTopology(trueCCNC->at(chosenMCTruthIdx), *truePDG);
+           ++topologyCounts.at(topology);
       
       }
       
@@ -799,6 +798,9 @@ for (std::size_t i = 0; i < nonEmptyBins.size(); ++i) {
    hTrueIntMode->GetXaxis()->SetBinLabel(8, "Inverse Beta");
    hTrueIntMode->GetXaxis()->SetBinLabel(9, "Glashow Res");
    hTrueIntMode->GetXaxis()->SetBinLabel(10, "AMNuGamma");
+   hTrueIntMode->SetFillColorAlpha(kAzure+1, 0.7);
+   hTrueIntMode->SetLineColor(kBlack);
+   hTrueIntMode->SetLineWidth(2);
    hTrueIntMode->Draw("HIST");
    c2->Print("plots/trueBeamIntMode.png");
    c2->SaveAs("plots/trueBeamIntMode.C");
@@ -907,6 +909,9 @@ for (std::size_t i = 0; i < nonEmptyBins.size(); ++i) {
         // Vertical labels are usually clearest for long topology names.
         hTopology->LabelsOption("v", "X");
 
+        hTopology->SetFillColorAlpha(kAzure +1, 0.7);
+        hTopology->SetLineColor(kBlack);
+        hTopology->SetLineWidth(2);
         hTopology->Draw("HIST TEXT0");
 
         cTopology->Modified();

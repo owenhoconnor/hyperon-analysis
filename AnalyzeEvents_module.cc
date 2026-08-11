@@ -1043,6 +1043,8 @@ for (const art::Ptr<recob::PFParticle>& pfp : nuSlicePFPs) {
 	nSingleEvents++;
   }
 
+  std::cout<<"mclist size = "<<mclist.size()<<std::endl;
+
    for (size_t i_truth = 0; i_truth < mclist.size(); i_truth++)
    {
 		
@@ -1081,7 +1083,7 @@ for (const art::Ptr<recob::PFParticle>& pfp : nuSlicePFPs) {
 		    <<" TrackId: " << mcParticle->TrackId()<< std::endl;
            trueP.push_back(mcParticle->P()); 
 	   truePDG.push_back(mcParticle->PdgCode());
-	   motherPDG.push_back(mcParticle->Mother()); // WRONG
+	   motherPDG.push_back(mcParticle->Mother()); // WRONG, Mother() is the TrackID not the PDG
 	   nMCParticles++; // count num of saved mc particles in each interaction vertex, should be same as assocParticles.size()
 	  // Get interaction vertices
 	  if (mcParticle->NumberTrajectoryPoints()>0) {
@@ -1234,6 +1236,13 @@ std::cout<<"****************************************************************"<<s
  //if isSignal{
    fTree->Fill();
  //}
+
+std::cout<<"trueNuEnergy size = "<<trueNuEnergy.size()<<std::endl;
+std::cout<<"trueIntMode size = "<<trueIntMode.size()<<std::endl;
+std::cout<<"trueIntType size = "<<trueIntType.size()<<std::endl;
+std::cout<<"trueCCNC size = "<<trueCCNC.size()<<std::endl;
+std::cout<<"vertexSize size = "<<vertexSize.size()<<std::endl;
+
  trueP.clear();
  truePDG.clear();
  daughterPDG.clear();

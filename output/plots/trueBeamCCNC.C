@@ -4,10 +4,10 @@
 void trueBeamCCNC()
 {
 //=========Macro generated from canvas: c3/True CCNC
-//=========  (Mon Aug 10 13:57:24 2026) by ROOT version 6.28/12
+//=========  (Mon Aug 10 18:14:50 2026) by ROOT version 6.28/12
    TCanvas *c3 = new TCanvas("c3", "True CCNC",0,0,2000,2000);
    gStyle->SetOptStat(0);
-   c3->Range(-0.75,-442.1813,1.75,3979.631);
+   c3->Range(-0.75,-0.13125,1.75,1.18125);
    c3->SetFillColor(0);
    c3->SetBorderMode(0);
    c3->SetBorderSize(2);
@@ -15,10 +15,9 @@ void trueBeamCCNC()
    c3->SetFrameBorderMode(0);
    
    TH1F *hTrueCCNC__3 = new TH1F("hTrueCCNC__3","",2,-0.5,1.5);
-   hTrueCCNC__3->SetBinContent(1,3369);
-   hTrueCCNC__3->SetBinContent(2,931);
+   hTrueCCNC__3->SetBinContent(1,1);
    hTrueCCNC__3->SetMinimum(0);
-   hTrueCCNC__3->SetEntries(4300);
+   hTrueCCNC__3->SetEntries(1);
    hTrueCCNC__3->SetDirectory(nullptr);
 
    Int_t ci;      // for color index setting
