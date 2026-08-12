@@ -250,6 +250,8 @@ void signalDef::Loop()
       std::cout<<"truePDG size = "<<truePDG->size()<<std::endl;
       std::cout<<"vertexSize size = "<<vertexSize->size()<<std::endl;
 
+      // rewrite this entirely
+
       for (int i_vert = 0; i_vert < vertexSize->size(); i_vert++){ // Loop over truth vertices in event (may be more than 1)
       sumCounter += vertexSize->at(i_vert); // Keep track of what particle index we are at over all vertices
 
