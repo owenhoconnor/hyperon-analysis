@@ -4,7 +4,7 @@
 void trueBeamCCNC()
 {
 //=========Macro generated from canvas: c3/True CCNC
-//=========  (Wed Aug 12 12:33:09 2026) by ROOT version 6.40.02
+//=========  (Wed Aug 12 17:54:13 2026) by ROOT version 6.40.02
    TCanvas *c3 = new TCanvas("c3", "True CCNC", 0, 0, 2000, 2000);
    gStyle->SetOptFit(0);
    gStyle->SetOptStat(0);
@@ -16,30 +16,29 @@ void trueBeamCCNC()
    c3->SetBorderMode(0);
    c3->SetBorderSize(2);
    
-   TH1F *hTrueCCNC__3 = new TH1F("hTrueCCNC", "", 2, -0.5, 1.5);
-   hTrueCCNC__3->SetBinContent(1,867);
-   hTrueCCNC__3->SetBinContent(2,86);
-   hTrueCCNC__3->SetMinimum(0);
-   hTrueCCNC__3->SetEntries(953);
-   hTrueCCNC__3->SetDirectory(nullptr);
-   hTrueCCNC__3->SetFillColor(TColor::GetColor("#3399ffb2"));
-   hTrueCCNC__3->SetFillStyle(1001);
-   hTrueCCNC__3->SetLineWidth(2);
-   hTrueCCNC__3->GetXaxis()->SetTitle("Interaction Current");
-   hTrueCCNC__3->GetXaxis()->SetBinLabel(1, "CC");
-   hTrueCCNC__3->GetXaxis()->SetBinLabel(2, "NC");
-   hTrueCCNC__3->GetXaxis()->CenterTitle(true);
-   hTrueCCNC__3->GetXaxis()->SetLabelFont(42);
-   hTrueCCNC__3->GetXaxis()->SetTitleOffset(1);
-   hTrueCCNC__3->GetXaxis()->SetTitleFont(42);
-   hTrueCCNC__3->GetYaxis()->SetTitle("Interactions");
-   hTrueCCNC__3->GetYaxis()->CenterTitle(true);
-   hTrueCCNC__3->GetYaxis()->SetLabelFont(42);
-   hTrueCCNC__3->GetYaxis()->SetTitleFont(42);
-   hTrueCCNC__3->GetZaxis()->SetLabelFont(42);
-   hTrueCCNC__3->GetZaxis()->SetTitleOffset(1);
-   hTrueCCNC__3->GetZaxis()->SetTitleFont(42);
-   hTrueCCNC__3->Draw("HIST TEXT0");
+   TH1F *hTrueCCNC__2 = new TH1F("hTrueCCNC", "", 2, -0.5, 1.5);
+   hTrueCCNC__2->SetBinContent(1,867);
+   hTrueCCNC__2->SetBinContent(2,86);
+   hTrueCCNC__2->SetMinimum(0);
+   hTrueCCNC__2->SetEntries(953);
+   hTrueCCNC__2->SetFillColor(TColor::GetColor("#3399ffb2"));
+   hTrueCCNC__2->SetFillStyle(1001);
+   hTrueCCNC__2->SetLineWidth(2);
+   hTrueCCNC__2->GetXaxis()->SetTitle("Interaction Current");
+   hTrueCCNC__2->GetXaxis()->SetBinLabel(1, "CC");
+   hTrueCCNC__2->GetXaxis()->SetBinLabel(2, "NC");
+   hTrueCCNC__2->GetXaxis()->CenterTitle(true);
+   hTrueCCNC__2->GetXaxis()->SetLabelFont(42);
+   hTrueCCNC__2->GetXaxis()->SetTitleOffset(1);
+   hTrueCCNC__2->GetXaxis()->SetTitleFont(42);
+   hTrueCCNC__2->GetYaxis()->SetTitle("Interactions");
+   hTrueCCNC__2->GetYaxis()->CenterTitle(true);
+   hTrueCCNC__2->GetYaxis()->SetLabelFont(42);
+   hTrueCCNC__2->GetYaxis()->SetTitleFont(42);
+   hTrueCCNC__2->GetZaxis()->SetLabelFont(42);
+   hTrueCCNC__2->GetZaxis()->SetTitleOffset(1);
+   hTrueCCNC__2->GetZaxis()->SetTitleFont(42);
+   hTrueCCNC__2->Draw("HIST TEXT0");
    c3->Modified();
    c3->SetSelected(c3);
 }

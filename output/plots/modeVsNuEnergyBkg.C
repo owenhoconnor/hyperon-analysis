@@ -1,0 +1,184 @@
+#ifdef __CLING__
+#pragma cling optimize(0)
+#endif
+void modeVsNuEnergyBkg()
+{
+//=========Macro generated from canvas: cModeVsNuE/Interaction Mode vs Neutrino Energy
+//=========  (Wed Aug 12 17:54:12 2026) by ROOT version 6.40.02
+   TCanvas *cModeVsNuE = new TCanvas("cModeVsNuE", "Interaction Mode vs Neutrino Energy", 0, 0, 1800, 1200);
+   gStyle->SetOptFit(0);
+   gStyle->SetOptStat(0);
+   gStyle->SetOptTitle(1);
+   TColor::SetPalette(57, nullptr);
+   cModeVsNuE->Range(-0.7352942,-68.77501,6.617647,618.975);
+   cModeVsNuE->SetFillColor(0);
+   cModeVsNuE->SetFillStyle(1001);
+   cModeVsNuE->SetBorderMode(0);
+   cModeVsNuE->SetBorderSize(2);
+   cModeVsNuE->SetRightMargin(0.22);
+   THStack *hsModeVsNuE = new THStack();
+   hsModeVsNuE->SetName("hsModeVsNuE");
+   hsModeVsNuE->SetTitle("Surviving Background by Interaction Mode;True E_{#nu} [GeV];Interactions");
+   
+   TH1F *hsModeVsNuE_stack_1 = new TH1F("hsModeVsNuE_stack_1", "Surviving Background by Interaction Mode", 100, 0, 5);
+   hsModeVsNuE_stack_1->SetMinimum(0);
+   hsModeVsNuE_stack_1->SetMaximum(550.2);
+   hsModeVsNuE_stack_1->SetDirectory(nullptr);
+   hsModeVsNuE_stack_1->SetStats(0);
+   hsModeVsNuE_stack_1->SetFillColor(0);
+   hsModeVsNuE_stack_1->SetFillStyle(1001);
+   hsModeVsNuE_stack_1->SetLineColor(TColor::GetColor("#000099"));
+   hsModeVsNuE_stack_1->SetLineWidth(0);
+   hsModeVsNuE_stack_1->GetXaxis()->SetTitle("True E_{#nu} [GeV]");
+   hsModeVsNuE_stack_1->GetXaxis()->CenterTitle(true);
+   hsModeVsNuE_stack_1->GetXaxis()->SetLabelFont(42);
+   hsModeVsNuE_stack_1->GetXaxis()->SetTitleOffset(1);
+   hsModeVsNuE_stack_1->GetXaxis()->SetTitleFont(42);
+   hsModeVsNuE_stack_1->GetYaxis()->SetTitle("Interactions");
+   hsModeVsNuE_stack_1->GetYaxis()->CenterTitle(true);
+   hsModeVsNuE_stack_1->GetYaxis()->SetLabelFont(42);
+   hsModeVsNuE_stack_1->GetYaxis()->SetTitleFont(42);
+   hsModeVsNuE_stack_1->GetZaxis()->SetLabelFont(42);
+   hsModeVsNuE_stack_1->GetZaxis()->SetTitleOffset(1);
+   hsModeVsNuE_stack_1->GetZaxis()->SetTitleFont(42);
+   hsModeVsNuE->SetHistogram(hsModeVsNuE_stack_1);
+   
+   
+   TH1F *hsModeVsNuE_stack_2 = new TH1F("hsModeVsNuE_stack_2", "", 100, 0, 5);
+   hsModeVsNuE_stack_2->SetBinContent(1,82);
+   hsModeVsNuE_stack_2->SetBinContent(21,68);
+   hsModeVsNuE_stack_2->SetBinContent(41,6);
+   hsModeVsNuE_stack_2->SetBinContent(61,1);
+   hsModeVsNuE_stack_2->SetEntries(157);
+   hsModeVsNuE_stack_2->SetDirectory(nullptr);
+   hsModeVsNuE_stack_2->SetFillColor(TColor::GetColor("#3399ffbf"));
+   hsModeVsNuE_stack_2->SetFillStyle(1001);
+   hsModeVsNuE_stack_2->GetXaxis()->SetLabelFont(42);
+   hsModeVsNuE_stack_2->GetXaxis()->SetTitleOffset(1);
+   hsModeVsNuE_stack_2->GetXaxis()->SetTitleFont(42);
+   hsModeVsNuE_stack_2->GetYaxis()->SetLabelFont(42);
+   hsModeVsNuE_stack_2->GetYaxis()->SetTitleFont(42);
+   hsModeVsNuE_stack_2->GetZaxis()->SetLabelFont(42);
+   hsModeVsNuE_stack_2->GetZaxis()->SetTitleOffset(1);
+   hsModeVsNuE_stack_2->GetZaxis()->SetTitleFont(42);
+   hsModeVsNuE->Add(hsModeVsNuE_stack_2, "");
+   
+   TH1F *hsModeVsNuE_stack_3 = new TH1F("hsModeVsNuE_stack_3", "", 100, 0, 5);
+   hsModeVsNuE_stack_3->SetBinContent(1,184);
+   hsModeVsNuE_stack_3->SetBinContent(21,356);
+   hsModeVsNuE_stack_3->SetBinContent(41,34);
+   hsModeVsNuE_stack_3->SetBinContent(61,16);
+   hsModeVsNuE_stack_3->SetBinContent(81,6);
+   hsModeVsNuE_stack_3->SetBinContent(101,4);
+   hsModeVsNuE_stack_3->SetEntries(600);
+   hsModeVsNuE_stack_3->SetDirectory(nullptr);
+   hsModeVsNuE_stack_3->SetFillColor(TColor::GetColor("#ff6600bf"));
+   hsModeVsNuE_stack_3->SetFillStyle(1001);
+   hsModeVsNuE_stack_3->GetXaxis()->SetLabelFont(42);
+   hsModeVsNuE_stack_3->GetXaxis()->SetTitleOffset(1);
+   hsModeVsNuE_stack_3->GetXaxis()->SetTitleFont(42);
+   hsModeVsNuE_stack_3->GetYaxis()->SetLabelFont(42);
+   hsModeVsNuE_stack_3->GetYaxis()->SetTitleFont(42);
+   hsModeVsNuE_stack_3->GetZaxis()->SetLabelFont(42);
+   hsModeVsNuE_stack_3->GetZaxis()->SetTitleOffset(1);
+   hsModeVsNuE_stack_3->GetZaxis()->SetTitleFont(42);
+   hsModeVsNuE->Add(hsModeVsNuE_stack_3, "");
+   
+   TH1F *hsModeVsNuE_stack_4 = new TH1F("hsModeVsNuE_stack_4", "", 100, 0, 5);
+   hsModeVsNuE_stack_4->SetBinContent(1,8);
+   hsModeVsNuE_stack_4->SetBinContent(21,46);
+   hsModeVsNuE_stack_4->SetBinContent(41,12);
+   hsModeVsNuE_stack_4->SetBinContent(61,8);
+   hsModeVsNuE_stack_4->SetBinContent(81,10);
+   hsModeVsNuE_stack_4->SetBinContent(101,1);
+   hsModeVsNuE_stack_4->SetEntries(85);
+   hsModeVsNuE_stack_4->SetDirectory(nullptr);
+   hsModeVsNuE_stack_4->SetFillColor(TColor::GetColor("#009900bf"));
+   hsModeVsNuE_stack_4->SetFillStyle(1001);
+   hsModeVsNuE_stack_4->GetXaxis()->SetLabelFont(42);
+   hsModeVsNuE_stack_4->GetXaxis()->SetTitleOffset(1);
+   hsModeVsNuE_stack_4->GetXaxis()->SetTitleFont(42);
+   hsModeVsNuE_stack_4->GetYaxis()->SetLabelFont(42);
+   hsModeVsNuE_stack_4->GetYaxis()->SetTitleFont(42);
+   hsModeVsNuE_stack_4->GetZaxis()->SetLabelFont(42);
+   hsModeVsNuE_stack_4->GetZaxis()->SetTitleOffset(1);
+   hsModeVsNuE_stack_4->GetZaxis()->SetTitleFont(42);
+   hsModeVsNuE->Add(hsModeVsNuE_stack_4, "");
+   
+   TH1F *hsModeVsNuE_stack_5 = new TH1F("hsModeVsNuE_stack_5", "", 100, 0, 5);
+   hsModeVsNuE_stack_5->SetBinContent(21,1);
+   hsModeVsNuE_stack_5->SetEntries(1);
+   hsModeVsNuE_stack_5->SetDirectory(nullptr);
+   hsModeVsNuE_stack_5->SetFillColor(TColor::GetColor("#ff3333bf"));
+   hsModeVsNuE_stack_5->SetFillStyle(1001);
+   hsModeVsNuE_stack_5->GetXaxis()->SetLabelFont(42);
+   hsModeVsNuE_stack_5->GetXaxis()->SetTitleOffset(1);
+   hsModeVsNuE_stack_5->GetXaxis()->SetTitleFont(42);
+   hsModeVsNuE_stack_5->GetYaxis()->SetLabelFont(42);
+   hsModeVsNuE_stack_5->GetYaxis()->SetTitleFont(42);
+   hsModeVsNuE_stack_5->GetZaxis()->SetLabelFont(42);
+   hsModeVsNuE_stack_5->GetZaxis()->SetTitleOffset(1);
+   hsModeVsNuE_stack_5->GetZaxis()->SetTitleFont(42);
+   hsModeVsNuE->Add(hsModeVsNuE_stack_5, "");
+   
+   TH1F *hsModeVsNuE_stack_6 = new TH1F("hsModeVsNuE_stack_6", "", 100, 0, 5);
+   hsModeVsNuE_stack_6->SetBinContent(1,46);
+   hsModeVsNuE_stack_6->SetBinContent(21,53);
+   hsModeVsNuE_stack_6->SetBinContent(41,5);
+   hsModeVsNuE_stack_6->SetBinContent(61,5);
+   hsModeVsNuE_stack_6->SetBinContent(81,1);
+   hsModeVsNuE_stack_6->SetEntries(110);
+   hsModeVsNuE_stack_6->SetDirectory(nullptr);
+   hsModeVsNuE_stack_6->SetFillColor(TColor::GetColor("#6666ffbf"));
+   hsModeVsNuE_stack_6->SetFillStyle(1001);
+   hsModeVsNuE_stack_6->GetXaxis()->SetLabelFont(42);
+   hsModeVsNuE_stack_6->GetXaxis()->SetTitleOffset(1);
+   hsModeVsNuE_stack_6->GetXaxis()->SetTitleFont(42);
+   hsModeVsNuE_stack_6->GetYaxis()->SetLabelFont(42);
+   hsModeVsNuE_stack_6->GetYaxis()->SetTitleFont(42);
+   hsModeVsNuE_stack_6->GetZaxis()->SetLabelFont(42);
+   hsModeVsNuE_stack_6->GetZaxis()->SetTitleOffset(1);
+   hsModeVsNuE_stack_6->GetZaxis()->SetTitleFont(42);
+   hsModeVsNuE->Add(hsModeVsNuE_stack_6, "");
+   hsModeVsNuE->Draw("hist");
+   
+   TPaveText *pt = new TPaveText(0.15, 0.93459, 0.85, 0.995, "blNDC");
+   pt->SetName("title");
+   pt->SetBorderSize(0);
+   pt->SetFillColor(0);
+   pt->SetFillStyle(0);
+   pt->SetTextFont(42);
+   TText *pt_text0 = pt->AddText("Surviving Background by Interaction Mode");
+   pt->Draw("blNDC");
+   
+   TLegend *leg = new TLegend(0.72, 0.55, 0.89, 0.89, nullptr, "brNDC");
+   leg->SetBorderSize(0);
+   leg->SetLineColor(1);
+   leg->SetLineStyle(1);
+   leg->SetLineWidth(1);
+   leg->SetFillColor(0);
+   leg->SetFillStyle(0);
+   TLegendEntry *legentry = leg->AddEntry("hNuEnergyMode_0","QE","f");
+   legentry->SetFillColor(TColor::GetColor("#3399ffbf"));
+   legentry->SetFillStyle(1001);
+   legentry->SetTextFont(42);
+   legentry = leg->AddEntry("hNuEnergyMode_1","RES","f");
+   legentry->SetFillColor(TColor::GetColor("#ff6600bf"));
+   legentry->SetFillStyle(1001);
+   legentry->SetTextFont(42);
+   legentry = leg->AddEntry("hNuEnergyMode_2","DIS","f");
+   legentry->SetFillColor(TColor::GetColor("#009900bf"));
+   legentry->SetFillStyle(1001);
+   legentry->SetTextFont(42);
+   legentry = leg->AddEntry("hNuEnergyMode_3","Coh","f");
+   legentry->SetFillColor(TColor::GetColor("#ff3333bf"));
+   legentry->SetFillStyle(1001);
+   legentry->SetTextFont(42);
+   legentry = leg->AddEntry("hNuEnergyMode_10","MEC","f");
+   legentry->SetFillColor(TColor::GetColor("#6666ffbf"));
+   legentry->SetFillStyle(1001);
+   legentry->SetTextFont(42);
+   leg->Draw();
+   cModeVsNuE->Modified();
+   cModeVsNuE->SetSelected(cModeVsNuE);
+}

@@ -155,7 +155,7 @@ private:
   std::vector<float> trueNuVtxZ;
   std::vector<int> trueNuPDG;
   std::vector<int> trueNuTrackID;
-  std::vector<int> trueNuEnergy;
+  std::vector<float> trueNuEnergy;
   std::vector<int> trueCCNC;
   std::vector<int> trueIntMode;
   std::vector<int> trueIntType;

@@ -4,7 +4,7 @@
 void trueBeamIntType()
 {
 //=========Macro generated from canvas: c1/True Interaction Type
-//=========  (Wed Aug 12 12:33:09 2026) by ROOT version 6.40.02
+//=========  (Wed Aug 12 16:00:30 2026) by ROOT version 6.40.02
    TCanvas *c1 = new TCanvas("c1", "True Interaction Type", 0, 0, 2000, 2000);
    gStyle->SetOptFit(0);
    gStyle->SetOptStat(1111);
