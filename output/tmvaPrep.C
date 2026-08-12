@@ -663,9 +663,9 @@ std::array<int, kNTopologies> topologyCounts{};
            std::cout<<"trueCCNC size = "<<trueCCNC->size()<<std::endl;
             std::cout<<"chosenMCTruthIdx = "<<chosenMCTruthIdx<<std::endl;
 
-		  int intMode = trueIntMode->at(chosenMCTruthIdx);
-		  int intType = trueIntType->at(chosenMCTruthIdx);
-		  int ccnc = trueCCNC->at(chosenMCTruthIdx);
+		  int intMode = trueIntMode->at(chosenMCTruthIdx-1);
+		  int intType = trueIntType->at(chosenMCTruthIdx-1);
+		  int ccnc = trueCCNC->at(chosenMCTruthIdx-1);
 
 		   std::cout<<"Interaction Mode = "<<intMode<<std::endl;
 		   std::cout<<"Interaction Type = "<<intType<<std::endl;
@@ -674,7 +674,7 @@ std::array<int, kNTopologies> topologyCounts{};
 		   hTrueIntType->Fill(intType);
 		   hTrueCCNC->Fill(ccnc);
 
-           const int topology = ClassifyTopology(trueCCNC->at(chosenMCTruthIdx), *truePDG);
+           const int topology = ClassifyTopology(trueCCNC->at(chosenMCTruthIdx-1), *truePDG);
            ++topologyCounts.at(topology);
 
             std::cout << "Topology: " << topology << std::endl;

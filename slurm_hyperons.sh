@@ -1,8 +1,8 @@
 #!/bin/bash
 
 #SBATCH --job-name=Hyperons_analyzer-NEW
-#SBATCH --output=/data/ooconnor/slurm_logs/hyperons/new_logic/lar_%a.out # Where log files for each job end up
-#SBATCH --error=/data/ooconnor/slurm_logs/hyperons/new_logic/lar_%a.err # Where err files for each job end up
+#SBATCH --output=/data/ooconnor/slurm_logs/hyperons/new_logic/hyperons/lar_%a.out # Where log files for each job end up
+#SBATCH --error=/data/ooconnor/slurm_logs/hyperons/new_logic/hyperons/lar_%a.err # Where err files for each job end up
 #SBATCH --array=0-999%100
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
@@ -10,8 +10,8 @@
 #SBATCH --time=12:00:00
 
 # Define the relevant paths (CHANGE TO YOURS)
-INPUT_DIR="/data/sbnd/prod_2026"
-OUTPUT_DIR="/data/ooconnor/sbnd/hyperons/analyzer_output/new_logic/prod_2026"
+INPUT_DIR="/data/sbnd/hyperons_antinumu"
+OUTPUT_DIR="/data/ooconnor/sbnd/hyperons/analyzer_output/new_logic/filtered_hyperons/"
 WORK_DIR="$HOME/larsoft_dev/srcs/sbndcode/sbndcode/Hyperons"
 SETUP_LOCAL="$HOME/larsoft_dev/localProducts_larsoft_v10_21_02_prof_e26/setup"
 CONTAINER="/cvmfs/singularity.opensciencegrid.org/fermilab/fnal-dev-sl7:latest"

@@ -4,25 +4,25 @@
 void trueBeamIntMode()
 {
 //=========Macro generated from canvas: c2/True Interaction Mode
-//=========  (Tue Aug 11 11:24:54 2026) by ROOT version 6.40.02
+//=========  (Wed Aug 12 12:33:09 2026) by ROOT version 6.40.02
    TCanvas *c2 = new TCanvas("c2", "True Interaction Mode", 0, 0, 2000, 2000);
    gStyle->SetOptFit(0);
    gStyle->SetOptStat(1111);
    gStyle->SetOptTitle(1);
    TColor::SetPalette(57, nullptr);
-   c2->Range(-1.375,-97.12501,11.375,874.125);
+   c2->Range(-1.375,-78.75001,11.375,708.75);
    c2->SetFillColor(0);
    c2->SetFillStyle(1001);
    c2->SetBorderMode(0);
    c2->SetBorderSize(2);
    
    TH1F *hTrueIntMode__2 = new TH1F("hTrueIntMode", "", 10, -0.1, 10.1);
-   hTrueIntMode__2->SetBinContent(1,446);
-   hTrueIntMode__2->SetBinContent(2,740);
-   hTrueIntMode__2->SetBinContent(3,133);
-   hTrueIntMode__2->SetBinContent(4,3);
-   hTrueIntMode__2->SetBinContent(10,186);
-   hTrueIntMode__2->SetEntries(1508);
+   hTrueIntMode__2->SetBinContent(1,157);
+   hTrueIntMode__2->SetBinContent(2,600);
+   hTrueIntMode__2->SetBinContent(3,85);
+   hTrueIntMode__2->SetBinContent(4,1);
+   hTrueIntMode__2->SetBinContent(10,110);
+   hTrueIntMode__2->SetEntries(953);
    hTrueIntMode__2->SetDirectory(nullptr);
    
    TPaveStats *ptstats = new TPaveStats(0.78, 0.775, 0.98, 0.935, "brNDC");
@@ -34,9 +34,9 @@ void trueBeamIntMode()
    ptstats->SetTextFont(42);
    TText *ptstats_text4 = ptstats->AddText("hTrueIntMode");
    ptstats_text4->SetTextSize(0.03680000081658363);
-   TText *ptstats_text5 = ptstats->AddText("Entries = 1508   ");
-   TText *ptstats_text6 = ptstats->AddText("Mean  =  1.906");
-   TText *ptstats_text7 = ptstats->AddText("Std Dev   =  3.092");
+   TText *ptstats_text5 = ptstats->AddText("Entries = 953    ");
+   TText *ptstats_text6 = ptstats->AddText("Mean  =  1.965");
+   TText *ptstats_text7 = ptstats->AddText("Std Dev   =  2.945");
    ptstats->SetOptStat(1111);
    ptstats->SetOptFit(0);
    ptstats->SetParent(hTrueIntMode__2);

@@ -4,13 +4,13 @@
 void finalStateTopologiesBkg()
 {
 //=========Macro generated from canvas: cTopology/Final-state topologies
-//=========  (Tue Aug 11 11:24:54 2026) by ROOT version 6.40.02
+//=========  (Wed Aug 12 12:33:10 2026) by ROOT version 6.40.02
    TCanvas *cTopology = new TCanvas("cTopology", "Final-state topologies", 0, 0, 1800, 1100);
    gStyle->SetOptFit(0);
    gStyle->SetOptStat(0);
    gStyle->SetOptTitle(1);
    TColor::SetPalette(57, nullptr);
-   cTopology->Range(-0.2891566,-750.6001,2.120482,1751.4);
+   cTopology->Range(-2.024096,-171.6,14.84337,400.4);
    cTopology->SetFillColor(0);
    cTopology->SetFillStyle(1001);
    cTopology->SetBorderMode(0);
@@ -19,19 +19,43 @@ void finalStateTopologiesBkg()
    cTopology->SetRightMargin(0.05);
    cTopology->SetBottomMargin(0.3);
    
-   TH1I *hTopology__5 = new TH1I("hTopology", "Background Final State Topology Distribution After Presel", 2, 0, 2);
-   hTopology__5->SetBinContent(1,1251);
-   hTopology__5->SetBinContent(2,257);
+   TH1I *hTopology__5 = new TH1I("hTopology", "Background Final State Topology Distribution After Presel", 14, 0, 14);
+   hTopology__5->SetBinContent(1,19);
+   hTopology__5->SetBinContent(2,286);
+   hTopology__5->SetBinContent(3,100);
+   hTopology__5->SetBinContent(4,249);
+   hTopology__5->SetBinContent(5,16);
+   hTopology__5->SetBinContent(6,189);
+   hTopology__5->SetBinContent(7,8);
+   hTopology__5->SetBinContent(8,2);
+   hTopology__5->SetBinContent(9,5);
+   hTopology__5->SetBinContent(10,21);
+   hTopology__5->SetBinContent(11,18);
+   hTopology__5->SetBinContent(12,5);
+   hTopology__5->SetBinContent(13,10);
+   hTopology__5->SetBinContent(14,25);
    hTopology__5->SetMinimum(0);
-   hTopology__5->SetMaximum(1501.2);
-   hTopology__5->SetEntries(2);
+   hTopology__5->SetMaximum(343.2);
+   hTopology__5->SetEntries(14);
    hTopology__5->SetStats(0);
    hTopology__5->SetFillColor(TColor::GetColor("#3399ffb2"));
    hTopology__5->SetFillStyle(1001);
    hTopology__5->SetLineWidth(2);
    hTopology__5->GetXaxis()->SetTitle("True final state topology");
-   hTopology__5->GetXaxis()->SetBinLabel(1, "CC 0#pi, 0p");
-   hTopology__5->GetXaxis()->SetBinLabel(2, "NC 0#pi, 0p");
+   hTopology__5->GetXaxis()->SetBinLabel(1, "CC 0#pi, 1p");
+   hTopology__5->GetXaxis()->SetBinLabel(2, "CC 0#pi, #geq2p");
+   hTopology__5->GetXaxis()->SetBinLabel(3, "CC 1#pi^{0}");
+   hTopology__5->GetXaxis()->SetBinLabel(4, "CC 1#pi^{+}");
+   hTopology__5->GetXaxis()->SetBinLabel(5, "CC 1#pi^{-}");
+   hTopology__5->GetXaxis()->SetBinLabel(6, "CC multi-#pi");
+   hTopology__5->GetXaxis()->SetBinLabel(7, "CC strange");
+   hTopology__5->GetXaxis()->SetBinLabel(8, "NC 0#pi, 0p");
+   hTopology__5->GetXaxis()->SetBinLabel(9, "NC 0#pi, 1p");
+   hTopology__5->GetXaxis()->SetBinLabel(10, "NC 0#pi, #geq2p");
+   hTopology__5->GetXaxis()->SetBinLabel(11, "NC 1#pi^{0}");
+   hTopology__5->GetXaxis()->SetBinLabel(12, "NC 1#pi^{+}");
+   hTopology__5->GetXaxis()->SetBinLabel(13, "NC 1#pi^{-}");
+   hTopology__5->GetXaxis()->SetBinLabel(14, "NC multi-#pi");
    hTopology__5->GetXaxis()->SetBit(TAxis::kLabelsVert);
    hTopology__5->GetXaxis()->CenterTitle(true);
    hTopology__5->GetXaxis()->SetLabelFont(42);

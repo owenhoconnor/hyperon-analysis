@@ -4,23 +4,23 @@
 void trueBeamCCNC()
 {
 //=========Macro generated from canvas: c3/True CCNC
-//=========  (Tue Aug 11 11:24:54 2026) by ROOT version 6.40.02
+//=========  (Wed Aug 12 12:33:09 2026) by ROOT version 6.40.02
    TCanvas *c3 = new TCanvas("c3", "True CCNC", 0, 0, 2000, 2000);
    gStyle->SetOptFit(0);
    gStyle->SetOptStat(0);
    gStyle->SetOptTitle(1);
    TColor::SetPalette(57, nullptr);
-   c3->Range(-0.75,-164.1938,1.75,1477.744);
+   c3->Range(-0.75,-113.7938,1.75,1024.144);
    c3->SetFillColor(0);
    c3->SetFillStyle(1001);
    c3->SetBorderMode(0);
    c3->SetBorderSize(2);
    
    TH1F *hTrueCCNC__3 = new TH1F("hTrueCCNC", "", 2, -0.5, 1.5);
-   hTrueCCNC__3->SetBinContent(1,1251);
-   hTrueCCNC__3->SetBinContent(2,257);
+   hTrueCCNC__3->SetBinContent(1,867);
+   hTrueCCNC__3->SetBinContent(2,86);
    hTrueCCNC__3->SetMinimum(0);
-   hTrueCCNC__3->SetEntries(1508);
+   hTrueCCNC__3->SetEntries(953);
    hTrueCCNC__3->SetDirectory(nullptr);
    hTrueCCNC__3->SetFillColor(TColor::GetColor("#3399ffb2"));
    hTrueCCNC__3->SetFillStyle(1001);
