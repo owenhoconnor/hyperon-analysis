@@ -150,7 +150,7 @@ private:
   int fRun;       // Run number
   int fSubRun; // Sub run number
  
-  std::vector<std::string> trueOrigin;
+  std::vector<simb::Origin_t> trueOrigin;
   std::vector<float> trueW;
   std::vector<float> trueX;
   std::vector<float> trueY;
@@ -1160,7 +1160,7 @@ for (size_t i_truth = 0; i_truth < mclist.size(); ++i_truth)
     std::cout<< "Generator neutrino TrackID: "<< nu.TrackId()<< std::endl;
 
 
-    trueOrigin.push_back("test");
+    trueOrigin.push_back(origin);
     trueW.push_back(neutrino.W());
     trueX.push_back(neutrino.X());
     trueY.push_back(neutrino.Y());
