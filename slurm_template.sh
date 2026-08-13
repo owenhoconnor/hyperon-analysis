@@ -46,10 +46,10 @@ $APPTAINER_BIN exec -B /cvmfs,/data,/home,/opt,/run/user,/etc/hostname,/etc/host
             # Run lar
             lar -c $WORK_DIR/run_analyzeEvents.fcl \
                 -s \$CURRENT_FILE \
-                -T analyser_output_\${i}_2026.root
+                -T analyzer_output_\${i}_2026.root
 
             # Move and clean (If neccessary)
-            mv analyser_output_\${i}_2026.root $OUTPUT_DIR/
+            mv analyzer_output_\${i}_2026.root $OUTPUT_DIR/
             cd $WORK_DIR
             rm -rf \$TMP_DIR
         done

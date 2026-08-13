@@ -150,6 +150,13 @@ private:
   int fRun;       // Run number
   int fSubRun; // Sub run number
  
+  std::vector<std::string> trueOrigin;
+  std::vector<float> trueW;
+  std::vector<float> trueX;
+  std::vector<float> trueY;
+  std::vector<float> trueQSqr;
+  std::vector<float> truePt;
+  std::vector<float> trueTheta;
   std::vector<float> trueNuVtxX;
   std::vector<float> trueNuVtxY;
   std::vector<float> trueNuVtxZ;
@@ -1133,6 +1140,8 @@ for (size_t i_truth = 0; i_truth < mclist.size(); ++i_truth)
     std::cout
         << "\n========== MCTruth " << i_truth << " =========="<< std::endl;
 
+    std::cout<< "MCTruth Origin: "<< truth->Origin()<< std::endl;
+
     std::cout<< "Neutrino PDG: "<< nu.PdgCode()<< std::endl;
 
     std::cout<< "Interaction mode: "<< neutrino.Mode()<< std::endl;
@@ -1149,20 +1158,21 @@ for (size_t i_truth = 0; i_truth < mclist.size(); ++i_truth)
 
     std::cout<< "Generator neutrino TrackID: "<< nu.TrackId()<< std::endl;
 
+
+    trueOrigin.push_back(truth->Origin());
+    trueW.push_back(neutrino.W());
+    trueX.push_back(neutrino.X());
+    trueY.push_back(neutrino.Y());
+    trueQSqr.push_back(neutrino.QSqr());
+    truePt.push_back(neutrino.Pt());
+    trueTheta.push_back(neutrino.Theta());
     trueNuPDG.push_back(nu.PdgCode());
-
     trueNuEnergy.push_back(nu.E());
-
     trueCCNC.push_back(neutrino.CCNC());
-
     trueIntMode.push_back(neutrino.Mode());
-
     trueIntType.push_back(neutrino.InteractionType());
-
     trueTargetPDG.push_back(neutrino.Target());
-
     trueNuTrackID.push_back(nu.TrackId());
-
     trueNuVtxX.push_back(nu.Vx());
     trueNuVtxY.push_back(nu.Vy());
     trueNuVtxZ.push_back(nu.Vz());
@@ -1445,43 +1455,30 @@ for (size_t i_truth = 0; i_truth < mclist.size(); ++i_truth)
             // Start position
 
             trueStartX.push_back(particle->Vx());
-
             trueStartY.push_back(particle->Vy());
-
             trueStartZ.push_back(particle->Vz());
-
             trueStartT.push_back(particle->T());
 
             // Initial momentum
 
             truePx.push_back(particle->Px());
-
             truePy.push_back(particle->Py());
-
             truePz.push_back(particle->Pz());
-
             trueP.push_back(particle->P());
-
             trueE.push_back(particle->E());
 
             // End position
 
             trueEndX.push_back(particle->EndX());
-
             trueEndY.push_back(particle->EndY());
-
             trueEndZ.push_back(particle->EndZ());
-
             trueEndT.push_back(particle->EndT());
 
             // End momentum
 
             trueEndPx.push_back(particle->EndPx());
-
             trueEndPy.push_back(particle->EndPy());
-
             trueEndPz.push_back(particle->EndPz());
-
             trueEndE.push_back(particle->EndE());
 
 
@@ -1656,6 +1653,13 @@ std::cout<<"trueIntMode size = "<<trueIntMode.size()<<std::endl;
 std::cout<<"trueIntType size = "<<trueIntType.size()<<std::endl;
 std::cout<<"trueCCNC size = "<<trueCCNC.size()<<std::endl;
 
+    trueOrigin.clear();
+    trueW.clear()
+    trueX.clear();
+    trueY.clear();
+    trueQSqr.clear();
+    truePt.clear();
+    trueTheta.clear();
     trueNuPDG.clear();
     trueNuTrackID.clear();
     trueNuVtxX.clear();
@@ -1719,6 +1723,13 @@ void hyperon::AnalyzeEvents::beginJob()
   fTree ->Branch("run", &fRun, "run/I");
   fTree ->Branch("subrun", &fSubRun, "subrun/I");
 
+  fTree->Branch("trueOrigin", &trueOrigin);
+  fTree->Branch("trueW", &trueW);
+  fTree->Branch("trueX", &trueX);
+  fTree->Branch("trueY", &trueY);
+  fTree->Branch("trueQSqr", &trueQSqr);
+  fTree->Branch("truePt", &truePt);
+  fTree->Branch("trueTheta", &trueTheta);
   fTree->Branch("trueNuPDG", &trueNuPDG);
   fTree->Branch("trueNuTrackID", &trueNuTrackID);
   fTree->Branch("trueNuVtxX", &trueNuVtxX);
