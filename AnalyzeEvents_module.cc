@@ -258,6 +258,12 @@ private:
 
   bool isSignal = false; // define bools for signal and background
   bool isBkg = false;
+
+  int fRun_sr;
+  int fSubRun_sr;
+  double fPOT;
+  TTree *fSubRunTree;
+  
 };
 
 
@@ -1822,6 +1828,11 @@ void hyperon::AnalyzeEvents::beginJob()
   fTree->Branch("showerDirY", &fShowerDirY);
   fTree->Branch("showerDirZ", &fShowerDirZ);
 
+  fSubRunTree = tfs->make<TTree> ("subRunTree", "SubRun Level Info TTree");
+  fSubRunTree->Branch("run", &fRun_sr);
+  fSubRunTree->Branch("subRun", &fSubRun_sr);
+  fSubRunTree->Branch("pot", &fPoT)
+
   // truth matching
   //fTree->Branch("pfpTrackPDG", &fTrueTrackPDG);
   //fTree->Branch("pfpShowerPDG", &fTrueShowerPDG);
@@ -1835,6 +1846,22 @@ void hyperon::AnalyzeEvents::endJob()
   // Implementation of optional member function here.
 
 
+}
+
+void hyperon::AnalyzeEvents::endSubRun(art::SubRun const& sr) {
+    fRun_sr = sr.run();
+    fSubRun_sr = sr.subRun();
+    fPoT = 0.0;
+
+    art::Handle<sumdata::POTSummary> potHandle;
+    if (sr.getByLabel("generator", potHandle)){
+        fPOT = potHandle->totpot;
+    }
+    else {
+        mf::LogVerbatim("hyperon::AnalyzeEvents") << "Warning: No POTSummary found in this SubRun!";
+    }
+
+    fSubRunTree->Fill();
 }
 
 DEFINE_ART_MODULE(hyperon::AnalyzeEvents)

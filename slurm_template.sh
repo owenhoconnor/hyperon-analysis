@@ -12,6 +12,7 @@
 # Define the relevant paths (CHANGE TO YOURS)
 INPUT_DIR="/data/sbnd/prod_2026"
 OUTPUT_DIR="/data/ooconnor/sbnd/hyperons/analyzer_output/new_logic/prod_2026"
+LOG_DIR="/data/ooconnor/slurm_logs/hyperons/new_logic"
 WORK_DIR="$HOME/larsoft_dev/srcs/sbndcode/sbndcode/Hyperons"
 SETUP_LOCAL="$HOME/larsoft_dev/localProducts_larsoft_v10_21_02_prof_e26/setup"
 CONTAINER="/cvmfs/singularity.opensciencegrid.org/fermilab/fnal-dev-sl7:latest"
@@ -47,6 +48,20 @@ $APPTAINER_BIN exec -B /cvmfs,/data,/home,/opt,/run/user,/etc/hostname,/etc/host
             lar -c $WORK_DIR/run_analyzeEvents.fcl \
                 -s \$CURRENT_FILE \
                 -T analyzer_output_\${i}_2026.root
+
+            # Check for errors, rerun if any jobs failed
+
+            LAR_STATUS=\$?
+
+            if [ \$LAR_STATUS -ne 0 ]; then
+                echo \"lar failed for file \$i with exit code \$LAR_STATUS. Rerunning...\"
+
+                rm -f analyzer_output_\${i}_2026.root
+
+                lar -c $WORK_DIR/run_analyzeEvents.fcl \
+                -s \$CURRENT_FILE \
+                -T analyzer_output_\${i}_2026.root
+            fi
 
             # Move and clean (If neccessary)
             mv analyzer_output_\${i}_2026.root $OUTPUT_DIR/
