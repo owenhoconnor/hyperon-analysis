@@ -1132,6 +1132,7 @@ for (size_t i_truth = 0; i_truth < mclist.size(); ++i_truth)
 
     const auto& neutrino = truth->GetNeutrino();
     const auto& nu       = neutrino.Nu();
+    const auto origin = truth->Origin();
 
     // -----------------------------------------------------------------------
     // Save interaction-level information
@@ -1140,7 +1141,7 @@ for (size_t i_truth = 0; i_truth < mclist.size(); ++i_truth)
     std::cout
         << "\n========== MCTruth " << i_truth << " =========="<< std::endl;
 
-    std::cout<< "MCTruth Origin: "<< truth->Origin()<< std::endl;
+    std::cout<< "MCTruth Origin: "<<origin<< std::endl;
 
     std::cout<< "Neutrino PDG: "<< nu.PdgCode()<< std::endl;
 
@@ -1159,7 +1160,7 @@ for (size_t i_truth = 0; i_truth < mclist.size(); ++i_truth)
     std::cout<< "Generator neutrino TrackID: "<< nu.TrackId()<< std::endl;
 
 
-    trueOrigin.push_back(truth->Origin());
+    trueOrigin.push_back("test");
     trueW.push_back(neutrino.W());
     trueX.push_back(neutrino.X());
     trueY.push_back(neutrino.Y());
@@ -1654,7 +1655,7 @@ std::cout<<"trueIntType size = "<<trueIntType.size()<<std::endl;
 std::cout<<"trueCCNC size = "<<trueCCNC.size()<<std::endl;
 
     trueOrigin.clear();
-    trueW.clear()
+    trueW.clear();
     trueX.clear();
     trueY.clear();
     trueQSqr.clear();
