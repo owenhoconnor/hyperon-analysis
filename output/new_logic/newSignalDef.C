@@ -32,6 +32,11 @@ void newSignalDef::Loop()
    if (fChain == 0) return;
 
 
+   int nEvents[3] = {0};
+   nEvents[0] = 136262; // number of events in all hyperon files
+   nEvents[1] = nEvents[0]; // any hyperon event
+   nEvents[2] = 209097 + nEvents[0]; // num of events in bkg files + num of events in hyp files
+
    TFile *sigFile = TFile::Open("/data/ooconnor/sbnd/hyperons/preselection_output/new_logic/signalDef_output_sig.root", "RECREATE");
 
    if (!sigFile || sigFile->IsZombie()){
@@ -220,8 +225,8 @@ void newSignalDef::Loop()
          if(sampleType==2){nInRecoFVBkg++;}
 
          if (trackCount == 3 && showerCount == 1){
-            if(sampleType==0){nGoodTopoSig++; signalTree->Fill();}
-            if(sampleType==2){nGoodTopoBkg++; bkgTree->Fill();}
+            if(sampleType==0 && jentry < nEvents[0] + 1){nGoodTopoSig++; signalTree->Fill();}
+            if(sampleType==2 && jentry > nEvents[0]){nGoodTopoBkg++; bkgTree->Fill();}
          }
 
       }  
