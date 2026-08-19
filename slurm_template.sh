@@ -28,8 +28,10 @@ $APPTAINER_BIN exec -B /cvmfs,/data,/home,/opt,/run/user,/etc/hostname,/etc/host
     --ipc --pid "$CONTAINER" /bin/bash -c "
         source /cvmfs/sbnd.opensciencegrid.org/products/sbnd/setup_sbnd.sh
         source $SETUP_LOCAL
+	cd \$MRB_BUILDDIR
         mrbsetenv
         mrbslp
+	cd $WORK_DIR
 
         # Note: We use 'seq' to handle looking for files
         for (( i=$SLURM_ARRAY_TASK_ID; i<$NUM_FILES; i+=$NUM_JOBS )); do
