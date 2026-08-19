@@ -520,6 +520,17 @@ void newBackgroundPlots::Loop()
     }
 
     // ------------------------------------------------------------------------
+    // MCTruth orgin
+    // ------------------------------------------------------------------------
+
+    std::map<int, int> originCounts;
+
+    TH1F* hTrueOrigin = new TH1F("hTrueOrigin", "", 3, -0.5, 2.5);
+    hTrueOrigin->SetDirectory(nullptr)
+    hTrueOrigin->GetXaxis()->SetBinLabel(1, "Beam Neutrino")
+    hTrueOrigin->GetXAxis()->SetBinLabel(2, "Cosmic")
+
+    // ------------------------------------------------------------------------
     // Overall true neutrino energy
     // ------------------------------------------------------------------------
 
@@ -658,6 +669,7 @@ void newBackgroundPlots::Loop()
         const int intMode = trueIntMode->at(chosenTruthIdx);
         const int intType = trueIntType->at(chosenTruthIdx);
         const int ccnc = trueCCNC->at(chosenTruthIdx);
+        const int origin = trueOrigin->at(chosenTruthIdx);
         const float nuEnergy = trueNuEnergy->at(chosenTruthIdx);
 
         // ====================================================================
@@ -697,8 +709,10 @@ void newBackgroundPlots::Loop()
 
         hTrueCCNC->Fill(ccnc);
         hTrueIntMode->Fill(intMode);
+        hTrueOrigin->Fill(origin);
         hTrueNuEnergy->Fill(nuEnergy);
 
+        ++originCounts[origin];
         ++interactionTypeCounts[intType];
         ++topologyCounts.at(topology);
 
@@ -763,6 +777,7 @@ void newBackgroundPlots::Loop()
 
     std::cout<< "Finished loop over "<< nentries<< " entries."<< std::endl;
     std::cout<< "Entries skipped because of bad chosenMCchosenTruthIdx: "<< nBadTruthIndices<< std::endl;
+    std::cout<<"# of Events with Beam Neutrino Origin = "<<originCounts[0]<<std::endl;
 
     // ========================================================================
     // COMMON HISTOGRAM STYLE
@@ -828,7 +843,20 @@ void newBackgroundPlots::Loop()
     cIntType->Print("plots/new_logic/trueBeamIntType_new.png");
 
     // ========================================================================
-    // 4. OVERALL NEUTRINO ENERGY
+    // 4. MCTRUTH ORIGIN
+    // ========================================================================
+
+    TCanvas* cNuOrigin = new TCanvas("cNuOrigin", "True Neutrino Origin", 1600, 1200);
+    hTrueOrigin->GetXAxis()->SetTitle("True Neutrino Origin");
+    hTrueOrigin->GetYAxis()->SetTitle("Interactions");
+    hTrueOrigin->SetFillColorAlpha(fillColour, 0.7);
+    hTrueOrigin->SetLineColor(kBlack);
+    hTrueOrigin->LabelsOption("v", "X");
+    hTrueOrigin->Draw("HIST TEXT0");
+    cNuOrigin->Print("plots/trueNuOrigin.pdf")
+
+    // ========================================================================
+    // 5. OVERALL NEUTRINO ENERGY
     // ========================================================================
 
     TCanvas* cNuEnergy = new TCanvas("cNuEnergy", "True Neutrino Energy", 1600, 1200);
@@ -841,7 +869,7 @@ void newBackgroundPlots::Loop()
     cNuEnergy->Print("plots/new_logic/trueNuEnergy_new.png");
 
     // ========================================================================
-    // 5. FINAL-STATE TOPOLOGY DISTRIBUTION
+    // 6. FINAL-STATE TOPOLOGY DISTRIBUTION
     // ========================================================================
 
     std::vector<int> populatedTopologies;
@@ -932,7 +960,7 @@ void newBackgroundPlots::Loop()
     };
 
     // ========================================================================
-    // 6. STACKED INTERACTION MODE VS NEUTRINO ENERGY
+    // STACKED INTERACTION MODE VS NEUTRINO ENERGY
     // ========================================================================
 
     THStack* hsModeVsNuE = new THStack("hsModeVsNuE","Surviving Background by Interaction Mode;True E_{#nu} [GeV];Interactions");
@@ -964,7 +992,7 @@ void newBackgroundPlots::Loop()
     cModeVsNuE->Print("plots/new_logic/modeVsNuEnergyBkg_new.png");
 
     // ========================================================================
-    // 7. STACKED TOPOLOGY VS NEUTRINO ENERGY
+    // STACKED TOPOLOGY VS NEUTRINO ENERGY
     // ========================================================================
 
     THStack* hsTopologyVsNuE = new THStack("hsTopologyVsNuE", "Surviving Background by Final-State Topology;True E_{#nu} [GeV];Interactions");
@@ -998,7 +1026,7 @@ void newBackgroundPlots::Loop()
     cTopologyVsNuE->Print("plots/new_logic/topologyVsNuEnergyBkg_new.png");
 
     // ========================================================================
-    // 8. MODE VS TOPOLOGY MATRIX
+    // MODE VS TOPOLOGY MATRIX
     // ========================================================================
 
     TCanvas* cModeVsTopology = new TCanvas("cModeVsTopology","Mode vs Topology", 2000, 1400);
@@ -1016,7 +1044,7 @@ void newBackgroundPlots::Loop()
 
 
     // ========================================================================
-    // 9. FINAL-STATE MULTIPLICITY PLOTS
+    // FINAL-STATE MULTIPLICITY PLOTS
     // ========================================================================
 
     std::array<
@@ -1069,7 +1097,7 @@ void newBackgroundPlots::Loop()
 
 
     // ========================================================================
-    // 10. LEADING PARTICLE MOMENTA
+    // LEADING PARTICLE MOMENTA
     // ========================================================================
 
     std::array<
