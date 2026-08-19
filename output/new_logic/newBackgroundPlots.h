@@ -28,6 +28,13 @@ public :
    UInt_t          eventID;
    Int_t           run;
    Int_t           subrun;
+   vector<int> *trueOrigin;
+   vector<float> *trueW;
+   vector<float> *trueX;
+   vector<float> *trueY;
+   vector<float> *trueQSqr;
+   vector<float> *truePt;
+   vector<float> *trueTheta;
    vector<int>     *trueNuPDG;
    vector<int>     *trueNuTrackID;
    vector<float>   *trueNuVtxX;
@@ -166,6 +173,13 @@ public :
    TBranch        *b_eventID;   ///<!
    TBranch        *b_run;   ///<!
    TBranch        *b_subrun;   ///<!
+   TBranch        *b_trueOrigin; ///<!
+   TBranch        *b_trueW;      ///<!
+   TBranch        *b_trueX;      ///<!
+   TBranch        *b_trueY;      ///<!
+   TBranch        *b_trueQSqr;   ///<!
+   TBranch        *b_truePt;     ///<!
+   TBranch        *b_trueTheta;  ///<!
    TBranch        *b_trueNuPDG;   ///<!
    TBranch        *b_trueNuTrackID;   ///<!
    TBranch        *b_trueNuVtxX;   ///<!
@@ -363,6 +377,13 @@ void newBackgroundPlots::Init(TTree *tree)
    // code, but the routine can be extended by the user if needed.
 
    // Set object pointer
+   trueOrigin = 0;
+   trueW = 0;
+   trueX = 0;
+   trueY = 0;
+   trueQSqr = 0;
+   truePt = 0;
+   trueTheta = 0;
    trueNuPDG = 0;
    trueNuTrackID = 0;
    trueNuVtxX = 0;
@@ -452,6 +473,13 @@ void newBackgroundPlots::Init(TTree *tree)
    fChain->SetBranchAddress("eventID", &eventID, &b_eventID);
    fChain->SetBranchAddress("run", &run, &b_run);
    fChain->SetBranchAddress("subrun", &subrun, &b_subrun);
+   fChain->SetBranchAddress("trueOrigin". &trueOrigin, &b_trueOrigin);
+   fChain->SetBranchAddress("trueW", &trueW, &b_trueW);
+   fChain->SetBranchAddress("trueX", &trueX, &b_trueX);
+   fChain->SetBranchAddress("trueY", &trueY, &b_trueY);
+   fChain->SetBranchAddress("trueQSqr", &trueQSqr, &b_trueQSqr);
+   fChain->SetBranchAddress("truePt", &truePt, &b_truePt);
+   fChain->SetBranchAddress("trueTheta", &trueTheta, &b_trueTheta);
    fChain->SetBranchAddress("trueNuPDG", &trueNuPDG, &b_trueNuPDG);
    fChain->SetBranchAddress("trueNuTrackID", &trueNuTrackID, &b_trueNuTrackID);
    fChain->SetBranchAddress("trueNuVtxX", &trueNuVtxX, &b_trueNuVtxX);
