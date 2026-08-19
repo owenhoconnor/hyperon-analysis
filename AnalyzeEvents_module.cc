@@ -45,6 +45,7 @@
 #include "lardataobj/AnalysisBase/ParticleID.h"
 #include "lardataobj/AnalysisBase/Calorimetry.h"
 #include "lardata/Utilities/AssociationUtil.h"
+#include "larcoreobj/SummaryData/POTSummary.h"
 
 // // Root Includes
 #include <iostream>
@@ -104,6 +105,7 @@ public:
   // Selected optional functions.
   void beginJob() override;
   void endJob() override;
+  void endSubRun(art::SubRun const& sr) override;
 
 private:
 
@@ -150,7 +152,7 @@ private:
   int fRun;       // Run number
   int fSubRun; // Sub run number
  
-  std::vector<simb::Origin_t> trueOrigin;
+  std::vector<int> trueOrigin;
   std::vector<float> trueW;
   std::vector<float> trueX;
   std::vector<float> trueY;
@@ -1831,7 +1833,7 @@ void hyperon::AnalyzeEvents::beginJob()
   fSubRunTree = tfs->make<TTree> ("subRunTree", "SubRun Level Info TTree");
   fSubRunTree->Branch("run", &fRun_sr);
   fSubRunTree->Branch("subRun", &fSubRun_sr);
-  fSubRunTree->Branch("pot", &fPoT)
+  fSubRunTree->Branch("pot", &fPOT);
 
   // truth matching
   //fTree->Branch("pfpTrackPDG", &fTrueTrackPDG);
@@ -1851,7 +1853,7 @@ void hyperon::AnalyzeEvents::endJob()
 void hyperon::AnalyzeEvents::endSubRun(art::SubRun const& sr) {
     fRun_sr = sr.run();
     fSubRun_sr = sr.subRun();
-    fPoT = 0.0;
+    fPOT = 0.0;
 
     art::Handle<sumdata::POTSummary> potHandle;
     if (sr.getByLabel("generator", potHandle)){
