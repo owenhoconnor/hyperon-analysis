@@ -33,11 +33,11 @@ void newSignalDef::Loop()
 
 
    int nEvents[3] = {0};
-   nEvents[0] = 136262; // number of events in all hyperon files
+   nEvents[0] = 137544; // number of events in all hyperon files
    nEvents[1] = nEvents[0]; // any hyperon event
-   nEvents[2] = 209097 + nEvents[0]; // num of events in bkg files + num of events in hyp files
+   nEvents[2] = 209643 + nEvents[0]; // num of events in bkg files + num of events in hyp files
 
-   TFile *sigFile = TFile::Open("/data/ooconnor/sbnd/hyperons/preselection_output/new_logic/signalDef_output_sig.root", "RECREATE");
+   TFile *sigFile = TFile::Open("/data/ooconnor/sbnd/hyperons/preselection_output/signalDef_output_sig.root", "RECREATE");
 
    if (!sigFile || sigFile->IsZombie()){
 	   std::cerr<<"Could not open file!"<<std::endl;
@@ -49,7 +49,7 @@ void newSignalDef::Loop()
    signalTree->SetName("tree");
    signalTree->SetDirectory(sigFile);
 
-   TFile *bkgFile = TFile::Open("/data/ooconnor/sbnd/hyperons/preselection_output/new_logic/signalDef_output_bkg.root", "RECREATE");
+   TFile *bkgFile = TFile::Open("/data/ooconnor/sbnd/hyperons/preselection_output/signalDef_output_bkg.root", "RECREATE");
 
    if (!bkgFile || bkgFile->IsZombie()){
 	   std::cerr<<"Could not open file!"<<std::endl;
@@ -61,7 +61,7 @@ void newSignalDef::Loop()
    bkgTree->SetName("tree");
    bkgTree->SetDirectory(bkgFile);
 
-   TFile *beamSigFile = TFile::Open("/data/ooconnor/sbnd/hyperons/preselection_output/new_logic/signalDef_output_beamSig.root", "RECREATE");
+   TFile *beamSigFile = TFile::Open("/data/ooconnor/sbnd/hyperons/preselection_output/signalDef_output_beamSig.root", "RECREATE");
 
    if (!beamSigFile || beamSigFile->IsZombie()){
 	   std::cerr<<"Could not open file!"<<std::endl;
@@ -95,6 +95,13 @@ void newSignalDef::Loop()
    int nGoodTopoBkg = 0;
    int nGoodTopoBeamSig = 0;
 
+   int nBeamOrigin = 0;
+   int nBeamOriginBkg = 0;
+   int nCosmicOrigin = 0;
+   int nCosmicOriginBkg = 0;
+   int nUnknownOrigin = 0;
+   int nUnknownOriginBkg = 0;
+
    Long64_t nentries = fChain->GetEntriesFast();
 
    Long64_t nbytes = 0, nb = 0;
@@ -115,6 +122,7 @@ void newSignalDef::Loop()
       // ------------------------------------------------------------
 
       TVector3 recoVtx(RecoVertexX, RecoVertexY, RecoVertexZ);
+
       for (int i = 0; i < trueNuVtxX->size(); i++){
          TVector3 trueVtx(trueNuVtxX->at(i), trueNuVtxY->at(i), trueNuVtxZ->at(i));
          float distTrueToRecoVtx = (trueVtx - recoVtx).Mag();
@@ -122,7 +130,16 @@ void newSignalDef::Loop()
             shortestDistTrueToRecoVtx = distTrueToRecoVtx;
             chosenTruthIdx = i;
          }
+
+         // Check if origin of MCTruth (cosmic or beam)
+
+         std::cout<<"MCTruth at index "<<i<<" has origin "<<trueOrigin->at(i)<<std::endl;
+         if (trueOrigin->at(i) == 1){nBeamOrigin++;}
+         if (trueOrigin->at(i) == 2){nCosmicOrigin++;}
+         if (trueOrigin->at(i) != 1 && trueOrigin->at(i) != 2){nUnknownOrigin++;}
       }
+
+      std::cout<<"Chosen MCTruth has index"<<chosenTruthIdx<<" and origin"<<trueOrigin->at(chosenTruthIdx)<<std::endl;
 
       // ------------------------------------------------------------
       // First loop over primary particles in the event to determine if the event contains a primary Sigma0, primary anti-muon, good Lambda, and good photon
@@ -212,6 +229,9 @@ void newSignalDef::Loop()
       }
       else if (!isSignal && isInTrueFV){
          sampleType = 2;
+         if(trueOrigin->at(chosenTruthIdx) == 0){nUnknownOriginBkg++;}
+         if(trueOrigin->at(chosenTruthIdx) == 1){nBeamOriginBkg++;}
+         if(trueOrigin->at(chosenTruthIdx) == 2){nCosmicOriginBkg++;}
       }
 
       // Reco FV and 3 Track + 1 Shower Cut
@@ -232,6 +252,7 @@ void newSignalDef::Loop()
       }  
 
    } // End of event loop
+
 
    sigFile->cd();
    signalTree->Write("tree"); // Write signal tree and close file
@@ -257,5 +278,13 @@ void newSignalDef::Loop()
    std::cout<<"# Signal after 3+1 topo cut = "<<nGoodTopoSig<<std::endl;
    std::cout<<"# Background after 3+1 topo cut = "<<nGoodTopoBkg<<std::endl;
    std::cout<<"# Beam Signal after 3+1 topo cut = "<<nGoodTopoBeamSig<<std::endl;
+   std::cout<<"================================================================"<<std::endl;
+   //std::cout<<"# of MCTruth Objs with Beam Nu Origin = "<<nBeamOrigin<<std::endl;
+   //std::cout<<"# of MCTruth Objs with Cosmic Nu Origin = "<<nCosmicOrigin<<std::endl;
+   //std::cout<<"# of MCTruths with Unknown/Other Origin = "<<nUnknownOrigin<<std::endl;
+   std::cout<<"# of Bkg MCTruths with Beam Neutrino Origin = "<<nBeamOriginBkg<<std::endl;
+   std::cout<<"# of Bkg MCTruths with Cosmic Neutrino Origin = "<<nCosmicOriginBkg<<std::endl;
+   std::cout<<"# of Bkg MCTruths with Unknown Neutrino Origin = "<<nUnknownOriginBkg<<std::endl;
+   std::cout<<"================================================================"<<std::endl;
 
 }

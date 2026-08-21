@@ -473,7 +473,7 @@ void newBackgroundPlots::Init(TTree *tree)
    fChain->SetBranchAddress("eventID", &eventID, &b_eventID);
    fChain->SetBranchAddress("run", &run, &b_run);
    fChain->SetBranchAddress("subrun", &subrun, &b_subrun);
-   fChain->SetBranchAddress("trueOrigin". &trueOrigin, &b_trueOrigin);
+   fChain->SetBranchAddress("trueOrigin", &trueOrigin, &b_trueOrigin);
    fChain->SetBranchAddress("trueW", &trueW, &b_trueW);
    fChain->SetBranchAddress("trueX", &trueX, &b_trueX);
    fChain->SetBranchAddress("trueY", &trueY, &b_trueY);

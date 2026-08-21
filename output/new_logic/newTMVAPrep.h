@@ -386,7 +386,7 @@ void newTMVAPrep::Init(TTree *tree)
    fChain->SetBranchAddress("run", &run, &b_run);
    fChain->SetBranchAddress("subrun", &subrun, &b_subrun);
    fChain->SetBranchAddress("trueNuPDG", &trueNuPDG, &b_trueNuPDG);
-   fChain->SetBranchAddress("trueOrigin". &trueOrigin, &b_trueOrigin);
+   fChain->SetBranchAddress("trueOrigin", &trueOrigin, &b_trueOrigin);
    fChain->SetBranchAddress("trueW", &trueW, &b_trueW);
    fChain->SetBranchAddress("trueX", &trueX, &b_trueX);
    fChain->SetBranchAddress("trueY", &trueY, &b_trueY);

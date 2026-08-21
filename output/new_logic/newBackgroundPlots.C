@@ -134,6 +134,60 @@ const std::array<
     "Other"
 };
 
+// ============================================================================
+// TMVA Input Definitions
+// ============================================================================
+
+const int nVars = 44;
+
+const std::array<std::string, nVars> inputVars = {
+    "track1Length",
+    "track2Length",
+    "track3Length",
+    "shower1Length",
+    "track1StartPosX",
+    "track1StartPosY",
+    "track1StartPosZ",
+    "track2StartPosX",
+    "track2StartPosY",
+    "track2StartPosZ",
+    "track3StartPosX",
+    "track3StartPosY",
+    "track3StartPosZ",
+    "shower1StartPosX",
+    "shower1StartPosY",
+    "shower1StartPosZ",
+    "track1StartDirX",
+    "track1StartDirY",
+    "track1StartDirZ",
+    "track2StartDirX",
+    "track2StartDirY",
+    "track2StartDirZ",
+    "track3StartDirX",
+    "track3StartDirY",
+    "track3StartDirZ",
+    "shower1DirX",
+    "shower1DirY",
+    "shower1DirZ",
+    "track1DistRecoVtx",
+    "track2DistRecoVtx",
+    "track3DistRecoVtx",
+    "shower1DistRecoVtx",
+    "track1Track2Angle",
+    "track1Track3Angle",
+    "track2Track3Angle",
+    "track1Shower1Angle",
+    "track2Shower1Angle",
+    "track3Shower1Angle",
+    "track1Track2Dist",
+    "track1Track3Dist",
+    "track2Track3Dist",
+    "track1Shower1Dist",
+    "track2Shower1Dist",
+    "track3Shower1Dist"
+};
+
+
 
 // ============================================================================
 // STRANGE-PARTICLE IDENTIFICATION
@@ -526,9 +580,9 @@ void newBackgroundPlots::Loop()
     std::map<int, int> originCounts;
 
     TH1F* hTrueOrigin = new TH1F("hTrueOrigin", "", 3, -0.5, 2.5);
-    hTrueOrigin->SetDirectory(nullptr)
-    hTrueOrigin->GetXaxis()->SetBinLabel(1, "Beam Neutrino")
-    hTrueOrigin->GetXAxis()->SetBinLabel(2, "Cosmic")
+    hTrueOrigin->SetDirectory(nullptr);
+    //hTrueOrigin->GetXaxis()->SetBinLabel(1, "Beam Neutrino")
+    //hTrueOrigin->GetXAxis()->SetBinLabel(2, "Cosmic")
 
     // ------------------------------------------------------------------------
     // Overall true neutrino energy
@@ -596,6 +650,106 @@ void newBackgroundPlots::Loop()
 
     for (int modeIndex = 0; modeIndex < kNModeCategories; ++modeIndex) {
         hModeVsTopology->GetYaxis()->SetBinLabel(modeIndex + 1, modeLabels.at(modeIndex).c_str());
+    }
+
+    // -------------------------------------------------------------------------
+    // TMVA input distributions separated by interaction mode
+    // -------------------------------------------------------------------------
+
+    std::map<std::string, std::array<TH1F*, kNModeCategories>> varToVarByMode;
+
+    for (int i = 0; i < nVars; ++i){
+        std::string var = inputVars[i];
+        float hLowLim = 0.0;
+        float hHighLim = 0.0;
+        int nBins = 100;
+
+        // Define different histogram limits for different TMVA variables
+
+        if (var.find("Dir") != std::string::npos){
+            hLowLim = -1.5;
+            hHighLim = 1.5;
+        }
+
+        if (var.find("Angle") != std::string::npos){
+            hLowLim = 0;
+            hHighLim = 1.0;
+        }
+
+        else if (var.find("StartPosX") != std::string::npos || var.find("StartPosY") != std::string::npos){
+            hLowLim = -180.0;
+            hHighLim = 180.0;
+        }
+
+        else if (var.find("StartPosZ") != std::string::npos){
+            hLowLim = 5.0;
+            hHighLim = 450.0;
+        }
+
+        else if (var.find("Length") != std::string::npos){
+            hLowLim = 0.0;
+            hHighLim = 150.0;
+        }
+
+        else if (var.find("Dist") != std::string::npos){
+            hLowLim = 0.0;
+            hHighLim = 30.0;
+        }
+
+        for (int modeIndex = 0; modeIndex < kNModeCategories; ++modeIndex){
+            varToVarByMode[var].at(modeIndex) = new TH1F(Form("hVarMode_%d", modeIndex), "", nBins, hLowLim, hHighLim);
+            varToVarByMode[var].at(modeIndex)->SetDirectory(nullptr);
+        }
+    }
+
+    // ------------------------------------------------------------------------
+    // TMVA input distributions separated by topology
+    // ------------------------------------------------------------------------
+
+    std::map<std::string, std::array<TH1F*, kNTopologies>> varToVarByTopology;
+
+    for (int i = 0; i < nVars; ++i){
+        std::string var = inputVars[i];
+        float hLowLim = 0.0;
+        float hHighLim = 0.0;
+        int nBins = 100;
+
+        // Define different histogram limits for different TMVA variables
+
+        if (var.find("Dir") != std::string::npos){
+            hLowLim = -1.5;
+            hHighLim = 1.5;
+        }
+
+        if (var.find("Angle") != std::string::npos){
+            hLowLim = 0;
+            hHighLim = 1.0;
+        }
+
+        else if (var.find("StartPosX") != std::string::npos || var.find("StartPosY") != std::string::npos){
+            hLowLim = -180.0;
+            hHighLim = 180.0;
+        }
+
+        else if (var.find("StartPosZ") != std::string::npos){
+            hLowLim = 5.0;
+            hHighLim = 450.0;
+        }
+
+        else if (var.find("Length") != std::string::npos){
+            hLowLim = 0.0;
+            hHighLim = 150.0;
+        }
+
+        else if (var.find("Dist") != std::string::npos){
+            hLowLim = 0.0;
+            hHighLim = 30.0;
+        }
+
+        for (int topology = 0; topology < kNTopologies; ++topology){
+            varToVarByTopology[var].at(topology) = new TH1F(Form("hVarTopology_%d", topology), "", nBins, hLowLim, hHighLim);
+            varToVarByTopology[var].at(topology)->SetDirectory(nullptr);
+        }
     }
 
     // ------------------------------------------------------------------------
@@ -672,6 +826,24 @@ void newBackgroundPlots::Loop()
         const int origin = trueOrigin->at(chosenTruthIdx);
         const float nuEnergy = trueNuEnergy->at(chosenTruthIdx);
 
+        std::map<std::string, Float_t> varNameToVar = {
+            {"track1Length", track1Length}, {"track2Length", track2Length}, {"track3Length", track3Length}, {"shower1Length", shower1Length},
+            {"track1StartPosX", track1StartPosX}, {"track1StartPosY", track1StartPosY}, {"track1StartPosZ", track1StartPosZ},
+            {"track2StartPosX", track2StartPosX}, {"track2StartPosY", track2StartPosY}, {"track2StartPosZ", track2StartPosZ},
+            {"track3StartPosX", track3StartPosX}, {"track3StartPosY", track3StartPosY}, {"track3StartPosZ", track3StartPosZ},
+            {"shower1StartPosX", shower1StartPosX}, {"shower1StartPosY", shower1StartPosY}, {"shower1StartPosZ", shower1StartPosZ},
+            {"track1StartDirX", track1StartDirX}, {"track1StartDirY", track1StartDirY}, {"track1StartDirZ", track1StartDirZ},
+            {"track2StartDirX", track2StartDirX}, {"track2StartDirY", track2StartDirY}, {"track2StartDirZ", track2StartDirZ},
+            {"track3StartDirX", track3StartDirX}, {"track3StartDirY", track3StartDirY}, {"track3StartDirZ", track3StartDirZ},
+            {"shower1DirX", shower1DirX}, {"shower1DirY", shower1DirY}, {"shower1DirZ", shower1DirZ},
+            {"track1DistRecoVtx", track1DistRecoVtx}, {"track2DistRecoVtx", track2DistRecoVtx}, {"track3DistRecoVtx", track3DistRecoVtx},
+            {"shower1DistRecoVtx", shower1DistRecoVtx}, {"track1Track2Angle", track1Track2Angle}, {"track1Track3Angle", track1Track3Angle},
+            {"track2Track3Angle", track2Track3Angle}, {"track1Shower1Angle", track1Shower1Angle}, {"track2Shower1Angle", track2Shower1Angle},
+            {"track3Shower1Angle", track3Shower1Angle}, {"track1Track2Dist", track1Track2Dist}, {"track1Track3Dist", track1Track3Dist},
+            {"track2Track3Dist", track2Track3Dist}, {"track1Shower1Dist", track1Shower1Dist}, {"track2Shower1Dist", track2Shower1Dist},
+            {"track3Shower1Dist", track3Shower1Dist}
+        };
+
         // ====================================================================
         // SELECT PRIMARY PARTICLES BELONGING TO THIS MCTRUTH
         // ====================================================================
@@ -734,6 +906,19 @@ void newBackgroundPlots::Loop()
 
         hNuEnergyByTopology.at(topology)->Fill(nuEnergy);
 
+        // ---------------------------------------------------------------------
+        // Mode/Topology vs TMVA input stack
+        // ---------------------------------------------------------------------
+
+        for (int i = 0; i < nVars; ++i){
+            std::string varName = inputVars[i];
+            Float_t var = varNameToVar[varName];
+
+            varToVarByMode[varName].at(modeIndex)->Fill(var);
+            varToVarByTopology[varName].at(topology)->Fill(var);
+        }
+
+
         // --------------------------------------------------------------------
         // Multiplicity
         // --------------------------------------------------------------------
@@ -775,9 +960,13 @@ void newBackgroundPlots::Loop()
         }
     }
 
+    std::cout<<"==========================================================================================="<<std::endl;
     std::cout<< "Finished loop over "<< nentries<< " entries."<< std::endl;
-    std::cout<< "Entries skipped because of bad chosenMCchosenTruthIdx: "<< nBadTruthIndices<< std::endl;
-    std::cout<<"# of Events with Beam Neutrino Origin = "<<originCounts[0]<<std::endl;
+    //std::cout<< "Entries skipped because of bad chosenMCchosenTruthIdx: "<< nBadTruthIndices<< std::endl;
+    std::cout<<"# of Events with Unknown MCTruth Origin = "<<originCounts[0]<<std::endl;
+    std::cout<<"# of Events with Beam Neutrino MCTruth Origin = "<<originCounts[1]<<std::endl;
+    std::cout<<"# of Events with Cosmic MCTruth Origin = "<<originCounts[2]<<std::endl;
+    std::cout<<"==========================================================================================="<<std::endl;
 
     // ========================================================================
     // COMMON HISTOGRAM STYLE
@@ -798,7 +987,7 @@ void newBackgroundPlots::Loop()
     hTrueCCNC->SetLineColor(kBlack);
     hTrueCCNC->SetLineWidth(2);
     hTrueCCNC->Draw("HIST TEXT0");
-    cCCNC->Print("plots/new_logic/trueBeamCCNC_new.png");
+    cCCNC->Print("plots/trueBeamCCNC_new.png");
 
     // ========================================================================
     // 2. INTERACTION MODE DISTRIBUTION
@@ -815,7 +1004,7 @@ void newBackgroundPlots::Loop()
     hTrueIntMode->SetLineWidth(2);
     hTrueIntMode->LabelsOption("v","X");
     hTrueIntMode->Draw("HIST TEXT0");
-    cMode->Print("plots/new_logic/trueBeamIntMode_new.png");
+    cMode->Print("plots/trueBeamIntMode_new.png");
 
     // ========================================================================
     // 3. INTERACTION TYPE DISTRIBUTION
@@ -840,20 +1029,20 @@ void newBackgroundPlots::Loop()
     hTrueIntType->SetLineColor(kBlack);
     hTrueIntType->LabelsOption("v","X");
     hTrueIntType->Draw("HIST TEXT0");
-    cIntType->Print("plots/new_logic/trueBeamIntType_new.png");
+    cIntType->Print("plots/trueBeamIntType_new.png");
 
     // ========================================================================
     // 4. MCTRUTH ORIGIN
     // ========================================================================
 
     TCanvas* cNuOrigin = new TCanvas("cNuOrigin", "True Neutrino Origin", 1600, 1200);
-    hTrueOrigin->GetXAxis()->SetTitle("True Neutrino Origin");
-    hTrueOrigin->GetYAxis()->SetTitle("Interactions");
+    //hTrueOrigin->GetXAxis()->SetTitle("True Neutrino Origin");
+    //hTrueOrigin->GetYAxis()->SetTitle("Interactions");
     hTrueOrigin->SetFillColorAlpha(fillColour, 0.7);
     hTrueOrigin->SetLineColor(kBlack);
     hTrueOrigin->LabelsOption("v", "X");
     hTrueOrigin->Draw("HIST TEXT0");
-    cNuOrigin->Print("plots/trueNuOrigin.pdf")
+    cNuOrigin->Print("plots/trueNuOrigin.pdf");
 
     // ========================================================================
     // 5. OVERALL NEUTRINO ENERGY
@@ -866,7 +1055,7 @@ void newBackgroundPlots::Loop()
     hTrueNuEnergy->SetFillColorAlpha(fillColour,0.7);
     hTrueNuEnergy->SetLineColor(kBlack);
     hTrueNuEnergy->Draw("HIST");
-    cNuEnergy->Print("plots/new_logic/trueNuEnergy_new.png");
+    cNuEnergy->Print("plots/trueNuEnergy_new.png");
 
     // ========================================================================
     // 6. FINAL-STATE TOPOLOGY DISTRIBUTION
@@ -908,7 +1097,7 @@ void newBackgroundPlots::Loop()
     hTopology->SetLineColor(kBlack);
     hTopology->SetLineWidth(2);
     hTopology->Draw("HIST TEXT0");
-    cTopology->Print("plots/new_logic/finalStateTopologiesBkg_new.png");
+    cTopology->Print("plots/finalStateTopologiesBkg_new.png");
 
     // ========================================================================
     // COLOURS FOR STACKS
@@ -989,7 +1178,7 @@ void newBackgroundPlots::Loop()
     hsModeVsNuE->GetXaxis()->SetTitle("True E_{#nu} [GeV]" );
     hsModeVsNuE->GetYaxis()->SetTitle("Interactions");
     legMode->Draw();
-    cModeVsNuE->Print("plots/new_logic/modeVsNuEnergyBkg_new.png");
+    cModeVsNuE->Print("plots/modeVsNuEnergy_bkg.png");
 
     // ========================================================================
     // STACKED TOPOLOGY VS NEUTRINO ENERGY
@@ -1023,7 +1212,83 @@ void newBackgroundPlots::Loop()
     hsTopologyVsNuE->GetYaxis()->SetTitle("Interactions");
 
     legTopology->Draw();
-    cTopologyVsNuE->Print("plots/new_logic/topologyVsNuEnergyBkg_new.png");
+    cTopologyVsNuE->Print("plots/topologyVsNuEnergy_bkg.png");
+
+    // ========================================================================
+    // STACKED INTERACTION MODE VS TMVA INPUTS
+    // ========================================================================
+
+    for (int i = 0; i < nVars; ++i){
+        std::string varName = inputVars[i];
+        std::string stackName = "hsModeVs" + varName;
+
+        THStack* hsModeVsTMVA = new THStack(stackName.c_str(),("Surviving Background by Interaction Mode;"+varName+";Interactions").c_str());
+        TLegend* legModeTMVA = new TLegend(0.76, 0.45, 0.95, 0.90);
+
+        legModeTMVA->SetBorderSize(0);
+        legModeTMVA->SetFillStyle(0);
+
+        for (int modeIndex = 0;modeIndex < kNModeCategories;++modeIndex){
+            if (varToVarByMode[varName].at(modeIndex)->GetEntries() == 0) {continue;}
+
+            varToVarByMode[varName].at(modeIndex)->SetFillColorAlpha(modeColours.at(modeIndex), 0.75);
+            varToVarByMode[varName].at(modeIndex)->SetLineColor(kBlack);
+            hsModeVsTMVA->Add(varToVarByMode[varName].at(modeIndex));
+            legModeTMVA->AddEntry(varToVarByMode[varName].at(modeIndex), modeLabels.at(modeIndex).c_str(), "f");
+
+        }
+
+        TCanvas* cModeVsTMVA = new TCanvas(("cModeVs"+varName).c_str(), ("Interaction Mode vs"+varName).c_str(), 1800, 1200);
+        cModeVsTMVA->SetRightMargin(0.25);
+
+        hsModeVsTMVA->Draw("HIST");
+        hsModeVsTMVA->GetXaxis()->SetTitle(varName.c_str());
+        hsModeVsTMVA->GetYaxis()->SetTitle("Interactions");
+        legModeTMVA->Draw();
+        cModeVsTMVA->Print(("plots/modeVs"+varName+"_bkg.png").c_str());
+
+        delete hsModeVsTMVA;
+        delete legModeTMVA;
+    }
+
+
+    // ========================================================================
+    // STACKED TOPOLOGY VS TMVA INPUTS
+    // ========================================================================
+
+    for (int i = 0; i < nVars; ++i){
+        std::string varName = inputVars[i];
+
+        THStack* hsTopologyVsTMVA = new THStack(("hsTopologyVs"+varName).c_str(), ("Surviving Background by Final-State Topology;"+varName+";Interactions").c_str());
+        TLegend* legTopologyTMVA = new TLegend(0.74, 0.32, 0.97, 0.91);
+
+        legTopologyTMVA->SetBorderSize(0);
+        legTopologyTMVA->SetFillStyle(0);
+        legTopologyTMVA->SetTextSize(0.025);
+
+        for (int topology = 0;topology < kNTopologies;++topology){
+
+            if (varToVarByTopology[varName].at(topology)->GetEntries() == 0) {continue;}
+
+            varToVarByTopology[varName].at(topology)->SetFillColorAlpha(topologyColours.at(topology), 0.75);
+            varToVarByTopology[varName].at(topology)->SetLineColor(kBlack);
+            hsTopologyVsTMVA->Add(varToVarByTopology[varName].at(topology));
+            legTopologyTMVA->AddEntry(varToVarByTopology[varName].at(topology), topologyLabels.at(topology).c_str(), "f");
+    }
+
+        TCanvas* cTopologyVsTMVA = new TCanvas(("cTopologyVs"+varName).c_str(), ("Topology vs "+varName).c_str(), 1800, 1200);
+        cTopologyVsTMVA->SetRightMargin(0.30);
+
+        hsTopologyVsTMVA->Draw("HIST");
+        hsTopologyVsTMVA->GetXaxis()->SetTitle(varName.c_str());
+        hsTopologyVsTMVA->GetYaxis()->SetTitle("Interactions");
+
+        legTopologyTMVA->Draw();
+        cTopologyVsTMVA->Print(("plots/topologyVs"+varName+"_bkg.png").c_str());
+
+        delete hsTopologyVsTMVA;
+        delete legTopologyTMVA;
+    }
 
     // ========================================================================
     // MODE VS TOPOLOGY MATRIX
@@ -1040,7 +1305,7 @@ void newBackgroundPlots::Loop()
     hModeVsTopology->GetYaxis()->SetTitle("Interaction Mode");
     hModeVsTopology->Draw("COLZ TEXT");
 
-    cModeVsTopology->Print("plots/new_logic/modeVsTopologyBkg_new.png");
+    cModeVsTopology->Print("plots/modeVsTopology_bkg.png");
 
 
     // ========================================================================
@@ -1075,11 +1340,11 @@ void newBackgroundPlots::Loop()
         std::string,
         5
     > multiplicityFiles = {
-        "plots/new_logic/nPrimaryProtons_new.png",
-        "plots/new_logic/nPrimaryNeutrons_new.png",
-        "plots/new_logic/nPrimaryPions_new.png",
-        "plots/new_logic/nPrimaryPhotons_new.png",
-        "plots/new_logic/nPrimaryStrange_new.png"
+        "plots/nPrimaryProtons_new.png",
+        "plots/nPrimaryNeutrons_new.png",
+        "plots/nPrimaryPions_new.png",
+        "plots/nPrimaryPhotons_new.png",
+        "plots/nPrimaryStrange_new.png"
     };
 
 
@@ -1125,9 +1390,9 @@ void newBackgroundPlots::Loop()
         std::string,
         3
     > momentumFiles = {
-        "plots/new_logic/leadingProtonP_new.png",
-        "plots/new_logic/leadingPionP_new.png",
-        "plots/new_logic/leadingPhotonP_new.png"
+        "plots/leadingProtonP_new.png",
+        "plots/leadingPionP_new.png",
+        "plots/leadingPhotonP_new.png"
     };
 
 

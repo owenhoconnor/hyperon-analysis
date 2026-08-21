@@ -1029,43 +1029,25 @@ for (const art::Ptr<recob::PFParticle>& pfp : nuSlicePFPs) {
     float hitMatchFraction = -1.0f;
 
     if (pfpHits.empty()) {
-        std::cerr
-            << "No hits found for PFP key "
-            << pfp.key()
-            << std::endl;
+        std::cerr<< "No hits found for PFP key "<< pfp.key()<< std::endl;
 
         fTruePfpPDG.push_back(truePDG);
         continue;
     }
 
-    const TruthMatchUtils::G4ID g4ID =
-        TruthMatchUtils::TrueParticleIDFromTotalRecoHits(
-            clockData,
-            pfpHits,
-            rollupUnsavedIDs
-        );
+    const TruthMatchUtils::G4ID g4ID = TruthMatchUtils::TrueParticleIDFromTotalRecoHits(clockData, pfpHits, rollupUnsavedIDs);
 
     if (!TruthMatchUtils::Valid(g4ID)) {
-        std::cerr
-            << "No valid truth match for PFP key "
-            << pfp.key()
-            << ", containing "
-            << pfpHits.size()
-            << " hits"
-            << std::endl;
+        std::cerr<< "No valid truth match for PFP key "<< pfp.key()<< ", containing "<< pfpHits.size()<< " hits"<< std::endl;
 
         fTruePfpPDG.push_back(truePDG);
         continue;
     }
 
-    const simb::MCParticle* trueParticle =
-        particleInventory->TrackIdToParticle_P(g4ID);
+    const simb::MCParticle* trueParticle = particleInventory->TrackIdToParticle_P(g4ID);
 
     if (!trueParticle) {
-        std::cerr
-            << "No saved MCParticle found for G4 ID "
-            << g4ID
-            << std::endl;
+        std::cerr<< "No saved MCParticle found for G4 ID "<< g4ID<< std::endl;
 
         fTruePfpPDG.push_back(truePDG);
         continue;
@@ -1075,34 +1057,23 @@ for (const art::Ptr<recob::PFParticle>& pfp : nuSlicePFPs) {
     trueTrackID = trueParticle->TrackId();
 
     // Optional hit-count purity consistent with TruthMatchUtils.
+
     std::size_t nMatchedHits = 0;
 
     for (const art::Ptr<recob::Hit>& hit : pfpHits) {
 
-        const TruthMatchUtils::G4ID hitG4ID =
-            TruthMatchUtils::TrueParticleID(
-                clockData,
-                hit,
-                rollupUnsavedIDs
-            );
+        const TruthMatchUtils::G4ID hitG4ID = TruthMatchUtils::TrueParticleID(clockData, hit, rollupUnsavedIDs);
 
-        if (TruthMatchUtils::Valid(hitG4ID) &&
-            hitG4ID == g4ID) {
+        if (TruthMatchUtils::Valid(hitG4ID) && hitG4ID == g4ID) {
             ++nMatchedHits;
         }
     }
 
-    hitMatchFraction =
-        static_cast<float>(nMatchedHits) /
-        static_cast<float>(pfpHits.size());
-
+    // How many hits match out of the total number of hits associated with this PFP?
+    hitMatchFraction = static_cast<float>(nMatchedHits) / static_cast<float>(pfpHits.size());
     fTruePfpPDG.push_back(truePDG);
 
-    std::cout
-        << "PFP key: " << pfp.key()
-        << ", number of hits: " << pfpHits.size()
-        << ", true PDG: " << truePDG
-        << ", true TrackId: " << trueTrackID
+    std::cout<< "PFP key: " << pfp.key()<< ", number of hits: " << pfpHits.size()<< ", true PDG: " << truePDG<< ", true TrackId: " << trueTrackID
         << ", matched hit fraction: " << hitMatchFraction
         << std::endl;
 }

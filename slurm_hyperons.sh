@@ -27,8 +27,10 @@ $APPTAINER_BIN exec -B /cvmfs,/data,/home,/opt,/run/user,/etc/hostname,/etc/host
     --ipc --pid "$CONTAINER" /bin/bash -c "
         source /cvmfs/sbnd.opensciencegrid.org/products/sbnd/setup_sbnd.sh
         source $SETUP_LOCAL
+	cd \$MRB_BUILDDIR
         mrbsetenv
         mrbslp
+	cd $WORK_DIR
 
         INPUT_FILES=($INPUT_DIR/firstbatch/prodgenie* $INPUT_DIR/secondbatch/prodgenie* $INPUT_DIR/thirdbatch/prodgenie* $INPUT_DIR/fourhtbatch/prodgenie*)
 

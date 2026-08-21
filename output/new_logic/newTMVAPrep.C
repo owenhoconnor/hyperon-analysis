@@ -33,7 +33,7 @@ void newTMVAPrep::Loop()
 
    // Create new files and TTrees
 
-      TFile *sigFile = new TFile("/data/ooconnor/sbnd/hyperons/preselection_output/new_logic/tmvaSample_sig.root", "RECREATE");
+   TFile *sigFile = new TFile("/data/ooconnor/sbnd/hyperons/preselection_output/tmvaSample_sig.root", "RECREATE");
    TTree *sigTree = fChain->CloneTree(0);
    sigTree->SetName("sigTree");
    sigTree->SetDirectory(sigFile);
@@ -154,7 +154,7 @@ void newTMVAPrep::Loop()
    sigTree->Branch("track3Shower1Dist", &track3Shower1Dist);
 
    // Clone tree structure for background TTree
-   TFile *bkgFile = new TFile("/data/ooconnor/sbnd/hyperons/preselection_output/new_logic/tmvaSample_bkg.root", "RECREATE");
+   TFile *bkgFile = new TFile("/data/ooconnor/sbnd/hyperons/preselection_output/tmvaSample_bkg.root", "RECREATE");
    TTree *bkgTree = sigTree->CloneTree(0);
    bkgTree->SetName("bkgTree");
    bkgTree->SetTitle("Background Tree");
