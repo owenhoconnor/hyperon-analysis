@@ -46,6 +46,7 @@
 #include "lardataobj/AnalysisBase/Calorimetry.h"
 #include "lardata/Utilities/AssociationUtil.h"
 #include "larcoreobj/SummaryData/POTSummary.h"
+#include "lardataobj/AnalysisBase/BackTrackerMatchingData.h"
 
 // // Root Includes
 #include <iostream>
@@ -113,7 +114,7 @@ private:
 
   int fVerbose;
 
-  //std::string fHitLabel;
+  std::string fHitLabel;
   std::string fGenieGenModuleLabel;
   std::string fPFParticleLabel;
   std::string fSliceLabel;
@@ -291,7 +292,7 @@ private:
 
 hyperon::AnalyzeEvents::AnalyzeEvents(fhicl::ParameterSet const& pset)
   : EDAnalyzer{pset} 
-  //, fHitLabel(pset.get<std::string>("HitLabel"))
+  , fHitLabel(pset.get<std::string>("HitLabel"))
   , fGenieGenModuleLabel(pset.get<std::string>("GenieGenModuleLabel"))
   , fPFParticleLabel(pset.get<std::string>("PFParticleLabel"))
   , fSliceLabel(pset.get<std::string>("SliceLabel"))
@@ -307,12 +308,14 @@ hyperon::AnalyzeEvents::AnalyzeEvents(fhicl::ParameterSet const& pset)
 void hyperon::AnalyzeEvents::analyze(art::Event const& evt)
 {
   // Implementation of required member function here.
- fEventID = evt.id().event(); 
- std::cout<<"Event# "<<evt.id().event()<<std::endl;
-fRun = evt.run();
-fSubRun = evt.subRun();
+    fEventID = evt.id().event(); 
+    std::cout<<"Event# "<<evt.id().event()<<std::endl;
+    fRun = evt.run();
+    fSubRun = evt.subRun();
 
- auto const clockData = art::ServiceHandle<detinfo::DetectorClocksService const>()->DataFor(evt);
+    auto const clockData = art::ServiceHandle<detinfo::DetectorClocksService const>()->DataFor(evt);
+    art::ServiceHandle<cheat::ParticleInventoryService> piService;
+    art::ServiceHandle<cheat::BackTrackerService> btService;
 
  // Clear reco parameters
 
@@ -324,7 +327,7 @@ fSubRun = evt.subRun();
   fEventTotalTrueNuHits = 0;
   fSliceVtxX.clear();
   fSliceVtxY.clear();
-  fSliceVtxZ;.clear();
+  fSliceVtxZ.clear();
   fSliceOpt0Score.clear();
  fTrackIDs.clear();
  fTrackLengths.clear();
@@ -372,78 +375,82 @@ fSubRun = evt.subRun();
  fTrackCount = 0;
  fShowerCount = 0;
 
+ // =====================================================
+ // Reconstructed Slices Analysis
+ // =====================================================
 
  // Get event slices
  
    art::ValidHandle<std::vector<recob::Slice>> sliceHandle = evt.getValidHandle<std::vector<recob::Slice>>(fSliceLabel);
-   std::vector<art::Ptr<recob::Slice>> sliceVector;
-   if (sliceHandle.isValid())
-	   art::fill_ptr_vector(sliceVector, sliceHandle);
-
-// Get associations between slices and PFParticles
-
-   art::FindManyP<recob::PFParticle> slicePFPAssoc(sliceHandle, evt, fSliceLabel);
    art::ValidHandle<std::vector<recob::PFParticle>> pfpHandle = evt.getValidHandle<std::vector<recob::PFParticle>>(fPFParticleLabel);
+   std::vector<art::Ptr<recob::Slice>> sliceVector;
+   if (sliceHandle.isValid()){art::fill_ptr_vector(sliceVector, sliceHandle);}
 
+// Get associations between slices and PFParticles, Get associations between PFParticles and Clusters, Clusters and Hits, and between Hits and MCParticles, // Get associations between PFParticle and Vertex
 // Get associations between PFPParticles and PFPMetaData
 
+   art::FindManyP<recob::PFParticle> slicePFPAssoc(sliceHandle, evt, fSliceLabel);
+   art::FindManyP<recob::Hit> sliceHitAssoc(sliceHandle, evt, fSliceLabel);
+   art::FindManyP<recob::Vertex> pfpVertexAssoc(pfpHandle, evt, fPFParticleLabel);
    art::FindManyP<larpandoraobj::PFParticleMetadata> pfpMetadataAssoc(pfpHandle, evt, fPFParticleLabel);
-
-// * MC truth information
-   art::Handle< std::vector<simb::MCTruth> > mctruthListHandle;
-   std::vector<art::Ptr<simb::MCTruth> > mclist;
-   if (evt.getByLabel(fGenieGenModuleLabel,mctruthListHandle))
-      art::fill_ptr_vector(mclist, mctruthListHandle);
-
-   art::FindManyP< simb::MCParticle > fmpart( mctruthListHandle, evt, "largeant" );
-
-// Get associations between PFParticles and Clusters, Clusters and Hits, and between Hits and MCParticles
-
    art::FindManyP<recob::Cluster> pfpClusterAssoc(pfpHandle, evt, fPFParticleLabel);
    art::FindManyP<recob::Hit> clusterHitAssoc(evt.getValidHandle<std::vector<recob::Cluster>>(fClusterLabel), evt, fClusterLabel);
-  // art::FindManyP<simb::MCParticle> hitMCParticleAssoc(evt.getValidHandle<std::vector<recob::Hit>>(fHitLabel), evt, fHitLabel);
 
-// Get associations between PFParticle and Vertex
+   art::Handle<std::vector<recob::Hit>> globalHitHandle;
+   evt.getByLabel(fHitLabel, globalHitHandle);
+   art::FindManyP<simb::MCParticle, anab::BackTrackerHitMatchingData> hitTruthAssns(globalHitHandle, evt, "gaushitTruthMatch");
 
-   art::FindManyP<recob::Vertex> pfpVertexAssoc(pfpHandle, evt, fPFParticleLabel);
+   //std::unique_ptr<art::FindManyP<sbn::OpT0Finder>> opt0Assns;
+   //try { opt0Assns = std::make_unique<art::FindManyP<sbn::OpT0Finder>>(sliceHandle, e, fOpT0Label); } catch(...) {}
+
+
+      // art::FindManyP<simb::MCParticle> hitMCParticleAssoc(evt.getValidHandle<std::vector<recob::Hit>>(fHitLabel), evt, fHitLabel);
+
    std::cout<<"Event "<<fEventID<<" has "<<sliceVector.size()<<" slices."<<std::endl;
    if (sliceVector.size() == 0){
 	   std::cerr<<"No slices found in this event!"<<std::endl;
 	   return;
    }
 
+// * MC truth information
+   art::Handle<std::vector<simb::MCTruth> > mctruthListHandle;
+   std::vector<art::Ptr<simb::MCTruth> > mclist;
+   if (evt.getByLabel(fGenieGenModuleLabel,mctruthListHandle))
+      art::fill_ptr_vector(mclist, mctruthListHandle);
+
+   art::FindManyP<simb::MCParticle> fmpart( mctruthListHandle, evt, "largeant" );
+
+   // corsika MC truth information
+
+   
 
 // Define helper function to get hits from PFP
    auto getPFPHits =
     [&](const art::Ptr<recob::PFParticle>& pfp)
     {
+        // Get clusters associated with PFP and loop over them
         std::vector<art::Ptr<recob::Hit>> pfpHits;
-
-        const std::vector<art::Ptr<recob::Cluster>> clusters =
-            pfpClusterAssoc.at(pfp.key());
+        const std::vector<art::Ptr<recob::Cluster>> clusters = pfpClusterAssoc.at(pfp.key());
 
         for (const art::Ptr<recob::Cluster>& cluster : clusters) {
 
-            const std::vector<art::Ptr<recob::Hit>> clusterHits =
-                clusterHitAssoc.at(cluster.key());
-
-            pfpHits.insert(
-                pfpHits.end(),
-                clusterHits.begin(),
-                clusterHits.end()
-            );
+            // get hits associated with cluster
+            const std::vector<art::Ptr<recob::Hit>> clusterHits = clusterHitAssoc.at(cluster.key());
+            pfpHits.insert(pfpHits.end(), clusterHits.begin(), clusterHits.end());
         }
 
         return pfpHits;
     };
 
-// Filling our neutrino hierarchy variables
+// Filling our neutrino hierarchy variables by looping over slices in event
 
    if (sliceVector.size() != 0){
 
    for (const art::Ptr<recob::Slice> &slice : sliceVector){
 
+    float nuScore = -1;
 	totalSlices++;
+    fSliceID.push_back(slice.id());
 
 	if (slice.key() >= slicePFPAssoc.size()) {
 		std::cerr<<"Error: Slice key "<<slice.key()<<" is out of bounds for slicePFPAssoc (size =  "<<slicePFPAssoc.size()<<")"<<std::endl;
@@ -456,13 +463,18 @@ fSubRun = evt.subRun();
 		continue; // skip this slice
 	}
 
-
 	fNPfpSlices.push_back(slicePFPs.size());
 	std::cout<<"Slice key: "<< slice.key()<<", Number of PFPs: "<< slicePFPs.size() << std::endl;
 	std::cout<<"nuSliceKey = "<<nuSliceKey<<std::endl;
 
+    float sliceVtxX = -999.;
+    float sliceVtxY = -999.;
+    float sliceVtxZ = -999.;
+
+    // Loop over PFPs in slice
 	for (const art::Ptr<recob::PFParticle> &slicePFP : slicePFPs){
 
+        // Only care about primary neutrinos
 		const bool isPrimary = (slicePFP->IsPrimary());
 		const bool isNeutrino = (std::abs(slicePFP->PdgCode()) == 14);
 
@@ -473,6 +485,7 @@ fSubRun = evt.subRun();
 
 		std::cout<<"Is a primary neutrino, not skipping!"<<std::endl;
 
+        // Get metadata for nuScore, IsClearCosmic properties
 		if (slicePFP.key() >= pfpMetadataAssoc.size()){
 			std::cerr<<"PFP key "<<slicePFP.key()<<" out of bounds for pfpMetadataAssoc, size = "<<pfpMetadataAssoc.size()<<std::endl;
 			continue;
@@ -485,7 +498,6 @@ fSubRun = evt.subRun();
 			return;
 		}
 
-		float nuScore = -1;
 		bool isClearCosmic = false;
 		bool foundNuScore = false;
 		bool foundClearCosmic = false;
@@ -507,7 +519,6 @@ fSubRun = evt.subRun();
 				foundClearCosmic = true;
 			}
 		}
-
 
 		if (foundNuScore) {
 			std::cout<<"Found nuScore for this PFP: "<<nuScore<<". Current highestNuScore: "<<highestNuScore<<std::endl;
@@ -555,10 +566,77 @@ fSubRun = evt.subRun();
 		else {
 			std::cout<<"This PFP nuScore is not the highest. Highest nuScore remains: "<<highestNuScore<<std::endl;
 		}
-	}	
 
-   } 
- }
+        // Get vertex of PFP
+        auto vertices = pfpVertexAssoc.at(slicePFP.key());
+
+		if (!vertices.empty()) {
+			const recob::Vertex& vertex = *vertices.at(0);
+			auto const& vertexPos = vertex.position();
+			
+			fSliceVtxX = vertexPos.X();
+			fSliceVtxY = vertexPos.Y();
+			fSliceVtxZ = vertexPos.Z();
+			fFoundRecoVertex = true;
+			break;
+	    }
+
+	} // end loop over slice PFPs
+
+    fSliceNuScore.push_back(nuScore);
+    //fSliceOpt0Score.push_back(opt0Score)
+    fSliceVtxX.push_back(fRecoVertexX);
+    fSliceVtxY.push_back(fRecoVertexY);
+    fSliceVtxZ.push_back(fRecoVertexZ);
+
+    // Now, get hits in slice and loop over these hits
+
+    std::vector<art::Ptr<recob::Hit>> sliceHits(sliceHitAssoc.at(slice.key()));
+    int totalSliceHits = sliceHits.size();
+    int trueNuSliceHits = 0;
+    std::map<int, int> originVotes;
+
+    for(const art::Ptr<recob::Hit> &hit : sliceHits){
+        bool hitBelongsToNu = false;
+
+        if (hitTruthAssns.isValid()){
+            auto const& particles = hitTruthAssns.at(hit.key());
+
+            for (const auto& truePart : particles){
+                const art::Ptr<simb::MCTruth> hitMCTruth = piService->TrackIdToMCTruth_P(std::abs(truePart->TrackId()));
+
+                if(hitMCTruth.isNonnull()){
+                    int hitOrigin = static_cast<int>(hitMCTruth->Origin());
+                    originVotes[hitOrigin]++;
+
+                    if (hitOrigin == simb::kBeamNeutrino){
+                        hitBelongsToNu = true;
+                    }
+                }
+            }
+        }
+
+        if(hitBelongsToNu){
+            trueNuSliceHits++;
+        }
+    } // end of loop over slice hits
+
+    int bestOrigin = 0;
+    int maxVotes = -1;
+    for (auto const& [originType, count] : originVotes){
+        if (count > maxVotes){
+            maxVotes = count;
+            bestOrigin = originType;
+        }
+    }
+
+    fSliceTotalHits.push_back(totalSliceHits);
+    fSliceTrueNuHits.push_back(trueNuSliceHits);
+    fSliceTrueOrigin.push_back(bestOrigin);
+
+   } // end loop over slices
+
+ } // end conditional checking slice vector is not empty
 
 std::cout<<"After looping over all slices, nuSliceKey = "<<nuSliceKey<<std::endl;
 if (nuSliceKey < 0){
@@ -598,7 +676,7 @@ if (nuSliceKey < 0){
 
    std::cout<<"RecoVertex: (" << fRecoVertex.X() << ", "<< fRecoVertex.Y() << ", "<< fRecoVertex.Z() << ")"<<std::endl;
 
-// Save Reco Parameters
+// Track and Shower reco diagnostics
 
    art::ValidHandle<std::vector<recob::Track>> trackHandle = evt.getValidHandle<std::vector<recob::Track>>(fTrackLabel);
    if (!trackHandle.isValid()){
@@ -1796,10 +1874,10 @@ void hyperon::AnalyzeEvents::beginJob()
   fTree->Branch("sliceTotalHits", &fSliceTotalHits);
   fTree->Branch("sliceTrueNuHits", &fSliceTrueNuHits);
   fTree->Branch("sliceTrueOrigin", &fSliceTrueOrigin);
-  fTree->Branch("eventTotalTrueNuHits", *fEventTotalTrueNuHits, "eventTotalTrueNuHits/I");
-  fTree->Branch("sliceVtxX", fSliceVtxX);
-  fTree->Branch("sliceVtxY", fSliceVtxY);
-  fTree->Branch("sliceVtxZ", fSliceVtxZ);
+  fTree->Branch("eventTotalTrueNuHits", &fEventTotalTrueNuHits, "eventTotalTrueNuHits/I");
+  fTree->Branch("sliceVtxX", &fSliceVtxX);
+  fTree->Branch("sliceVtxY", &fSliceVtxY);
+  fTree->Branch("sliceVtxZ", &fSliceVtxZ);
   fTree->Branch("nPFParticles", &fNPrimaryParticles);
   fTree->Branch("nPrimaryChildren", &fNPrimaryChildren);
   fTree->Branch("trackCount", &fTrackCount);

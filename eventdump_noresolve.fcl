@@ -1,0 +1,3 @@
+#include "eventdump.fcl"
+
+outputs.out1.resolveProducts: false
