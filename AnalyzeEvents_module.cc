@@ -422,7 +422,13 @@ void hyperon::AnalyzeEvents::analyze(art::Event const& evt)
 
    // corsika MC truth information
 
-   
+   art::ValidHandle<std::vector<simb::MCTruth>> cosmicMCTruthListHandle = evt.getValidHandle<std::vector<simb::MCTruth>>("corsika");
+   std::vector<art::Ptr<simb::MCTruth>> cosmicMCTruthVector;
+   if (cosmicMCTruthListHandle.isValid()){
+        art::fill_ptr_vector(cosmicMCTruthVector, cosmicMCTruthListHandle);
+   }
+
+   art::FindManyP<simb::MCParticle> cosmicGeantAssoc(cosmicMCTruthListHandle, evt, "largeant");
 
 // Define helper function to get hits from PFP
    auto getPFPHits =
@@ -574,9 +580,9 @@ void hyperon::AnalyzeEvents::analyze(art::Event const& evt)
 			const recob::Vertex& vertex = *vertices.at(0);
 			auto const& vertexPos = vertex.position();
 			
-			fSliceVtxX = vertexPos.X();
-			fSliceVtxY = vertexPos.Y();
-			fSliceVtxZ = vertexPos.Z();
+			sliceVtxX = vertexPos.X();
+			sliceVtxY = vertexPos.Y();
+			sliceVtxZ = vertexPos.Z();
 			fFoundRecoVertex = true;
 			break;
 	    }
@@ -585,9 +591,9 @@ void hyperon::AnalyzeEvents::analyze(art::Event const& evt)
 
     fSliceNuScore.push_back(nuScore);
     //fSliceOpt0Score.push_back(opt0Score)
-    fSliceVtxX.push_back(fRecoVertexX);
-    fSliceVtxY.push_back(fRecoVertexY);
-    fSliceVtxZ.push_back(fRecoVertexZ);
+    fSliceVtxX.push_back(sliceVtxX);
+    fSliceVtxY.push_back(sliceVtxY);
+    fSliceVtxZ.push_back(sliceVtxZ);
 
     // Now, get hits in slice and loop over these hits
 
