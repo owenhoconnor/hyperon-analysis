@@ -148,10 +148,12 @@ private:
   int nuSliceKey = -1;
   int fNPrimaryParticles;
   int fNPrimaryChildren;
+
   // MC Truth parameters
   int fRun;       // Run number
   int fSubRun; // Sub run number
  
+  // MCTruth Level
   std::vector<int> trueOrigin;
   std::vector<float> trueW;
   std::vector<float> trueX;
@@ -170,6 +172,7 @@ private:
   std::vector<int> trueIntType;
   std::vector<int> trueTargetPDG;
 
+  // MCParticle Level
   std::vector<int> truePDG;
   std::vector<int> trueTrackID; 
   std::vector<int> trueMotherPDG;
@@ -208,7 +211,22 @@ private:
   std::vector<int> trueParticleStartIndex;
   
 
-  // reco parameters
+  // Reconstructed parameters
+
+  // Slice level
+
+  std::vector<int> fSliceID;
+  std::vector<float> fSliceNuScore;
+  std::vector<int> fSliceTotalHits;
+  std::vector<int> fSliceTrueNuHits;
+  std::vector<int> fSliceTrueOrigin;
+  int              fEventTotalTrueNuHits;
+  std::vector<float> fSliceVtxX;
+  std::vector<float> fSliceVtxY;
+  std::vector<float> fSliceVtxZ;
+  std::vector<float> fSliceOpt0Score;
+
+  // Reco tracks
   std::vector<int> fTrackIDs;
   std::vector<float> fTrackLengths;
   std::vector<int> fTrackPDGs;
@@ -233,6 +251,8 @@ private:
   std::vector<float> fTrackVertexDirZ;
   std::vector<float> fTrackTheta;
   std::vector<float> fTrackPhi;
+
+  // Reco showers
   std::vector<float> fShowerLengths;
   std::vector<float> fShowerStartPositionX;
   std::vector<float> fShowerStartPositionY;
@@ -295,6 +315,17 @@ fSubRun = evt.subRun();
  auto const clockData = art::ServiceHandle<detinfo::DetectorClocksService const>()->DataFor(evt);
 
  // Clear reco parameters
+
+  fSliceID.clear();
+  fSliceNuScore.clear();
+  fSliceTotalHits.clear();
+  fSliceTrueNuHits.clear();
+  fSliceTrueOrigin.clear();
+  fEventTotalTrueNuHits = 0;
+  fSliceVtxX.clear();
+  fSliceVtxY.clear();
+  fSliceVtxZ;.clear();
+  fSliceOpt0Score.clear();
  fTrackIDs.clear();
  fTrackLengths.clear();
  fTrackPDGs.clear();
@@ -1760,6 +1791,15 @@ void hyperon::AnalyzeEvents::beginJob()
 
 
   // reco parameters
+  fTree->Branch("sliceID", &fSliceID);
+  fTree->Branch("sliceNuScore", &fSliceNuScore);
+  fTree->Branch("sliceTotalHits", &fSliceTotalHits);
+  fTree->Branch("sliceTrueNuHits", &fSliceTrueNuHits);
+  fTree->Branch("sliceTrueOrigin", &fSliceTrueOrigin);
+  fTree->Branch("eventTotalTrueNuHits", *fEventTotalTrueNuHits, "eventTotalTrueNuHits/I");
+  fTree->Branch("sliceVtxX", fSliceVtxX);
+  fTree->Branch("sliceVtxY", fSliceVtxY);
+  fTree->Branch("sliceVtxZ", fSliceVtxZ);
   fTree->Branch("nPFParticles", &fNPrimaryParticles);
   fTree->Branch("nPrimaryChildren", &fNPrimaryChildren);
   fTree->Branch("trackCount", &fTrackCount);
