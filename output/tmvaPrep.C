@@ -160,6 +160,12 @@ void tmvaPrep::Loop()
    bkgTree->SetTitle("Background Tree");
    bkgTree->SetDirectory(bkgFile);
 
+   TFile *cosmicFile = new TFile("/data/ooconnor/sbnd/hyperons/preselection_output/tmvaSample_cosmic.root", "RECREATE");
+   TTree *cosmicTree = sigTree->CloneTree(0);
+   cosmicTree->SetName("cosmicTree");
+   cosmicTree->SetTitle("Cosmic Tree");
+   cosmicTree->SetDirectory(cosmicFile);
+
    int nSig = 0;
    int nBkg = 0;
    int nBadSig = 0;
@@ -233,6 +239,15 @@ void tmvaPrep::Loop()
       std::cout<<"showerCount = "<<showerCount<<std::endl;
       std::cout<<"showerLengths size = "<<showerLengths->size()<<std::endl;
 
+      // apply 3+1 and RecoFV cut here 
+      bool isInRecoFV = false;
+
+      if (std::abs(RecoVertexX) < 180 && std::abs(RecoVertexY) < 180 && RecoVertexZ < 450 && RecoVertexZ > 10){
+         isInRecoFV = true;
+      }
+
+      if(!isInRecoFV || !(trackCount == 3 && showerCount == 1)){continue;} 
+
       // apply stricter cuts
 
       bool IsBadTrack = false;
@@ -244,7 +259,7 @@ void tmvaPrep::Loop()
 	      if(trackStartPositionX->at(i) > 180 || std::abs(trackStartPositionY->at(i)) > 180
 			      || trackStartPositionZ->at(i) < 0 || trackStartPositionZ->at(i) > 450){
 		      if(sampleType == 0){nBadTrkStartSig++;}
-		      if(sampleType == 2){nBadTrkStartBkg++;} 
+		      if(sampleType == 1){nBadTrkStartBkg++;} 
 		      IsBadTrack = true;
 	      }
       }
@@ -254,7 +269,7 @@ void tmvaPrep::Loop()
 			      || showerStartPositionZ->at(0) < 10 || showerStartPositionZ->at(0) > 450){
 	      IsBadShower = true;
 	      if(sampleType == 0){nBadShwrStartSig++;}
-	      if(sampleType == 2){nBadShwrStartBkg++;}
+	      if(sampleType == 1){nBadShwrStartBkg++;}
       }
 
       // flag if any tracks or shower directions are outside cosine range
@@ -263,14 +278,14 @@ void tmvaPrep::Loop()
 	  if(std::abs(trackStartDirX->at(i)) > 1 || std::abs(trackStartDirY->at(i)) > 1 || std::abs(trackStartDirZ->at(i)) > 1){
 		  IsBadTrack = true;
 		  if(sampleType == 0){nBadTrkDirSig++;}
-		  if(sampleType == 2){nBadTrkDirBkg++;}
+		  if(sampleType == 1){nBadTrkDirBkg++;}
 		  //std::cout<<"bad track due to direction out of cosine range"<<std::endl;
 	  }
       }
 
       if(std::abs(showerDirX->at(0)) > 1 || std::abs(showerDirY->at(0)) > 1 || std::abs(showerDirZ->at(0)) > 1){
 	      if(sampleType == 0){nBadShwrDirSig++;}
-	      if(sampleType == 2){nBadShwrDirBkg++;} 
+	      if(sampleType == 1){nBadShwrDirBkg++;} 
 	      IsBadShower = true;
       }
 
@@ -433,7 +448,8 @@ void tmvaPrep::Loop()
 
       std::cout<<"Filling trees for event ID "<<eventID<<" with sampleType "<<sampleType<<std::endl;
       if(sampleType == 0){nSig++; sigTree->Fill();}
-      if(sampleType == 2){nBkg++; bkgTree->Fill();}
+      if(sampleType == 1){nBkg++; bkgTree->Fill();}
+      if(sampleType == 3){cosmicTree->Fill();}
 
    } // End of event loop
 
@@ -479,4 +495,9 @@ void tmvaPrep::Loop()
    bkgTree->Write("bkgTree");
    bkgFile->Close();
    delete bkgFile;
+
+   cosmicFile->cd();
+   cosmicTree->Write("cosmicTree");
+   cosmicFile->Close();
+   delete cosmicFile;
 }

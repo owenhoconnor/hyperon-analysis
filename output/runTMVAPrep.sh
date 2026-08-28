@@ -3,6 +3,7 @@ root -l -b -x << EOF
 TChain *chain = new TChain("tree")
 chain->Add("/data/ooconnor/sbnd/hyperons/preselection_output/signalDef_output_sig.root")
 chain->Add("/data/ooconnor/sbnd/hyperons/preselection_output/signalDef_output_bkg.root")
+chain->Add("/data/ooconnor/sbnd/hyperons/preselection_output/signalDef_output_cosmic.root")
 tmvaPrep t(chain)
 t.Loop()
 .q
