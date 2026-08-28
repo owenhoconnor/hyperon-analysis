@@ -81,6 +81,15 @@ public :
    vector<int>     *trueNPrimaryParticles;
    vector<int>     *trueNSavedParticles;
    vector<int>     *trueParticleStartIndex;
+   vector<int>     *sliceID;
+   vector<float>   *sliceNuScore;
+   vector<int>     *sliceTotalHits;
+   vector<int>     *sliceTrueNuHits;
+   vector<int>     *sliceTrueOrigin;
+   Int_t           eventTotalTrueNuHits;
+   vector<float>   *sliceVtxX;
+   vector<float>   *sliceVtxY;
+   vector<float>   *sliceVtxZ;
    Int_t           nPFParticles;
    Int_t           nPrimaryChildren;
    Int_t           trackCount;
@@ -124,6 +133,7 @@ public :
    vector<int>     *pfpPDG;
    Int_t           sampleType;
    Int_t           chosenTruthIdx;
+   Int_t           nuSliceIdx;
 
    // List of branches
    TBranch        *b_eventID;   ///<!
@@ -182,6 +192,15 @@ public :
    TBranch        *b_trueNPrimaryParticles;   ///<!
    TBranch        *b_trueNSavedParticles;   ///<!
    TBranch        *b_trueParticleStartIndex;   ///<!
+   TBranch        *b_sliceID;        ///<!
+   TBranch        *b_sliceNuScore;   ///<!
+   TBranch        *b_sliceTotalHits; ///<!
+   TBranch        *b_sliceTrueNuHits; ///<!
+   TBranch        *b_sliceTrueOrigin; ///<!
+   TBranch        *b_eventTotalTrueNuHits; ///<!
+   TBranch        *b_sliceVtxX;      ///<!
+   TBranch        *b_sliceVtxY;       ///<!
+   TBranch        *b_sliceVtxZ;      ///<!
    TBranch        *b_nPFParticles;   ///<!
    TBranch        *b_nPrimaryChildren;   ///<!
    TBranch        *b_trackCount;   ///<!
@@ -225,6 +244,7 @@ public :
    TBranch        *b_pfpPDG;   ///<!
    TBranch        *b_sampleType;   ///<!
    TBranch        *b_chosenTruthIdx;   ///<!
+   TBranch        *b_nuSliceIdx; ///<!
 
    newTMVAPrep(TTree *tree=0);
    virtual ~newTMVAPrep();
@@ -342,6 +362,14 @@ void newTMVAPrep::Init(TTree *tree)
    trueNPrimaryParticles = 0;
    trueNSavedParticles = 0;
    trueParticleStartIndex = 0;
+   sliceID = 0;
+   sliceNuScore = 0;
+   sliceTotalHits = 0;
+   sliceTrueNuHits = 0;
+   sliceTrueOrigin = 0;
+   sliceVtxX = 0;
+   sliceVtxY = 0;
+   sliceVtxZ = 0;
    TrackIDs = 0;
    trackLengths = 0;
    DistanceToRecoVertex = 0;
@@ -438,6 +466,15 @@ void newTMVAPrep::Init(TTree *tree)
    fChain->SetBranchAddress("trueNPrimaryParticles", &trueNPrimaryParticles, &b_trueNPrimaryParticles);
    fChain->SetBranchAddress("trueNSavedParticles", &trueNSavedParticles, &b_trueNSavedParticles);
    fChain->SetBranchAddress("trueParticleStartIndex", &trueParticleStartIndex, &b_trueParticleStartIndex);
+   fChain->SetBranchAddress("sliceID", &sliceID, &b_sliceID);
+   fChain->SetBranchAddress("sliceNuScore", &sliceNuScore, &b_sliceNuScore);
+   fChain->SetBranchAddress("sliceTotalHits", &sliceTotalHits, &b_sliceTotalHits);
+   fChain->SetBranchAddress("sliceTrueNuHits", &sliceTrueNuHits, &b_sliceTrueNuHits);
+   fChain->SetBranchAddress("sliceTrueOrigin", &sliceTrueOrigin, &b_sliceTrueOrigin);
+   fChain->SetBranchAddress("eventTotalTrueNuHits", &eventTotalTrueNuHits, &b_eventTotalTrueNuHits);
+   fChain->SetBranchAddress("sliceVtxX", &sliceVtxX, &b_sliceVtxX);
+   fChain->SetBranchAddress("sliceVtxY", &sliceVtxY, &b_sliceVtxY);
+   fChain->SetBranchAddress("sliceVtxZ", &sliceVtxZ, &b_sliceVtxZ);
    fChain->SetBranchAddress("nPFParticles", &nPFParticles, &b_nPFParticles);
    fChain->SetBranchAddress("nPrimaryChildren", &nPrimaryChildren, &b_nPrimaryChildren);
    fChain->SetBranchAddress("trackCount", &trackCount, &b_trackCount);
@@ -481,6 +518,7 @@ void newTMVAPrep::Init(TTree *tree)
    fChain->SetBranchAddress("pfpPDG", &pfpPDG, &b_pfpPDG);
    fChain->SetBranchAddress("sampleType", &sampleType, &b_sampleType);
    fChain->SetBranchAddress("chosenTruthIdx", &chosenTruthIdx, &b_chosenTruthIdx);
+   fChain->SetBranchAddress("nuSliceIdx", &nuSliceIdx, &b_nuSliceIdx);
    Notify();
 }
 

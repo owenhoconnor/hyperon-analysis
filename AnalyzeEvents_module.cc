@@ -456,7 +456,6 @@ void hyperon::AnalyzeEvents::analyze(art::Event const& evt)
 
     float nuScore = -1;
 	totalSlices++;
-    fSliceID.push_back(slice.id());
 
 	if (slice.key() >= slicePFPAssoc.size()) {
 		std::cerr<<"Error: Slice key "<<slice.key()<<" is out of bounds for slicePFPAssoc (size =  "<<slicePFPAssoc.size()<<")"<<std::endl;
@@ -589,6 +588,7 @@ void hyperon::AnalyzeEvents::analyze(art::Event const& evt)
 
 	} // end loop over slice PFPs
 
+    fSliceID.push_back(slice.id());
     fSliceNuScore.push_back(nuScore);
     //fSliceOpt0Score.push_back(opt0Score)
     fSliceVtxX.push_back(sliceVtxX);
@@ -1301,11 +1301,7 @@ for (size_t i_truth = 0; i_truth < mclist.size(); ++i_truth)
         ];
     }
 
-    std::cout
-        << "\nProcesses in MCTruth "
-        << i_truth
-        << ":"
-        << std::endl;
+    std::cout<< "\nProcesses in MCTruth "<< i_truth<< ":"<< std::endl;
 
     for (const auto& [process, count] : processCounts)
     {
@@ -1402,12 +1398,7 @@ for (size_t i_truth = 0; i_truth < mclist.size(); ++i_truth)
         ++nPrimariesThisTruth;
     }
 
-
-    std::cout
-        << "Primary particles = "
-        << nPrimariesThisTruth
-        << std::endl;
-
+    std::cout<< "Primary particles = "<< nPrimariesThisTruth<< std::endl;
 
     // -----------------------------------------------------------------------
     // Avoid duplicate saving even if some bizarre genealogy occurs.

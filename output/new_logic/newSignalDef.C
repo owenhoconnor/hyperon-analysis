@@ -33,9 +33,9 @@ void newSignalDef::Loop()
 
 
    int nEvents[3] = {0};
-   nEvents[0] = 137544; // number of events in all hyperon files
+   nEvents[0] = 0; // number of events in all hyperon files
    nEvents[1] = nEvents[0]; // any hyperon event
-   nEvents[2] = 209643 + nEvents[0]; // num of events in bkg files + num of events in hyp files
+   nEvents[2] = 208681 + nEvents[0]; // num of events in bkg files + num of events in hyp files
 
    TFile *sigFile = TFile::Open("/data/ooconnor/sbnd/hyperons/preselection_output/signalDef_output_sig.root", "RECREATE");
 
@@ -75,6 +75,7 @@ void newSignalDef::Loop()
 
    int sampleType;
    int chosenTruthIdx;
+   int nuSliceIdx;
 
    signalTree->Branch("sampleType", &sampleType);
    bkgTree->Branch("sampleType", &sampleType);
@@ -83,6 +84,10 @@ void newSignalDef::Loop()
    signalTree->Branch("chosenTruthIdx", &chosenTruthIdx);
    bkgTree->Branch("chosenTruthIdx", &chosenTruthIdx);
    beamSigTree->Branch("chosenTruthIdx", &chosenTruthIdx);
+
+   signalTree->Branch("nuSliceIdx", &nuSliceIdx);
+   bkgTree->Branch("nuSliceIdx", &nuSliceIdx);
+   beamSigTree->Branch("nuSliceIdx", &nuSliceIdx);
 
    float shortestDistTrueToRecoVtx = 0;
    int nSig = 0;
@@ -101,6 +106,10 @@ void newSignalDef::Loop()
    int nCosmicOriginBkg = 0;
    int nUnknownOrigin = 0;
    int nUnknownOriginBkg = 0;
+   int sliceSizeMissmatch = 0;
+   int nSingleIntEvents = 0;
+   int nMultiIntEvents = 0;
+   int nZeroIntEvents = 0;
 
    Long64_t nentries = fChain->GetEntriesFast();
 
@@ -115,11 +124,32 @@ void newSignalDef::Loop()
       // Define per event variables
       // --------------------------------
 
+      // ---------------------------------------------------
+      // Choose slice with highest nuScore
+      // ---------------------------------------------------
+
+     std::cout<<"sliceID size = "<<sliceID->size()<<std::endl;
+     std::cout<<"sliceNuScore size = "<<sliceNuScore->size()<<std::endl;
+     if(sliceID->size() == sliceNuScore->size()){
+      int highestNuScore = -1;
+      for (int i = 0; i < sliceID->size(); ++i){
+         int nuScore = sliceNuScore->at(i);
+
+         if (nuScore > highestNuScore || i == 0){
+            highestNuScore = nuScore;
+            nuSliceIdx = i;
+         }
+      }
+   }
 
       // ------------------------------------------------------------
       // Choose the MCTruth index corresponding to the true neutrino interaction vertex 
       // closest to the reconstructed vertex
       // ------------------------------------------------------------
+
+      if(trueNuVtxX->size() == 0){nZeroIntEvents++;}
+      if (trueNuVtxX->size() == 1){nSingleIntEvents++;}
+      if (trueNuVtxX->size() > 1){nMultiIntEvents++;}
 
       TVector3 recoVtx(RecoVertexX, RecoVertexY, RecoVertexZ);
 
@@ -286,5 +316,9 @@ void newSignalDef::Loop()
    std::cout<<"# of Bkg MCTruths with Cosmic Neutrino Origin = "<<nCosmicOriginBkg<<std::endl;
    std::cout<<"# of Bkg MCTruths with Unknown Neutrino Origin = "<<nUnknownOriginBkg<<std::endl;
    std::cout<<"================================================================"<<std::endl;
+   std::cout<<"number of events where sliceID size != sliceNuScore size = "<<sliceSizeMissmatch<<std::endl;
+   std::cout<<"number of events with 1 MCtruth  = "<<nSingleIntEvents<<std::endl;
+   std::cout<<"num of events with >1 MCTruth = "<<nMultiIntEvents<<std::endl;
+   std::cout<<"num of events wth 0 MCTruth = "<<nZeroIntEvents<<std::endl;
 
 }

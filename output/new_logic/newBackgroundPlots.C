@@ -791,6 +791,13 @@ void newBackgroundPlots::Loop()
         nb = fChain->GetEntry(jentry);
         nbytes += nb;
 
+        // -------------------------------------------------------------------
+        // Slice checking
+        // -------------------------------------------------------------------
+
+        std::cout<<"slice nuScore at highest nuScore index = "<<sliceTrueOrigin->at(nuSliceIdx)<<std::endl;
+        const int nuSliceOrigin = sliceTrueOrigin->at(nuSliceIdx);
+
         // --------------------------------------------------------------------
         // Sanity checks
         // --------------------------------------------------------------------
@@ -881,7 +888,7 @@ void newBackgroundPlots::Loop()
 
         hTrueCCNC->Fill(ccnc);
         hTrueIntMode->Fill(intMode);
-        hTrueOrigin->Fill(origin);
+        hTrueOrigin->Fill(nuSliceOrigin);
         hTrueNuEnergy->Fill(nuEnergy);
 
         ++originCounts[origin];
