@@ -422,13 +422,13 @@ void hyperon::AnalyzeEvents::analyze(art::Event const& evt)
 
    // corsika MC truth information
 
-   art::ValidHandle<std::vector<simb::MCTruth>> cosmicMCTruthListHandle = evt.getValidHandle<std::vector<simb::MCTruth>>("corsika");
+   /*art::ValidHandle<std::vector<simb::MCTruth>> cosmicMCTruthListHandle = evt.getValidHandle<std::vector<simb::MCTruth>>("corsika");
    std::vector<art::Ptr<simb::MCTruth>> cosmicMCTruthVector;
    if (cosmicMCTruthListHandle.isValid()){
         art::fill_ptr_vector(cosmicMCTruthVector, cosmicMCTruthListHandle);
    }
 
-   art::FindManyP<simb::MCParticle> cosmicGeantAssoc(cosmicMCTruthListHandle, evt, "largeant");
+   art::FindManyP<simb::MCParticle> cosmicGeantAssoc(cosmicMCTruthListHandle, evt, "largeant");*/
 
 // Define helper function to get hits from PFP
    auto getPFPHits =
