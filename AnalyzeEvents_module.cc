@@ -345,6 +345,10 @@ private:
   std::vector<int> trueIsPrimary;
   std::vector<int> trueIsDecayProduct;
   std::vector<int> trueMCTruthIndex;
+  std::vector<int> trueNHits;
+  std::vector<int> trueNHitsU;
+  std::vector<int> trueNHitsV;
+  std::vector<int> trueNHitsZ;
   std::vector<float> trueP;
   std::vector<float> truePx;
   std::vector<float> truePy;
@@ -400,7 +404,7 @@ private:
   std::vector<int> fPfpSliceKey;
   std::vector<int> fPfpIsNuSlice;
   std::vector<int> fPfpIsPrimary;
-  std::vector<int> fPfpNPrimaryChildren;
+  std::vector<int> fPfpNDaughters;
   std::vector<float> fPfpTrackScore;
   std::vector<int> fPfpHasTrackScore;
 
@@ -542,7 +546,7 @@ void hyperon::AnalyzeEvents::analyze(art::Event const& evt)
   fPfpSliceKey.clear();
   fPfpIsNuSlice.clear();
   fPfpIsPrimary.clear();
-   fPfpNPrimaryChildren.clear();
+   fPfpNDaughters.clear();
   fPfpTrackScore.clear();
   fPfpHasTrackScore.clear();
   fPfpNTracks.clear();
@@ -633,6 +637,9 @@ void hyperon::AnalyzeEvents::analyze(art::Event const& evt)
    art::Handle<std::vector<recob::Hit>> globalHitHandle;
    evt.getByLabel(fHitLabel, globalHitHandle);
    art::FindManyP<simb::MCParticle, anab::BackTrackerHitMatchingData> hitTruthAssns(globalHitHandle, evt, "gaushitTruthMatch");
+   
+   std::vector<art::Ptr<recob::Hit>> globalHits;
+   art::fill_ptr_vector(globalHits, globalHitHandle);
 
    //std::unique_ptr<art::FindManyP<sbn::OpT0Finder>> opt0Assns;
    //try { opt0Assns = std::make_unique<art::FindManyP<sbn::OpT0Finder>>(sliceHandle, e, fOpT0Label); } catch(...) {}
@@ -675,14 +682,91 @@ void hyperon::AnalyzeEvents::analyze(art::Event const& evt)
 
         return false;
     };
+    
+*/
+    constexpr bool rollupUnsavedIDs = true;
 
-    for (size_t iHit = 0; iHit < globalHitHandle->size(); ++iHit){
-        bool isBeamNeutrino = hitIsBeamNeutrino(iHit);
+    struct HitTruthInfo
+    {
+        bool valid = false;
+        int trackID = -9999;
+        int origin = -1;
+        bool isBeamNeutrino = false;
+        bool isCosmic = false;
+    };
 
-        if isBeamNeutrino{
+    auto getHitTruthInfo = [&](const art::Ptr<recob::Hit>& hit)
+    {
+        HitTruthInfo info;
+        const TruthMatchUtils::G4ID g4ID = TruthMatchUtils::TrueParticleID(clockData, hit, rollupUnsavedIDs);
+
+        if (!TruthMatchUtils::Valid(g4ID)) {
+            return info;
+        }
+
+        const art::Ptr<simb::MCTruth> hitMCTruth = piService->TrackIdToMCTruth_P(g4ID);
+
+        if (!hitMCTruth.isNonnull()) {
+                return info;
+        }
+
+        info.valid = true;
+        info.trackID = g4ID;
+        info.origin = static_cast<int>(hitMCTruth->Origin());
+        info.isBeamNeutrino = (hitMCTruth->Origin() == simb::kBeamNeutrino);
+        info.isCosmic = (hitMCTruth->Origin() == simb::kCosmicRay);
+
+        return info;
+    };
+
+    // Loop over global hits
+
+    struct TrueHitCounts{
+        int total = 0;
+        int U = 0;
+        int V = 0;
+        int Z = 0;
+    };
+    std::unordered_map<int, TrueHitCounts> trueHitCounts;
+
+    for (const art::Ptr<recob::Hit>& hit : globalHits){
+        //bool isBeamNeutrino = hitIsBeamNeutrino(iHit);
+
+        const HitTruthInfo truthInfo = getHitTruthInfo(hit);
+        if(!truthInfo.valid){continue;}
+
+        if(truthInfo.isBeamNeutrino){
             ++fEventTotalTrueNuHits;
         }
-    }*/
+
+        TrueHitCounts& counts = trueHitCounts[truthInfo.trackID];
+        ++counts.total;
+
+        switch (hit->View()){
+            case geo::kU:
+                ++counts.U;
+                break;
+            
+            case geo::kV:
+                ++counts.V;
+                break;
+            
+            case geo::kZ:
+                ++counts.Z;
+                break;
+            
+            default:
+                std::cerr<<"Unexpected hit view: "<<static_cast<int>(hit->View())<<std::endl;
+                break;
+        }
+
+        std::cout
+        << "TPC " << hit->WireID().TPC
+        << " plane " << hit->WireID().Plane
+        << " view " << static_cast<int>(hit->View())
+        << std::endl;
+
+    }
 
 // Filling our neutrino hierarchy variables by looping over slices in event:
 // What are the properties of the slices, the nuScores, the truth origin, and what is the nuSlice?
@@ -690,10 +774,7 @@ void hyperon::AnalyzeEvents::analyze(art::Event const& evt)
    std::cout<<"Event "<<fEventID<<" has "<<sliceVector.size()<<" slices."<<std::endl;
    if (sliceVector.size() == 0){
 	   std::cerr<<"No slices found in this event!"<<std::endl;
-	   return;
    }
-
-   if (sliceVector.size() != 0){
 
    for (const art::Ptr<recob::Slice> &slice : sliceVector){
 
@@ -742,7 +823,7 @@ void hyperon::AnalyzeEvents::analyze(art::Event const& evt)
 
 		if (metadataVec.empty()){
 			std::cerr<<"No meta data found for PFParticle with key :"<<slice.key()<<std::endl;
-			return;
+			continue;
 		}
 
 		bool isClearCosmic = false;
@@ -844,9 +925,15 @@ void hyperon::AnalyzeEvents::analyze(art::Event const& evt)
     std::map<int, int> originVotes;
 
     for(const art::Ptr<recob::Hit> &hit : sliceHits){
-        bool hitBelongsToNu = false;
 
-        if (hitTruthAssns.isValid()){
+        const HitTruthInfo truthInfo = getHitTruthInfo(hit);
+
+        if(!truthInfo.valid){continue;}
+        ++originVotes[truthInfo.origin];
+
+        if(truthInfo.isBeamNeutrino){++trueNuSliceHits;}
+
+        /*if (hitTruthAssns.isValid()){
             auto const& particles = hitTruthAssns.at(hit.key());
 
             for (const auto& truePart : particles){
@@ -861,11 +948,8 @@ void hyperon::AnalyzeEvents::analyze(art::Event const& evt)
                     }
                 }
             }
-        }
+        }*/
 
-        if(hitBelongsToNu){
-            trueNuSliceHits++;
-        }
     } // end of loop over slice hits
 
     int bestOrigin = 0;
@@ -882,9 +966,6 @@ void hyperon::AnalyzeEvents::analyze(art::Event const& evt)
     fSliceTrueOrigin.push_back(bestOrigin);
 
    } // end loop over slices
-
- } // end conditional checking slice vector is not empty
-
 
 // Define vector of PFPs in nuSlice
    //std::vector<art::Ptr<recob::PFParticle>> nuSlicePFPs(slicePFPAssoc.at(nuSliceKey));
@@ -904,8 +985,6 @@ void hyperon::AnalyzeEvents::analyze(art::Event const& evt)
    art::FindManyP<recob::PFParticle> trackToPFPAssoc(trackHandle, evt, fTrackLabel);
    art::FindManyP<recob::PFParticle> showerToPFPAssoc(showerHandle, evt, fShowerLabel);
 
-   constexpr bool rollupUnsavedIDs = true;
-
     for (const art::Ptr<recob::Slice>& slice : sliceVector)
     {
         const bool isNuSlice = (nuSliceKey >= 0 && static_cast<int>(slice.key()) == nuSliceKey);
@@ -924,7 +1003,7 @@ void hyperon::AnalyzeEvents::analyze(art::Event const& evt)
             fPfpSliceKey.push_back(slice.key());
             fPfpIsNuSlice.push_back(isNuSlice);
             fPfpIsPrimary.push_back(pfp->IsPrimary());
-            fPfpNPrimaryChildren.push_back(pfp->NumDaughters());
+            fPfpNDaughters.push_back(pfp->NumDaughters());
 
             // ------------------------------------------------
             // TrackScore
@@ -1567,6 +1646,30 @@ for (size_t i_truth = 0; i_truth < mclist.size(); ++i_truth)
 
         const int trackID = particle->TrackId();
 
+        int nHits = 0;
+        int nHitsU = 0;
+        int nHitsV = 0;
+        int nHitsZ = 0;
+        auto it = trueHitCounts.find(trackID);
+
+        if (it != trueHitCounts.end()){
+            nHits = it->second.total;
+            nHitsU = it->second.U;
+            nHitsV = it->second.V;
+            nHitsZ = it->second.Z;
+        }
+
+        if (nHits != nHitsU + nHitsV + nHitsZ){
+        std::cerr
+            << "Hit-view mismatch for TrackID "
+            << trackID
+            << ": total = " << nHits
+            << ", U = " << nHitsU
+            << ", V = " << nHitsV
+            << ", Z = " << nHitsZ
+            << std::endl;
+        }
+
         // Already handled?
         if (savedTrackIDs.count(trackID) != 0) {
             continue;
@@ -1627,6 +1730,10 @@ for (size_t i_truth = 0; i_truth < mclist.size(); ++i_truth)
         trueGeneration.push_back(generation);
         trueIsPrimary.push_back(generation == 0);
         trueIsDecayProduct.push_back(generation > 0);
+        trueNHits.push_back(nHits);
+        trueNHitsU.push_back(nHitsU);
+        trueNHitsV.push_back(nHitsV);
+        trueNHitsZ.push_back(nHitsZ);
 
         // -------------------------------------------------------------------
         // Process information
@@ -1895,7 +2002,7 @@ for (size_t iTrue = 0; iTrue < trueTrackID.size(); ++iTrue)
 /// std::cout<<nuSliceKey<<std::endl;
 
 // DIAGNOSTIC OUT
-const size_t nPfp = fPfpKey.size();
+/*const size_t nPfp = fPfpKey.size();
 
 std::cout
     << "\n========== PFP VECTOR SANITY ==========\n"
@@ -1913,7 +2020,7 @@ std::cout
     << "pfpVertexX:          " << fPfpVertexX.size() << "\n"
     << "pfpTrueTrackID:      " << fPfpTrueTrackID.size() << "\n"
     << "pfpTruthPurity:      " << fPfpTruthPurity.size() << "\n"
-    << "=======================================\n";
+    << "=======================================\n";*/
 
 fTree->Fill();
  
@@ -1948,6 +2055,10 @@ std::cout<<"trueCCNC size = "<<trueCCNC.size()<<std::endl;
     trueIsPrimary.clear();
     trueIsDecayProduct.clear();
     trueMCTruthIndex.clear();
+    trueNHits.clear();
+    trueNHitsU.clear();
+    trueNHitsV.clear();
+    trueNHitsZ.clear();
     trueP.clear();
     trueMass.clear();
     trueStartX.clear();
@@ -2018,6 +2129,10 @@ void hyperon::AnalyzeEvents::beginJob()
   fTree->Branch("trueIsPrimary", &trueIsPrimary);
   fTree->Branch("trueIsDecayProduct", &trueIsDecayProduct);
   fTree->Branch("trueMCTruthIndex", &trueMCTruthIndex);
+  fTree->Branch("trueNHits", &trueNHits);
+  fTree->Branch("trueNHitsU", &trueNHitsU);
+  fTree->Branch("trueNHitsV", &trueNHitsV);
+  fTree->Branch("trueNHitsZ", &trueNHitsZ);
   fTree->Branch("trueP", &trueP);
   fTree->Branch("trueMass", &trueMass);
   fTree->Branch("trueStartX", &trueStartX);
@@ -2066,7 +2181,7 @@ void hyperon::AnalyzeEvents::beginJob()
     fTree->Branch("pfpSliceKey", &fPfpSliceKey);
     fTree->Branch("pfpIsNuSlice", &fPfpIsNuSlice);
     fTree->Branch("pfpIsPrimary", &fPfpIsPrimary);
-    fTree->Branch("pfpNPrimaryChildren", &fPfpNPrimaryChildren);
+    fTree->Branch("pfpNDaughters", &fPfpNDaughters);
     fTree->Branch("pfpTrackScore", &fPfpTrackScore);
     fTree->Branch("pfpHasTrackScore", &fPfpHasTrackScore);
     fTree->Branch("pfpNTracks", &fPfpNTracks);
