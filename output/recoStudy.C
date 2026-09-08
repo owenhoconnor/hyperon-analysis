@@ -4,6 +4,32 @@
 #include <TStyle.h>
 #include <TCanvas.h>
 
+void StyleEfficiency(TEfficiency* eff, Color_t color, Style_t markerStyle, double xmin, double xmax)
+{
+    eff->Draw("AP");
+    gPad->Update();
+
+    TGraphAsymmErrors* gr = eff->GetPaintedGraph();
+
+    for (int i = 0; i < gr->GetN(); ++i)
+    {
+        gr->SetPointEXlow(i, 0.0);
+        gr->SetPointEXhigh(i, 0.0);
+    }
+
+    gr->SetMarkerColor(color);
+    gr->SetLineColor(color);
+    gr->SetMarkerStyle(markerStyle);
+    gr->SetMarkerSize(5);
+    gr->SetLineWidth(2);
+
+    gr->GetXaxis()->SetRangeUser(xmin, xmax);
+    gr->GetYaxis()->SetRangeUser(0.0, 1.05);
+
+    gPad->Modified();
+    gPad->Update();
+}
+
 void recoStudy::Loop()
 {
 //   In a ROOT session, you can do:
@@ -38,10 +64,10 @@ void recoStudy::Loop()
       hRecoEfficiencies->at(i)->SetDirectory(nullptr);
    }*/
 
-   TEfficiency* effMuon = new TEfficiency("effMuon", "Muon Reconstructed Efficiency;True Momentum [GeV/c]; Efficiency", 30, 0.0, 3.0);
-   TEfficiency* effPhoton = new TEfficiency("effPhoton", "Photon Reconstruction Efficiency;True Momentum [GeV/c]; Efficiency", 30, 0.0, 3.0);
-   TEfficiency* effProton = new TEfficiency("effProton", "Proton Reconstruction Efficiency;True Momentum [GeV/c]; Efficiency", 30, 0.0, 3.0);
-   TEfficiency* effPion = new TEfficiency("effPion", "Pion Reconstruction Efficiency;True Momentum [GeV/C]; Efficiency", 30, 0.0, 0.0);
+   TEfficiency* effMuon = new TEfficiency("effMuon", "Muon Reconstructed Efficiency;True Momentum [GeV/c]; Efficiency", 20, 0.0, 3.0);
+   TEfficiency* effPhoton = new TEfficiency("effPhoton", "Photon Reconstruction Efficiency;True Momentum [GeV/c]; Efficiency", 20, 0.0, 0.5);
+   TEfficiency* effProton = new TEfficiency("effProton", "Proton Reconstruction Efficiency;True Momentum [GeV/c]; Efficiency", 20, 0.0, 1.5);
+   TEfficiency* effPion = new TEfficiency("effPion", "Pion Reconstruction Efficiency;True Momentum [GeV/C]; Efficiency", 20, 0.0, 0.5);
 
    int nMuons = 0;
    int nPhotons = 0;
@@ -76,17 +102,17 @@ void recoStudy::Loop()
                nMuons++;
             }
             // photons
-            if (truePDG->at(i) == 22 && trueGeneration->at(i) == 1){
+            if (truePDG->at(i) == 22 && trueGeneration->at(i) == 1 && trueMotherPDG->at(i) == 3212){
                effPhoton->Fill(reconstructed, momentum);
                nPhotons++;
             }
             // protons
-            if (truePDG->at(i) == 2212 && trueGeneration->at(i) == 2){
+            if (truePDG->at(i) == 2212 && trueGeneration->at(i) == 2 && trueMotherPDG->at(i) == 3122){
                effProton->Fill(reconstructed, momentum);
                nProtons++;
             }
             // pions
-            if (truePDG->at(i) == -211 && trueGeneration->at(i) == 2){
+            if (truePDG->at(i) == -211 && trueGeneration->at(i) == 2 && trueMotherPDG->at(i) == 3122){
                effPion->Fill(reconstructed, momentum);
                nPions++;
             }
@@ -106,23 +132,26 @@ void recoStudy::Loop()
    cEffMuon->SetFillStyle(1001);
    cEffMuon->SetFillColor(kWhite);
    effMuon->Draw("AP");
+   StyleEfficiency(effMuon, kBlue, 20, 0, 3.0);
    cEffMuon->Print("plots/efficiencyMuon.png");
 
    TCanvas* cEffPhoton = new TCanvas("cEffPhoton", "", 1800, 1200);
    cEffPhoton->SetFillStyle(1001);
    cEffPhoton->SetFillColor(kWhite);
    effPhoton->Draw("AP");
+   StyleEfficiency(effPhoton, kBlue, 20, 0, 1.0);
    cEffPhoton->Print("plots/efficiencyPhoton.png");
 
    TCanvas* cEffProton = new TCanvas("cEffProton", "", 1800, 1200);
    cEffProton->SetFillStyle(1001);
    cEffProton->SetFillColor(kWhite);
    effProton->Draw("AP");
+   StyleEfficiency(effProton, kBlue, 20, 0, 2.0);
    cEffProton->Print("plots/efficiencyProton.png");
 
    TCanvas* cEffPion = new TCanvas("cEffPion", "", 1800, 1200);
    cEffPion->SetFillStyle(1001);
    cEffPion->SetFillColor(kWhite);
-   effPion->Draw("AP");
+   StyleEfficiency(effPion, kBlue, 20, 0, 1.0);
    cEffPion->Print("plots/efficiencyPion.png");
 }
