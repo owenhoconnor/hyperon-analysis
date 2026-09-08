@@ -33,6 +33,9 @@ $APPTAINER_BIN exec -B /cvmfs,/data,/home,/opt,/run/user,/etc/hostname,/etc/host
         mrbslp
 	cd $WORK_DIR
 
+    # clear data directory so we don't have conflicting TTree structures
+    rm /data/ooconnor/sbnd/hyperons/analyzer_output/prod_2026/*.root
+
         # Note: We use 'seq' to handle looking for files
         for (( i=$SLURM_ARRAY_TASK_ID; i<$NUM_FILES; i+=$NUM_JOBS )); do
 

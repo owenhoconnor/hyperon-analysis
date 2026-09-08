@@ -242,10 +242,12 @@ void tmvaPrep::Loop()
       // apply 3+1 and RecoFV cut here 
       bool isInRecoFV = false;
 
+      // Reco FV cut
       if (std::abs(RecoVertexX) < 180 && std::abs(RecoVertexY) < 180 && RecoVertexZ < 450 && RecoVertexZ > 10){
          isInRecoFV = true;
       }
 
+      // 3+1 choice
       if(!isInRecoFV || !(trackCount == 3 && showerCount == 1)){continue;} 
 
       // apply stricter cuts

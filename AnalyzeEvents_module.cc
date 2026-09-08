@@ -67,6 +67,10 @@
 #include <vector>
 
 
+// Anonymous namespace for helper functions and structs
+
+namespace {
+
 // Helper functions for MCTruth Saving
 
 bool IsDecayProcess(std::string process)
@@ -82,6 +86,166 @@ bool IsDecayProcess(std::string process)
 
     return process.find("decay") != std::string::npos;
 }
+
+// Structs for Track/Shower Reco Info
+struct TrackRecoInfo
+{
+    bool valid = false;
+    bool uniqueTrack = false;
+    int id = -1;
+
+    float length = -9999.f;
+
+    float startX = -9999.f;
+    float startY = -9999.f;
+    float startZ = -9999.f;
+
+    float endX = -9999.f;
+    float endY = -9999.f;
+    float endZ = -9999.f;
+
+    float startDirX = -9999.f;
+    float startDirY = -9999.f;
+    float startDirZ = -9999.f;
+
+    float endDirX = -9999.f;
+    float endDirY = -9999.f;
+    float endDirZ = -9999.f;
+
+    float theta = -9999.f;
+    float phi   = -9999.f;
+};
+
+struct ShowerRecoInfo
+{
+    bool valid = false;
+    bool uniqueShower = false;
+    int id = -1;
+
+    float length = -9999.f;
+
+    float startX = -9999.f;
+    float startY = -9999.f;
+    float startZ = -9999.f;
+
+    float dirX = -9999.f;
+    float dirY = -9999.f;
+    float dirZ = -9999.f;
+};
+
+
+TrackRecoInfo GetTrackRecoInfo(const std::vector<art::Ptr<recob::Track>>& tracks)
+{
+    TrackRecoInfo info;
+
+    if (tracks.empty()) {
+        return info;
+    }
+    if(tracks.size() == 1){
+        info.uniqueTrack = true;
+    }
+
+    const art::Ptr<recob::Track>& track = tracks.front();
+
+    info.valid = true;
+    info.id = track->ID();
+    info.length = track->Length();
+
+    const auto& start = track->Vertex();
+    const auto& end   = track->End();
+
+    info.startX = start.X();
+    info.startY = start.Y();
+    info.startZ = start.Z();
+
+    info.endX = end.X();
+    info.endY = end.Y();
+    info.endZ = end.Z();
+
+    const auto& startDir = track->StartDirection();
+    const auto& endDir   = track->EndDirection();
+
+    info.startDirX = startDir.X();
+    info.startDirY = startDir.Y();
+    info.startDirZ = startDir.Z();
+
+    info.endDirX = endDir.X();
+    info.endDirY = endDir.Y();
+    info.endDirZ = endDir.Z();
+
+    info.theta = track->Theta();
+    info.phi   = track->Phi();
+
+    return info;
+}
+
+ShowerRecoInfo GetShowerRecoInfo(const std::vector<art::Ptr<recob::Shower>>& showers)
+{
+    ShowerRecoInfo info;
+
+    if (showers.empty()) {
+        return info;
+    }
+    if (showers.size() == 1){
+        info.uniqueShower = true;
+    }
+
+    const art::Ptr<recob::Shower>& shower = showers.front();
+
+    info.valid = true;
+    info.id = shower->ID();
+    info.length = shower->Length();
+
+    const auto& start = shower->ShowerStart();
+
+    info.startX = start.X();
+    info.startY = start.Y();
+    info.startZ = start.Z();
+
+    const auto& dir = shower->Direction();
+
+    info.dirX = dir.X();
+    info.dirY = dir.Y();
+    info.dirZ = dir.Z();
+
+    return info;
+}
+
+
+float GetPFPTrackScore(
+    const art::Ptr<recob::PFParticle>& pfp,
+    const art::FindManyP<larpandoraobj::PFParticleMetadata>& metadataAssoc)
+{
+    const auto metadataVec = metadataAssoc.at(pfp.key());
+
+    for (const auto& metadata : metadataVec)
+    {
+        const auto& properties = metadata->GetPropertiesMap();
+
+        auto it = properties.find("TrackScore");
+
+        if (it != properties.end()) {
+            return it->second;
+        }
+    }
+
+    return -9999.f;
+}
+
+// Struct for PFP truth matching
+
+struct PFPTruthMatch
+{
+    bool valid = false;
+    int trackID = -9999;
+    int pdg = -9999;
+
+    int nHits = 0;
+    int nMatchedHits = 0;
+    float purity = -1.f;
+};
+
+} // anonymous namespace
 
 
 namespace hyperon {
@@ -137,11 +301,10 @@ private:
    int nSingleEvents = 0;
    int nTotEvents = 0;
    int nMCParticles = 0;
-   bool fFoundRecoVertex;
 
   TTree *fTree;
   unsigned int fEventID;
-  std::vector<int> fNPfpSlices;
+
   std::vector<int> fNSlices;
   size_t totalSlices = 0;
   size_t totalNeutrinos = 0;
@@ -216,6 +379,7 @@ private:
 
   // Slice level
 
+  std::vector<int> fSliceKey;
   std::vector<int> fSliceID;
   std::vector<float> fSliceNuScore;
   std::vector<int> fSliceTotalHits;
@@ -227,60 +391,100 @@ private:
   std::vector<float> fSliceVtxZ;
   std::vector<float> fSliceOpt0Score;
 
-  // Reco tracks
-  std::vector<int> fTrackIDs;
-  std::vector<float> fTrackLengths;
-  std::vector<int> fTrackPDGs;
-  float fRecoVertexX;
-  float fRecoVertexY;
-  float fRecoVertexZ;
-  std::vector<float> fDistanceToRecoVertex;
-  std::vector<float> fTrackStartPositionX;
-  std::vector<float> fTrackStartPositionY;
-  std::vector<float> fTrackStartPositionZ;
-  std::vector<float> fTrackEndPositionX;
-  std::vector<float> fTrackEndPositionY;
-  std::vector<float> fTrackEndPositionZ;
-  std::vector<float> fTrackStartDirX;
-  std::vector<float> fTrackStartDirY;
-  std::vector<float> fTrackStartDirZ;
-  std::vector<float> fTrackEndDirX;
-  std::vector<float> fTrackEndDirY;
-  std::vector<float> fTrackEndDirZ;
-  std::vector<float> fTrackVertexDirX;
-  std::vector<float> fTrackVertexDirY;
-  std::vector<float> fTrackVertexDirZ;
-  std::vector<float> fTrackTheta;
-  std::vector<float> fTrackPhi;
+  // PFP level
 
-  // Reco showers
-  std::vector<float> fShowerLengths;
-  std::vector<float> fShowerStartPositionX;
-  std::vector<float> fShowerStartPositionY;
-  std::vector<float> fShowerStartPositionZ;
-  std::vector<float> fShowerDirX;
-  std::vector<float> fShowerDirY;
-  std::vector<float> fShowerDirZ;
-  std::vector<int> fShowerPDG;
+  std::vector<int> fPfpKey;
+  std::vector<int> fPfpSelfID;
+  std::vector<int> fPfpParentID;
+  std::vector<int> fPfpRecoPDG;
+  std::vector<int> fPfpSliceKey;
+  std::vector<int> fPfpIsNuSlice;
+  std::vector<int> fPfpIsPrimary;
+  std::vector<int> fPfpNPrimaryChildren;
+  std::vector<float> fPfpTrackScore;
+  std::vector<int> fPfpHasTrackScore;
+
+  std::vector<int> fPfpNTracks;
+  std::vector<int> fPfpNShowers;
+  std::vector<int> fPfpHasTrack;
+  std::vector<int> fPfpHasUniqueTrack;
+  std::vector<int> fPfpHasShower;
+  std::vector<int> fPfpHasUniqueShower;
+
+  // Reco track parameters
+  std::vector<int> fPfpTrackID;
+  std::vector<float> fPfpTrackLength;
+  std::vector<float> fPfpTrackStartX;
+  std::vector<float> fPfpTrackStartY;
+  std::vector<float> fPfpTrackStartZ;
+  std::vector<float> fPfpTrackEndX;
+  std::vector<float> fPfpTrackEndY;
+  std::vector<float> fPfpTrackEndZ;
+  std::vector<float> fPfpTrackStartDirX;
+  std::vector<float> fPfpTrackStartDirY;
+  std::vector<float> fPfpTrackStartDirZ;
+  std::vector<float> fPfpTrackEndDirX;
+  std::vector<float> fPfpTrackEndDirY;
+  std::vector<float> fPfpTrackEndDirZ;
+  std::vector<float> fPfpTrackVertexDirX;
+  std::vector<float> fPfpTrackVertexDirY;
+  std::vector<float> fPfpTrackVertexDirZ;
+  std::vector<float> fPfpTrackTheta;
+  std::vector<float> fPfpTrackPhi;
+
+  std::vector<int> fPfpTrackSliceID;
+  std::vector<int> fPfpTrackTrueG4ID;
+  std::vector<int> fPfpTrackIsPrimary;
+
+  // Reco shower parameters
+  std::vector<int> fPfpShowerID;
+  std::vector<float> fPfpShowerLength;
+  std::vector<float> fPfpShowerStartX;
+  std::vector<float> fPfpShowerStartY;
+  std::vector<float> fPfpShowerStartZ;
+  std::vector<float> fPfpShowerDirX;
+  std::vector<float> fPfpShowerDirY;
+  std::vector<float> fPfpShowerDirZ;
+ 
+  std::vector<int> fPfpShowerSliceID;
+  std::vector<int> fPfpShowerTrueG4ID;
+  std::vector<int> fPfpShowerIsPrimary;
+
+  // Pfp vertex Params
+  std::vector<int> fPfpNVertices;
+  std::vector<int> fPfpHasVertex;
+  std::vector<int> fPfpHasUniqueVertex;
+  std::vector<float> fPfpVertexX;
+  std::vector<float> fPfpVertexY;
+  std::vector<float> fPfpVertexZ;
+
+  // Truth matching parameters
+
+  std::vector<int> fPfpTrueTrackID;
+  std::vector<int> fPfpTruePDG;
+  std::vector<int> fPfpNHits;
+  std::vector<int> fPfpNMatchedHits;
+  std::vector<float> fPfpTruthPurity;
+  std::vector<int> fTrueIsReconstructed;
+  std::vector<int> fTrueIsReconstructedInNuSlice;
+  std::vector<int> fTrueNMatchedPfps;
+  std::vector<int> fTrueBestRecoPfpIdx;
+  std::vector<float> fTrueBestRecoTrackScore;
+  std::vector<int> fTrueBestRecoHasTrack;
+  std::vector<int> fTrueBestRecoHasShower;
+
+  // other stuff
+
   std::vector<float> fnuScore;
+  std::map<int, int> trueTrackPDGMap;
+
   std::vector<float> fNeutrinoNuScores;
   std::vector<float> fCosmicNuScores;
-  std::vector<float> fTrackScores;
-  std::vector<float> fMuonTrackScores;
-  std::vector<float> fProtonTrackScores;
-  std::vector<float> fPionTrackScores;
-  std::vector<int> fTrueTrackPDG;
-  std::vector<int> fTrueShowerPDG;
-  std::vector<int> fTruePfpPDG;
-  std::map<int, int> trueTrackPDGMap;
-  int fTrackCount = 0;
-  int fShowerCount = 0;
   
   float highestNuScore = -1;
-  TVector3 fRecoVertex;
 
-  bool isSignal = false; // define bools for signal and background
-  bool isBkg = false;
+
+  // Run and Subrun Information
 
   int fRun_sr;
   int fSubRun_sr;
@@ -319,6 +523,7 @@ void hyperon::AnalyzeEvents::analyze(art::Event const& evt)
 
  // Clear reco parameters
 
+  fSliceKey.clear();
   fSliceID.clear();
   fSliceNuScore.clear();
   fSliceTotalHits.clear();
@@ -329,51 +534,80 @@ void hyperon::AnalyzeEvents::analyze(art::Event const& evt)
   fSliceVtxY.clear();
   fSliceVtxZ.clear();
   fSliceOpt0Score.clear();
- fTrackIDs.clear();
- fTrackLengths.clear();
- fTrackPDGs.clear();
- fDistanceToRecoVertex.clear();
- fTrackStartPositionX.clear();
- fTrackStartPositionY.clear();
- fTrackStartPositionZ.clear();
- fTrackEndPositionX.clear();
- fTrackEndPositionY.clear();
- fTrackEndPositionZ.clear();
- fTrackStartDirX.clear();
- fTrackStartDirY.clear();
- fTrackStartDirZ.clear();
- fTrackEndDirX.clear();
- fTrackEndDirY.clear();
- fTrackEndDirZ.clear();
- fTrackVertexDirX.clear();
- fTrackVertexDirY.clear();
- fTrackVertexDirZ.clear();
- fTrackTheta.clear();
- fTrackPhi.clear();
- fShowerLengths.clear();
- fShowerStartPositionX.clear();
- fShowerStartPositionY.clear();
- fShowerStartPositionZ.clear();
- fShowerDirX.clear();
- fShowerDirY.clear();
- fShowerDirZ.clear();
- fShowerPDG.clear();
+
+  fPfpKey.clear();
+  fPfpSelfID.clear();
+  fPfpParentID.clear();
+  fPfpRecoPDG.clear();
+  fPfpSliceKey.clear();
+  fPfpIsNuSlice.clear();
+  fPfpIsPrimary.clear();
+   fPfpNPrimaryChildren.clear();
+  fPfpTrackScore.clear();
+  fPfpHasTrackScore.clear();
+  fPfpNTracks.clear();
+  fPfpNShowers.clear();
+  fPfpHasTrack.clear();
+  fPfpHasUniqueTrack.clear();
+  fPfpHasShower.clear();
+  fPfpHasUniqueShower.clear();
+  fPfpNVertices.clear();
+    fPfpHasVertex.clear();
+    fPfpHasUniqueVertex.clear();
+    fPfpVertexX.clear();
+    fPfpVertexY.clear();
+    fPfpVertexZ.clear();
+  fPfpTrueTrackID.clear();
+  fPfpTruePDG.clear();
+  fPfpNHits.clear();
+  fPfpNMatchedHits.clear();
+  fPfpTruthPurity.clear();
+  fTrueIsReconstructed.clear();
+  fTrueIsReconstructedInNuSlice.clear();
+  fTrueNMatchedPfps.clear(); 
+  fTrueBestRecoPfpIdx.clear();
+  fTrueBestRecoTrackScore.clear();
+  fTrueBestRecoHasTrack.clear();
+  fTrueBestRecoHasShower.clear();
+ fPfpTrackID.clear();
+ fPfpTrackLength.clear();
+ fPfpTrackStartX.clear();
+ fPfpTrackStartY.clear();
+ fPfpTrackStartZ.clear();
+ fPfpTrackEndX.clear();
+ fPfpTrackEndY.clear();
+ fPfpTrackEndZ.clear();
+ fPfpTrackStartDirX.clear();
+ fPfpTrackStartDirY.clear();
+ fPfpTrackStartDirZ.clear();
+ fPfpTrackEndDirX.clear();
+ fPfpTrackEndDirY.clear();
+ fPfpTrackEndDirZ.clear();
+ fPfpTrackVertexDirX.clear();
+ fPfpTrackVertexDirY.clear();
+ fPfpTrackVertexDirZ.clear();
+ fPfpTrackTheta.clear();
+ fPfpTrackPhi.clear();
+ fPfpShowerID.clear();
+ fPfpShowerLength.clear();
+ fPfpShowerStartX.clear();
+ fPfpShowerStartY.clear();
+ fPfpShowerStartZ.clear();
+ fPfpShowerDirX.clear();
+ fPfpShowerDirY.clear();
+ fPfpShowerDirZ.clear();
+
  fnuScore.clear();
  fNeutrinoNuScores.clear();
  fCosmicNuScores.clear();
- fTrackScores.clear();
- highestNuScore = 0.;
+ highestNuScore = -1.f;
  nuSliceKey = -1;
- fFoundRecoVertex = false;
- fRecoVertex.SetXYZ(-9999., -9999., -9999.);
- fRecoVertexX = -9999.;
- fRecoVertexY = -9999.;
- fRecoVertexZ = -9999.;
+ nuID = -1;
+
 
  fNPrimaryParticles = 0;
- fNPrimaryChildren = 0;
- fTrackCount = 0;
- fShowerCount = 0;
+
+
 
  // =====================================================
  // Reconstructed Slices Analysis
@@ -406,34 +640,8 @@ void hyperon::AnalyzeEvents::analyze(art::Event const& evt)
 
       // art::FindManyP<simb::MCParticle> hitMCParticleAssoc(evt.getValidHandle<std::vector<recob::Hit>>(fHitLabel), evt, fHitLabel);
 
-   std::cout<<"Event "<<fEventID<<" has "<<sliceVector.size()<<" slices."<<std::endl;
-   if (sliceVector.size() == 0){
-	   std::cerr<<"No slices found in this event!"<<std::endl;
-	   return;
-   }
-
-// * MC truth information
-   art::Handle<std::vector<simb::MCTruth> > mctruthListHandle;
-   std::vector<art::Ptr<simb::MCTruth> > mclist;
-   if (evt.getByLabel(fGenieGenModuleLabel,mctruthListHandle))
-      art::fill_ptr_vector(mclist, mctruthListHandle);
-
-   art::FindManyP<simb::MCParticle> fmpart( mctruthListHandle, evt, "largeant" );
-
-   // corsika MC truth information
-
-   /*art::ValidHandle<std::vector<simb::MCTruth>> cosmicMCTruthListHandle = evt.getValidHandle<std::vector<simb::MCTruth>>("corsika");
-   std::vector<art::Ptr<simb::MCTruth>> cosmicMCTruthVector;
-   if (cosmicMCTruthListHandle.isValid()){
-        art::fill_ptr_vector(cosmicMCTruthVector, cosmicMCTruthListHandle);
-   }
-
-   art::FindManyP<simb::MCParticle> cosmicGeantAssoc(cosmicMCTruthListHandle, evt, "largeant");*/
-
-// Define helper function to get hits from PFP
-   auto getPFPHits =
-    [&](const art::Ptr<recob::PFParticle>& pfp)
-    {
+   // Define helper function to get hits from PFP
+   auto getPFPHits = [&](const art::Ptr<recob::PFParticle>& pfp){
         // Get clusters associated with PFP and loop over them
         std::vector<art::Ptr<recob::Hit>> pfpHits;
         const std::vector<art::Ptr<recob::Cluster>> clusters = pfpClusterAssoc.at(pfp.key());
@@ -448,7 +656,42 @@ void hyperon::AnalyzeEvents::analyze(art::Event const& evt)
         return pfpHits;
     };
 
-// Filling our neutrino hierarchy variables by looping over slices in event
+    // Define helper to define whether a hit is truth matched to a beam neutrino
+    /*auto hitIsBeamNeutrino = [&](const art::Ptr<recob::Hit>& hit){
+        if (!hitTruthAssns.isValid()) {
+            return false;
+        }
+
+        const auto& particles = hitTruthAssns.at(hit.key());
+
+        for (const auto& truePart : particles)
+        {
+            const art::Ptr<simb::MCTruth> hitMCTruth = piService->TrackIdToMCTruth_P(std::abs(truePart->TrackId()));
+
+            if (hitMCTruth.isNonnull() && hitMCTruth->Origin() == simb::kBeamNeutrino){
+                return true;
+            }
+        }
+
+        return false;
+    };
+
+    for (size_t iHit = 0; iHit < globalHitHandle->size(); ++iHit){
+        bool isBeamNeutrino = hitIsBeamNeutrino(iHit);
+
+        if isBeamNeutrino{
+            ++fEventTotalTrueNuHits;
+        }
+    }*/
+
+// Filling our neutrino hierarchy variables by looping over slices in event:
+// What are the properties of the slices, the nuScores, the truth origin, and what is the nuSlice?
+
+   std::cout<<"Event "<<fEventID<<" has "<<sliceVector.size()<<" slices."<<std::endl;
+   if (sliceVector.size() == 0){
+	   std::cerr<<"No slices found in this event!"<<std::endl;
+	   return;
+   }
 
    if (sliceVector.size() != 0){
 
@@ -468,7 +711,6 @@ void hyperon::AnalyzeEvents::analyze(art::Event const& evt)
 		continue; // skip this slice
 	}
 
-	fNPfpSlices.push_back(slicePFPs.size());
 	std::cout<<"Slice key: "<< slice.key()<<", Number of PFPs: "<< slicePFPs.size() << std::endl;
 	std::cout<<"nuSliceKey = "<<nuSliceKey<<std::endl;
 
@@ -549,8 +791,8 @@ void hyperon::AnalyzeEvents::analyze(art::Event const& evt)
 
 		std::cout << "Neutrino slice detected! PDG codes of particles in this slice: ";	
 
-		for (const auto &particle : slicePFPs){
-		std::cout << particle->PdgCode()<<", ";
+		for (const auto &pfp : slicePFPs){
+		    std::cout << pfp->PdgCode()<<", ";
 		}
 		std::cout<<std::endl;
 	
@@ -562,7 +804,6 @@ void hyperon::AnalyzeEvents::analyze(art::Event const& evt)
 			nuSliceKey = slice.key();
 			nuID = slicePFP->Self();
 			fNPrimaryParticles = slicePFPs.size();
-			fNPrimaryChildren = slicePFP->NumDaughters();
 			std::cout<<"Highest nuScore overwritten! New highestNuScore: "<<highestNuScore<<std::endl;
 			std::cout<<"new nuSliceKey = "<<nuSliceKey<<std::endl;
 			std::cout<<"new nuID = "<<nuID<<std::endl;
@@ -582,12 +823,12 @@ void hyperon::AnalyzeEvents::analyze(art::Event const& evt)
 			sliceVtxX = vertexPos.X();
 			sliceVtxY = vertexPos.Y();
 			sliceVtxZ = vertexPos.Z();
-			fFoundRecoVertex = true;
 			break;
 	    }
 
 	} // end loop over slice PFPs
 
+    fSliceKey.push_back(slice.key());
     fSliceID.push_back(slice.id());
     fSliceNuScore.push_back(nuScore);
     //fSliceOpt0Score.push_back(opt0Score)
@@ -644,43 +885,12 @@ void hyperon::AnalyzeEvents::analyze(art::Event const& evt)
 
  } // end conditional checking slice vector is not empty
 
-std::cout<<"After looping over all slices, nuSliceKey = "<<nuSliceKey<<std::endl;
-if (nuSliceKey < 0){
-	std::cerr<<"No slice contained a primary neutrino!"<<std::endl;
-	return;
-}
 
 // Define vector of PFPs in nuSlice
-   std::vector<art::Ptr<recob::PFParticle>> nuSlicePFPs(slicePFPAssoc.at(nuSliceKey));
-   std::cout<<"!!! Now looping through nuSlicePFPs of size = "<<nuSlicePFPs.size()<<" !!!"<<std::endl;
-   std::cout<<"Equal to nPFParticles = "<<fNPrimaryParticles<<std::endl;
+   //std::vector<art::Ptr<recob::PFParticle>> nuSlicePFPs(slicePFPAssoc.at(nuSliceKey));
+   //std::cout<<"!!! Now looping through nuSlicePFPs of size = "<<nuSlicePFPs.size()<<" !!!"<<std::endl;
+   //std::cout<<"Equal to nPFParticles = "<<fNPrimaryParticles<<std::endl;
 
-// try to find reco vertex by looping over nuSlicePFPs
-
-   for (const art::Ptr<recob::PFParticle>& nuSlicePFP : nuSlicePFPs) {
-	if (nuSlicePFP->IsPrimary() && std::abs(nuSlicePFP->PdgCode()) == 14) {
-		auto vertices = pfpVertexAssoc.at(nuSlicePFP.key());
-
-		if (!vertices.empty()) {
-			const recob::Vertex& vertex = *vertices.at(0);
-			auto const& vertexPos = vertex.position();
-			fRecoVertex.SetXYZ(vertexPos.X(), vertexPos.Y(), vertexPos.Z());
-			fRecoVertexX = fRecoVertex.X();
-			fRecoVertexY = fRecoVertex.Y();
-			fRecoVertexZ = fRecoVertex.Z();
-			fFoundRecoVertex = true;
-			break;
-		}	
-	}
-   }
-
-
-   if (!fFoundRecoVertex) {
-	std::cerr<<"Error: Reco Vertex not found for the neutrino PFPParticle!"<<std::endl;
-	fRecoVertex.SetXYZ(-9999., -9999., -9999.); // store placeholder values
-   }
-
-   std::cout<<"RecoVertex: (" << fRecoVertex.X() << ", "<< fRecoVertex.Y() << ", "<< fRecoVertex.Z() << ")"<<std::endl;
 
 // Track and Shower reco diagnostics
 
@@ -694,178 +904,170 @@ if (nuSliceKey < 0){
    art::FindManyP<recob::PFParticle> trackToPFPAssoc(trackHandle, evt, fTrackLabel);
    art::FindManyP<recob::PFParticle> showerToPFPAssoc(showerHandle, evt, fShowerLabel);
 
-   // Loop over nuSlice PFPs to count tracks and showers
-   /*for (const art::Ptr<recob::PFParticle>& nuSlicePFP : nuSlicePFPs) {
-	// Only interested in neutrino children	
-	std::cout<<"nuSlicePFP Parent = "<<nuSlicePFP->Parent()<<" and nuID = "<<nuID<<std::endl;
-	if (nuSlicePFP->Parent() != static_cast<long unsigned int>(nuID)){
-		std::cout<<"skipping this slicePFP (reason: not a neutrino child)"<<std::endl;
-		continue;
-	}
+   constexpr bool rollupUnsavedIDs = true;
 
-	// Get pfp meta data
-	std::vector<art::Ptr<larpandoraobj::PFParticleMetadata>> pfpMetadataVec = pfpMetadataAssoc.at(nuSlicePFP.key());
+    for (const art::Ptr<recob::Slice>& slice : sliceVector)
+    {
+        const bool isNuSlice = (nuSliceKey >= 0 && static_cast<int>(slice.key()) == nuSliceKey);
+        const auto slicePFPs = slicePFPAssoc.at(slice.key());
 
-	float trackScore = -1.0;
+        for (const art::Ptr<recob::PFParticle>& pfp : slicePFPs)
+        {
+            // ------------------------------------------------
+            // Basic PFP information
+            // ------------------------------------------------
 
-	if (pfpMetadatVec.empty()){
-		std::cerr<<"No metadata found for PFParticle with key "<<nuSlicePFP.key()<<std::endl;
-	}
+            fPfpKey.push_back(pfp.key());
+            fPfpSelfID.push_back(pfp->Self());
+            fPfpParentID.push_back(pfp->Parent());
+            fPfpRecoPDG.push_back(pfp->PdgCode());
+            fPfpSliceKey.push_back(slice.key());
+            fPfpIsNuSlice.push_back(isNuSlice);
+            fPfpIsPrimary.push_back(pfp->IsPrimary());
+            fPfpNPrimaryChildren.push_back(pfp->NumDaughters());
 
-	for (const auto& metadata : pfpMetadataVec){
-		const auto& propertiesMap = metadata->GetPropertiesMap();
+            // ------------------------------------------------
+            // TrackScore
+            // ------------------------------------------------
 
-		if (propertiesMap.find("TrackScore") != propertiesMap.end()){
-			trackScore = propertiesMap.at("TrackScore");
-			fTrackScores.push_back(trackScore);
-			std::cout<<"Found track score for PFParticle: "<<trackScore<<std::endl;
-		}
+            const float trackScore = GetPFPTrackScore(pfp, pfpMetadataAssoc);
 
-		else {
-			std::cerr<<"No metadata found for PFParticle with key "<<nuSlicePFP.key()<<std::endl;
-		}
+            fPfpTrackScore.push_back(trackScore);
+            fPfpHasTrackScore.push_back(trackScore > -9990.f);
 
-	}
+            // ------------------------------------------------
+            // Reco associations
+            // ------------------------------------------------
 
-	if (trackScore > 0.5){
-		fTrackCount++;
-		std::cout<<"trackScore > 0.5, +1 to tracks, nTracks = "<<fTrackCount<<std::endl;
-	}
+            const auto tracks = pfpTrackAssoc.at(pfp.key());
+            const auto showers = pfpShowerAssoc.at(pfp.key());
+            const auto vertices = pfpVertexAssoc.at(pfp.key());
 
-	else{
-		fShowerCount++;
-		std::cout<<"trackScore < 0.5, +1 to showers, nShowers = "<<fShowerCount<<std::endl;
+            fPfpNTracks.push_back(tracks.size());
+            fPfpNShowers.push_back(showers.size());
+            fPfpNVertices.push_back(vertices.size());
 
-	}
-   }*/
+            // ------------------------------------------------
+            // Track interpretation
+            // ------------------------------------------------
 
-   for (const art::Ptr<recob::PFParticle>& nuSlicePFP : nuSlicePFPs) {
-	// Only interested in neutrino children
-	std::cout<<"nuSlicePFP Parent = "<<nuSlicePFP->Parent()<<" and nuID = "<<nuID<<std::endl;
-	std::cout<<"nuSlicePFP IsPrimary = "<<nuSlicePFP->IsPrimary()<<std::endl;
-	if (nuSlicePFP->Parent() != static_cast<long unsigned int>(nuID)){
-		std::cout<<"skipping this slicePFP (reason: not a neutrino child)"<<std::endl;
-		continue;
-	}
+            const TrackRecoInfo trackInfo = GetTrackRecoInfo(tracks);
 
-	// Get tracks associated with this particle
-	
-	std::vector<art::Ptr<recob::Track>> tracks = pfpTrackAssoc.at(nuSlicePFP.key());
-	std::vector<art::Ptr<recob::Shower>> showers = pfpShowerAssoc.at(nuSlicePFP.key());
+            fPfpHasTrack.push_back(trackInfo.valid);
+            fPfpHasUniqueTrack.push_back(trackInfo.uniqueTrack);
+            fPfpTrackID.push_back(trackInfo.id);
+            fPfpTrackLength.push_back(trackInfo.length);
 
-	std::cout<<"tracks size = "<<tracks.size()<<", showers size = "<<showers.size()<<std::endl; 
-	// There should only be 0 or 1 tracks / showers associated with a PFP
-	if (tracks.size() != 1 && showers.size() != 1){
-		std::cout<<"Skipping this slicePFP (reason: tracks.size() != 1 and showers.size() != 1)"<<std::endl;
-		continue;
-	}
+            fPfpTrackStartX.push_back(trackInfo.startX);
+            fPfpTrackStartY.push_back(trackInfo.startY);
+            fPfpTrackStartZ.push_back(trackInfo.startZ);
+            fPfpTrackEndX.push_back(trackInfo.endX);
+            fPfpTrackEndY.push_back(trackInfo.endY);
+            fPfpTrackEndZ.push_back(trackInfo.endZ);
+            fPfpTrackStartDirX.push_back(trackInfo.startDirX);
+            fPfpTrackStartDirY.push_back(trackInfo.startDirY);
+            fPfpTrackStartDirZ.push_back(trackInfo.startDirZ);
+            fPfpTrackEndDirX.push_back(trackInfo.endDirX);
+            fPfpTrackEndDirY.push_back(trackInfo.endDirY);
+            fPfpTrackEndDirZ.push_back(trackInfo.endDirZ);
+            fPfpTrackTheta.push_back(trackInfo.theta);
+            fPfpTrackPhi.push_back(trackInfo.phi);
 
-	// Get PFPs associated with track
-	//std::vector<art::Ptr<recob::PFParticle>> trackPFPs = trackToPFPAssoc.at(track.key());
-	//art::Ptr<recob::PFParticle> trackPFP = trackPFPs.front();
-	//std::vector<art::Ptr<larpandoraobj::PFParticleMetadata>> trackMetadataVec = pfpMetadataAssoc.at(trackPFP.key());
-	
-	// Get PFP Metadata
-	std::vector<art::Ptr<larpandoraobj::PFParticleMetadata>> pfpMetadataVec = pfpMetadataAssoc.at(nuSlicePFP.key());
-	float trackScore = -1.0;
-	//if (trackMetadataVec.empty()){
-	//	std::cerr<<"No meta found for track with ID = "<<track->ID()<<std::endl;
-	//}
-	
-	if (pfpMetadataVec.empty()){
-		std::cerr<<"No metadata found for PFParticle with key "<<nuSlicePFP.key()<<std::endl;
-	}
+            // ------------------------------------------------
+            // Shower interpretation
+            // ------------------------------------------------
 
-	for (const auto& metadata : pfpMetadataVec) { // find trackScore in PFP metadata
+            const ShowerRecoInfo showerInfo = GetShowerRecoInfo(showers);
 
-		const auto& propertiesMap = metadata->GetPropertiesMap();
-		//std::cout<<"PFParticle Metadata Properties (ID )"<< track->ID()<<"):\n"<<std::endl;
-		//for (const auto& [propertyName, propertyValue] : propertiesMap){
-		//	std::cout<<""<<propertyName<<" = "<<propertyValue<<std::endl;
-		//}
+            fPfpHasShower.push_back(showerInfo.valid);
+            fPfpHasUniqueShower.push_back(showerInfo.uniqueShower);
+            fPfpShowerID.push_back(showerInfo.id);
+            fPfpShowerLength.push_back(showerInfo.length);
 
-		if (propertiesMap.find("TrackScore") != propertiesMap.end()){
-			trackScore = propertiesMap.at("TrackScore");
-			fTrackScores.push_back(trackScore);
-			std::cout<<"Found track score for PFParticle: "<<trackScore<<std::endl;
-		}
+            fPfpShowerStartX.push_back(showerInfo.startX);
+            fPfpShowerStartY.push_back(showerInfo.startY);
+            fPfpShowerStartZ.push_back(showerInfo.startZ);
+            fPfpShowerDirX.push_back(showerInfo.dirX);
+            fPfpShowerDirY.push_back(showerInfo.dirY);
+            fPfpShowerDirZ.push_back(showerInfo.dirZ);
 
-		else {
-			std::cerr<<"No metadata found for PFParticle with key "<<nuSlicePFP.key()<<std::endl;
-		}
+            // ------------------------------------------------
+            // Vertex interpretation
+            // ------------------------------------------------
 
-	}
+            fPfpHasVertex.push_back(!vertices.empty());
+            fPfpHasUniqueVertex.push_back(vertices.size() == 1);
 
-	// Classify PFP as track or shower with trackScore
-	if (trackScore > 0.5 && tracks.size() == 1){
-		fTrackCount++;
-		std::cout<<"trackScore > 0.5, +1 to tracks, nTracks = "<<fTrackCount<<std::endl;
+            if (vertices.size() == 1){
+                const auto& vertex = vertices.front();
+                const auto& pos = vertex->position();
 
-	 	art::Ptr<recob::Track> track = tracks.at(0);
-		float trackLength = track->Length();
-		auto const& trackStart = track->Vertex();
-		auto const& trackEnd = track->End();
-		auto const& trackStartDir = track->StartDirection();
-		auto const& trackEndDir = track->EndDirection();
-		auto const& trackVertexDir = track->VertexDirection();
-		float trackTheta = track->Theta();
-		float trackPhi = track->Phi();
+                float x = pos.X();
+                float y = pos.Y();
+                float z = pos.Z();
+                fPfpVertexX.push_back(x);
+                fPfpVertexY.push_back(y);
+                fPfpVertexZ.push_back(z);
+            }
+            else{
+                fPfpVertexX.push_back(-9999.f);
+                fPfpVertexY.push_back(-9999.f);
+                fPfpVertexZ.push_back(-9999.f);
+            }
+            
+            // ------------------------------------------------
+            // Truth match THIS PFP
+            // ------------------------------------------------
 
-		TVector3 trackStartPos(trackStart.X(), trackStart.Y(), trackStart.Z());
-		TVector3 trackEndPos(trackEnd.X(), trackEnd.Y(), trackEnd.Z());
+            PFPTruthMatch match;
 
-		float distanceToVertex = -9999.0f;
-		if (fFoundRecoVertex){
-			distanceToVertex = (trackStartPos - fRecoVertex).Mag();
-		}
+            // get vector of pfpHits from helper function
+            const std::vector<art::Ptr<recob::Hit>> pfpHits = getPFPHits(pfp);
 
-		fTrackLengths.push_back(trackLength);
-		fTrackStartPositionX.push_back(trackStart.X());
-		fTrackStartPositionY.push_back(trackStart.Y());
-		fTrackStartPositionZ.push_back(trackStart.Z());
-		fTrackEndPositionX.push_back(trackEnd.X());
-		fTrackEndPositionY.push_back(trackEnd.Y());
-		fTrackEndPositionZ.push_back(trackEnd.Z());
-		fTrackStartDirX.push_back(trackStartDir.X());
-		fTrackStartDirY.push_back(trackStartDir.Y());
-		fTrackStartDirZ.push_back(trackStartDir.Z());
-		fTrackEndDirX.push_back(trackEndDir.X());
-		fTrackEndDirY.push_back(trackEndDir.Y());
-		fTrackEndDirZ.push_back(trackEndDir.Z());
-		fTrackVertexDirX.push_back(trackVertexDir.X());
-		fTrackVertexDirY.push_back(trackVertexDir.Y());
-		fTrackVertexDirZ.push_back(trackVertexDir.Z());
-		fTrackTheta.push_back(trackTheta);
-		fTrackPhi.push_back(trackPhi);
-		fDistanceToRecoVertex.push_back(distanceToVertex);
-	}
-	else if (trackScore < 0.5 && showers.size() == 1) {
-	    fShowerCount++;
-	    std::cout<<"trackScore < 0.5, +1 to showers, nShowers = "<<fShowerCount<<std::endl;
-	    art::Ptr<recob::Shower> shower = showers.at(0);
-	    float showerLength = shower->Length();
-	    auto const& showerStart = shower->ShowerStart();
-	    auto const& showerDir = shower->Direction();
-	    TVector3 showerStartPos(showerStart.X(), showerStart.Y(), showerStart.Z());
+            // Always store one value per selected PFP so the vectors stay aligned.
 
-	    float distanceToVertex = -9999.0f;
-	    if (fFoundRecoVertex) {
-		distanceToVertex = (showerStartPos - fRecoVertex).Mag();
-	    }
+            if (!pfpHits.empty()) {
+                const TruthMatchUtils::G4ID g4ID = TruthMatchUtils::TrueParticleIDFromTotalRecoHits(clockData, pfpHits, rollupUnsavedIDs);
 
-	    fShowerLengths.push_back(showerLength);
-	    /*fTrackStartPositionX.push_back(showerStart.X());
-	    fTrackStartPositionY.push_back(showerStart.Y());
-	    fTrackStartPositionZ.push_back(showerStart.Z()); */
-	    fShowerStartPositionX.push_back(showerStart.X());
-	    fShowerStartPositionY.push_back(showerStart.Y());
-	    fShowerStartPositionZ.push_back(showerStart.Z());
-	    fShowerDirX.push_back(showerDir.X());
-	    fShowerDirY.push_back(showerDir.Y());
-	    fShowerDirZ.push_back(showerDir.Z());
-	    fDistanceToRecoVertex.push_back(distanceToVertex);
-	  }
-   }
+                if (TruthMatchUtils::Valid(g4ID)) {
+                    const simb::MCParticle* trueParticle = particleInventory->TrackIdToParticle_P(g4ID);
+
+                    if(trueParticle){
+                        match.valid = true;
+                        match.trackID = trueParticle->TrackId();
+                        match.pdg = trueParticle->PdgCode();
+
+                         // Hit-count purity consistent with TruthMatchUtils.
+
+                        std::size_t nMatchedHits = 0;
+
+                        for (const art::Ptr<recob::Hit>& hit : pfpHits) {
+
+                            const TruthMatchUtils::G4ID hitG4ID = TruthMatchUtils::TrueParticleID(clockData, hit, rollupUnsavedIDs);
+
+                            if (TruthMatchUtils::Valid(hitG4ID) && hitG4ID == g4ID) {
+                            ++nMatchedHits;
+                            }
+                        }
+                        
+                        match.nMatchedHits = nMatchedHits;
+                        // How many hits match out of the total number of hits associated with this PFP?
+                        match.purity = static_cast<float>(nMatchedHits) / static_cast<float>(pfpHits.size());
+                        
+                    }
+                }
+            }
+
+            match.nHits = static_cast<int>(pfpHits.size());
+
+            fPfpTrueTrackID.push_back(match.trackID);
+            fPfpTruePDG.push_back(match.pdg);
+            fPfpNHits.push_back(match.nHits);
+            fPfpNMatchedHits.push_back(match.nMatchedHits);
+            fPfpTruthPurity.push_back(match.purity);
+
+        } // end loop over PFPs in slice 
+    } // end loop over slices
 
 
 // Tracks reco -> truth matching
@@ -1116,88 +1318,29 @@ for (size_t i_hit = 0; i_hit < showerHits.size(); i_hit++) { // loop over shower
         }
 }*/
 
-
-// PFP Truth Matching (rewrite from above where it's separated by track/shower)
-// USE TRUTHMATCHUTILS.h that DOM WROTE INSTEAD OF THE ABOVE GARBAGE
-
-
-std::cout<<"========= PFP Truth Matching =========="<<std::endl;
-
-fTruePfpPDG.clear();
-
-constexpr bool rollupUnsavedIDs = true;
-
-// loop over PFPs in nuSlice
-for (const art::Ptr<recob::PFParticle>& pfp : nuSlicePFPs) {
-
-    // Only truth-match direct neutrino children.
-    if (pfp->Parent() != static_cast<std::size_t>(nuID)) {
-        continue;
-    }
-
-    // get vector of pfpHits from helper function
-    const std::vector<art::Ptr<recob::Hit>> pfpHits = getPFPHits(pfp);
-
-    // Always store one value per selected PFP so the vectors stay aligned.
-    int truePDG = -9999;
-    int trueTrackID = -9999;
-    float hitMatchFraction = -1.0f;
-
-    if (pfpHits.empty()) {
-        std::cerr<< "No hits found for PFP key "<< pfp.key()<< std::endl;
-
-        fTruePfpPDG.push_back(truePDG);
-        continue;
-    }
-
-    const TruthMatchUtils::G4ID g4ID = TruthMatchUtils::TrueParticleIDFromTotalRecoHits(clockData, pfpHits, rollupUnsavedIDs);
-
-    if (!TruthMatchUtils::Valid(g4ID)) {
-        std::cerr<< "No valid truth match for PFP key "<< pfp.key()<< ", containing "<< pfpHits.size()<< " hits"<< std::endl;
-
-        fTruePfpPDG.push_back(truePDG);
-        continue;
-    }
-
-    const simb::MCParticle* trueParticle = particleInventory->TrackIdToParticle_P(g4ID);
-
-    if (!trueParticle) {
-        std::cerr<< "No saved MCParticle found for G4 ID "<< g4ID<< std::endl;
-
-        fTruePfpPDG.push_back(truePDG);
-        continue;
-    }
-
-    truePDG = trueParticle->PdgCode();
-    trueTrackID = trueParticle->TrackId();
-
-    // Optional hit-count purity consistent with TruthMatchUtils.
-
-    std::size_t nMatchedHits = 0;
-
-    for (const art::Ptr<recob::Hit>& hit : pfpHits) {
-
-        const TruthMatchUtils::G4ID hitG4ID = TruthMatchUtils::TrueParticleID(clockData, hit, rollupUnsavedIDs);
-
-        if (TruthMatchUtils::Valid(hitG4ID) && hitG4ID == g4ID) {
-            ++nMatchedHits;
-        }
-    }
-
-    // How many hits match out of the total number of hits associated with this PFP?
-    hitMatchFraction = static_cast<float>(nMatchedHits) / static_cast<float>(pfpHits.size());
-    fTruePfpPDG.push_back(truePDG);
-
-    std::cout<< "PFP key: " << pfp.key()<< ", number of hits: " << pfpHits.size()<< ", true PDG: " << truePDG<< ", true TrackId: " << trueTrackID
-        << ", matched hit fraction: " << hitMatchFraction
-        << std::endl;
-}
-
 // ============================================================================
 // MC TRUTH PARAMETERS
 // ============================================================================
 
 std::cout<< "------------ MC TRUTH Parameters ----------------"<<std::endl;
+
+art::Handle<std::vector<simb::MCTruth> > mctruthListHandle;
+std::vector<art::Ptr<simb::MCTruth> > mclist;
+if (evt.getByLabel(fGenieGenModuleLabel,mctruthListHandle)){
+      art::fill_ptr_vector(mclist, mctruthListHandle);
+}
+
+art::FindManyP<simb::MCParticle> fmpart( mctruthListHandle, evt, "largeant" );
+
+// corsika MC truth information
+
+/*art::ValidHandle<std::vector<simb::MCTruth>> cosmicMCTruthListHandle = evt.getValidHandle<std::vector<simb::MCTruth>>("corsika");
+std::vector<art::Ptr<simb::MCTruth>> cosmicMCTruthVector;
+if (cosmicMCTruthListHandle.isValid()){
+    art::fill_ptr_vector(cosmicMCTruthVector, cosmicMCTruthListHandle);
+}
+
+art::FindManyP<simb::MCParticle> cosmicGeantAssoc(cosmicMCTruthListHandle, evt, "largeant");*/
 
 ++nTotEvents;
 
@@ -1236,23 +1379,14 @@ for (size_t i_truth = 0; i_truth < mclist.size(); ++i_truth)
         << "\n========== MCTruth " << i_truth << " =========="<< std::endl;
 
     std::cout<< "MCTruth Origin: "<<origin<< std::endl;
-
     std::cout<< "Neutrino PDG: "<< nu.PdgCode()<< std::endl;
-
     std::cout<< "Interaction mode: "<< neutrino.Mode()<< std::endl;
-
     std::cout<< "Interaction type: "<< neutrino.InteractionType()<< std::endl;
-
     std::cout<< "CCNC: "<< neutrino.CCNC()<< std::endl;
-
     std::cout<< "Neutrino energy: "<< nu.E()<< std::endl;
-
     std::cout<< "Neutrino vertex: ("<< nu.Vx() << ", "<< nu.Vy() << ", "<< nu.Vz() << ")"<< std::endl;
-
     std::cout<< "Target: "<< neutrino.Target()<< std::endl;
-
     std::cout<< "Generator neutrino TrackID: "<< nu.TrackId()<< std::endl;
-
 
     trueOrigin.push_back(origin);
     trueW.push_back(neutrino.W());
@@ -1271,7 +1405,6 @@ for (size_t i_truth = 0; i_truth < mclist.size(); ++i_truth)
     trueNuVtxX.push_back(nu.Vx());
     trueNuVtxY.push_back(nu.Vy());
     trueNuVtxZ.push_back(nu.Vz());
-
 
     // -----------------------------------------------------------------------
     // All simulated particles associated with THIS MCTruth interaction.
@@ -1487,19 +1620,12 @@ for (size_t i_truth = 0; i_truth < mclist.size(); ++i_truth)
         // ===================================================================
 
         truePDG.push_back(particle->PdgCode());
-
         trueTrackID.push_back(trackID);
-
         trueMotherTrackID.push_back(motherTrackID);
-
         trueMotherPDG.push_back(motherPDGCode);
-
         trueMCTruthIndex.push_back(static_cast<int>(i_truth));
-
         trueGeneration.push_back(generation);
-
         trueIsPrimary.push_back(generation == 0);
-
         trueIsDecayProduct.push_back(generation > 0);
 
         // -------------------------------------------------------------------
@@ -1694,17 +1820,54 @@ for (size_t i_truth = 0; i_truth < mclist.size(); ++i_truth)
         << " primaries)"
         << std::endl;
 }
-   
 
-double multiRatio = double(nMultiEvents) / double(nTotEvents);
-double singleRatio = double(nSingleEvents) / double(nTotEvents);
-double sanityCheck = multiRatio + singleRatio;
-std::cout<<"num of multi int events = "<<nMultiEvents<<std::endl;
-std::cout<<"num of single int events = "<<nSingleEvents<<std::endl;
-std::cout<<"num of total events = "<<nTotEvents<<std::endl;
-std::cout<<"running ratio of multi int events = "<<multiRatio<<std::endl;
-std::cout<<"running ratio of single int events = "<<singleRatio<<std::endl;
-std::cout<<"sanity check 1 = "<<sanityCheck<<std::endl;
+// ===========================================================================
+// Truth Matching: True MCParticles -> Reconstructed PFPs
+// ===========================================================================
+for (size_t iTrue = 0; iTrue < trueTrackID.size(); ++iTrue)
+{
+    int nMatchedPfps = 0;
+    int bestPfpIndex = -1;
+    int bestNMatchedHits = -1;
+
+    bool reconstructedInDefaultNuSlice = false;
+
+    for (size_t iPfp = 0; iPfp < fPfpTrueTrackID.size(); ++iPfp){
+        if (fPfpTrueTrackID.at(iPfp) != trueTrackID.at(iTrue)) {
+            continue;
+        }
+
+        ++nMatchedPfps;
+
+        if (fPfpIsNuSlice.at(iPfp)) {
+            reconstructedInDefaultNuSlice = true;
+        }
+
+        if (fPfpNMatchedHits.at(iPfp) > bestNMatchedHits)
+        {
+            bestNMatchedHits = fPfpNMatchedHits.at(iPfp);
+            bestPfpIndex = static_cast<int>(iPfp);
+        }
+    }
+
+    fTrueIsReconstructed.push_back(nMatchedPfps > 0);
+    fTrueIsReconstructedInNuSlice.push_back(reconstructedInDefaultNuSlice);
+    fTrueNMatchedPfps.push_back(nMatchedPfps);
+    fTrueBestRecoPfpIdx.push_back(bestPfpIndex);
+
+    if (bestPfpIndex >= 0)
+    {
+        fTrueBestRecoTrackScore.push_back(fPfpTrackScore.at(bestPfpIndex));
+        fTrueBestRecoHasTrack.push_back(fPfpHasTrack.at(bestPfpIndex));
+        fTrueBestRecoHasShower.push_back(fPfpHasShower.at(bestPfpIndex));
+    }
+    else
+    {
+        fTrueBestRecoTrackScore.push_back(-9999.f);
+        fTrueBestRecoHasTrack.push_back(0);
+        fTrueBestRecoHasShower.push_back(0);
+    }
+}
 
 
 //std::cin.get();
@@ -1731,6 +1894,26 @@ std::cout<<"sanity check 1 = "<<sanityCheck<<std::endl;
 */
 /// std::cout<<nuSliceKey<<std::endl;
 
+// DIAGNOSTIC OUT
+const size_t nPfp = fPfpKey.size();
+
+std::cout
+    << "\n========== PFP VECTOR SANITY ==========\n"
+    << "pfpKey:              " << nPfp << "\n"
+    << "pfpTrackScore:       " << fPfpTrackScore.size() << "\n"
+    << "pfpNTracks:          " << fPfpNTracks.size() << "\n"
+    << "pfpHasTrack:         " << fPfpHasTrack.size() << "\n"
+    << "pfpHasUniqueTrack:   " << fPfpHasUniqueTrack.size() << "\n"
+    << "pfpTrackLength:      " << fPfpTrackLength.size() << "\n"
+    << "pfpNShowers:         " << fPfpNShowers.size() << "\n"
+    << "pfpHasShower:        " << fPfpHasShower.size() << "\n"
+    << "pfpHasUniqueShower:  " << fPfpHasUniqueShower.size() << "\n"
+    << "pfpShowerLength:     " << fPfpShowerLength.size() << "\n"
+    << "pfpNVertices:        " << fPfpNVertices.size() << "\n"
+    << "pfpVertexX:          " << fPfpVertexX.size() << "\n"
+    << "pfpTrueTrackID:      " << fPfpTrueTrackID.size() << "\n"
+    << "pfpTruthPurity:      " << fPfpTruthPurity.size() << "\n"
+    << "=======================================\n";
 
 fTree->Fill();
  
@@ -1864,8 +2047,8 @@ void hyperon::AnalyzeEvents::beginJob()
   fTree->Branch("trueNSavedParticles", &trueNSavedParticles);
   fTree->Branch("trueParticleStartIndex", &trueParticleStartIndex);
 
-
   // reco parameters
+  fTree->Branch("sliceKey", &fSliceKey);
   fTree->Branch("sliceID", &fSliceID);
   fTree->Branch("sliceNuScore", &fSliceNuScore);
   fTree->Branch("sliceTotalHits", &fSliceTotalHits);
@@ -1875,56 +2058,76 @@ void hyperon::AnalyzeEvents::beginJob()
   fTree->Branch("sliceVtxX", &fSliceVtxX);
   fTree->Branch("sliceVtxY", &fSliceVtxY);
   fTree->Branch("sliceVtxZ", &fSliceVtxZ);
-  fTree->Branch("nPFParticles", &fNPrimaryParticles);
-  fTree->Branch("nPrimaryChildren", &fNPrimaryChildren);
-  fTree->Branch("trackCount", &fTrackCount);
-  fTree->Branch("showerCount", &fShowerCount);
-  fTree->Branch("TrackIDs", &fTrackIDs);
-  fTree->Branch("trackLengths", &fTrackLengths);
-  fTree->Branch("RecoVertexX", &fRecoVertexX);
-  fTree->Branch("RecoVertexY", &fRecoVertexY);
-  fTree->Branch("RecoVertexZ", &fRecoVertexZ);
-  fTree->Branch("DistanceToRecoVertex", &fDistanceToRecoVertex);
+
+  fTree->Branch("pfpKey", &fPfpKey);
+    fTree->Branch("pfpSelfID", &fPfpSelfID);
+    fTree->Branch("pfpParentID", &fPfpParentID);
+    fTree->Branch("pfpRecoPDG", &fPfpRecoPDG);
+    fTree->Branch("pfpSliceKey", &fPfpSliceKey);
+    fTree->Branch("pfpIsNuSlice", &fPfpIsNuSlice);
+    fTree->Branch("pfpIsPrimary", &fPfpIsPrimary);
+    fTree->Branch("pfpNPrimaryChildren", &fPfpNPrimaryChildren);
+    fTree->Branch("pfpTrackScore", &fPfpTrackScore);
+    fTree->Branch("pfpHasTrackScore", &fPfpHasTrackScore);
+    fTree->Branch("pfpNTracks", &fPfpNTracks);
+    fTree->Branch("pfpNShowers", &fPfpNShowers);
+    fTree->Branch("pfpHasTrack", &fPfpHasTrack);
+    fTree->Branch("pfpHasShower", &fPfpHasShower);
+    fTree->Branch("pfpHasUniqueTrack", &fPfpHasUniqueTrack);
+    fTree->Branch("pfpHasUniqueShower", &fPfpHasUniqueShower);
+    fTree->Branch("pfpNVertices", &fPfpNVertices);
+    fTree->Branch("pfpHasVertex", &fPfpHasVertex);
+    fTree->Branch("pfpHasUniqueVertex", &fPfpHasUniqueVertex);
+    fTree->Branch("pfpTrackID", &fPfpTrackID);
+  fTree->Branch("pfpTrackLength", &fPfpTrackLength);
+  fTree->Branch("pfpTrackStartX", &fPfpTrackStartX);
+  fTree->Branch("pfpTrackStartY", &fPfpTrackStartY);
+  fTree->Branch("pfpTrackStartZ", &fPfpTrackStartZ);
+  fTree->Branch("pfpTrackEndX", &fPfpTrackEndX);
+  fTree->Branch("pfpTrackEndY", &fPfpTrackEndY);
+  fTree->Branch("pfpTrackEndZ", &fPfpTrackEndZ);
+  fTree->Branch("pfpTrackStartDirX", &fPfpTrackStartDirX);
+  fTree->Branch("pfpTrackStartDirY", &fPfpTrackStartDirY);
+  fTree->Branch("pfpTrackStartDirZ", &fPfpTrackStartDirZ);
+  fTree->Branch("pfpTrackEndDirX", &fPfpTrackEndDirX);
+  fTree->Branch("pfpTrackEndDirY", &fPfpTrackEndDirY);
+  fTree->Branch("pfpTrackEndDirZ", &fPfpTrackEndDirZ);
+  fTree->Branch("pfpTrackVertexDirX", &fPfpTrackVertexDirX);
+  fTree->Branch("pfpTrackVertexDirY", &fPfpTrackVertexDirY);
+  fTree->Branch("pfpTrackVertexDirZ", &fPfpTrackVertexDirZ);
+  fTree->Branch("pfpTrackTheta", &fPfpTrackTheta);
+  fTree->Branch("pfpTrackPhi", &fPfpTrackPhi);
+  fTree->Branch("pfpShowerID", &fPfpShowerID);
+  fTree->Branch("pfpShowerLength", &fPfpShowerLength);
+  fTree->Branch("pfpShowerStartX", &fPfpShowerStartX);
+  fTree->Branch("pfpShowerStartY", &fPfpShowerStartY);
+  fTree->Branch("pfpShowerStartZ", &fPfpShowerStartZ);
+  fTree->Branch("pfpShowerDirX", &fPfpShowerDirX);
+  fTree->Branch("pfpShowerDirY", &fPfpShowerDirY);
+  fTree->Branch("pfpShowerDirZ", &fPfpShowerDirZ);
+  fTree->Branch("pfpVertexX", &fPfpVertexX);
+  fTree->Branch("pfpVertexY", &fPfpVertexY);
+  fTree->Branch("pfpVertexZ", &fPfpVertexZ);
+  fTree->Branch("pfpTrueTrackID", &fPfpTrueTrackID);
+  fTree->Branch("pfpTruePDG", &fPfpTruePDG);
+  fTree->Branch("pfpNHits", &fPfpNHits);
+  fTree->Branch("pfpNMatchedHits", &fPfpNMatchedHits);
+  fTree->Branch("pfpTruthPurity", &fPfpTruthPurity);
+  fTree->Branch("trueIsReconstructed", &fTrueIsReconstructed);
+  fTree->Branch("trueIsReconstructedInNuSlice", &fTrueIsReconstructedInNuSlice);
+  fTree->Branch("trueNMatchedPfps", &fTrueNMatchedPfps);
+  fTree->Branch("trueBestRecoPfpIdx", &fTrueBestRecoPfpIdx);
+  fTree->Branch("trueBestRecoTrackScore", &fTrueBestRecoTrackScore);
+  fTree->Branch("trueBestRecoHasTrack", &fTrueBestRecoHasTrack);
+  fTree->Branch("trueBestRecoHasShower", &fTrueBestRecoHasShower);
+
   fTree->Branch("nuScores", &fnuScore);
-  fTree->Branch("trackScores", &fTrackScores);
-  fTree->Branch("muonTrackScores", &fMuonTrackScores);
-  fTree->Branch("protonTrackScores", &fProtonTrackScores);
-  fTree->Branch("pionTrackScores", &fPionTrackScores);
   fTree->Branch("NeutrinoNuScores", &fNeutrinoNuScores);
-  fTree->Branch("trackStartPositionX", &fTrackStartPositionX);
-  fTree->Branch("trackStartPositionY", &fTrackStartPositionY);
-  fTree->Branch("trackStartPositionZ", &fTrackStartPositionZ);
-  fTree->Branch("trackEndPositionX", &fTrackEndPositionX);
-  fTree->Branch("trackEndPositionY", &fTrackEndPositionY);
-  fTree->Branch("trackEndPositionZ", &fTrackEndPositionZ);
-  fTree->Branch("trackStartDirX", &fTrackStartDirX);
-  fTree->Branch("trackStartDirY", &fTrackStartDirY);
-  fTree->Branch("trackStartDirZ", &fTrackStartDirZ);
-  fTree->Branch("trackEndDirX", &fTrackEndDirX);
-  fTree->Branch("trackEndDirY", &fTrackEndDirY);
-  fTree->Branch("trackEndDirZ", &fTrackEndDirZ);
-  fTree->Branch("trackVertexDirX", &fTrackVertexDirX);
-  fTree->Branch("trackVertexDirY", &fTrackVertexDirY);
-  fTree->Branch("trackVertexDirZ", &fTrackVertexDirZ);
-  fTree->Branch("trackTheta", &fTrackTheta);
-  fTree->Branch("trackPhi", &fTrackPhi);
-  fTree->Branch("showerLengths", &fShowerLengths);
-  fTree->Branch("showerStartPositionX", &fShowerStartPositionX);
-  fTree->Branch("showerStartPositionY", &fShowerStartPositionY);
-  fTree->Branch("showerStartPositionZ", &fShowerStartPositionZ);
-  fTree->Branch("showerDirX", &fShowerDirX);
-  fTree->Branch("showerDirY", &fShowerDirY);
-  fTree->Branch("showerDirZ", &fShowerDirZ);
 
   fSubRunTree = tfs->make<TTree> ("subRunTree", "SubRun Level Info TTree");
   fSubRunTree->Branch("run", &fRun_sr);
   fSubRunTree->Branch("subRun", &fSubRun_sr);
   fSubRunTree->Branch("pot", &fPOT);
-
-  // truth matching
-  //fTree->Branch("pfpTrackPDG", &fTrueTrackPDG);
-  //fTree->Branch("pfpShowerPDG", &fTrueShowerPDG);
-  fTree->Branch("pfpPDG", &fTruePfpPDG);
 
   //Histograms
 }

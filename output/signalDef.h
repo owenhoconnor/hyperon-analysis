@@ -1,8 +1,8 @@
 //////////////////////////////////////////////////////////
 // This class has been automatically generated on
-// Wed Aug 12 18:10:46 2026 by ROOT version 6.40.02
+// Tue Sep  8 11:13:28 2026 by ROOT version 6.40.02
 // from TTree tree/Output TTree
-// found on file: /data/ooconnor/sbnd/hyperons/analyzer_output/new_logic/analyzer_output_new_2026_all.root
+// found on file: /data/ooconnor/sbnd/hyperons/analyzer_output/merged_anaOut_hyperons.root
 //////////////////////////////////////////////////////////
 
 #ifndef signalDef_h
@@ -28,19 +28,19 @@ public :
    UInt_t          eventID;
    Int_t           run;
    Int_t           subrun;
-   vector<int> *trueOrigin;
-   vector<float> *trueW;
-   vector<float> *trueX;
-   vector<float> *trueY;
-   vector<float> *trueQSqr;
-   vector<float> *truePt;
-   vector<float> *trueTheta;
+   vector<int>     *trueOrigin;
+   vector<float>   *trueW;
+   vector<float>   *trueX;
+   vector<float>   *trueY;
+   vector<float>   *trueQSqr;
+   vector<float>   *truePt;
+   vector<float>   *trueTheta;
    vector<int>     *trueNuPDG;
    vector<int>     *trueNuTrackID;
    vector<float>   *trueNuVtxX;
    vector<float>   *trueNuVtxY;
    vector<float>   *trueNuVtxZ;
-   vector<float>     *trueNuEnergy;
+   vector<float>   *trueNuEnergy;
    vector<int>     *trueCCNC;
    vector<int>     *trueIntMode;
    vector<int>     *trueIntType;
@@ -81,6 +81,7 @@ public :
    vector<int>     *trueNPrimaryParticles;
    vector<int>     *trueNSavedParticles;
    vector<int>     *trueParticleStartIndex;
+   vector<int>     *sliceKey;
    vector<int>     *sliceID;
    vector<float>   *sliceNuScore;
    vector<int>     *sliceTotalHits;
@@ -90,59 +91,81 @@ public :
    vector<float>   *sliceVtxX;
    vector<float>   *sliceVtxY;
    vector<float>   *sliceVtxZ;
-   Int_t           nPFParticles;
-   Int_t           nPrimaryChildren;
-   Int_t           trackCount;
-   Int_t           showerCount;
-   vector<int>     *TrackIDs;
-   vector<float>   *trackLengths;
-   Float_t         RecoVertexX;
-   Float_t         RecoVertexY;
-   Float_t         RecoVertexZ;
-   vector<float>   *DistanceToRecoVertex;
+   vector<int>     *pfpKey;
+   vector<int>     *pfpSelfID;
+   vector<int>     *pfpParentID;
+   vector<int>     *pfpRecoPDG;
+   vector<int>     *pfpSliceKey;
+   vector<int>     *pfpIsNuSlice;
+   vector<int>     *pfpIsPrimary;
+   vector<int>     *pfpNPrimaryChildren;
+   vector<float>   *pfpTrackScore;
+   vector<int>     *pfpHasTrackScore;
+   vector<int>     *pfpNTracks;
+   vector<int>     *pfpNShowers;
+   vector<int>     *pfpHasTrack;
+   vector<int>     *pfpHasShower;
+   vector<int>     *pfpHasUniqueTrack;
+   vector<int>     *pfpHasUniqueShower;
+   vector<int>     *pfpNVertices;
+   vector<int>     *pfpHasVertex;
+   vector<int>     *pfpHasUniqueVertex;
+   vector<int>     *pfpTrackID;
+   vector<float>   *pfpTrackLength;
+   vector<float>   *pfpTrackStartX;
+   vector<float>   *pfpTrackStartY;
+   vector<float>   *pfpTrackStartZ;
+   vector<float>   *pfpTrackEndX;
+   vector<float>   *pfpTrackEndY;
+   vector<float>   *pfpTrackEndZ;
+   vector<float>   *pfpTrackStartDirX;
+   vector<float>   *pfpTrackStartDirY;
+   vector<float>   *pfpTrackStartDirZ;
+   vector<float>   *pfpTrackEndDirX;
+   vector<float>   *pfpTrackEndDirY;
+   vector<float>   *pfpTrackEndDirZ;
+   vector<float>   *pfpTrackVertexDirX;
+   vector<float>   *pfpTrackVertexDirY;
+   vector<float>   *pfpTrackVertexDirZ;
+   vector<float>   *pfpTrackTheta;
+   vector<float>   *pfpTrackPhi;
+   vector<int>     *pfpShowerID;
+   vector<float>   *pfpShowerLength;
+   vector<float>   *pfpShowerStartX;
+   vector<float>   *pfpShowerStartY;
+   vector<float>   *pfpShowerStartZ;
+   vector<float>   *pfpShowerDirX;
+   vector<float>   *pfpShowerDirY;
+   vector<float>   *pfpShowerDirZ;
+   vector<float>   *pfpVertexX;
+   vector<float>   *pfpVertexY;
+   vector<float>   *pfpVertexZ;
+   vector<int>     *pfpTrueTrackID;
+   vector<int>     *pfpTruePDG;
+   vector<int>     *pfpNHits;
+   vector<int>     *pfpNMatchedHits;
+   vector<float>   *pfpTruthPurity;
+   vector<int>     *trueIsReconstructed;
+   vector<int>     *trueIsReconstructedInNuSlice;
+   vector<int>     *trueNMatchedPfps;
+   vector<int>     *trueBestRecoPfpIdx;
+   vector<float>   *trueBestRecoTrackScore;
+   vector<int>     *trueBestRecoHasTrack;
+   vector<int>     *trueBestRecoHasShower;
    vector<float>   *nuScores;
-   vector<float>   *trackScores;
-   vector<float>   *muonTrackScores;
-   vector<float>   *protonTrackScores;
-   vector<float>   *pionTrackScores;
    vector<float>   *NeutrinoNuScores;
-   vector<float>   *trackStartPositionX;
-   vector<float>   *trackStartPositionY;
-   vector<float>   *trackStartPositionZ;
-   vector<float>   *trackEndPositionX;
-   vector<float>   *trackEndPositionY;
-   vector<float>   *trackEndPositionZ;
-   vector<float>   *trackStartDirX;
-   vector<float>   *trackStartDirY;
-   vector<float>   *trackStartDirZ;
-   vector<float>   *trackEndDirX;
-   vector<float>   *trackEndDirY;
-   vector<float>   *trackEndDirZ;
-   vector<float>   *trackVertexDirX;
-   vector<float>   *trackVertexDirY;
-   vector<float>   *trackVertexDirZ;
-   vector<float>   *trackTheta;
-   vector<float>   *trackPhi;
-   vector<float>   *showerLengths;
-   vector<float>   *showerStartPositionX;
-   vector<float>   *showerStartPositionY;
-   vector<float>   *showerStartPositionZ;
-   vector<float>   *showerDirX;
-   vector<float>   *showerDirY;
-   vector<float>   *showerDirZ;
-   vector<int>     *pfpPDG;
 
    // List of branches
    TBranch        *b_eventID;   ///<!
    TBranch        *b_run;   ///<!
    TBranch        *b_subrun;   ///<!
-   TBranch        *b_trueOrigin; ///<!
-   TBranch        *b_trueW;      ///<!
-   TBranch        *b_trueX;      ///<!
-   TBranch        *b_trueY;      ///<!
+   TBranch        *b_trueOrigin;   ///<!
+   TBranch        *b_trueW;   ///<!
+   TBranch        *b_trueX;   ///<!
+   TBranch        *b_trueY;   ///<!
    TBranch        *b_trueQSqr;   ///<!
-   TBranch        *b_truePt;     ///<!
-   TBranch        *b_trueTheta;  ///<!
+   TBranch        *b_truePt;   ///<!
+   TBranch        *b_trueTheta;   ///<!
    TBranch        *b_trueNuPDG;   ///<!
    TBranch        *b_trueNuTrackID;   ///<!
    TBranch        *b_trueNuVtxX;   ///<!
@@ -189,56 +212,79 @@ public :
    TBranch        *b_trueNPrimaryParticles;   ///<!
    TBranch        *b_trueNSavedParticles;   ///<!
    TBranch        *b_trueParticleStartIndex;   ///<!
-   TBranch        *b_sliceID;        ///<!
+   TBranch        *b_sliceKey;   ///<!
+   TBranch        *b_sliceID;   ///<!
    TBranch        *b_sliceNuScore;   ///<!
-   TBranch        *b_sliceTotalHits; ///<!
-   TBranch        *b_sliceTrueNuHits; ///<!
-   TBranch        *b_sliceTrueOrigin; ///<!
-   TBranch        *b_eventTotalTrueNuHits; ///<!
-   TBranch        *b_sliceVtxX;      ///<!
-   TBranch        *b_sliceVtxY;       ///<!
-   TBranch        *b_sliceVtxZ;      ///<!
-   TBranch        *b_nPFParticles;   ///<!
-   TBranch        *b_nPrimaryChildren;   ///<!
-   TBranch        *b_trackCount;   ///<!
-   TBranch        *b_showerCount;   ///<!
-   TBranch        *b_TrackIDs;   ///<!
-   TBranch        *b_trackLengths;   ///<!
-   TBranch        *b_RecoVertexX;   ///<!
-   TBranch        *b_RecoVertexY;   ///<!
-   TBranch        *b_RecoVertexZ;   ///<!
-   TBranch        *b_DistanceToRecoVertex;   ///<!
+   TBranch        *b_sliceTotalHits;   ///<!
+   TBranch        *b_sliceTrueNuHits;   ///<!
+   TBranch        *b_sliceTrueOrigin;   ///<!
+   TBranch        *b_eventTotalTrueNuHits;   ///<!
+   TBranch        *b_sliceVtxX;   ///<!
+   TBranch        *b_sliceVtxY;   ///<!
+   TBranch        *b_sliceVtxZ;   ///<!
+   TBranch        *b_pfpKey;   ///<!
+   TBranch        *b_pfpSelfID;   ///<!
+   TBranch        *b_pfpParentID;   ///<!
+   TBranch        *b_pfpRecoPDG;   ///<!
+   TBranch        *b_pfpSliceKey;   ///<!
+   TBranch        *b_pfpIsNuSlice;   ///<!
+   TBranch        *b_pfpIsPrimary;   ///<!
+   TBranch        *b_pfpNPrimaryChildren;   ///<!
+   TBranch        *b_pfpTrackScore;   ///<!
+   TBranch        *b_pfpHasTrackScore;   ///<!
+   TBranch        *b_pfpNTracks;   ///<!
+   TBranch        *b_pfpNShowers;   ///<!
+   TBranch        *b_pfpHasTrack;   ///<!
+   TBranch        *b_pfpHasShower;   ///<!
+   TBranch        *b_pfpHasUniqueTrack;   ///<!
+   TBranch        *b_pfpHasUniqueShower;   ///<!
+   TBranch        *b_pfpNVertices;   ///<!
+   TBranch        *b_pfpHasVertex;   ///<!
+   TBranch        *b_pfpHasUniqueVertex;   ///<!
+   TBranch        *b_pfpTrackID;   ///<!
+   TBranch        *b_pfpTrackLength;   ///<!
+   TBranch        *b_pfpTrackStartX;   ///<!
+   TBranch        *b_pfpTrackStartY;   ///<!
+   TBranch        *b_pfpTrackStartZ;   ///<!
+   TBranch        *b_pfpTrackEndX;   ///<!
+   TBranch        *b_pfpTrackEndY;   ///<!
+   TBranch        *b_pfpTrackEndZ;   ///<!
+   TBranch        *b_pfpTrackStartDirX;   ///<!
+   TBranch        *b_pfpTrackStartDirY;   ///<!
+   TBranch        *b_pfpTrackStartDirZ;   ///<!
+   TBranch        *b_pfpTrackEndDirX;   ///<!
+   TBranch        *b_pfpTrackEndDirY;   ///<!
+   TBranch        *b_pfpTrackEndDirZ;   ///<!
+   TBranch        *b_pfpTrackVertexDirX;   ///<!
+   TBranch        *b_pfpTrackVertexDirY;   ///<!
+   TBranch        *b_pfpTrackVertexDirZ;   ///<!
+   TBranch        *b_pfpTrackTheta;   ///<!
+   TBranch        *b_pfpTrackPhi;   ///<!
+   TBranch        *b_pfpShowerID;   ///<!
+   TBranch        *b_pfpShowerLength;   ///<!
+   TBranch        *b_pfpShowerStartX;   ///<!
+   TBranch        *b_pfpShowerStartY;   ///<!
+   TBranch        *b_pfpShowerStartZ;   ///<!
+   TBranch        *b_pfpShowerDirX;   ///<!
+   TBranch        *b_pfpShowerDirY;   ///<!
+   TBranch        *b_pfpShowerDirZ;   ///<!
+   TBranch        *b_pfpVertexX;   ///<!
+   TBranch        *b_pfpVertexY;   ///<!
+   TBranch        *b_pfpVertexZ;   ///<!
+   TBranch        *b_pfpTrueTrackID;   ///<!
+   TBranch        *b_pfpTruePDG;   ///<!
+   TBranch        *b_pfpNHits;   ///<!
+   TBranch        *b_pfpNMatchedHits;   ///<!
+   TBranch        *b_pfpTruthPurity;   ///<!
+   TBranch        *b_trueIsReconstructed;   ///<!
+   TBranch        *b_trueIsReconstructedInNuSlice;   ///<!
+   TBranch        *b_trueNMatchedPfps;   ///<!
+   TBranch        *b_trueBestRecoPfpIdx;   ///<!
+   TBranch        *b_trueBestRecoTrackScore;   ///<!
+   TBranch        *b_trueBestRecoHasTrack;   ///<!
+   TBranch        *b_trueBestRecoHasShower;   ///<!
    TBranch        *b_nuScores;   ///<!
-   TBranch        *b_trackScores;   ///<!
-   TBranch        *b_muonTrackScores;   ///<!
-   TBranch        *b_protonTrackScores;   ///<!
-   TBranch        *b_pionTrackScores;   ///<!
    TBranch        *b_NeutrinoNuScores;   ///<!
-   TBranch        *b_trackStartPositionX;   ///<!
-   TBranch        *b_trackStartPositionY;   ///<!
-   TBranch        *b_trackStartPositionZ;   ///<!
-   TBranch        *b_trackEndPositionX;   ///<!
-   TBranch        *b_trackEndPositionY;   ///<!
-   TBranch        *b_trackEndPositionZ;   ///<!
-   TBranch        *b_trackStartDirX;   ///<!
-   TBranch        *b_trackStartDirY;   ///<!
-   TBranch        *b_trackStartDirZ;   ///<!
-   TBranch        *b_trackEndDirX;   ///<!
-   TBranch        *b_trackEndDirY;   ///<!
-   TBranch        *b_trackEndDirZ;   ///<!
-   TBranch        *b_trackVertexDirX;   ///<!
-   TBranch        *b_trackVertexDirY;   ///<!
-   TBranch        *b_trackVertexDirZ;   ///<!
-   TBranch        *b_trackTheta;   ///<!
-   TBranch        *b_trackPhi;   ///<!
-   TBranch        *b_showerLengths;   ///<!
-   TBranch        *b_showerStartPositionX;   ///<!
-   TBranch        *b_showerStartPositionY;   ///<!
-   TBranch        *b_showerStartPositionZ;   ///<!
-   TBranch        *b_showerDirX;   ///<!
-   TBranch        *b_showerDirY;   ///<!
-   TBranch        *b_showerDirZ;   ///<!
-   TBranch        *b_pfpPDG;   ///<!
 
    signalDef(TTree *tree=0);
    virtual ~signalDef();
@@ -259,11 +305,11 @@ signalDef::signalDef(TTree *tree) : fChain(0)
 // if parameter tree is not specified (or zero), connect the file
 // used to generate this class and read the Tree.
    if (tree == 0) {
-      TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("/data/ooconnor/sbnd/hyperons/analyzer_output/new_logic/analyzer_output_new_2026_all.root");
+      TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("/data/ooconnor/sbnd/hyperons/analyzer_output/merged_anaOut_hyperons.root");
       if (!f || !f->IsOpen()) {
-         f = new TFile("/data/ooconnor/sbnd/hyperons/analyzer_output/new_logic/analyzer_output_new_2026_all.root");
+         f = new TFile("/data/ooconnor/sbnd/hyperons/analyzer_output/merged_anaOut_hyperons.root");
       }
-      TDirectory * dir = (TDirectory*)f->Get("/data/ooconnor/sbnd/hyperons/analyzer_output/new_logic/analyzer_output_new_2026_all.root:/ana");
+      TDirectory * dir = (TDirectory*)f->Get("/data/ooconnor/sbnd/hyperons/analyzer_output/merged_anaOut_hyperons.root:/ana");
       dir->GetObject("tree",tree);
 
    }
@@ -357,6 +403,7 @@ void signalDef::Init(TTree *tree)
    trueNPrimaryParticles = 0;
    trueNSavedParticles = 0;
    trueParticleStartIndex = 0;
+   sliceKey = 0;
    sliceID = 0;
    sliceNuScore = 0;
    sliceTotalHits = 0;
@@ -365,40 +412,69 @@ void signalDef::Init(TTree *tree)
    sliceVtxX = 0;
    sliceVtxY = 0;
    sliceVtxZ = 0;
-   TrackIDs = 0;
-   trackLengths = 0;
-   DistanceToRecoVertex = 0;
+   pfpKey = 0;
+   pfpSelfID = 0;
+   pfpParentID = 0;
+   pfpRecoPDG = 0;
+   pfpSliceKey = 0;
+   pfpIsNuSlice = 0;
+   pfpIsPrimary = 0;
+   pfpNPrimaryChildren = 0;
+   pfpTrackScore = 0;
+   pfpHasTrackScore = 0;
+   pfpNTracks = 0;
+   pfpNShowers = 0;
+   pfpHasTrack = 0;
+   pfpHasShower = 0;
+   pfpHasUniqueTrack = 0;
+   pfpHasUniqueShower = 0;
+   pfpNVertices = 0;
+   pfpHasVertex = 0;
+   pfpHasUniqueVertex = 0;
+   pfpTrackID = 0;
+   pfpTrackLength = 0;
+   pfpTrackStartX = 0;
+   pfpTrackStartY = 0;
+   pfpTrackStartZ = 0;
+   pfpTrackEndX = 0;
+   pfpTrackEndY = 0;
+   pfpTrackEndZ = 0;
+   pfpTrackStartDirX = 0;
+   pfpTrackStartDirY = 0;
+   pfpTrackStartDirZ = 0;
+   pfpTrackEndDirX = 0;
+   pfpTrackEndDirY = 0;
+   pfpTrackEndDirZ = 0;
+   pfpTrackVertexDirX = 0;
+   pfpTrackVertexDirY = 0;
+   pfpTrackVertexDirZ = 0;
+   pfpTrackTheta = 0;
+   pfpTrackPhi = 0;
+   pfpShowerID = 0;
+   pfpShowerLength = 0;
+   pfpShowerStartX = 0;
+   pfpShowerStartY = 0;
+   pfpShowerStartZ = 0;
+   pfpShowerDirX = 0;
+   pfpShowerDirY = 0;
+   pfpShowerDirZ = 0;
+   pfpVertexX = 0;
+   pfpVertexY = 0;
+   pfpVertexZ = 0;
+   pfpTrueTrackID = 0;
+   pfpTruePDG = 0;
+   pfpNHits = 0;
+   pfpNMatchedHits = 0;
+   pfpTruthPurity = 0;
+   trueIsReconstructed = 0;
+   trueIsReconstructedInNuSlice = 0;
+   trueNMatchedPfps = 0;
+   trueBestRecoPfpIdx = 0;
+   trueBestRecoTrackScore = 0;
+   trueBestRecoHasTrack = 0;
+   trueBestRecoHasShower = 0;
    nuScores = 0;
-   trackScores = 0;
-   muonTrackScores = 0;
-   protonTrackScores = 0;
-   pionTrackScores = 0;
    NeutrinoNuScores = 0;
-   trackStartPositionX = 0;
-   trackStartPositionY = 0;
-   trackStartPositionZ = 0;
-   trackEndPositionX = 0;
-   trackEndPositionY = 0;
-   trackEndPositionZ = 0;
-   trackStartDirX = 0;
-   trackStartDirY = 0;
-   trackStartDirZ = 0;
-   trackEndDirX = 0;
-   trackEndDirY = 0;
-   trackEndDirZ = 0;
-   trackVertexDirX = 0;
-   trackVertexDirY = 0;
-   trackVertexDirZ = 0;
-   trackTheta = 0;
-   trackPhi = 0;
-   showerLengths = 0;
-   showerStartPositionX = 0;
-   showerStartPositionY = 0;
-   showerStartPositionZ = 0;
-   showerDirX = 0;
-   showerDirY = 0;
-   showerDirZ = 0;
-   pfpPDG = 0;
    // Set branch addresses and branch pointers
    if (!tree) return;
    fChain = tree;
@@ -461,6 +537,7 @@ void signalDef::Init(TTree *tree)
    fChain->SetBranchAddress("trueNPrimaryParticles", &trueNPrimaryParticles, &b_trueNPrimaryParticles);
    fChain->SetBranchAddress("trueNSavedParticles", &trueNSavedParticles, &b_trueNSavedParticles);
    fChain->SetBranchAddress("trueParticleStartIndex", &trueParticleStartIndex, &b_trueParticleStartIndex);
+   fChain->SetBranchAddress("sliceKey", &sliceKey, &b_sliceKey);
    fChain->SetBranchAddress("sliceID", &sliceID, &b_sliceID);
    fChain->SetBranchAddress("sliceNuScore", &sliceNuScore, &b_sliceNuScore);
    fChain->SetBranchAddress("sliceTotalHits", &sliceTotalHits, &b_sliceTotalHits);
@@ -470,47 +547,69 @@ void signalDef::Init(TTree *tree)
    fChain->SetBranchAddress("sliceVtxX", &sliceVtxX, &b_sliceVtxX);
    fChain->SetBranchAddress("sliceVtxY", &sliceVtxY, &b_sliceVtxY);
    fChain->SetBranchAddress("sliceVtxZ", &sliceVtxZ, &b_sliceVtxZ);
-   fChain->SetBranchAddress("nPFParticles", &nPFParticles, &b_nPFParticles);
-   fChain->SetBranchAddress("nPrimaryChildren", &nPrimaryChildren, &b_nPrimaryChildren);
-   fChain->SetBranchAddress("trackCount", &trackCount, &b_trackCount);
-   fChain->SetBranchAddress("showerCount", &showerCount, &b_showerCount);
-   fChain->SetBranchAddress("TrackIDs", &TrackIDs, &b_TrackIDs);
-   fChain->SetBranchAddress("trackLengths", &trackLengths, &b_trackLengths);
-   fChain->SetBranchAddress("RecoVertexX", &RecoVertexX, &b_RecoVertexX);
-   fChain->SetBranchAddress("RecoVertexY", &RecoVertexY, &b_RecoVertexY);
-   fChain->SetBranchAddress("RecoVertexZ", &RecoVertexZ, &b_RecoVertexZ);
-   fChain->SetBranchAddress("DistanceToRecoVertex", &DistanceToRecoVertex, &b_DistanceToRecoVertex);
+   fChain->SetBranchAddress("pfpKey", &pfpKey, &b_pfpKey);
+   fChain->SetBranchAddress("pfpSelfID", &pfpSelfID, &b_pfpSelfID);
+   fChain->SetBranchAddress("pfpParentID", &pfpParentID, &b_pfpParentID);
+   fChain->SetBranchAddress("pfpRecoPDG", &pfpRecoPDG, &b_pfpRecoPDG);
+   fChain->SetBranchAddress("pfpSliceKey", &pfpSliceKey, &b_pfpSliceKey);
+   fChain->SetBranchAddress("pfpIsNuSlice", &pfpIsNuSlice, &b_pfpIsNuSlice);
+   fChain->SetBranchAddress("pfpIsPrimary", &pfpIsPrimary, &b_pfpIsPrimary);
+   fChain->SetBranchAddress("pfpNPrimaryChildren", &pfpNPrimaryChildren, &b_pfpNPrimaryChildren);
+   fChain->SetBranchAddress("pfpTrackScore", &pfpTrackScore, &b_pfpTrackScore);
+   fChain->SetBranchAddress("pfpHasTrackScore", &pfpHasTrackScore, &b_pfpHasTrackScore);
+   fChain->SetBranchAddress("pfpNTracks", &pfpNTracks, &b_pfpNTracks);
+   fChain->SetBranchAddress("pfpNShowers", &pfpNShowers, &b_pfpNShowers);
+   fChain->SetBranchAddress("pfpHasTrack", &pfpHasTrack, &b_pfpHasTrack);
+   fChain->SetBranchAddress("pfpHasShower", &pfpHasShower, &b_pfpHasShower);
+   fChain->SetBranchAddress("pfpHasUniqueTrack", &pfpHasUniqueTrack, &b_pfpHasUniqueTrack);
+   fChain->SetBranchAddress("pfpHasUniqueShower", &pfpHasUniqueShower, &b_pfpHasUniqueShower);
+   fChain->SetBranchAddress("pfpNVertices", &pfpNVertices, &b_pfpNVertices);
+   fChain->SetBranchAddress("pfpHasVertex", &pfpHasVertex, &b_pfpHasVertex);
+   fChain->SetBranchAddress("pfpHasUniqueVertex", &pfpHasUniqueVertex, &b_pfpHasUniqueVertex);
+   fChain->SetBranchAddress("pfpTrackID", &pfpTrackID, &b_pfpTrackID);
+   fChain->SetBranchAddress("pfpTrackLength", &pfpTrackLength, &b_pfpTrackLength);
+   fChain->SetBranchAddress("pfpTrackStartX", &pfpTrackStartX, &b_pfpTrackStartX);
+   fChain->SetBranchAddress("pfpTrackStartY", &pfpTrackStartY, &b_pfpTrackStartY);
+   fChain->SetBranchAddress("pfpTrackStartZ", &pfpTrackStartZ, &b_pfpTrackStartZ);
+   fChain->SetBranchAddress("pfpTrackEndX", &pfpTrackEndX, &b_pfpTrackEndX);
+   fChain->SetBranchAddress("pfpTrackEndY", &pfpTrackEndY, &b_pfpTrackEndY);
+   fChain->SetBranchAddress("pfpTrackEndZ", &pfpTrackEndZ, &b_pfpTrackEndZ);
+   fChain->SetBranchAddress("pfpTrackStartDirX", &pfpTrackStartDirX, &b_pfpTrackStartDirX);
+   fChain->SetBranchAddress("pfpTrackStartDirY", &pfpTrackStartDirY, &b_pfpTrackStartDirY);
+   fChain->SetBranchAddress("pfpTrackStartDirZ", &pfpTrackStartDirZ, &b_pfpTrackStartDirZ);
+   fChain->SetBranchAddress("pfpTrackEndDirX", &pfpTrackEndDirX, &b_pfpTrackEndDirX);
+   fChain->SetBranchAddress("pfpTrackEndDirY", &pfpTrackEndDirY, &b_pfpTrackEndDirY);
+   fChain->SetBranchAddress("pfpTrackEndDirZ", &pfpTrackEndDirZ, &b_pfpTrackEndDirZ);
+   fChain->SetBranchAddress("pfpTrackVertexDirX", &pfpTrackVertexDirX, &b_pfpTrackVertexDirX);
+   fChain->SetBranchAddress("pfpTrackVertexDirY", &pfpTrackVertexDirY, &b_pfpTrackVertexDirY);
+   fChain->SetBranchAddress("pfpTrackVertexDirZ", &pfpTrackVertexDirZ, &b_pfpTrackVertexDirZ);
+   fChain->SetBranchAddress("pfpTrackTheta", &pfpTrackTheta, &b_pfpTrackTheta);
+   fChain->SetBranchAddress("pfpTrackPhi", &pfpTrackPhi, &b_pfpTrackPhi);
+   fChain->SetBranchAddress("pfpShowerID", &pfpShowerID, &b_pfpShowerID);
+   fChain->SetBranchAddress("pfpShowerLength", &pfpShowerLength, &b_pfpShowerLength);
+   fChain->SetBranchAddress("pfpShowerStartX", &pfpShowerStartX, &b_pfpShowerStartX);
+   fChain->SetBranchAddress("pfpShowerStartY", &pfpShowerStartY, &b_pfpShowerStartY);
+   fChain->SetBranchAddress("pfpShowerStartZ", &pfpShowerStartZ, &b_pfpShowerStartZ);
+   fChain->SetBranchAddress("pfpShowerDirX", &pfpShowerDirX, &b_pfpShowerDirX);
+   fChain->SetBranchAddress("pfpShowerDirY", &pfpShowerDirY, &b_pfpShowerDirY);
+   fChain->SetBranchAddress("pfpShowerDirZ", &pfpShowerDirZ, &b_pfpShowerDirZ);
+   fChain->SetBranchAddress("pfpVertexX", &pfpVertexX, &b_pfpVertexX);
+   fChain->SetBranchAddress("pfpVertexY", &pfpVertexY, &b_pfpVertexY);
+   fChain->SetBranchAddress("pfpVertexZ", &pfpVertexZ, &b_pfpVertexZ);
+   fChain->SetBranchAddress("pfpTrueTrackID", &pfpTrueTrackID, &b_pfpTrueTrackID);
+   fChain->SetBranchAddress("pfpTruePDG", &pfpTruePDG, &b_pfpTruePDG);
+   fChain->SetBranchAddress("pfpNHits", &pfpNHits, &b_pfpNHits);
+   fChain->SetBranchAddress("pfpNMatchedHits", &pfpNMatchedHits, &b_pfpNMatchedHits);
+   fChain->SetBranchAddress("pfpTruthPurity", &pfpTruthPurity, &b_pfpTruthPurity);
+   fChain->SetBranchAddress("trueIsReconstructed", &trueIsReconstructed, &b_trueIsReconstructed);
+   fChain->SetBranchAddress("trueIsReconstructedInNuSlice", &trueIsReconstructedInNuSlice, &b_trueIsReconstructedInNuSlice);
+   fChain->SetBranchAddress("trueNMatchedPfps", &trueNMatchedPfps, &b_trueNMatchedPfps);
+   fChain->SetBranchAddress("trueBestRecoPfpIdx", &trueBestRecoPfpIdx, &b_trueBestRecoPfpIdx);
+   fChain->SetBranchAddress("trueBestRecoTrackScore", &trueBestRecoTrackScore, &b_trueBestRecoTrackScore);
+   fChain->SetBranchAddress("trueBestRecoHasTrack", &trueBestRecoHasTrack, &b_trueBestRecoHasTrack);
+   fChain->SetBranchAddress("trueBestRecoHasShower", &trueBestRecoHasShower, &b_trueBestRecoHasShower);
    fChain->SetBranchAddress("nuScores", &nuScores, &b_nuScores);
-   fChain->SetBranchAddress("trackScores", &trackScores, &b_trackScores);
-   fChain->SetBranchAddress("muonTrackScores", &muonTrackScores, &b_muonTrackScores);
-   fChain->SetBranchAddress("protonTrackScores", &protonTrackScores, &b_protonTrackScores);
-   fChain->SetBranchAddress("pionTrackScores", &pionTrackScores, &b_pionTrackScores);
    fChain->SetBranchAddress("NeutrinoNuScores", &NeutrinoNuScores, &b_NeutrinoNuScores);
-   fChain->SetBranchAddress("trackStartPositionX", &trackStartPositionX, &b_trackStartPositionX);
-   fChain->SetBranchAddress("trackStartPositionY", &trackStartPositionY, &b_trackStartPositionY);
-   fChain->SetBranchAddress("trackStartPositionZ", &trackStartPositionZ, &b_trackStartPositionZ);
-   fChain->SetBranchAddress("trackEndPositionX", &trackEndPositionX, &b_trackEndPositionX);
-   fChain->SetBranchAddress("trackEndPositionY", &trackEndPositionY, &b_trackEndPositionY);
-   fChain->SetBranchAddress("trackEndPositionZ", &trackEndPositionZ, &b_trackEndPositionZ);
-   fChain->SetBranchAddress("trackStartDirX", &trackStartDirX, &b_trackStartDirX);
-   fChain->SetBranchAddress("trackStartDirY", &trackStartDirY, &b_trackStartDirY);
-   fChain->SetBranchAddress("trackStartDirZ", &trackStartDirZ, &b_trackStartDirZ);
-   fChain->SetBranchAddress("trackEndDirX", &trackEndDirX, &b_trackEndDirX);
-   fChain->SetBranchAddress("trackEndDirY", &trackEndDirY, &b_trackEndDirY);
-   fChain->SetBranchAddress("trackEndDirZ", &trackEndDirZ, &b_trackEndDirZ);
-   fChain->SetBranchAddress("trackVertexDirX", &trackVertexDirX, &b_trackVertexDirX);
-   fChain->SetBranchAddress("trackVertexDirY", &trackVertexDirY, &b_trackVertexDirY);
-   fChain->SetBranchAddress("trackVertexDirZ", &trackVertexDirZ, &b_trackVertexDirZ);
-   fChain->SetBranchAddress("trackTheta", &trackTheta, &b_trackTheta);
-   fChain->SetBranchAddress("trackPhi", &trackPhi, &b_trackPhi);
-   fChain->SetBranchAddress("showerLengths", &showerLengths, &b_showerLengths);
-   fChain->SetBranchAddress("showerStartPositionX", &showerStartPositionX, &b_showerStartPositionX);
-   fChain->SetBranchAddress("showerStartPositionY", &showerStartPositionY, &b_showerStartPositionY);
-   fChain->SetBranchAddress("showerStartPositionZ", &showerStartPositionZ, &b_showerStartPositionZ);
-   fChain->SetBranchAddress("showerDirX", &showerDirX, &b_showerDirX);
-   fChain->SetBranchAddress("showerDirY", &showerDirY, &b_showerDirY);
-   fChain->SetBranchAddress("showerDirZ", &showerDirZ, &b_showerDirZ);
-   fChain->SetBranchAddress("pfpPDG", &pfpPDG, &b_pfpPDG);
    Notify();
 }
 

@@ -40,9 +40,9 @@ void signalDef::Loop()
 
 
    int nEvents[3] = {0};
-   nEvents[0] = 0; // number of events in all hyperon files
+   nEvents[0] = 150989; // number of events in all hyperon files
    nEvents[1] = nEvents[0]; // any hyperon event
-   nEvents[2] = 208681 + nEvents[0]; // num of events in beam files + num of events in hyp files
+   nEvents[2] = 10272 + nEvents[0]; // num of events in beam files + num of events in hyp files
 
    TFile *sigFile = TFile::Open("/data/ooconnor/sbnd/hyperons/preselection_output/signalDef_output_sig.root", "RECREATE");
 
@@ -80,21 +80,36 @@ void signalDef::Loop()
    cosmicTree->SetName("tree");
    cosmicTree->SetDirectory(cosmicFile);
 
+   TFile* outFile = TFile::Open("/data/ooconnor/sbnd/hyperons/preselection_output/signalDef_output.root", "RECREATE");
+   if (!outFile || outFile->IsZombie()){
+      std::cerr<<"Could not open file!"<<std::endl;
+      return;
+   }
+
+   outFile->cd();
+   TTree *outTree = fChain->CloneTree(0);
+   outTree->SetName("tree");
+   outTree->SetDirectory(outFile);
+
    int sampleType = -1;
    int chosenTruthIdx;
    int nuSliceIdx;
+   float eventWeight = 1.0;
 
    signalTree->Branch("sampleType", &sampleType);
    bkgTree->Branch("sampleType", &sampleType);
    cosmicTree->Branch("sampleType", &sampleType);
+   outTree->Branch("sampleType", &sampleType);
 
    signalTree->Branch("chosenTruthIdx", &chosenTruthIdx);
    bkgTree->Branch("chosenTruthIdx", &chosenTruthIdx);
    cosmicTree->Branch("chosenTruthIdx", &chosenTruthIdx);
+   outTree->Branch("chosenTruthIdx", &chosenTruthIdx);
 
    signalTree->Branch("nuSliceIdx", &nuSliceIdx);
    bkgTree->Branch("nuSliceIdx", &nuSliceIdx);
    cosmicTree->Branch("nuSliceIdx", &nuSliceIdx);
+   outTree->Branch("nuSliceIdx", &nuSliceIdx);
 
    float shortestDistTrueToRecoVtx = 0;
    int nSignal = 0;
@@ -137,12 +152,14 @@ void signalDef::Loop()
       // Choose slice with highest nuScore (nuSlice) and use to assign event as cosmic or not
       // ---------------------------------------------------
 
+      if (sliceID->size()==0){continue;}
+
      std::cout<<"sliceID size = "<<sliceID->size()<<std::endl;
      std::cout<<"sliceNuScore size = "<<sliceNuScore->size()<<std::endl;
      if(sliceID->size() == sliceNuScore->size()){
-      int highestNuScore = -1;
+      float highestNuScore = -1; 
       for (int i = 0; i < sliceID->size(); ++i){
-         int nuScore = sliceNuScore->at(i);
+         float nuScore = sliceNuScore->at(i);
 
          if (nuScore > highestNuScore || i == 0){
             highestNuScore = nuScore;
@@ -165,7 +182,11 @@ void signalDef::Loop()
       if (trueNuVtxX->size() == 1){nSingleIntEvents++;}
       if (trueNuVtxX->size() > 1){nMultiIntEvents++;}
 
-      TVector3 recoVtx(RecoVertexX, RecoVertexY, RecoVertexZ);
+      float recoVtxX = sliceVtxX->at(nuSliceIdx);
+      float recoVtxY = sliceVtxY->at(nuSliceIdx);
+      float recoVtxZ = sliceVtxZ->at(nuSliceIdx);
+
+      TVector3 recoVtx(recoVtxX, recoVtxY, recoVtxZ);
 
       for (int i = 0; i < trueNuVtxX->size(); i++){
          TVector3 trueVtx(trueNuVtxX->at(i), trueNuVtxY->at(i), trueNuVtxZ->at(i));
@@ -177,13 +198,13 @@ void signalDef::Loop()
 
          // Check if origin of MCTruth (cosmic or beam)
 
-         std::cout<<"MCTruth at index "<<i<<" has origin "<<trueOrigin->at(i)<<std::endl;
+         //std::cout<<"MCTruth at index "<<i<<" has origin "<<trueOrigin->at(i)<<std::endl;
          if (trueOrigin->at(i) == 1){nBeamOrigin++;}
          if (trueOrigin->at(i) == 2){nCosmicOrigin++;}
          if (trueOrigin->at(i) != 1 && trueOrigin->at(i) != 2){nUnknownOrigin++;}
       }
 
-      std::cout<<"Chosen MCTruth has index"<<chosenTruthIdx<<" and origin"<<trueOrigin->at(chosenTruthIdx)<<std::endl;
+      //std::cout<<"Chosen MCTruth has index"<<chosenTruthIdx<<" and origin"<<trueOrigin->at(chosenTruthIdx)<<std::endl;
 
       // ------------------------------------------------------------
       // First loop over primary particles in the event to determine if the event contains a primary Sigma0, primary anti-muon, good Lambda, and good photon
@@ -269,6 +290,8 @@ void signalDef::Loop()
       bool hasCorrectLambdaDecay = hasLambdaProton && hasLambdaPionMinus;
       bool isSignal = isInTrueFV &&hasPrimarySigma0 && hasPrimaryMuPlus && hasCorrectSigmaDecay && hasCorrectLambdaDecay && !isCosmic;
 
+      outTree->Fill();
+
       if (isCosmic){ // no cosmics in filtered hyps, so should be fine like this
          sampleType = Cosmic;
          cosmicTree->Fill();
@@ -294,20 +317,21 @@ void signalDef::Loop()
       else {continue;} // non signal /dirt in filtered hyps, signal in beam background true fv (prob v v rare)
 
 
-      // Reco FV and 3 Track + 1 Shower Cut
+      // Reco FV and 3 Track + 1 Shower Count
 
-      if (std::abs(RecoVertexX) < 180 && std::abs(RecoVertexY) < 180 && RecoVertexZ < 450 && RecoVertexZ > 10){
-         isInRecoFV = true;}
+      if (std::abs(recoVtxX) < 180 && std::abs(recoVtxY) < 180 && recoVtxZ < 450 && recoVtxZ > 10){
+         isInRecoFV = true;
+      }
 
 
       if(isInRecoFV){
          if(sampleType==Signal){nInRecoFVSig++;}
          if(sampleType==Background){nInRecoFVBkg++;}
 
-         if (trackCount == 3 && showerCount == 1){
+        /* if (trackCount == 3 && showerCount == 1){
             if(sampleType==Signal && jentry < nEvents[0] + 1){nGoodTopoSig++;}
             if(sampleType==Background && jentry > nEvents[0]){nGoodTopoBkg++;}
-         }
+         }*/
 
       }  
 
@@ -328,6 +352,11 @@ void signalDef::Loop()
    cosmicTree->Write("tree");
    cosmicFile->Close();
    delete cosmicFile;
+
+   outFile->cd();
+   outTree->Write("tree");
+   outFile->Close();
+   delete outFile;
 
    std::cout<<"# Signal =  "<<nSignal<<std::endl;
    std::cout<<"# Background = "<<nBkg<<std::endl;

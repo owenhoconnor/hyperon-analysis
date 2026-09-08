@@ -21,6 +21,17 @@
 #include <string>
 #include <vector>
 
+// ============================================================================
+// EVENT TYPE DEFINITIONS
+// ============================================================================
+
+const std::array<std::string, 4> eventTypeLabels = {
+    "Signal",
+    "Background",
+    "Dirt",
+    "Cosmic"
+};
+
 
 // ============================================================================
 // INTERACTION MODE DEFINITIONS
@@ -38,9 +49,14 @@ constexpr int kMinMode = -1;
 constexpr int kMaxMode = 13;
 constexpr int kNModeCategories = kMaxMode - kMinMode + 1;
 
+constexpr int kCosmicModeStack = kNModeCategories;
+constexpr int kSignalModeStack = kNModeCategories + 1;
+constexpr int kDirtModeStack = kNModeCategories + 2;
+constexpr int kNModeStackCategories = kNModeCategories + 3;
+
 const std::array<
     std::string,
-    kNModeCategories
+    kNModeCategories+3
 > modeLabels = {
 
     "Unknown",       // -1
@@ -57,7 +73,7 @@ const std::array<
     "MEC",           // 10
     "Diffractive",   // 11
     "EM",            // 12
-    "Weak Mix"       // 13
+    "Weak Mix",       // 13
 };
 
 
@@ -101,6 +117,7 @@ enum Topology {
     kNCStrange,
 
     kOther,
+    kTrueSignal,
     kCosmic,
 
     kNTopologies
@@ -133,6 +150,7 @@ const std::array<
     "NC strange",
 
     "Other",
+    "True #Sigma^{0} Signal",
     "Cosmic"
 };
 
@@ -231,6 +249,7 @@ bool IsStrangeHadron(const int pdg)
 
 int ClassifyTopology(
     const bool isCosmic,
+    const bool isSignal,
     const int ccnc,
     const std::vector<int>& truePDGs
 )
@@ -244,6 +263,10 @@ int ClassifyTopology(
 
     if(isCosmic){
         return kCosmic;
+    }
+
+    if(isSignal){
+        return kTrueSignal;
     }
 
 
@@ -561,8 +584,28 @@ void backgroundPlots::Loop()
     // ========================================================================
 
     // ------------------------------------------------------------------------
+    // NuScore
+    // ------------------------------------------------------------------------
+
+    std::array<TH1F*, 4> hNuScoreByType;
+
+    for (int i = 0; i < 4; ++i){
+        hNuScoreByType.at(i) = new TH1F(Form("hNuScoreByType_%d", i), "", 100, 0.0, 1.0);
+        hNuScoreByType.at(i)->SetDirectory(nullptr);
+    }
+
+    // ------------------------------------------------------------------------
     // CC / NC
     // ------------------------------------------------------------------------
+
+    std::array<TH1F*, 4> hCCNCByType;
+
+    for (int i = 0; i < 4; ++i){
+        hCCNCByType.at(i) = new TH1F(Form("hCCNCByType_%d", i), "", 2, -0.5, 1.5);
+        hCCNCByType.at(i)->SetDirectory(nullptr);
+        hCCNCByType.at(i)->GetXaxis()->SetBinLabel(1, "CC");
+        hCCNCByType.at(i)->GetXaxis()->SetBinLabel(2, "NC");
+    }
 
     TH1F* hTrueCCNC = new TH1F("hTrueCCNC", "", 2, -0.5, 1.5);
     hTrueCCNC->SetDirectory(nullptr);
@@ -572,6 +615,17 @@ void backgroundPlots::Loop()
     // ------------------------------------------------------------------------
     // Interaction mode
     // ------------------------------------------------------------------------
+
+    std::array<TH1F*, kNModeCategories> hTrueModeByType;
+
+    for (int i = 0; i < 4; ++i){
+        hTrueModeByType.at(i) = new TH1F(Form("hTrueModeByType_%d", i), "", kNModeCategories, -1.5, 13.5);
+        hTrueModeByType.at(i)->SetDirectory(nullptr);
+
+        for (int j = 0; j < kNModeCategories; ++j){
+            hTrueModeByType.at(i)->GetXaxis()->SetBinLabel(j + 1, modeLabels.at(j).c_str());
+        }
+    }
 
     TH1F* hTrueIntMode = new TH1F("hTrueIntMode", "", kNModeCategories, -1.5, 13.5);
     hTrueIntMode->SetDirectory(nullptr);
@@ -620,15 +674,24 @@ void backgroundPlots::Loop()
     // Nu E distributions separated by interaction mode
     // ------------------------------------------------------------------------
 
-    std::array<
-        TH1F*,
-        kNModeCategories
-    > hNuEnergyByMode;
+    std::array<TH1F*, kNModeStackCategories> hNuEnergyByMode;
 
-    for (int modeIndex = 0; modeIndex < kNModeCategories; ++modeIndex){
-        hNuEnergyByMode.at(modeIndex) = new TH1F(Form("hNuEnergyMode_%d", modeIndex), "", 30, 0.0, 3.0);
-        hNuEnergyByMode.at(modeIndex)->SetDirectory(nullptr);
+    for (int i = 0; i < kNModeStackCategories; ++i){
+        if(i < kNModeCategories){
+            hNuEnergyByMode.at(i) = new TH1F(Form("hNuEnergyMode_%d", i), "", 30, 0.0, 3.0);
+        }
+        else if(i == kCosmicModeStack){
+            hNuEnergyByMode.at(i) = new TH1F("hNuEnergyCosmic", "", 30, 0.0, 3.0);
+        }
+        else if(i == kSignalModeStack){
+            hNuEnergyByMode.at(i) = new TH1F("hNuEnergyTrueSignal", "", 30, 0.0, 3.0);
+        }
+        else if(i == kDirtModeStack){
+            hNuEnergyByMode.at(i) = new TH1F("hNuEnergyDirt", "", 30, 0.0, 3.0);
+        }
+        hNuEnergyByMode.at(i)->SetDirectory(nullptr);
     }
+  
 
     // ------------------------------------------------------------------------
     // E_nu distributions separated by topology
@@ -787,6 +850,7 @@ void backgroundPlots::Loop()
 
     int nBadTruthIndices = 0;
     bool isCosmic;
+    bool isSignal;
 
     for (Long64_t jentry = 0;jentry < nentries;++jentry)
     {
@@ -805,9 +869,25 @@ void backgroundPlots::Loop()
 
         //std::cout<<"slice nuScore at highest nuScore index = "<<sliceTrueOrigin->at(nuSliceIdx)<<std::endl;
         const int nuSliceOrigin = sliceTrueOrigin->at(nuSliceIdx);
+        const float nuSliceNuScore = sliceNuScore->at(nuSliceIdx);
         isCosmic = false;
+        isSignal = false;
         if (nuSliceOrigin == 2){
             isCosmic = true;
+        }
+
+        if (sampleType == 0){
+            std::cout<<"event is signal"<<std::endl;
+            isSignal = true;
+        }
+        if (sampleType == 1){
+            std::cout<<"event is background"<<std::endl;
+        }
+        if (sampleType == 2){
+            std::cout<<"event is dirt"<<std::endl;
+        }
+        if (sampleType == 3){
+            std::cout<<"event is cosmic"<<std::endl;
         }
 
         // --------------------------------------------------------------------
@@ -883,6 +963,7 @@ void backgroundPlots::Loop()
         const int topology =
             ClassifyTopology(
                 isCosmic,
+                isSignal,
                 ccnc,
                 particles.pdg
             );
@@ -910,16 +991,33 @@ void backgroundPlots::Loop()
             ++interactionTypeCounts[intType];
             ++topologyCounts.at(topology);
         //}
+
+        hNuScoreByType.at(sampleType)->Fill(nuSliceNuScore);
+        hTrueModeByType.at(sampleType)->Fill(intMode);
+        hCCNCByType.at(sampleType)->Fill(ccnc);
         // --------------------------------------------------------------------
         // Mode vs E_nu stack
         // --------------------------------------------------------------------
 
         const int modeIndex = ModeToArrayIndex(intMode);
 
-        if (modeIndex >= 0)
-        {
-            hNuEnergyByMode.at(modeIndex)->Fill(nuEnergy);
-            hModeVsTopology->Fill(topology, intMode);
+        if(sampleType == 1){ // background sample, designate interaction mode
+            if (modeIndex >= 0)
+            {
+                hNuEnergyByMode.at(modeIndex)->Fill(nuEnergy);
+                hModeVsTopology->Fill(topology, intMode);
+            }     
+        }
+
+        else if(sampleType == 3){ // cosmic sample, designate as cosmic
+            hNuEnergyByMode.at(kCosmicModeStack)->Fill(nuEnergy);
+        }
+        
+        else if(sampleType == 0){ // signal sample, designate as true signal
+            hNuEnergyByMode.at(kSignalModeStack)->Fill(nuEnergy);
+        }
+        else if(sampleType == 2){ // dirt sample, designate as dirt
+            hNuEnergyByMode.at(kDirtModeStack)->Fill(nuEnergy);
         }
 
         // --------------------------------------------------------------------
@@ -997,8 +1095,67 @@ void backgroundPlots::Loop()
     const int fillColour = kAzure + 1;
 
     // ========================================================================
+    // NuScore
+    // ========================================================================
+
+    std::array<int, 4> sampleTypeColors = {
+        kRed + 1,
+        kGreen + 2,
+        kBlue + 2,
+        kAzure + 7
+    };
+
+    THStack* hsNuScore = new THStack("hsNuScore", "NuScore by Event Type");
+    TLegend* legNuScore = new TLegend(0.75, 0.65, 0.95, 0.90);
+
+    legNuScore->SetBorderSize(0);
+    legNuScore->SetFillStyle(0);
+
+    for (int i = 0; i < 4; ++i){
+        hNuScoreByType.at(i)->SetFillColorAlpha(sampleTypeColors.at(i), 0.75);
+        hNuScoreByType.at(i)->SetLineColor(kBlack);
+        hsNuScore->Add(hNuScoreByType.at(i));
+        legNuScore->AddEntry(hNuScoreByType.at(i), eventTypeLabels.at(i).c_str(), "f");
+    }
+
+    TCanvas* cNuScore = new TCanvas("cNuScore", "NuScore", 1600, 1200);
+    cNuScore->SetRightMargin(0.05);
+
+    hsNuScore->Draw("HIST");
+    hsNuScore->GetXaxis()->SetTitle("NuScore");
+    hsNuScore->GetYaxis()->SetTitle("Interactions");
+    legNuScore->Draw();
+
+    cNuScore->Print("plots/nuScore.png");
+
+
+    // ========================================================================
     // 1. CC / NC
     // ========================================================================
+
+    THStack* hsCCNC = new THStack("hsCCNC", "CC / NC by Event Type");
+    TLegend* legCCNC = new TLegend(0.75, 0.65, 0.95, 0.90);
+
+    legCCNC->SetBorderSize(0);
+    legCCNC->SetFillStyle(0);
+
+    for (int i = 0; i < 4; ++i){
+        hCCNCByType.at(i)->SetFillColorAlpha(sampleTypeColors.at(i), 0.75);
+        hCCNCByType.at(i)->SetLineColor(kBlack);
+        hsCCNC->Add(hCCNCByType.at(i));
+        legCCNC->AddEntry(hCCNCByType.at(i), eventTypeLabels.at(i).c_str(), "f");
+    }
+
+    TCanvas* cCCNCStack = new TCanvas("cCCNCStack", "CC / NC", 1600, 1200);
+    cCCNCStack->SetRightMargin(0.05);
+
+    hsCCNC->Draw("HIST");
+    hsCCNC->GetXaxis()->SetTitle("Interaction Current");
+    hsCCNC->GetYaxis()->SetTitle("Interactions");
+    legCCNC->Draw();
+    cCCNCStack->Print("plots/ccncStack.png");
+
+    // (old)
 
     TCanvas* cCCNC = new TCanvas("cCCNC", "True CCNC", 1600, 1200);
 
@@ -1015,6 +1172,28 @@ void backgroundPlots::Loop()
     // 2. INTERACTION MODE DISTRIBUTION
     // ========================================================================
 
+    THStack* hsMode = new THStack("hsMode", "Interaction Mode by Event Type");
+    TLegend* legModeStack = new TLegend(0.75, 0.65, 0.95, 0.90);
+
+    legModeStack->SetBorderSize(0);
+    legModeStack->SetFillStyle(0);
+
+    for (int i = 0; i < 4; ++i){
+        hTrueModeByType.at(i)->SetFillColorAlpha(sampleTypeColors.at(i), 0.75);
+        hTrueModeByType.at(i)->SetLineColor(kBlack);
+        hsMode->Add(hTrueModeByType.at(i));
+        legModeStack->AddEntry(hTrueModeByType.at(i), eventTypeLabels.at(i).c_str(), "f");
+    }
+
+    TCanvas* cModeStack = new TCanvas("cModeStack", "Interaction Mode", 1800, 1200);
+    cModeStack->SetRightMargin(0.05);
+
+    hsMode->Draw("HIST");
+    hsMode->GetXaxis()->SetTitle("Interaction Mode");
+    hsMode->GetYaxis()->SetTitle("Interactions");
+    legModeStack->Draw();
+    cModeStack->Print("plots/trueBeamIntModeStack.png");
+
     TCanvas* cMode = new TCanvas("cMode", "True Interaction Mode", 1800, 1200);
 
     cMode->SetBottomMargin(0.20);
@@ -1026,7 +1205,7 @@ void backgroundPlots::Loop()
     hTrueIntMode->SetLineWidth(2);
     hTrueIntMode->LabelsOption("v","X");
     hTrueIntMode->Draw("HIST TEXT0");
-    cMode->Print("plots/trueBeamIntMode_new.png");
+    cMode->Print("plots/trueBeamIntMode.png");
 
     // ========================================================================
     // 3. INTERACTION TYPE DISTRIBUTION
@@ -1051,7 +1230,7 @@ void backgroundPlots::Loop()
     hTrueIntType->SetLineColor(kBlack);
     hTrueIntType->LabelsOption("v","X");
     hTrueIntType->Draw("HIST TEXT0");
-    cIntType->Print("plots/trueBeamIntType_new.png");
+    cIntType->Print("plots/trueBeamIntType.png");
 
     // ========================================================================
     // 4. MCTRUTH ORIGIN
@@ -1127,7 +1306,7 @@ void backgroundPlots::Loop()
 
     const std::array<
         int,
-        kNModeCategories
+        kNModeStackCategories
     > modeColours = {
         kGray + 1,
         kAzure + 1,
@@ -1143,7 +1322,11 @@ void backgroundPlots::Loop()
         kOrange - 3,
         kSpring + 5,
         kMagenta - 2,
-        kViolet + 1
+        kViolet + 1,
+
+        kAzure + 7, // Cosmic
+        kRed + 1, // Signal
+        kAzure - 9 // Dirt
     };
 
     const std::array<
@@ -1167,7 +1350,9 @@ void backgroundPlots::Loop()
         kYellow + 1,
         kMagenta - 2,
         kViolet + 1,
-        kGray + 1
+        kGray + 1,
+        kRed + 1,
+        kAzure + 7
     };
 
     // ========================================================================
@@ -1179,17 +1364,31 @@ void backgroundPlots::Loop()
 
     legMode->SetBorderSize(0);
     legMode->SetFillStyle(0);
+    std::string label;
 
-    for (int modeIndex = 0;modeIndex < kNModeCategories;++modeIndex)
+    for (int modeIndex = 0;modeIndex < kNModeStackCategories;++modeIndex)
     {
         if (hNuEnergyByMode.at(modeIndex)->GetEntries() == 0) {
             continue;
         }
 
+        if(modeIndex < kNModeCategories){
+            label = modeLabels.at(modeIndex);
+        }
+        else if(modeIndex == kCosmicModeStack){
+            label = "Cosmic";
+        }
+        else if(modeIndex == kSignalModeStack){
+            label = "Signal";
+        }
+        else if(modeIndex == kDirtModeStack){
+            label = "Dirt";
+        }
+
         hNuEnergyByMode.at(modeIndex)->SetFillColorAlpha(modeColours.at(modeIndex), 0.75);
         hNuEnergyByMode.at(modeIndex)->SetLineColor( kBlack );
         hsModeVsNuE->Add(hNuEnergyByMode.at(modeIndex));
-        legMode->AddEntry(hNuEnergyByMode.at(modeIndex), modeLabels.at(modeIndex).c_str(), "f");
+        legMode->AddEntry(hNuEnergyByMode.at(modeIndex), label.c_str(), "f");
 
     }
 
