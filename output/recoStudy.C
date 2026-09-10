@@ -89,6 +89,13 @@ void recoStudy::Loop()
    int nPrimaryPions = 0;
    int nSecondaryPions = 0;
 
+   int nNotRecoMuons = 0;
+   int nNotRecoPhotons = 0;
+   int nNotRecoProtons = 0;
+   int nNotRecoPions = 0;
+
+            int nMultiNuRootEvents = 0;
+
 
    Long64_t nentries = fChain->GetEntriesFast();
 
@@ -102,8 +109,32 @@ void recoStudy::Loop()
       // find PDG for each signal particle, fill TEfficiency for each
       // isReconstructed->at(that PDG)
 
+      int signalTrueMuonID = -999;
+      int signalTruePhotonID = -999;
+      int signalTrueProtonID = -999;
+      int signalTruePionID = -999;
+
       std::cout<<"New event # "<<jentry<<std::endl;
       if (sampleType == 0){ // is Signal
+
+         // loop over reco PFPs to determine nu PFP ID
+         int nNuRoots = 0;
+         int nuPfpSelfID = -1;
+
+         for (size_t iPfp = 0; iPfp < pfpKey->size(); ++iPfp)
+         {
+            if (pfpIsNuSlice->at(iPfp) && pfpIsPrimary->at(iPfp))
+            {
+               ++nNuRoots;
+               nuPfpSelfID = pfpSelfID->at(iPfp);
+            }
+         }
+
+         if (nNuRoots != 1)
+         {
+            std::cout<< "Event " << jentry<< " has " << nNuRoots<< " primary PFPs in selected nu slice"<< std::endl;
+            nMultiNuRootEvents++;
+         }
 
          // loop over true particles
 
@@ -125,76 +156,151 @@ void recoStudy::Loop()
             // muons
             if (truePDG->at(i) == -13 && trueGeneration->at(i) == 0){
                effMuon->Fill(reconstructed, momentum);
+               
                nMuons++;
+               signalTrueMuonID = trueTrackID->at(i);
+
+               if(!reconstructed){
+                  nNotRecoMuons++;
+               }
+               else
+               {
+                  const int bestPfpIdx = trueBestRecoPfpIdx->at(i);
+                  if(bestPfpIdx < 0 || bestPfpIdx > static_cast<int>(pfpParentID->size())){
+                     std::cout<<"Error: muon says recoed, but valid best PFP index "<<bestPfpIdx<<" event = "<<jentry<<std::endl;
+                  }
+                  else
+                  {
+                     const int parentID = pfpParentID->at(bestPfpIdx);
+                     const bool isPrimary = parentID == nuPfpSelfID && nuPfpSelfID >= 0;
+
+                     if(isPrimary){
+                        nPrimaryMuons++;
+                     }
+                     else{
+                        nSecondaryMuons++;
+                     }
+                  }
+
+               }
             }
             // photons
             if (truePDG->at(i) == 22 && trueGeneration->at(i) == 1 && trueMotherPDG->at(i) == 3212){
                effPhoton->Fill(reconstructed, momentum);
+               
                nPhotons++;
+               signalTruePhotonID = trueTrackID->at(i);
+
+               if(!reconstructed){
+                  nNotRecoPhotons++;
+               }
+               else
+               {
+                  const int bestPfpIdx = trueBestRecoPfpIdx->at(i);
+                  if(bestPfpIdx < 0 || bestPfpIdx > static_cast<int>(pfpParentID->size())){
+                     std::cout<<"Error: photon says recoed, but valid best PFP index "<<bestPfpIdx<<" event = "<<jentry<<std::endl;
+                  }
+                  else
+                  {
+                     const int parentID = pfpParentID->at(bestPfpIdx);
+                     const bool isPrimary = parentID == nuPfpSelfID && nuPfpSelfID >= 0;
+
+                     if(isPrimary){
+                        nPrimaryPhotons++;
+                     }
+                     else{
+                        nSecondaryPhotons++;
+                     }
+                  }
+
+               }
             }
             // protons
             if (truePDG->at(i) == 2212 && trueGeneration->at(i) == 2 && trueMotherPDG->at(i) == 3122){
                effProton->Fill(reconstructed, momentum);
+               
                nProtons++;
+               if (signalTrueProtonID != -999) {
+                  std::cout<< "WARNING: multiple signal proton candidates in event "<< jentry << std::endl;
+               }
+               signalTrueProtonID = trueTrackID->at(i);
+
+               if(!reconstructed){
+                  nNotRecoProtons++;
+               }
+               else
+               {
+                  const int bestPfpIdx = trueBestRecoPfpIdx->at(i);
+                  if(bestPfpIdx < 0 || bestPfpIdx > static_cast<int>(pfpParentID->size())){
+                     std::cout<<"Error: proton says recoed, but valid best PFP index "<<bestPfpIdx<<" event = "<<jentry<<std::endl;
+                  }
+                  else
+                  {
+                     const int parentID = pfpParentID->at(bestPfpIdx);
+                     const bool isPrimary = parentID == nuPfpSelfID && nuPfpSelfID >= 0;
+
+                     if(isPrimary){
+                        nPrimaryProtons++;
+                     }
+                     else{
+                        nSecondaryProtons++;
+                     }
+                  }
+               }
             }
             // pions
             if (truePDG->at(i) == -211 && trueGeneration->at(i) == 2 && trueMotherPDG->at(i) == 3122){
                effPion->Fill(reconstructed, momentum);
+               
                nPions++;
+               signalTruePionID = trueTrackID->at(i);
+
+               if(!reconstructed){
+                  nNotRecoPions++;
+               }
+               else
+               {
+                  const int bestPfpIdx = trueBestRecoPfpIdx->at(i);
+                  if(bestPfpIdx < 0 || bestPfpIdx > static_cast<int>(pfpParentID->size())){
+                     std::cout<<"Error: pion says recoed, but valid best PFP index "<<bestPfpIdx<<" event = "<<jentry<<std::endl;
+                  }
+                  else
+                  {
+                     const int parentID = pfpParentID->at(bestPfpIdx);
+                     const bool isPrimary = parentID == nuPfpSelfID && nuPfpSelfID >= 0;
+
+                     if(isPrimary){
+                        nPrimaryPions++;
+                     }
+                     else{
+                        nSecondaryPions++;
+                     }
+                  }
+
+               }
             }
-         }
+
+         } // end loop over truth 
 
          // loop over reco PFPs
+      
          std::cout<<"num of PFPs in event = "<<pfpKey->size()<<std::endl;
          for (int iPfp = 0; iPfp < pfpKey->size(); ++iPfp){
             std::cout<<"PFP truth matched PDG ="<<pfpTruePDG->at(iPfp)<<std::endl;
 
             const float trackScore = pfpTrackScore->at(iPfp);
             const bool inNuSlice = pfpIsNuSlice->at(iPfp);
-            const bool isPrimary = pfpIsPrimary->at(iPfp);
+            const int parentID = pfpParentID->at(iPfp);
+            const bool isPrimary = nuPfpSelfID >= 0 && parentID == nuPfpSelfID;
+            const int matchedTrackID = pfpTrueTrackID->at(iPfp);
+            // if this pfp->Parent is primary, need to be able to look up isPrimary for parent -> make map
             //if(trackScore<0){continue;}
 
-            if(isPrimary){
-
-               // muon
-               if (pfpTruePDG->at(iPfp) == -13){
-                  nPrimaryMuons++;
-               }
-               // photon
-               if (pfpTruePDG->at(iPfp) == 22){
-                  nPrimaryPhotons++;
-               }
-               // proton
-               if (pfpTruePDG->at(iPfp) == 2212){
-                  nPrimaryProtons++;
-               }
-               // pion
-               if (pfpTruePDG->at(iPfp) == -211){
-                  nPrimaryPhotons++;
-               }
-            }
-
-            if(!isPrimary){
-               // muon
-               if (pfpTruePDG->at(iPfp) == -13){
-                  nSecondaryMuons++;
-               }
-               // photon
-               if (pfpTruePDG->at(iPfp) == 22){
-                  nSecondaryPhotons++;
-               }
-               // proton
-               if (pfpTruePDG->at(iPfp) == 2212){
-                  nSecondaryProtons++;
-               }
-               // pion
-               if (pfpTruePDG->at(iPfp) == -211){
-                  nSecondaryPions++;
-               }
-            }
+            if(isPrimary){nPrimaryPFPs++;}
+            if(!isPrimary){nSecondaryPFPs++;}
 
             // muon
-            if (pfpTruePDG->at(iPfp) == -13){
+            /*if (pfpTruePDG->at(iPfp) == -13){
                hMuonTrackScore->Fill(trackScore);
             }
             // photon
@@ -208,65 +314,30 @@ void recoStudy::Loop()
             // pion
             if (pfpTruePDG->at(iPfp) == -211){
                hPionTrackScore->Fill(trackScore);
-            }
+            }*/
 
-            const int matchedTrackID = pfpTrueTrackID->at(iPfp);
-            for (int iTrue = 0; iTrue < trueTrackID->size(); ++iTrue){
+         } // end loop over PFPs
 
-               if(trueTrackID->at(iTrue) != matchedTrackID){
-                  continue;
-               }
+      } // end check if event is signal
 
-               if (trueGeneration->at(iTrue) == 0){
-                  // isPrimary
+   } // end loop over events
 
-                  // muon
-                  if (pfpTruePDG->at(iPfp) == -13){
-                     //nPrimaryMuons++;
-                  }
-                  // photon
-                  if (pfpTruePDG->at(iPfp) == 22){
-                     //nPrimaryPhotons++;
-                  }
-                  // proton
-                  if (pfpTruePDG->at(iPfp) == 2212){
-                      //nPrimaryProtons++;
-                  }
-                  // pion
-                  if (pfpTruePDG->at(iPfp) == -211){
-                     //nPrimaryPions++;
-                  }
-               }
-               else if (trueGeneration->at(iTrue) != 0){
-                  // isSecondary
-                  // muon
-                  if (pfpTruePDG->at(iPfp) == -13){
-                     //nSecondaryMuons++;
-                  }
-                  // photon
-                  if (pfpTruePDG->at(iPfp) == 22){
-                     //nSecondaryPhotons++;
-                  }
-                  // proton
-                  if (pfpTruePDG->at(iPfp) == 2212){
-                     // nSecondaryProtons++;
-                  }
-                  // pion
-                  if (pfpTruePDG->at(iPfp) == -211){
-                     //nSecondaryPions++;
-                  }
-               }
-            }
+   float fracPrimaryMuon = static_cast<float>(nPrimaryMuons) / nMuons;//(static_cast<float>(nPrimaryMuons) + static_cast<float>(nSecondaryMuons));
+   float fracPrimaryPhoton = static_cast<float>(nPrimaryPhotons) / nPhotons; //(static_cast<float>(nPrimaryPhotons) + static_cast<float>(nSecondaryPhotons));
+   float fracPrimaryProton = static_cast<float>(nPrimaryProtons) / nProtons; //(static_cast<float>(nPrimaryProtons) + static_cast<float>(nSecondaryProtons));
+   float fracPrimaryPion = static_cast<float>(nPrimaryPions) / nPions; //(static_cast<float>(nPrimaryPions) + static_cast<float>(nSecondaryPions));
 
-         }
-      }
+   float fracSecondaryMuon = static_cast<float>(nSecondaryMuons) / nMuons; // (static_cast<float>(nPrimaryMuons) + static_cast<float>(nSecondaryMuons));
+   float fracSecondaryPhoton = static_cast<float>(nSecondaryPhotons) / nPhotons; // (static_cast<float>(nPrimaryPhotons) + static_cast<float>(nSecondaryPhotons));
+   float fracSecondaryProton = static_cast<float>(nSecondaryProtons) / nProtons; // (static_cast<float>(nPrimaryProtons) + static_cast<float>(nSecondaryProtons));
+   float fracSecondaryPion = static_cast<float>(nSecondaryPions) / nPions; // (static_cast<float>(nPrimaryPions) + static_cast<float>(nSecondaryPions));
 
-   }
+   float fracNotRecoMuon = static_cast<float>(nNotRecoMuons) / nMuons; // (static_cast<float>(nPrimaryMuons) + static_cast<float>(nSecondaryMuons));
+   float fracNotRecoPhoton = static_cast<float>(nNotRecoPhotons) / nPhotons; // (static_cast<float>(nPrimaryPhotons) + static_cast<float>(nSecondaryPhotons));
+   float fracNotRecoProton = static_cast<float>(nNotRecoProtons) / nProtons; // (static_cast<float>(nPrimaryProtons) + static_cast<float>(nSecondaryProtons));
+   float fracNotRecoPion = static_cast<float>(nNotRecoPions) / nPions; // (static_cast<float>(nPrimaryPions) + static_cast<float>(nSecondaryPions));
 
-  /* float fracPrimaryMuon = nPrimaryMuons / (nPrimaryMuons + nSecondaryMuons);
-   float fracPrimaryPhoton = nPrimaryPhotons / (nPrimaryPhotons + nSecondaryPhotons);
-   float fracPrimaryProton = nPrimaryProtons / (nPrimaryProtons + nSecondaryProtons);
-   float fracPrimaryPion = nPrimaryPions / (nPrimaryPions + nSecondaryPions);*/
+
 
    std::cout
    <<"num of muons = "<<nMuons
@@ -275,10 +346,13 @@ void recoStudy::Loop()
    <<"num of pions = "<<nPions
    <<std::endl;
 
-   /*std::cout<<"Fraction of Primary Muons = "<<fracPrimaryMuon
-   <<" Fraction of Primary Photons = "<<fracPrimaryPhoton
-   <<" Fraction of Primary Protons = "<<fracPrimaryProton
-   <<" Fraction of Primary Pions = "<<fracPrimaryPion<<std::endl;*/
+   std::cout<<"============================================="<<std::endl;
+   std::cout<<"Signal Particle | Frac Primary | Frac Secondary | Not Reco"<<std::endl;
+   std::cout<<"Muon            | "<<fracPrimaryMuon<<" | "<<fracSecondaryMuon<<" | "<<fracNotRecoMuon<<std::endl;
+   std::cout<<"Photon          | "<<fracPrimaryPhoton<<" | "<<fracSecondaryPhoton<<"| "<<fracNotRecoPhoton<<std::endl;
+   std::cout<<"Proton          | "<<fracPrimaryProton<<" | "<<fracSecondaryProton<<" | "<<fracNotRecoProton<<std::endl;
+   std::cout<<"Pion            | "<<fracPrimaryPion<<" | "<<fracSecondaryPion<<" | "<<fracNotRecoPion<<std::endl;
+   std::cout<<"============================================="<<std::endl;
 
    std::cout<<"num of primary muons = "<<nPrimaryMuons<<std::endl;
    std::cout<<"num of secondary muons = "<<nSecondaryMuons<<std::endl;

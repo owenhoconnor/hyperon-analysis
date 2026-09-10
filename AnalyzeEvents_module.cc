@@ -1099,6 +1099,7 @@ void hyperon::AnalyzeEvents::analyze(art::Event const& evt)
             // ------------------------------------------------
 
             PFPTruthMatch match;
+            std::unordered_map<int, int> contributorHitCounts;
 
             // get vector of pfpHits from helper function
             const std::vector<art::Ptr<recob::Hit>> pfpHits = getPFPHits(pfp);
@@ -1127,6 +1128,8 @@ void hyperon::AnalyzeEvents::analyze(art::Event const& evt)
                             if (TruthMatchUtils::Valid(hitG4ID) && hitG4ID == g4ID) {
                             ++nMatchedHits;
                             }
+
+                            ++contributorHitCounts[g4ID];
                         }
                         
                         match.nMatchedHits = nMatchedHits;
@@ -1134,6 +1137,8 @@ void hyperon::AnalyzeEvents::analyze(art::Event const& evt)
                         match.purity = static_cast<float>(nMatchedHits) / static_cast<float>(pfpHits.size());
                         
                     }
+
+                    
                 }
             }
 
