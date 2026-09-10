@@ -1,6 +1,6 @@
 //////////////////////////////////////////////////////////
 // This class has been automatically generated on
-// Tue Sep  8 11:43:48 2026 by ROOT version 6.40.02
+// Thu Sep 10 09:39:10 2026 by ROOT version 6.40.04
 // from TTree tree/Output TTree
 // found on file: /data/ooconnor/sbnd/hyperons/preselection_output/signalDef_output_sig.root
 //////////////////////////////////////////////////////////
@@ -53,6 +53,10 @@ public :
    vector<int>     *trueIsPrimary;
    vector<int>     *trueIsDecayProduct;
    vector<int>     *trueMCTruthIndex;
+   vector<int>     *trueNHits;
+   vector<int>     *trueNHitsU;
+   vector<int>     *trueNHitsV;
+   vector<int>     *trueNHitsZ;
    vector<float>   *trueP;
    vector<float>   *trueMass;
    vector<float>   *trueStartX;
@@ -98,7 +102,7 @@ public :
    vector<int>     *pfpSliceKey;
    vector<int>     *pfpIsNuSlice;
    vector<int>     *pfpIsPrimary;
-   vector<int>     *pfpNPrimaryChildren;
+   vector<int>     *pfpNDaughters;
    vector<float>   *pfpTrackScore;
    vector<int>     *pfpHasTrackScore;
    vector<int>     *pfpNTracks;
@@ -187,6 +191,10 @@ public :
    TBranch        *b_trueIsPrimary;   ///<!
    TBranch        *b_trueIsDecayProduct;   ///<!
    TBranch        *b_trueMCTruthIndex;   ///<!
+   TBranch        *b_trueNHits;   ///<!
+   TBranch        *b_trueNHitsU;   ///<!
+   TBranch        *b_trueNHitsV;   ///<!
+   TBranch        *b_trueNHitsZ;   ///<!
    TBranch        *b_trueP;   ///<!
    TBranch        *b_trueMass;   ///<!
    TBranch        *b_trueStartX;   ///<!
@@ -232,7 +240,7 @@ public :
    TBranch        *b_pfpSliceKey;   ///<!
    TBranch        *b_pfpIsNuSlice;   ///<!
    TBranch        *b_pfpIsPrimary;   ///<!
-   TBranch        *b_pfpNPrimaryChildren;   ///<!
+   TBranch        *b_pfpNDaughters;   ///<!
    TBranch        *b_pfpTrackScore;   ///<!
    TBranch        *b_pfpHasTrackScore;   ///<!
    TBranch        *b_pfpNTracks;   ///<!
@@ -380,6 +388,10 @@ void recoStudy::Init(TTree *tree)
    trueIsPrimary = 0;
    trueIsDecayProduct = 0;
    trueMCTruthIndex = 0;
+   trueNHits = 0;
+   trueNHitsU = 0;
+   trueNHitsV = 0;
+   trueNHitsZ = 0;
    trueP = 0;
    trueMass = 0;
    trueStartX = 0;
@@ -424,7 +436,7 @@ void recoStudy::Init(TTree *tree)
    pfpSliceKey = 0;
    pfpIsNuSlice = 0;
    pfpIsPrimary = 0;
-   pfpNPrimaryChildren = 0;
+   pfpNDaughters = 0;
    pfpTrackScore = 0;
    pfpHasTrackScore = 0;
    pfpNTracks = 0;
@@ -514,6 +526,10 @@ void recoStudy::Init(TTree *tree)
    fChain->SetBranchAddress("trueIsPrimary", &trueIsPrimary, &b_trueIsPrimary);
    fChain->SetBranchAddress("trueIsDecayProduct", &trueIsDecayProduct, &b_trueIsDecayProduct);
    fChain->SetBranchAddress("trueMCTruthIndex", &trueMCTruthIndex, &b_trueMCTruthIndex);
+   fChain->SetBranchAddress("trueNHits", &trueNHits, &b_trueNHits);
+   fChain->SetBranchAddress("trueNHitsU", &trueNHitsU, &b_trueNHitsU);
+   fChain->SetBranchAddress("trueNHitsV", &trueNHitsV, &b_trueNHitsV);
+   fChain->SetBranchAddress("trueNHitsZ", &trueNHitsZ, &b_trueNHitsZ);
    fChain->SetBranchAddress("trueP", &trueP, &b_trueP);
    fChain->SetBranchAddress("trueMass", &trueMass, &b_trueMass);
    fChain->SetBranchAddress("trueStartX", &trueStartX, &b_trueStartX);
@@ -559,7 +575,7 @@ void recoStudy::Init(TTree *tree)
    fChain->SetBranchAddress("pfpSliceKey", &pfpSliceKey, &b_pfpSliceKey);
    fChain->SetBranchAddress("pfpIsNuSlice", &pfpIsNuSlice, &b_pfpIsNuSlice);
    fChain->SetBranchAddress("pfpIsPrimary", &pfpIsPrimary, &b_pfpIsPrimary);
-   fChain->SetBranchAddress("pfpNPrimaryChildren", &pfpNPrimaryChildren, &b_pfpNPrimaryChildren);
+   fChain->SetBranchAddress("pfpNDaughters", &pfpNDaughters, &b_pfpNDaughters);
    fChain->SetBranchAddress("pfpTrackScore", &pfpTrackScore, &b_pfpTrackScore);
    fChain->SetBranchAddress("pfpHasTrackScore", &pfpHasTrackScore, &b_pfpHasTrackScore);
    fChain->SetBranchAddress("pfpNTracks", &pfpNTracks, &b_pfpNTracks);

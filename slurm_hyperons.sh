@@ -32,9 +32,6 @@ $APPTAINER_BIN exec -B /cvmfs,/data,/home,/opt,/run/user,/etc/hostname,/etc/host
         mrbslp
 	cd $WORK_DIR
 
-    # clear data dir so we don't end up with conflicting TTree Structures
-    
-    rm /data/ooconnor/sbnd/hyperons/analyzer_output/filtered_hyperons/*.root
 
         INPUT_FILES=($INPUT_DIR/firstbatch/prodgenie* $INPUT_DIR/secondbatch/prodgenie* $INPUT_DIR/thirdbatch/prodgenie* $INPUT_DIR/fourhtbatch/prodgenie*)
 

@@ -40,9 +40,9 @@ void signalDef::Loop()
 
 
    int nEvents[3] = {0};
-   nEvents[0] = 150989; // number of events in all hyperon files
+   nEvents[0] = 146685; // number of events in all hyperon files
    nEvents[1] = nEvents[0]; // any hyperon event
-   nEvents[2] = 10272 + nEvents[0]; // num of events in beam files + num of events in hyp files
+   nEvents[2] = 199499 + nEvents[0]; // num of events in beam files + num of events in hyp files
 
    TFile *sigFile = TFile::Open("/data/ooconnor/sbnd/hyperons/preselection_output/signalDef_output_sig.root", "RECREATE");
 
