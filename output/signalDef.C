@@ -118,9 +118,11 @@ void signalDef::Loop()
    int nCosmic = 0;
    int nInRecoFVSig = 0;
    int nInRecoFVBkg = 0;
+   int nInRecoFVDirt = 0;
    int nInRecoFVCosmic = 0;
    int nGoodTopoSig = 0;
    int nGoodTopoBkg = 0;
+   int nGoodTopoDirt = 0;
    int nGoodTopoCosmic = 0;
 
    int nBeamOrigin = 0;
@@ -129,11 +131,13 @@ void signalDef::Loop()
    int nCosmicOriginBkg = 0;
    int nUnknownOrigin = 0;
    int nUnknownOriginBkg = 0;
+   bool isCosmic;
+
+   int nSlicesSkipped = 0;
    int sliceSizeMissmatch = 0;
    int nSingleIntEvents = 0;
    int nMultiIntEvents = 0;
    int nZeroIntEvents = 0;
-   bool isCosmic;
 
    Long64_t nentries = fChain->GetEntriesFast();
 
@@ -152,7 +156,10 @@ void signalDef::Loop()
       // Choose slice with highest nuScore (nuSlice) and use to assign event as cosmic or not
       // ---------------------------------------------------
 
-      if (sliceID->size()==0){continue;}
+     if (sliceID->size()==0){
+      nSlicesSkipped++;
+      continue;
+     }
 
      std::cout<<"sliceID size = "<<sliceID->size()<<std::endl;
      std::cout<<"sliceNuScore size = "<<sliceNuScore->size()<<std::endl;
@@ -196,12 +203,12 @@ void signalDef::Loop()
             chosenTruthIdx = i;
          }
 
-         // Check if origin of MCTruth (cosmic or beam)
+         // Check if origin of MCTruth (cosmic or beam) NOTE: TRUE ORIGIN IS ALWAYS BEAM FOR BOTH HYPERON AND BEAM (use trueSliceOrigin instead)
 
          //std::cout<<"MCTruth at index "<<i<<" has origin "<<trueOrigin->at(i)<<std::endl;
-         if (trueOrigin->at(i) == 1){nBeamOrigin++;}
-         if (trueOrigin->at(i) == 2){nCosmicOrigin++;}
-         if (trueOrigin->at(i) != 1 && trueOrigin->at(i) != 2){nUnknownOrigin++;}
+         //if (trueOrigin->at(i) == 1){nBeamOrigin++;}
+         //if (trueOrigin->at(i) == 2){nCosmicOrigin++;}
+         //if (trueOrigin->at(i) != 1 && trueOrigin->at(i) != 2){nUnknownOrigin++;}
       }
 
       //std::cout<<"Chosen MCTruth has index"<<chosenTruthIdx<<" and origin"<<trueOrigin->at(chosenTruthIdx)<<std::endl;
@@ -214,8 +221,8 @@ void signalDef::Loop()
       bool isInRecoFV = false;
 
       if (std::abs(trueNuVtxX->at(chosenTruthIdx)) < 180 && 
-         std::abs(trueNuVtxY->at(chosenTruthIdx)) < 180 && 
-         trueNuVtxZ->at(chosenTruthIdx) < 450 &&
+         trueNuVtxY->at(chosenTruthIdx) < 100 && trueNuVtxY->at(chosenTruthIdx) > -180 && 
+         trueNuVtxZ->at(chosenTruthIdx) < 250 &&
          trueNuVtxZ->at(chosenTruthIdx) > 10){
          isInTrueFV = true;
       }
@@ -227,9 +234,10 @@ void signalDef::Loop()
       for (int i = 0; i < truePDG->size(); i++){
 
          // skip if the particle is not a primary particle
-         if(trueGeneration->at(i) != 0) continue;
 
-         if (trueMCTruthIndex->at(i) != chosenTruthIdx){ continue;}
+         if(trueGeneration->at(i) != 0){continue;}
+
+         if (trueMCTruthIndex->at(i) != chosenTruthIdx){continue;}
 
          if(truePDG->at(i) == 3212){
             hasPrimarySigma0 = true;
@@ -288,9 +296,7 @@ void signalDef::Loop()
       // Define signal
       bool hasCorrectSigmaDecay = hasSigmaLambda && hasSigmaGamma;
       bool hasCorrectLambdaDecay = hasLambdaProton && hasLambdaPionMinus;
-      bool isSignal = isInTrueFV &&hasPrimarySigma0 && hasPrimaryMuPlus && hasCorrectSigmaDecay && hasCorrectLambdaDecay && !isCosmic;
-
-      outTree->Fill();
+      bool isSignal = isInTrueFV && hasPrimarySigma0 && hasPrimaryMuPlus && hasCorrectSigmaDecay && hasCorrectLambdaDecay && !isCosmic;
 
       if (isCosmic){ // no cosmics in filtered hyps, so should be fine like this
          sampleType = Cosmic;
@@ -310,30 +316,30 @@ void signalDef::Loop()
          sampleType = Background;
          bkgTree->Fill();
          nBkg++;
-         if(trueOrigin->at(chosenTruthIdx) == 0){nUnknownOriginBkg++;}
-         if(trueOrigin->at(chosenTruthIdx) == 1){nBeamOriginBkg++;}
-         if(trueOrigin->at(chosenTruthIdx) == 2){nCosmicOriginBkg++;}
       }
-      else {continue;} // non signal /dirt in filtered hyps, signal in beam background true fv (prob v v rare)
+      else {continue;} // non signal events or dirt events in filtered hyperons (should add category for this!) or signal events in beam background true fv (very rare)
 
+      outTree->Fill();
 
-      // Reco FV and 3 Track + 1 Shower Count
-
-      if (std::abs(recoVtxX) < 180 && std::abs(recoVtxY) < 180 && recoVtxZ < 450 && recoVtxZ > 10){
+      // Reco FV
+      if (std::abs(recoVtxX) < 180 && recoVtxY < 100 && recoVtxY > -180 && recoVtxZ < 250 && recoVtxZ > 10){
          isInRecoFV = true;
       }
 
-
+      // 3 Track + 1 Shower Topology 
       if(isInRecoFV){
          if(sampleType==Signal){nInRecoFVSig++;}
          if(sampleType==Background){nInRecoFVBkg++;}
 
-        /* if (trackCount == 3 && showerCount == 1){
+         if (pfpNTracks->at(nuSliceIdx) == 3 && pfpNShowers->at(nuSliceIdx) == 1){
             if(sampleType==Signal && jentry < nEvents[0] + 1){nGoodTopoSig++;}
             if(sampleType==Background && jentry > nEvents[0]){nGoodTopoBkg++;}
-         }*/
+         }
 
       }  
+
+      std::cout<<"pfpNTracks size = "<<pfpNTracks->size()<<std::endl;
+      std::cout<<"pfpNShowers size = "<<pfpNShowers->size()<<std::endl;
 
    } // End of event loop
 
@@ -368,12 +374,6 @@ void signalDef::Loop()
    std::cout<<"# Background after 3+1 topo cut = "<<nGoodTopoBkg<<std::endl;
    std::cout<<"# Cosmic after 3+1 topo cut = "<<nGoodTopoCosmic<<std::endl;
    std::cout<<"================================================================"<<std::endl;
-   //std::cout<<"# of MCTruth Objs with Beam Nu Origin = "<<nBeamOrigin<<std::endl;
-   //std::cout<<"# of MCTruth Objs with Cosmic Nu Origin = "<<nCosmicOrigin<<std::endl;
-   //std::cout<<"# of MCTruths with Unknown/Other Origin = "<<nUnknownOrigin<<std::endl;
-   std::cout<<"# of Bkg MCTruths with Beam Neutrino Origin = "<<nBeamOriginBkg<<std::endl;
-   std::cout<<"# of Bkg MCTruths with Cosmic Neutrino Origin = "<<nCosmicOriginBkg<<std::endl;
-   std::cout<<"# of Bkg MCTruths with Unknown Neutrino Origin = "<<nUnknownOriginBkg<<std::endl;
    std::cout<<"================================================================"<<std::endl;
    std::cout<<"number of events where sliceID size != sliceNuScore size = "<<sliceSizeMissmatch<<std::endl;
    std::cout<<"number of events with 1 MCtruth  = "<<nSingleIntEvents<<std::endl;
