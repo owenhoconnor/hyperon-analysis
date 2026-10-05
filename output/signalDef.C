@@ -152,6 +152,7 @@ void signalDef::Loop()
       // Define per event variables
       // --------------------------------
 
+
       // ---------------------------------------------------
       // Choose slice with highest nuScore (nuSlice) and use to assign event as cosmic or not
       // ---------------------------------------------------
@@ -161,8 +162,8 @@ void signalDef::Loop()
       continue;
      }
 
-     std::cout<<"sliceID size = "<<sliceID->size()<<std::endl;
-     std::cout<<"sliceNuScore size = "<<sliceNuScore->size()<<std::endl;
+     //std::cout<<"sliceID size = "<<sliceID->size()<<std::endl;
+     //std::cout<<"sliceNuScore size = "<<sliceNuScore->size()<<std::endl;
      if(sliceID->size() == sliceNuScore->size()){
       float highestNuScore = -1; 
       for (int i = 0; i < sliceID->size(); ++i){
@@ -174,6 +175,22 @@ void signalDef::Loop()
          }
       }
    }
+
+     // quick test of ntracks nshowers in nuSlice
+
+     int nTracks = 0;
+     int nShowers = 0;
+     for(int i = 0; i < pfpSelfID->size(); ++i){
+         if(pfpTrackScore->at(i) > 0.5){
+            nTracks++;
+         }
+         else if (pfpTrackScore->at(i) <= 0.5 && pfpTrackScore->at(i) >= 0.0){
+            nShowers++;
+         }
+     }
+
+     std::cout<<"=============================================="<<std::endl;
+     std::cout<<"Event "<<jentry<<" has nuSliceIdx = "<<nuSliceIdx<<", nTracks = "<<nTracks<<", nShowers = "<<nShowers<<std::endl;
 
    isCosmic = false;
    if (sliceTrueOrigin->at(nuSliceIdx) == 2){
@@ -331,7 +348,7 @@ void signalDef::Loop()
          if(sampleType==Signal){nInRecoFVSig++;}
          if(sampleType==Background){nInRecoFVBkg++;}
 
-         if (pfpNTracks->at(nuSliceIdx) == 3 && pfpNShowers->at(nuSliceIdx) == 1){
+         if (nTracks == 3 && nShowers == 1){
             if(sampleType==Signal && jentry < nEvents[0] + 1){nGoodTopoSig++;}
             if(sampleType==Background && jentry > nEvents[0]){nGoodTopoBkg++;}
          }
