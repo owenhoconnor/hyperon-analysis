@@ -330,6 +330,7 @@ void eventClassification::Loop()
       bool isInDentTrueFV = false;
       bool isInTrueFV = false;
       bool isInRecoFV = false;
+      bool isInDentRecoFV = false;
 
       if (std::abs(trueNuVtxX->at(chosenTruthIdx)) < 180 && 
          std::abs(trueNuVtxY->at(chosenTruthIdx)) < 180 && 
@@ -445,10 +446,10 @@ void eventClassification::Loop()
          eventWeight = hyperonScaleFactor; // scale hyperon events to 1e21 POT
          nHyperon += eventWeight;
          if(isInDentTrueFV){
-            nHyperonInDentTrueFV++;
+            nHyperonInDentTrueFV += eventWeight;
          }
       }
-      else if (isHyperonSample && !isInTrueFV){
+      else if (isHyperonSample && !isInTrueFV){ // dirt in hyperon sample
          nDirtHyp++;
          sampleType = Dirt;
          eventWeight = hyperonScaleFactor; // scale hyperon events to 1e21 POT
@@ -486,8 +487,11 @@ void eventClassification::Loop()
       outTree->Fill();
 
       // Reco FV
-      if (std::abs(recoVtxX) < 180 && recoVtxY < 100 && recoVtxY > -180 && recoVtxZ < 250 && recoVtxZ > 10){
+      if (std::abs(recoVtxX) < 180 && std::abs(recoVtxY) < 180 && recoVtxZ < 450 && recoVtxZ > 10){
          isInRecoFV = true;
+      }
+      if (std::abs(recoVtxX) < 180 && recoVtxY < 100 && recoVtxY > -180 && recoVtxZ < 450 && recoVtxZ > 10){
+         isInDentRecoFV = true;
       }
 
       // 3 Track + 1 Shower Topology 
