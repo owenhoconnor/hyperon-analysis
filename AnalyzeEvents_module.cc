@@ -44,9 +44,11 @@
 #include "nusimdata/SimulationBase/MCTruth.h"
 #include "lardataobj/AnalysisBase/ParticleID.h"
 #include "lardataobj/AnalysisBase/Calorimetry.h"
+//#include "lardataobj/AnalysisBase/FlashMatch.h"
 #include "lardata/Utilities/AssociationUtil.h"
 #include "larcoreobj/SummaryData/POTSummary.h"
 #include "lardataobj/AnalysisBase/BackTrackerMatchingData.h"
+#include "sbnobj/Common/Reco/TPCPMTBarycenterMatch.h"
 
 // // Root Includes
 #include <iostream>
@@ -285,6 +287,7 @@ private:
   std::string fTrackLabel;
   std::string fShowerLabel;
   std::string fClusterLabel;
+  std::string fBarycenterFlashMatchLabel;
 
   art::ServiceHandle<art::TFileService> tfs;
   art::ServiceHandle<cheat::ParticleInventoryService> particleInventory;
@@ -394,6 +397,10 @@ private:
   std::vector<float> fSliceVtxY;
   std::vector<float> fSliceVtxZ;
   std::vector<float> fSliceOpt0Score;
+  std::vector<int> fSliceHasBaryFlashMatch;
+  std::vector<float> fSliceBaryFlashScore;
+  std::vector<float> fSliceBaryFlashChi2;
+  std::vector<float> fSliceBaryFlashPE;
 
   // PFP level
 
@@ -508,6 +515,7 @@ hyperon::AnalyzeEvents::AnalyzeEvents(fhicl::ParameterSet const& pset)
   //, fCalorimetryLabel(pset.get<std::string>("CalorimetryLabel"))
   , fShowerLabel(pset.get<std::string>("ShowerLabel"))
   , fClusterLabel(pset.get<std::string>("ClusterLabel"))
+  , fBarycenterFlashMatchLabel(pset.get<std::string>("BarycenterFlashMatchLabel"))
   // More initializers here.
 {
   // Call appropriate consumes<>() for any products to be retrieved by this module.
@@ -538,6 +546,10 @@ void hyperon::AnalyzeEvents::analyze(art::Event const& evt)
   fSliceVtxY.clear();
   fSliceVtxZ.clear();
   fSliceOpt0Score.clear();
+  fSliceHasBaryFlashMatch.clear();
+  fSliceBaryFlashScore.clear();
+  fSliceBaryFlashChi2.clear();
+  fSliceBaryFlashPE.clear();
 
   fPfpKey.clear();
   fPfpSelfID.clear();
@@ -640,6 +652,24 @@ void hyperon::AnalyzeEvents::analyze(art::Event const& evt)
    
    std::vector<art::Ptr<recob::Hit>> globalHits;
    art::fill_ptr_vector(globalHits, globalHitHandle);
+
+   // Get associations between Barycenter flash matching and slices
+
+   art::ValidHandle<std::vector<sbn::TPCPMTBarycenterMatch>> baryFlashMatchHandle = evt.getValidHandle<std::vector<sbn::TPCPMTBarycenterMatch>>(fBarycenterFlashMatchLabel);
+   std::vector<art::Ptr<sbn::TPCPMTBarycenterMatch>> baryFlashMatchVector;
+   art::fill_ptr_vector(baryFlashMatchVector, baryFlashMatchHandle);
+   art::FindOneP<recob::Slice> baryFlashMatchSliceAssoc(baryFlashMatchHandle, evt, fBarycenterFlashMatchLabel);
+
+   // Loop over flash matches 
+
+   std::unordered_map<size_t, size_t> sliceKeyToBaryMatchIdx;
+   for(size_t iMatch = 0; iMatch < baryFlashMatchVector.size(); ++iMatch){
+
+        const art::Ptr<recob::Slice> associatedSlice = baryFlashMatchSliceAssoc.at(iMatch);
+        if(associatedSlice.isNonnull()){
+            sliceKeyToBaryMatchIdx[associatedSlice.key()] = iMatch;
+        }
+   }
 
    //std::unique_ptr<art::FindManyP<sbn::OpT0Finder>> opt0Assns;
    //try { opt0Assns = std::make_unique<art::FindManyP<sbn::OpT0Finder>>(sliceHandle, e, fOpT0Label); } catch(...) {}
@@ -779,6 +809,10 @@ void hyperon::AnalyzeEvents::analyze(art::Event const& evt)
    for (const art::Ptr<recob::Slice> &slice : sliceVector){
 
     float nuScore = -1;
+    int hasBaryFlashMatch = 0;
+    float baryFlashScore = -999.f;
+    float baryFlashChi2 = -999.f;
+    float baryFlashPE = -999.f;
 	totalSlices++;
 
 	if (slice.key() >= slicePFPAssoc.size()) {
@@ -795,6 +829,18 @@ void hyperon::AnalyzeEvents::analyze(art::Event const& evt)
 	std::cout<<"Slice key: "<< slice.key()<<", Number of PFPs: "<< slicePFPs.size() << std::endl;
 	std::cout<<"nuSliceKey = "<<nuSliceKey<<std::endl;
 
+    // Barycenter flash match info
+
+    auto it = sliceKeyToBaryMatchIdx.find(slice.key());
+    if (it != sliceKeyToBaryMatchIdx.end()){
+        const int matchIdx = it->second;
+        const art::Ptr<sbn::TPCPMTBarycenterMatch>& baryMatch = baryFlashMatchVector.at(matchIdx);
+  
+        hasBaryFlashMatch = 1;
+        baryFlashScore = baryMatch->score;
+        baryFlashChi2 = baryMatch->chi2;
+        baryFlashPE = baryMatch->flashPEs;
+    }
     float sliceVtxX = -999.;
     float sliceVtxY = -999.;
     float sliceVtxZ = -999.;
@@ -916,6 +962,10 @@ void hyperon::AnalyzeEvents::analyze(art::Event const& evt)
     fSliceVtxX.push_back(sliceVtxX);
     fSliceVtxY.push_back(sliceVtxY);
     fSliceVtxZ.push_back(sliceVtxZ);
+    fSliceHasBaryFlashMatch.push_back(hasBaryFlashMatch);
+    fSliceBaryFlashScore.push_back(baryFlashScore);
+    fSliceBaryFlashChi2.push_back(baryFlashChi2);
+    fSliceBaryFlashPE.push_back(baryFlashPE);
 
     // Now, get hits in slice and loop over these hits
 
@@ -2178,6 +2228,10 @@ void hyperon::AnalyzeEvents::beginJob()
   fTree->Branch("sliceVtxX", &fSliceVtxX);
   fTree->Branch("sliceVtxY", &fSliceVtxY);
   fTree->Branch("sliceVtxZ", &fSliceVtxZ);
+  fTree->Branch("sliceHasBaryFlashMatch", &fSliceHasBaryFlashMatch);
+  fTree->Branch("sliceBaryFlashScore", &fSliceBaryFlashScore);
+  fTree->Branch("sliceBaryFlashChi2", &fSliceBaryFlashChi2);
+  fTree->Branch("sliceBaryFlashPE", &fSliceBaryFlashPE);
 
   fTree->Branch("pfpKey", &fPfpKey);
     fTree->Branch("pfpSelfID", &fPfpSelfID);

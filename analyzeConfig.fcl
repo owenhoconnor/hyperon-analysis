@@ -9,7 +9,8 @@ analyzeEvents:
   TrackLabel: "pandoraTrack"
   ShowerLabel: "pandoraShowerSBN"
   ClusterLabel: "pandoraSCE"
-  HitLabel: "gaushit" 
+  HitLabel: "gaushit"
+  BarycenterFlashMatchLabel: "tpcpmtbarycentermatching" 
 
 }
 

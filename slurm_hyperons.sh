@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#SBATCH --job-name=Hyperons_analyzer-NEW
+#SBATCH --job-name=hyp_ana
 #SBATCH --output=/data/ooconnor/slurm_logs/hyperons/filt_hyps/lar_%a.out # Where log files for each job end up
 #SBATCH --error=/data/ooconnor/slurm_logs/hyperons/filt_hyps/lar_%a.err # Where err files for each job end up
 #SBATCH --array=0-999%100
@@ -44,7 +44,7 @@ $APPTAINER_BIN exec -B /cvmfs,/data,/home,/opt,/run/user,/etc/hostname,/etc/host
             echo \"Processing file index \$i: \$CURRENT_FILE\"
 
             # Store in temp file
-            TMP_DIR=$WORK_DIR/tmp_job_\${SLURM_ARRAY_TASK_ID}_\$i
+            TMP_DIR=$WORK_DIR/jobs/tmp_job_\${SLURM_ARRAY_TASK_ID}_\$i
             mkdir -p \$TMP_DIR
             cd \$TMP_DIR
 

@@ -1,12 +1,12 @@
 //////////////////////////////////////////////////////////
 // This class has been automatically generated on
-// Thu Oct  8 16:15:19 2026 by ROOT version 6.40.04
+// Thu Oct  8 15:02:24 2026 by ROOT version 6.40.04
 // from TTree tree/Output TTree
-// found on file: /data/ooconnor/sbnd/hyperons/preselection_output/eventClassification_output.root
+// found on file: /data/ooconnor/sbnd/hyperons/analyzer_output/merged_anaOut_hyperons.root
 //////////////////////////////////////////////////////////
 
-#ifndef backgroundPlots_h
-#define backgroundPlots_h
+#ifndef eventClassification_h
+#define eventClassification_h
 
 #include <TROOT.h>
 #include <TChain.h>
@@ -17,7 +17,7 @@
 #include "vector"
 #include "vector"
 
-class backgroundPlots {
+class eventClassification {
 public :
    TTree          *fChain;   ///<!pointer to the analyzed TTree or TChain
    Int_t           fCurrent; ///<!current Tree number in a TChain
@@ -162,11 +162,6 @@ public :
    vector<int>     *trueBestRecoHasShower;
    vector<float>   *nuScores;
    vector<float>   *NeutrinoNuScores;
-   Int_t           sampleType;
-   Int_t           chosenTruthIdx;
-   Int_t           nuSliceIdx;
-   Int_t           nTracks;
-   Int_t           nShowers;
 
    // List of branches
    TBranch        *b_eventID;   ///<!
@@ -306,14 +301,9 @@ public :
    TBranch        *b_trueBestRecoHasShower;   ///<!
    TBranch        *b_nuScores;   ///<!
    TBranch        *b_NeutrinoNuScores;   ///<!
-   TBranch        *b_sampleType;   ///<!
-   TBranch        *b_chosenTruthIdx;   ///<!
-   TBranch        *b_nuSliceIdx;   ///<!
-   TBranch        *b_nTracks;   ///<!
-   TBranch        *b_nShowers;   ///<!
 
-   backgroundPlots(TTree *tree=0);
-   virtual ~backgroundPlots();
+   eventClassification(TTree *tree=0);
+   virtual ~eventClassification();
    virtual Int_t    Cut(Long64_t entry);
    virtual Int_t    GetEntry(Long64_t entry);
    virtual Long64_t LoadTree(Long64_t entry);
@@ -325,35 +315,36 @@ public :
 
 #endif
 
-#ifdef backgroundPlots_cxx
-backgroundPlots::backgroundPlots(TTree *tree) : fChain(0) 
+#ifdef eventClassification_cxx
+eventClassification::eventClassification(TTree *tree) : fChain(0) 
 {
 // if parameter tree is not specified (or zero), connect the file
 // used to generate this class and read the Tree.
    if (tree == 0) {
-      TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("/data/ooconnor/sbnd/hyperons/preselection_output/eventClassification_output.root");
+      TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("/data/ooconnor/sbnd/hyperons/analyzer_output/merged_anaOut_hyperons.root");
       if (!f || !f->IsOpen()) {
-         f = new TFile("/data/ooconnor/sbnd/hyperons/preselection_output/eventClassification_output.root");
+         f = new TFile("/data/ooconnor/sbnd/hyperons/analyzer_output/merged_anaOut_hyperons.root");
       }
-      f->GetObject("tree",tree);
+      TDirectory * dir = (TDirectory*)f->Get("/data/ooconnor/sbnd/hyperons/analyzer_output/merged_anaOut_hyperons.root:/ana");
+      dir->GetObject("tree",tree);
 
    }
    Init(tree);
 }
 
-backgroundPlots::~backgroundPlots()
+eventClassification::~eventClassification()
 {
    if (!fChain) return;
    delete fChain->GetCurrentFile();
 }
 
-Int_t backgroundPlots::GetEntry(Long64_t entry)
+Int_t eventClassification::GetEntry(Long64_t entry)
 {
 // Read contents of entry.
    if (!fChain) return 0;
    return fChain->GetEntry(entry);
 }
-Long64_t backgroundPlots::LoadTree(Long64_t entry)
+Long64_t eventClassification::LoadTree(Long64_t entry)
 {
 // Set the environment to read one entry
    if (!fChain) return -5;
@@ -366,7 +357,7 @@ Long64_t backgroundPlots::LoadTree(Long64_t entry)
    return centry;
 }
 
-void backgroundPlots::Init(TTree *tree)
+void eventClassification::Init(TTree *tree)
 {
    // The Init() function is called when the selector needs to initialize
    // a new tree or chain. Typically here the branch addresses and branch
@@ -651,15 +642,10 @@ void backgroundPlots::Init(TTree *tree)
    fChain->SetBranchAddress("trueBestRecoHasShower", &trueBestRecoHasShower, &b_trueBestRecoHasShower);
    fChain->SetBranchAddress("nuScores", &nuScores, &b_nuScores);
    fChain->SetBranchAddress("NeutrinoNuScores", &NeutrinoNuScores, &b_NeutrinoNuScores);
-   fChain->SetBranchAddress("sampleType", &sampleType, &b_sampleType);
-   fChain->SetBranchAddress("chosenTruthIdx", &chosenTruthIdx, &b_chosenTruthIdx);
-   fChain->SetBranchAddress("nuSliceIdx", &nuSliceIdx, &b_nuSliceIdx);
-   fChain->SetBranchAddress("nTracks", &nTracks, &b_nTracks);
-   fChain->SetBranchAddress("nShowers", &nShowers, &b_nShowers);
    Notify();
 }
 
-bool backgroundPlots::Notify()
+bool eventClassification::Notify()
 {
    // The Notify() function is called when a new file is opened. This
    // can be for a new TTree in a TChain. It is normally not necessary to make changes
@@ -669,18 +655,18 @@ bool backgroundPlots::Notify()
    return true;
 }
 
-void backgroundPlots::Show(Long64_t entry)
+void eventClassification::Show(Long64_t entry)
 {
 // Print contents of entry.
 // If entry is not specified, print current entry
    if (!fChain) return;
    fChain->Show(entry);
 }
-Int_t backgroundPlots::Cut(Long64_t entry)
+Int_t eventClassification::Cut(Long64_t entry)
 {
 // This function may be called from Loop.
 // returns  1 if entry is accepted.
 // returns -1 otherwise.
    return 1;
 }
-#endif // #ifdef test_cxx
+#endif // #ifdef eventClassification_cxx

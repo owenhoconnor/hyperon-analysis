@@ -1,12 +1,12 @@
 //////////////////////////////////////////////////////////
 // This class has been automatically generated on
-// Tue Sep  8 11:13:28 2026 by ROOT version 6.40.02
+// Wed Oct  7 16:30:10 2026 by ROOT version 6.40.04
 // from TTree tree/Output TTree
-// found on file: /data/ooconnor/sbnd/hyperons/analyzer_output/merged_anaOut_hyperons.root
+// found on file: /data/ooconnor/sbnd/hyperons/preselection_output/signalDef_output.root
 //////////////////////////////////////////////////////////
 
-#ifndef signalDef_h
-#define signalDef_h
+#ifndef plotsPreselection_h
+#define plotsPreselection_h
 
 #include <TROOT.h>
 #include <TChain.h>
@@ -17,7 +17,7 @@
 #include "vector"
 #include "vector"
 
-class signalDef {
+class plotsPreselection {
 public :
    TTree          *fChain;   ///<!pointer to the analyzed TTree or TChain
    Int_t           fCurrent; ///<!current Tree number in a TChain
@@ -53,6 +53,10 @@ public :
    vector<int>     *trueIsPrimary;
    vector<int>     *trueIsDecayProduct;
    vector<int>     *trueMCTruthIndex;
+   vector<int>     *trueNHits;
+   vector<int>     *trueNHitsU;
+   vector<int>     *trueNHitsV;
+   vector<int>     *trueNHitsZ;
    vector<float>   *trueP;
    vector<float>   *trueMass;
    vector<float>   *trueStartX;
@@ -98,7 +102,7 @@ public :
    vector<int>     *pfpSliceKey;
    vector<int>     *pfpIsNuSlice;
    vector<int>     *pfpIsPrimary;
-   vector<int>     *pfpNPrimaryChildren;
+   vector<int>     *pfpNDaughters;
    vector<float>   *pfpTrackScore;
    vector<int>     *pfpHasTrackScore;
    vector<int>     *pfpNTracks;
@@ -154,6 +158,11 @@ public :
    vector<int>     *trueBestRecoHasShower;
    vector<float>   *nuScores;
    vector<float>   *NeutrinoNuScores;
+   Int_t           sampleType;
+   Int_t           chosenTruthIdx;
+   Int_t           nuSliceIdx;
+   Int_t           nTracks;
+   Int_t           nShowers;
 
    // List of branches
    TBranch        *b_eventID;   ///<!
@@ -184,6 +193,10 @@ public :
    TBranch        *b_trueIsPrimary;   ///<!
    TBranch        *b_trueIsDecayProduct;   ///<!
    TBranch        *b_trueMCTruthIndex;   ///<!
+   TBranch        *b_trueNHits;   ///<!
+   TBranch        *b_trueNHitsU;   ///<!
+   TBranch        *b_trueNHitsV;   ///<!
+   TBranch        *b_trueNHitsZ;   ///<!
    TBranch        *b_trueP;   ///<!
    TBranch        *b_trueMass;   ///<!
    TBranch        *b_trueStartX;   ///<!
@@ -229,7 +242,7 @@ public :
    TBranch        *b_pfpSliceKey;   ///<!
    TBranch        *b_pfpIsNuSlice;   ///<!
    TBranch        *b_pfpIsPrimary;   ///<!
-   TBranch        *b_pfpNPrimaryChildren;   ///<!
+   TBranch        *b_pfpNDaughters;   ///<!
    TBranch        *b_pfpTrackScore;   ///<!
    TBranch        *b_pfpHasTrackScore;   ///<!
    TBranch        *b_pfpNTracks;   ///<!
@@ -285,9 +298,14 @@ public :
    TBranch        *b_trueBestRecoHasShower;   ///<!
    TBranch        *b_nuScores;   ///<!
    TBranch        *b_NeutrinoNuScores;   ///<!
+   TBranch        *b_sampleType;   ///<!
+   TBranch        *b_chosenTruthIdx;   ///<!
+   TBranch        *b_nuSliceIdx;   ///<!
+   TBranch        *b_nTracks;   ///<!
+   TBranch        *b_nShowers;   ///<!
 
-   signalDef(TTree *tree=0);
-   virtual ~signalDef();
+   plotsPreselection(TTree *tree=0);
+   virtual ~plotsPreselection();
    virtual Int_t    Cut(Long64_t entry);
    virtual Int_t    GetEntry(Long64_t entry);
    virtual Long64_t LoadTree(Long64_t entry);
@@ -299,36 +317,35 @@ public :
 
 #endif
 
-#ifdef signalDef_cxx
-signalDef::signalDef(TTree *tree) : fChain(0) 
+#ifdef plotsPreselection_cxx
+plotsPreselection::plotsPreselection(TTree *tree) : fChain(0) 
 {
 // if parameter tree is not specified (or zero), connect the file
 // used to generate this class and read the Tree.
    if (tree == 0) {
-      TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("/data/ooconnor/sbnd/hyperons/analyzer_output/merged_anaOut_hyperons.root");
+      TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("/data/ooconnor/sbnd/hyperons/preselection_output/signalDef_output.root");
       if (!f || !f->IsOpen()) {
-         f = new TFile("/data/ooconnor/sbnd/hyperons/analyzer_output/merged_anaOut_hyperons.root");
+         f = new TFile("/data/ooconnor/sbnd/hyperons/preselection_output/signalDef_output.root");
       }
-      TDirectory * dir = (TDirectory*)f->Get("/data/ooconnor/sbnd/hyperons/analyzer_output/merged_anaOut_hyperons.root:/ana");
-      dir->GetObject("tree",tree);
+      f->GetObject("tree",tree);
 
    }
    Init(tree);
 }
 
-signalDef::~signalDef()
+plotsPreselection::~plotsPreselection()
 {
    if (!fChain) return;
    delete fChain->GetCurrentFile();
 }
 
-Int_t signalDef::GetEntry(Long64_t entry)
+Int_t plotsPreselection::GetEntry(Long64_t entry)
 {
 // Read contents of entry.
    if (!fChain) return 0;
    return fChain->GetEntry(entry);
 }
-Long64_t signalDef::LoadTree(Long64_t entry)
+Long64_t plotsPreselection::LoadTree(Long64_t entry)
 {
 // Set the environment to read one entry
    if (!fChain) return -5;
@@ -341,7 +358,7 @@ Long64_t signalDef::LoadTree(Long64_t entry)
    return centry;
 }
 
-void signalDef::Init(TTree *tree)
+void plotsPreselection::Init(TTree *tree)
 {
    // The Init() function is called when the selector needs to initialize
    // a new tree or chain. Typically here the branch addresses and branch
@@ -375,6 +392,10 @@ void signalDef::Init(TTree *tree)
    trueIsPrimary = 0;
    trueIsDecayProduct = 0;
    trueMCTruthIndex = 0;
+   trueNHits = 0;
+   trueNHitsU = 0;
+   trueNHitsV = 0;
+   trueNHitsZ = 0;
    trueP = 0;
    trueMass = 0;
    trueStartX = 0;
@@ -419,7 +440,7 @@ void signalDef::Init(TTree *tree)
    pfpSliceKey = 0;
    pfpIsNuSlice = 0;
    pfpIsPrimary = 0;
-   pfpNPrimaryChildren = 0;
+   pfpNDaughters = 0;
    pfpTrackScore = 0;
    pfpHasTrackScore = 0;
    pfpNTracks = 0;
@@ -509,6 +530,10 @@ void signalDef::Init(TTree *tree)
    fChain->SetBranchAddress("trueIsPrimary", &trueIsPrimary, &b_trueIsPrimary);
    fChain->SetBranchAddress("trueIsDecayProduct", &trueIsDecayProduct, &b_trueIsDecayProduct);
    fChain->SetBranchAddress("trueMCTruthIndex", &trueMCTruthIndex, &b_trueMCTruthIndex);
+   fChain->SetBranchAddress("trueNHits", &trueNHits, &b_trueNHits);
+   fChain->SetBranchAddress("trueNHitsU", &trueNHitsU, &b_trueNHitsU);
+   fChain->SetBranchAddress("trueNHitsV", &trueNHitsV, &b_trueNHitsV);
+   fChain->SetBranchAddress("trueNHitsZ", &trueNHitsZ, &b_trueNHitsZ);
    fChain->SetBranchAddress("trueP", &trueP, &b_trueP);
    fChain->SetBranchAddress("trueMass", &trueMass, &b_trueMass);
    fChain->SetBranchAddress("trueStartX", &trueStartX, &b_trueStartX);
@@ -554,7 +579,7 @@ void signalDef::Init(TTree *tree)
    fChain->SetBranchAddress("pfpSliceKey", &pfpSliceKey, &b_pfpSliceKey);
    fChain->SetBranchAddress("pfpIsNuSlice", &pfpIsNuSlice, &b_pfpIsNuSlice);
    fChain->SetBranchAddress("pfpIsPrimary", &pfpIsPrimary, &b_pfpIsPrimary);
-   fChain->SetBranchAddress("pfpNPrimaryChildren", &pfpNPrimaryChildren, &b_pfpNPrimaryChildren);
+   fChain->SetBranchAddress("pfpNDaughters", &pfpNDaughters, &b_pfpNDaughters);
    fChain->SetBranchAddress("pfpTrackScore", &pfpTrackScore, &b_pfpTrackScore);
    fChain->SetBranchAddress("pfpHasTrackScore", &pfpHasTrackScore, &b_pfpHasTrackScore);
    fChain->SetBranchAddress("pfpNTracks", &pfpNTracks, &b_pfpNTracks);
@@ -610,10 +635,15 @@ void signalDef::Init(TTree *tree)
    fChain->SetBranchAddress("trueBestRecoHasShower", &trueBestRecoHasShower, &b_trueBestRecoHasShower);
    fChain->SetBranchAddress("nuScores", &nuScores, &b_nuScores);
    fChain->SetBranchAddress("NeutrinoNuScores", &NeutrinoNuScores, &b_NeutrinoNuScores);
+   fChain->SetBranchAddress("sampleType", &sampleType, &b_sampleType);
+   fChain->SetBranchAddress("chosenTruthIdx", &chosenTruthIdx, &b_chosenTruthIdx);
+   fChain->SetBranchAddress("nuSliceIdx", &nuSliceIdx, &b_nuSliceIdx);
+   fChain->SetBranchAddress("nTracks", &nTracks, &b_nTracks);
+   fChain->SetBranchAddress("nShowers", &nShowers, &b_nShowers);
    Notify();
 }
 
-bool signalDef::Notify()
+bool plotsPreselection::Notify()
 {
    // The Notify() function is called when a new file is opened. This
    // can be for a new TTree in a TChain. It is normally not necessary to make changes
@@ -623,18 +653,18 @@ bool signalDef::Notify()
    return true;
 }
 
-void signalDef::Show(Long64_t entry)
+void plotsPreselection::Show(Long64_t entry)
 {
 // Print contents of entry.
 // If entry is not specified, print current entry
    if (!fChain) return;
    fChain->Show(entry);
 }
-Int_t signalDef::Cut(Long64_t entry)
+Int_t plotsPreselection::Cut(Long64_t entry)
 {
 // This function may be called from Loop.
 // returns  1 if entry is accepted.
 // returns -1 otherwise.
    return 1;
 }
-#endif // #ifdef signalDef_cxx
+#endif // #ifdef plotsPreselection_cxx
