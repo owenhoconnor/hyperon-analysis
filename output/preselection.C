@@ -1,102 +1,71 @@
 #define preselection_cxx
 #include "preselection.h"
-#include <TH2.h>
-#include <TStyle.h>
-#include <TCanvas.h>
+#include <cmath>
+#include <iostream>
 
-void preselection::Loop()
+PreselectionResults preselection::Loop(const PreselectionCuts& cuts)
 {
-//   In a ROOT session, you can do:
-//      root> .L preselection.C
-//      root> preselection t
-//      root> t.GetEntry(12); // Fill t data members with entry number 12
-//      root> t.Show();       // Show values of entry 12
-//      root> t.Show(16);     // Read and show values of entry 16
-//      root> t.Loop();       // Loop on all entries
-//
+    PreselectionResults results;
 
-//     This is the loop skeleton where:
-//    jentry is the global entry number in the chain
-//    ientry is the entry number in the current Tree
-//  Note that the argument to GetEntry must be:
-//    jentry for TChain::GetEntry
-//    ientry for TTree::GetEntry and TBranch::GetEntry
-//
-//       To read only selected branches, Insert statements like:
-// METHOD1:
-//    fChain->SetBranchStatus("*",0);  // disable all branches
-//    fChain->SetBranchStatus("branchname",1);  // activate branchname
-// METHOD2: replace line
-//    fChain->GetEntry(jentry);       //read all branches
-//by  b_branchname->GetEntry(ientry); //read only this branch
+    if (!fChain) return results;
 
-float efficiency = 0.0;
-float purity = 0.0;
+    const Long64_t nentries = fChain->GetEntries();
 
-// preselection cut values
-float recoVtxXHighCut = 180;
-float recoVtxXLowCut = 180;
-float recoVtxYHighCut = 180;
-float recoVtxYLowCut = -180;
-float recoVtxZHighCut = 450;
-float recoVtxZLowCut = 10;
-float nuScoreCut = 0.5;
-float bcfmCut = 0.2;
-float nTracksCut = 3;
-float nShowersCut = 1;
+    for (Long64_t jentry = 0; jentry < nentries; ++jentry) {
 
+        Long64_t ientry = LoadTree(jentry);
+        if (ientry < 0) break;
 
-   if (fChain == 0) return;
+        fChain->GetEntry(jentry);
 
-   Long64_t nentries = fChain->GetEntriesFast();
+        // Count all true signal events BEFORE applying cuts.
+        if (sampleType == 0) {
+            results.nTrueSignal++;
+        }
 
-   Long64_t nbytes = 0, nb = 0;
-   for (Long64_t jentry=0; jentry<nentries;jentry++) {
-      Long64_t ientry = LoadTree(jentry);
-      if (ientry < 0) break;
-      nb = fChain->GetEntry(jentry);   nbytes += nb;
-      // if (Cut(ientry) < 0) continue;
-      std::cout<<"---------------------------------"
-      std::cout<<"Processing event "<<jentry<<" out of "<<nentries<<std::endl;
+        // Validate the selected neutrino slice.
+        if (!sliceNuScore || !sliceBaryFlashScore)
+            continue;
 
-      nuSliceNuScore = sliceNuScore->at(nuSliceIdx);
-      nuSliceBCFMScore = sliceBaryFlashScore->at(nuSliceIdx);
+        if (nuSliceIdx < 0 ||
+            static_cast<size_t>(nuSliceIdx) >= sliceNuScore->size() ||
+            static_cast<size_t>(nuSliceIdx) >= sliceBaryFlashScore->size())
+            continue;
 
-      // Reco FV cut
-      if (std::abs(RecoVertexX) < 180 && std::abs(RecoVertexY) < 180 && RecoVertexZ < 450 && RecoVertexZ > 10){
-         isInRecoFV = true;
-      }
+        const float recoVtxX = sliceVtxX->at(nuSliceIdx);
+        const float recoVtxY = sliceVtxY->at(nuSliceIdx);
+        const float recoVtxZ = sliceVtxZ->at(nuSliceIdx);
+        const double nuSliceNuScore = sliceNuScore->at(nuSliceIdx);
+        const double nuSliceBCFMScore = sliceBaryFlashScore->at(nuSliceIdx);
 
-      // nuScore cut
-      if(nuSliceNuScore < nuScoreCut){
-         continue;
-      }
+        // Reconstructed fiducial volume
+        if (std::abs(recoVtxX) >= cuts.recoVtxXMax || std::abs(recoVtxY) >= cuts.recoVtxYMax ||
+            recoVtxZ <= cuts.recoVtxZMin ||
+            recoVtxZ >= cuts.recoVtxZMax)
+            continue;
 
-      // BCFM cut
-      if(nuSliceBCFMScore < bfcmCut){
-         continue;
-      }
+        // Neutrino score
+        if (nuSliceNuScore < cuts.nuScore.value)
+            continue;
 
-      // Track/Shower multiplicty cut (3 Track + 1 Shower)
+        // Barycentre flash matching score
+        if (nuSliceBCFMScore < cuts.bcfm.value)
+            continue;
 
-      if(nTracks != nTracksCut){
-         continue;
-      }
-      if(nShowers != nShowersCut){
-         continue;
-      }
-   }
+        // Track / shower multiplicity
+        if (nTracks != cuts.nTracks)
+            continue;
 
-   // Efficiency * Purity optimization
+        if (nShowers != cuts.nShowers)
+            continue;
 
-   float efficiency; // selected signal / total true signal
-   float purity; // selected signal / total selected
+        // Event survives all preselection cuts
+        results.nSelected++;
 
-   float step = 1;
-   for (int i = 0; i < ; ++i){
-      float effPur = efficiency * purity;
-   }
+        if (sampleType == 0) {
+            results.nSelectedSignal++;
+        }
+    }
 
-   std::cout<<"=============== Preselection Results ==================="<<std::endl;
-   std::cout<<"========================================================"std::endl;
+    return results;
 }

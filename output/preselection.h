@@ -17,6 +17,44 @@
 #include "vector"
 #include "vector"
 
+struct PreselectionResults {
+   int nSelected = 0;
+   int nSelectedSignal = 0;
+   int nTrueSignal = 0;
+
+   double efficiency() const {return nTrueSignal > 0 ? double(nSelectedSignal) / nTrueSignal : 0.0;}
+   double purity() const {return nSelected > 0 ? double(nSelectedSignal) / nSelected : 0.0;}
+   double effPur() const {return efficiency() * purity();}
+};
+
+struct Cut {
+   std::string name;
+   double minValue;
+   double maxValue;
+   double value;
+   int nSteps;
+}
+
+struct PreselectionCuts {
+
+   // RecoFV
+   double recoVtxXMax = 180.0;
+   double recoVtxXMin = 180.0;
+   double recoVtxYMax = 180.0;
+   double recoVtxYMin = 180.0;
+   double recoVtxZMax = 450.0;
+   double recoVtxZMin = 10.0;
+
+   // Cosmic rejection
+   Cut nuScore = {"NuScore", 0, 1.0, 0.5, 100},
+   Cut bcfm = {"BCFM", 0, 1.0, 0.2, 100},
+   Cut flashTime = {"FlashTime", 0, 1.0, 0.5, 100}
+
+   // Final state (recoed) topology
+   int nTracks = 3;
+   int nShowers = 1;
+};
+
 class preselection {
 public :
    TTree          *fChain;   ///<!pointer to the analyzed TTree or TChain
@@ -320,12 +358,10 @@ public :
    virtual Int_t    GetEntry(Long64_t entry);
    virtual Long64_t LoadTree(Long64_t entry);
    virtual void     Init(TTree *tree);
-   virtual void     Loop();
+   virtual PreselectionResults Loop(const PreselectionCuts& cuts);
    virtual bool     Notify();
    virtual void     Show(Long64_t entry = -1);
 };
-
-#endif
 
 #ifdef preselection_cxx
 preselection::preselection(TTree *tree) : fChain(0) 
@@ -687,3 +723,4 @@ Int_t preselection::Cut(Long64_t entry)
    return 1;
 }
 #endif // #ifdef preselection_cxx
+#endif // # preselection_h

@@ -1,0 +1,30 @@
+# Produced from 'fhicl-dump' using:
+#   Input  : eventdump_noresolve.fcl
+#   Policy : cet::filepath_maker
+#   Path   : "FHICL_FILE_PATH"
+
+outputs: {
+   out1: {
+      module_type: "FileDumperOutput"
+      resolveProducts: false
+      wantProductFriendlyClassName: false
+      wantProductFullClassName: true
+   }
+}
+physics: {
+   analyzers: {}
+   end_paths: [
+      "stream1"
+   ]
+   filters: {}
+   producers: {}
+   stream1: [
+      "out1"
+   ]
+}
+process_name: "Dump"
+services: {}
+source: {
+   maxEvents: 10
+   module_type: "RootInput"
+}

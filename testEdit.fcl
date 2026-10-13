@@ -1,0 +1,2 @@
+#include "run_analyzeEvents.fcl"
+services.DetectorPropertyService.Electronlifetime: 34000
