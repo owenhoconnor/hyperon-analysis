@@ -33,7 +33,7 @@ struct Cut {
    double maxValue;
    double value;
    int nSteps;
-}
+};
 
 struct PreselectionCuts {
 
@@ -45,10 +45,14 @@ struct PreselectionCuts {
    double recoVtxZMax = 450.0;
    double recoVtxZMin = 10.0;
 
+   // Dent RecoFV
+   double dentRecoVtxXMax = 180.0;
+   double dentRecoVtxXMin = 180.0;
+
    // Cosmic rejection
-   Cut nuScore = {"NuScore", 0, 1.0, 0.5, 100},
-   Cut bcfm = {"BCFM", 0, 1.0, 0.2, 100},
-   Cut flashTime = {"FlashTime", 0, 1.0, 0.5, 100}
+   Cut nuScore = {"NuScore", 0, 1.0, 0.48, 100};
+   Cut bcfm = {"BCFM", 0, 1.0, 0.04, 100};
+   Cut flashTime = {"FlashTime", 0, 1.0, 0.5, 100};
 
    // Final state (recoed) topology
    int nTracks = 3;

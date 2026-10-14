@@ -30,14 +30,14 @@ void optimizePreselection()
     // Optimize NuScore and BCFM sequentially
     for (const auto& parameter : parameters) {
 
-        Cut& currentCut = cuts.&parameter;
+        Cut& currentCut = cuts.*parameter;
 
         std::cout<<"------------------------------------------"<<std::endl;
         std::cout<<"Optimizing Cut: "<<currentCut.name <<std::endl;
         std::cout<<"Cut Min Value: "<<currentCut.minValue<<std::endl;
         std::cout<<"Cut Max Value: "<<currentCut.maxValue<<std::endl;
 
-        double bestCutValue = currentCut.value
+        double bestCutValue = currentCut.value;
         double bestEffPur = -1.0;
 
         for (int iStep = 0; iStep <= currentCut.nSteps; ++iStep) {
