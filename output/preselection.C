@@ -1,172 +1,135 @@
 #define preselection_cxx
 #include "preselection.h"
+
 #include <cmath>
+#include <cstddef>
+#include <iomanip>
 #include <iostream>
 
 PreselectionResults preselection::Loop(const PreselectionCuts& cuts)
 {
     PreselectionResults results;
-
     if (!fChain) return results;
-
-    float nPassNuScoreSig = 0.0;
-    float nPassNuScoreHyp = 0.0;
-    float nPassNuScoreBkg = 0.0;
-    float nPassNuScoreDirt = 0.0;
-    float nPassNuScoreCosmic = 0.0;
-    float nPassBCFMSig = 0.0;
-    float nPassBCFMHyp = 0.0;
-    float nPassBCFMBkg = 0.0;
-    float nPassBCFMDirt = 0.0;
-    float nPassBCFMCosmic = 0.0;
-    float nPassRecoFVSig = 0.0;
-    float nPassRecoFVHyp = 0.0;
-    float nPassRecoFVBkg = 0.0;
-    float nPassRecoFVDirt = 0.0;
-    float nPassRecoFVCosmic = 0.0;
-    float nPassTrackMultiplicitySig = 0.0;
-    float nPassTrackMultiplicityHyp = 0.0;
-    float nPassTrackMultiplicityBkg = 0.0;
-    float nPassTrackMultiplicityDirt = 0.0;
-    float nPassTrackMultiplicityCosmic = 0.0;
-    float nPassShowerMultiplicitySig = 0.0;
-    float nPassShowerMultiplicityHyp = 0.0;
-    float nPassShowerMultiplicityBkg = 0.0;
-    float nPassShowerMultiplicityDirt = 0.0;
-    float nPassShowerMultiplicityCosmic = 0.0;
 
     const Long64_t nentries = fChain->GetEntries();
 
     for (Long64_t jentry = 0; jentry < nentries; ++jentry) {
-
-        Long64_t ientry = LoadTree(jentry);
-        if (ientry < 0) break;
-
-        fChain->GetEntry(jentry);
-
-        bool passNuScore = false;
-        bool passBCFM = false;
-        bool passRecoFV = false;
-        bool passTrackMultiplicity = false;
-        bool passShowerMultiplicity = false;
-
-        // Count all true signal events BEFORE applying cuts.
-        if (sampleType == 0) {
-            results.nTrueSignal++;
-        }
-
-        // Validate the selected neutrino slice.
-        if (!sliceNuScore || !sliceBaryFlashScore)
+        if (LoadTree(jentry) < 0) break;
+        if (GetEntry(jentry) <= 0) {
+            ++results.unreadableEntries;
             continue;
+        }
 
-        if (nuSliceIdx < 0 ||
-            static_cast<size_t>(nuSliceIdx) >= sliceNuScore->size() ||
-            static_cast<size_t>(nuSliceIdx) >= sliceBaryFlashScore->size())
+        const bool knownCategory = sampleType >= 0 && sampleType < kNSamples;
+        const double weight = static_cast<double>(eventWeight);
+        const bool validWeight = std::isfinite(weight) && weight >= 0.0;
+
+        if (!knownCategory) ++results.invalidSampleType;
+        if (!validWeight) ++results.invalidWeight;
+        if (!knownCategory) continue; // No safe sample category for bookkeeping.
+
+        const int category = sampleType;
+        if (!validWeight) {
+            // A raw invalid-weight count; sumW and sumW2 cannot be meaningful.
+            ++results.invalidEvents[kInvalidWeight][category].raw;
             continue;
-
-        const float recoVtxX = sliceVtxX->at(nuSliceIdx);
-        const float recoVtxY = sliceVtxY->at(nuSliceIdx);
-        const float recoVtxZ = sliceVtxZ->at(nuSliceIdx);
-        const double nuSliceNuScore = sliceNuScore->at(nuSliceIdx);
-        const double nuSliceBCFMScore = sliceBaryFlashScore->at(nuSliceIdx);
-
-        // Reconstructed fiducial volume
-        if (std::abs(recoVtxX) >= cuts.recoVtxXMax || std::abs(recoVtxY) >= cuts.recoVtxYMax ||
-            recoVtxZ <= cuts.recoVtxZMin ||
-            recoVtxZ >= cuts.recoVtxZMax)
-        {
-            passRecoFV = true;
         }
 
-        // Neutrino score
-        if (nuSliceNuScore > cuts.nuScore.value)
-        {
-            passNuScore = true;
-            //nPassNuScore += eventWeight
-        }
+        results.cutflow[kInitial][category].fill(weight);
 
-        // Barycentre flash matching score
-        if (nuSliceBCFMScore > cuts.bcfm.value)
-        {
-                passBCFM = true;
-                //nPassBCFM += eventWeight
-        }
+        // Check every applicable slice-validation failure, not just the first.
+        const bool noSlice = nuSliceIdx < 0;
+        const bool missingVector = !sliceNuScore || !sliceBaryFlashScore ||
+                                   !sliceVtxX || !sliceVtxY || !sliceVtxZ;
+        bool outOfRange = false;
+        bool nonFinite = false;
 
-        // Track / shower multiplicity
-        if (nTracks == cuts.nTracks)
-        {
-            passTrackMultiplicity = true;
-        }
-
-        if (nShowers == cuts.nShowers)
-        {
-            passShowerMultiplicity = true;
-        }
-
-        if(passNuScore)
-        {
-            if(sampleType==0){nPassNuScoreSig += eventWeight;}
-            if(sampleType==4){nPassNuScoreHyp += eventWeight;}
-            if(sampleType==1){nPassNuScoreBkg += eventWeight;}
-            if(sampleType==2){nPassNuScoreDirt += eventWeight;}
-            if(sampleType==3){nPassNuScoreCosmic += eventWeight;}
-            
-            if(passBCFM)
-            {
-                if(sampleType==0){nPassBCFMSig += eventWeight;}
-                if(sampleType==4){nPassBCFMHyp += eventWeight;}
-                if(sampleType==1){nPassBCFMBkg += eventWeight;}
-                if(sampleType==2){nPassBCFMDirt += eventWeight;}
-                if(sampleType==3){nPassBCFMCosmic += eventWeight;}
-
-                if(passRecoFV)
-                {
-                    if(sampleType==0){nPassRecoFVSig += eventWeight;}
-                    if(sampleType==4){nPassRecoFVHyp += eventWeight;}
-                    if(sampleType==1){nPassRecoFVBkg += eventWeight;}
-                    if(sampleType==2){nPassRecoFVDirt += eventWeight;}
-                    if(sampleType==3){nPassRecoFVCosmic += eventWeight;}
-
-                    if(passTrackMultiplicity)
-                    {
-                        if(sampleType==0){nPassTrackMultiplicitySig += eventWeight;}
-                        if(sampleType==4){nPassTrackMultiplicityHyp += eventWeight;}
-                        if(sampleType==1){nPassTrackMultiplicityBkg += eventWeight;}
-                        if(sampleType==2){nPassTrackMultiplicityDirt += eventWeight;}
-                        if(sampleType==3){nPassTrackMultiplicityCosmic += eventWeight;}
-
-                        if(passShowerMultiplicity)
-                        {
-                            if(sampleType==0){nPassShowerMultiplicitySig += eventWeight;}
-                            if(sampleType==4){nPassShowerMultiplicityHyp += eventWeight;}
-                            if(sampleType==1){nPassShowerMultiplicityBkg += eventWeight;}
-                            if(sampleType==2){nPassShowerMultiplicityDirt += eventWeight;}
-                            if(sampleType==3){nPassShowerMultiplicityCosmic += eventWeight;}
-                            //nPassShowerMultiplicty += eventWeight;
-                        }
-                    }
-                }
-            }
-
-        }
-        // Event survives all preselection cuts
-        if(passNuScore && passBCFM && passRecoFV & passTrackMultiplicity && passShowerMultiplicity)
-        {
-            results.nSelected++;
-
-            if (sampleType == 0)
-            {    
-                results.nSelectedSignal++;
+        if (!noSlice && !missingVector) {
+            const std::size_t idx = static_cast<std::size_t>(nuSliceIdx);
+            outOfRange = idx >= sliceNuScore->size() ||
+                         idx >= sliceBaryFlashScore->size() ||
+                         idx >= sliceVtxX->size() ||
+                         idx >= sliceVtxY->size() ||
+                         idx >= sliceVtxZ->size();
+            if (!outOfRange) {
+                nonFinite = !std::isfinite(static_cast<double>(sliceVtxX->at(idx))) ||
+                            !std::isfinite(static_cast<double>(sliceVtxY->at(idx))) ||
+                            !std::isfinite(static_cast<double>(sliceVtxZ->at(idx))) ||
+                            !std::isfinite(static_cast<double>(sliceNuScore->at(idx))) ||
+                            !std::isfinite(static_cast<double>(sliceBaryFlashScore->at(idx)));
             }
         }
+
+        if (noSlice) results.invalidEvents[kNoNuSlice][category].fill(weight);
+        if (missingVector) results.invalidEvents[kMissingSliceVector][category].fill(weight);
+        if (outOfRange) results.invalidEvents[kSliceIndexOutOfRange][category].fill(weight);
+        if (nonFinite) results.invalidEvents[kNonFiniteRecoValue][category].fill(weight);
+
+        if (noSlice || missingVector || outOfRange || nonFinite) {
+            ++results.invalidSlice;
+            continue; // Physics scores/vertex cannot safely be evaluated.
+        }
+
+        ++results.validSlice;
+        const std::size_t idx = static_cast<std::size_t>(nuSliceIdx);
+        const double x = sliceVtxX->at(idx);
+        const double y = sliceVtxY->at(idx);
+        const double z = sliceVtxZ->at(idx);
+        const double nuScore = sliceNuScore->at(idx);
+        const double bcfm = sliceBaryFlashScore->at(idx);
+
+        // Keep the previous RecoFV geometry (dent not applied).
+        const bool pass[kNPhysicsCuts] = {
+            std::abs(x) < cuts.recoVtxXMax &&
+            std::abs(y) < cuts.recoVtxYMax &&
+            z > cuts.recoVtxZMin && z < cuts.recoVtxZMax,
+            nuScore > cuts.nuScore.value,
+            bcfm > cuts.bcfm.value,
+            nTracks == cuts.nTracks,
+            nShowers == cuts.nShowers
+        };
+
+        unsigned int pattern = 0;
+        bool cumulativePass = true;
+        for (int cut = 0; cut < kNPhysicsCuts; ++cut) {
+            const int stage = cut + 1;
+            if (pass[cut]) {
+                results.independentPass[stage][category].fill(weight);
+                pattern |= (1u << cut);
+            } else {
+                results.independentFail[stage][category].fill(weight);
+            }
+            cumulativePass = cumulativePass && pass[cut];
+            if (cumulativePass) results.cutflow[stage][category].fill(weight);
+        }
+        results.cutPatterns[pattern][category].fill(weight);
     }
 
-    std::cout<<"------------------- Results ----------------------------"<<std::endl;
-    std::cout<<"# Signal passing NuScore Cut = "<<nPassNuScoreSig<<std::endl;
-    std::cout<<"# Hyperons passing NuScore Cut = "<<nPassNuScoreHyp<<std::endl;
-    std::cout<<"# Bkg passing NuScore cut = "<<nPassNuScoreBkg<<std::endl;
-    std::cout<<"# Dirt passing NuScore cut = "<<nPassNuScoreDirt<<std::endl;
-    std::cout<<"# Cosmic passing NuScore cut = "<<nPassNuScoreCosmic<<std::endl;
+    const char* stageNames[kNStages] = {
+        "Initial", "RecoFV", "nuScore", "BCFM", "Tracks", "Showers"
+    };
+    const char* sampleNames[kNSamples] = {
+        "Signal", "Other Hyperons", "Beam", "Dirt", "Cosmic"
+    };
 
+    std::cout << std::setprecision(10)
+              << "\n=== CUMULATIVE CUT FLOW (expected events / 1e21 POT) ===\n";
+    for (int stage = 0; stage < kNStages; ++stage) {
+        std::cout << "\n" << stageNames[stage] << ":\n";
+        for (int sample = 0; sample < kNSamples; ++sample) {
+            const auto& c = results.cutflow[stage][sample];
+            std::cout << "  " << std::setw(15) << sampleNames[sample]
+                      << " raw=" << c.raw << " sumW=" << c.sumW
+                      << " sumW2=" << c.sumW2 << '\n';
+        }
+        const auto s = static_cast<SelectionStage>(stage);
+        std::cout << "  efficiency=" << results.efficiency(s)
+                  << " purity=" << results.purity(s) << '\n';
+    }
+    std::cout << "\nInvalid sampleType=" << results.invalidSampleType
+              << " invalid weight=" << results.invalidWeight
+              << " invalid slice (unique)=" << results.invalidSlice
+              << " unreadable entries=" << results.unreadableEntries
+              << " evaluable slices=" << results.validSlice << '\n';
     return results;
 }

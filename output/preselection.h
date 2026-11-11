@@ -13,18 +13,90 @@
 #include <TFile.h>
 
 // Header file for the classes stored in the TTree if any.
-#include "vector"
-#include "vector"
-#include "vector"
+#include <vector>
+#include <string>
+#include <array>
+#include <cstddef>
+
+constexpr int kNSamples = 5;
+constexpr int kNStages = 6;
+
+enum SampleCategory {
+    kSignal = 0,
+   kHyperon = 1,
+    kBeam = 2,
+    kDirt = 3,
+    kCosmic = 4,
+
+};
+
+enum SelectionStage {
+    kInitial = 0,
+    kRecoFV = 1,
+    kNuScore = 2,
+    kBCFM = 3,
+    kTracks = 4,
+    kShowers = 5
+};
+
+struct WeightedCount {
+    long long raw = 0;
+    double sumW = 0.0;
+    double sumW2 = 0.0;
+
+    void fill(double weight) {
+        ++raw;
+        sumW += weight;
+        sumW2 += weight * weight;
+    }
+};
+
+// Five actual selection requirements; kInitial is not a cut.
+constexpr int kNPhysicsCuts = kNStages - 1;
+constexpr int kNCutPatterns = 1 << kNPhysicsCuts;
+
+enum InvalidReason {
+    kNoNuSlice = 0,
+    kMissingSliceVector,
+    kSliceIndexOutOfRange,
+    kNonFiniteRecoValue,
+    kInvalidWeight,
+    kNInvalidReasons
+};
 
 struct PreselectionResults {
-   int nSelected = 0;
-   int nSelectedSignal = 0;
-   int nTrueSignal = 0;
+    // Counts at each cumulative stage (including all classified, valid-weight entries).
+    std::array<std::array<WeightedCount, kNSamples>, kNStages> cutflow{};
 
-   double efficiency() const {return nTrueSignal > 0 ? double(nSelectedSignal) / nTrueSignal : 0.0;}
-   double purity() const {return nSelected > 0 ? double(nSelectedSignal) / nSelected : 0.0;}
-   double effPur() const {return efficiency() * purity();}
+    // Independently evaluated cut results: kInitial is deliberately unused.
+    std::array<std::array<WeightedCount, kNSamples>, kNStages> independentPass{};
+    std::array<std::array<WeightedCount, kNSamples>, kNStages> independentFail{};
+
+    // Pattern bits 0..4 correspond to RecoFV, nuScore, BCFM, tracks, showers.
+    // Populated only for entries for which all five cuts can be evaluated.
+    std::array<std::array<WeightedCount, kNSamples>, kNCutPatterns> cutPatterns{};
+
+    // Invalid reasons can overlap. Counts are raw and weighted where possible.
+    std::array<std::array<WeightedCount, kNSamples>, kNInvalidReasons> invalidEvents{};
+    long long invalidSampleType = 0;
+    long long unreadableEntries = 0;
+    long long invalidSlice = 0;  // Unique entries with >=1 slice-related reason.
+    long long invalidWeight = 0; // Includes entries with invalid sampleType.
+    long long validSlice = 0;    // Classified, finite nonnegative weight and evaluable slice.
+
+    double efficiency(SelectionStage stage = kShowers) const {
+        const auto& initial = cutflow[kInitial][kSignal];
+        const auto& selected = cutflow[stage][kSignal];
+        return initial.sumW > 0.0 ? selected.sumW / initial.sumW : 0.0;
+    }
+
+    double purity(SelectionStage stage = kShowers) const {
+        double total = 0.0;
+        for (const auto& sample : cutflow[stage]) total += sample.sumW;
+        return total > 0.0 ? cutflow[stage][kSignal].sumW / total : 0.0;
+    }
+
+    double effPur() const { return efficiency() * purity(); }
 };
 
 struct Cut {
@@ -39,15 +111,15 @@ struct PreselectionCuts {
 
    // RecoFV
    double recoVtxXMax = 180.0;
-   double recoVtxXMin = 180.0;
+   double recoVtxXMin = -180.0;
    double recoVtxYMax = 180.0;
-   double recoVtxYMin = 180.0;
+   double recoVtxYMin = -180.0;
    double recoVtxZMax = 450.0;
    double recoVtxZMin = 10.0;
 
    // Dent RecoFV
    double dentRecoVtxXMax = 180.0;
-   double dentRecoVtxXMin = 180.0;
+   double dentRecoVtxXMin = -180.0;
 
    // Cosmic rejection
    Cut nuScore = {"NuScore", 0, 1.0, 0.48, 100};

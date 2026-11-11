@@ -1,6 +1,6 @@
 //////////////////////////////////////////////////////////
 // This class has been automatically generated on
-// Thu Oct  8 16:15:19 2026 by ROOT version 6.40.04
+// Mon Oct 26 16:03:32 2026 by ROOT version 6.40.04
 // from TTree tree/Output TTree
 // found on file: /data/ooconnor/sbnd/hyperons/preselection_output/eventClassification_output.root
 //////////////////////////////////////////////////////////
@@ -95,9 +95,12 @@ public :
    vector<float>   *sliceVtxX;
    vector<float>   *sliceVtxY;
    vector<float>   *sliceVtxZ;
+   vector<int>     *sliceHasClearCosmicMetadata;
+   vector<int>     *sliceIsClearCosmic;
    vector<int>     *sliceHasBaryFlashMatch;
    vector<float>   *sliceBaryFlashScore;
    vector<float>   *sliceBaryFlashChi2;
+   vector<float>   *sliceBaryFlashTime;
    vector<float>   *sliceBaryFlashPE;
    vector<int>     *pfpKey;
    vector<int>     *pfpSelfID;
@@ -162,6 +165,7 @@ public :
    vector<int>     *trueBestRecoHasShower;
    vector<float>   *nuScores;
    vector<float>   *NeutrinoNuScores;
+   Float_t         eventWeight;
    Int_t           sampleType;
    Int_t           chosenTruthIdx;
    Int_t           nuSliceIdx;
@@ -239,9 +243,12 @@ public :
    TBranch        *b_sliceVtxX;   ///<!
    TBranch        *b_sliceVtxY;   ///<!
    TBranch        *b_sliceVtxZ;   ///<!
+   TBranch        *b_sliceHasClearCosmicMetadata;   ///<!
+   TBranch        *b_sliceIsClearCosmic;   ///<!
    TBranch        *b_sliceHasBaryFlashMatch;   ///<!
    TBranch        *b_sliceBaryFlashScore;   ///<!
    TBranch        *b_sliceBaryFlashChi2;   ///<!
+   TBranch        *b_sliceBaryFlashTime;   ///<!
    TBranch        *b_sliceBaryFlashPE;   ///<!
    TBranch        *b_pfpKey;   ///<!
    TBranch        *b_pfpSelfID;   ///<!
@@ -306,6 +313,7 @@ public :
    TBranch        *b_trueBestRecoHasShower;   ///<!
    TBranch        *b_nuScores;   ///<!
    TBranch        *b_NeutrinoNuScores;   ///<!
+   TBranch        *b_eventWeight;   ///<!
    TBranch        *b_sampleType;   ///<!
    TBranch        *b_chosenTruthIdx;   ///<!
    TBranch        *b_nuSliceIdx;   ///<!
@@ -441,9 +449,12 @@ void backgroundPlots::Init(TTree *tree)
    sliceVtxX = 0;
    sliceVtxY = 0;
    sliceVtxZ = 0;
+   sliceHasClearCosmicMetadata = 0;
+   sliceIsClearCosmic = 0;
    sliceHasBaryFlashMatch = 0;
    sliceBaryFlashScore = 0;
    sliceBaryFlashChi2 = 0;
+   sliceBaryFlashTime = 0;
    sliceBaryFlashPE = 0;
    pfpKey = 0;
    pfpSelfID = 0;
@@ -584,9 +595,12 @@ void backgroundPlots::Init(TTree *tree)
    fChain->SetBranchAddress("sliceVtxX", &sliceVtxX, &b_sliceVtxX);
    fChain->SetBranchAddress("sliceVtxY", &sliceVtxY, &b_sliceVtxY);
    fChain->SetBranchAddress("sliceVtxZ", &sliceVtxZ, &b_sliceVtxZ);
+   fChain->SetBranchAddress("sliceHasClearCosmicMetadata", &sliceHasClearCosmicMetadata, &b_sliceHasClearCosmicMetadata);
+   fChain->SetBranchAddress("sliceIsClearCosmic", &sliceIsClearCosmic, &b_sliceIsClearCosmic);
    fChain->SetBranchAddress("sliceHasBaryFlashMatch", &sliceHasBaryFlashMatch, &b_sliceHasBaryFlashMatch);
    fChain->SetBranchAddress("sliceBaryFlashScore", &sliceBaryFlashScore, &b_sliceBaryFlashScore);
    fChain->SetBranchAddress("sliceBaryFlashChi2", &sliceBaryFlashChi2, &b_sliceBaryFlashChi2);
+   fChain->SetBranchAddress("sliceBaryFlashTime", &sliceBaryFlashTime, &b_sliceBaryFlashTime);
    fChain->SetBranchAddress("sliceBaryFlashPE", &sliceBaryFlashPE, &b_sliceBaryFlashPE);
    fChain->SetBranchAddress("pfpKey", &pfpKey, &b_pfpKey);
    fChain->SetBranchAddress("pfpSelfID", &pfpSelfID, &b_pfpSelfID);
@@ -651,6 +665,7 @@ void backgroundPlots::Init(TTree *tree)
    fChain->SetBranchAddress("trueBestRecoHasShower", &trueBestRecoHasShower, &b_trueBestRecoHasShower);
    fChain->SetBranchAddress("nuScores", &nuScores, &b_nuScores);
    fChain->SetBranchAddress("NeutrinoNuScores", &NeutrinoNuScores, &b_NeutrinoNuScores);
+   fChain->SetBranchAddress("eventWeight", &eventWeight, &b_eventWeight);
    fChain->SetBranchAddress("sampleType", &sampleType, &b_sampleType);
    fChain->SetBranchAddress("chosenTruthIdx", &chosenTruthIdx, &b_chosenTruthIdx);
    fChain->SetBranchAddress("nuSliceIdx", &nuSliceIdx, &b_nuSliceIdx);
@@ -683,4 +698,4 @@ Int_t backgroundPlots::Cut(Long64_t entry)
 // returns -1 otherwise.
    return 1;
 }
-#endif // #ifdef test_cxx
+#endif // #ifdef backgroundPlots_cxx

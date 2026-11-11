@@ -6,7 +6,7 @@
 #SBATCH --array=0-999%100
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
-#SBATCH --mem=10G
+#SBATCH --mem=3G
 #SBATCH --time=12:00:00
 
 # Define the relevant paths (CHANGE TO YOURS)

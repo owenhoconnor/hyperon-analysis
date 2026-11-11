@@ -26,11 +26,11 @@
 // ============================================================================
 
 const std::array<std::string, 5> eventTypeLabels = {
-    "Signal",
-    "Background",
+    "Sigma0 Signal",
+    "Other Hyperons",
+    "Beam Background",
     "Dirt",
-    "Cosmic",
-    "Hyperon"
+    "Cosmic"
 };
 
 
@@ -54,6 +54,10 @@ constexpr int kCosmicModeStack = kNModeCategories;
 constexpr int kSignalModeStack = kNModeCategories + 1;
 constexpr int kDirtModeStack = kNModeCategories + 2;
 constexpr int kNModeStackCategories = kNModeCategories + 3;
+
+const int nPlotCategories = 3; // signal v combined bkg, signal v other hyperons, beam bkg v cosmic v dirt
+const int nHypTypes = 2; // signal & other hyperons
+const int nBkgTypes = 3; // beam bkg & dirt, cosmics
 
 const std::array<
     std::string,
@@ -570,7 +574,7 @@ ParticleSummary SummariseParticles(
 
 
 // ============================================================================
-// MAIN LOOP
+// MAIN LOOP FUNCTION
 // ============================================================================
 
 void backgroundPlots::Loop()
@@ -601,13 +605,17 @@ void backgroundPlots::Loop()
     // ------------------------------------------------------------------------
 
     std::array<TH1F*, 5> hFlashMatchScoreByType;
+    std::array<TH1F*, 5> hFlashTimeByType;
     std::array<TH1F*, 5> hPFPMultiplicityByType;
     std::array<TH1F*, 5> hTrackMultiplicityByType;
     std::array<TH1F*, 5> hShowerMultiplicityByType;
 
     for (int i = 0; i < 5; ++i){
-        hFlashMatchScoreByType.at(i) = new TH1F(Form("hFlashMatchScoreByType_%d", i), "", 100, 0.0, 0.4);
+        hFlashMatchScoreByType.at(i) = new TH1F(Form("hFlashMatchScoreByType_%d", i), "", 100, 0.0, 0.2);
         hFlashMatchScoreByType.at(i)->SetDirectory(nullptr);
+
+        hFlashTimeByType.at(i) = new TH1F(Form("hFlashTimeByType_%d", i), "", 100, 0.0, 3);
+        hFlashTimeByType.at(i)->SetDirectory(nullptr);
 
         hPFPMultiplicityByType.at(i) = new TH1F(Form("hPFPMultiplicityByType_%d", i), "", 20, -0.5, 19.5);
         hPFPMultiplicityByType.at(i)->SetDirectory(nullptr);
@@ -618,6 +626,7 @@ void backgroundPlots::Loop()
         hShowerMultiplicityByType.at(i) = new TH1F(Form("hShowerMultiplicityByType_%d", i), "", 20, -0.5, 19.5);
         hShowerMultiplicityByType.at(i)->SetDirectory(nullptr);
     }
+
 
     // ------------------------------------------------------------------------
     // CC / NC
@@ -896,6 +905,7 @@ void backgroundPlots::Loop()
         const int nuSliceOrigin = sliceTrueOrigin->at(nuSliceIdx);
         const float nuSliceNuScore = sliceNuScore->at(nuSliceIdx);
         const float nuSliceFlashMatchScore = sliceBaryFlashScore->at(nuSliceIdx);
+        const float nuSliceFlashTime = sliceBaryFlashTime->at(nuSliceIdx);
         isCosmic = false;
         isSignal = false;
 
@@ -909,16 +919,16 @@ void backgroundPlots::Loop()
             isSignal = true;
         }
         if (sampleType == 1){
-            std::cout<<"event is background"<<std::endl;
+            std::cout<<"event is other hyperon"<<std::endl;
         }
         if (sampleType == 2){
-            std::cout<<"event is dirt"<<std::endl;
+            std::cout<<"event is beam background"<<std::endl;
         }
         if (sampleType == 3){
-            std::cout<<"event is cosmic"<<std::endl;
+            std::cout<<"event is dirt"<<std::endl;
         }
         if (sampleType == 4){
-            std::cout<<"event is other hyperon"<<std::endl;
+            std::cout<<"event is cosmic"<<std::endl;
         }
         if (sampleType<0 || sampleType>4){
             std::cout<<"WARNING: invalid sampleType "<<sampleType<<" in tree entry "<<jentry<<std::endl;
@@ -1027,22 +1037,22 @@ void backgroundPlots::Loop()
             ++topologyCounts.at(topology);
         //}
 
-        hNuScoreByType.at(sampleType)->Fill(nuSliceNuScore);
-        hFlashMatchScoreByType.at(sampleType)->Fill(nuSliceFlashMatchScore);
+        hNuScoreByType.at(sampleType)->Fill(nuSliceNuScore, eventWeight);
+        if(nuSliceFlashMatchScore>0.0000001){hFlashMatchScoreByType.at(sampleType)->Fill(nuSliceFlashMatchScore, eventWeight);}
+        hFlashTimeByType.at(sampleType)->Fill(nuSliceFlashTime, eventWeight);
         //hPFPMultiplicityByType.at(sampleType)->Fill(); what to fill with...?
-        hTrackMultiplicityByType.at(sampleType)->Fill(nTracks);
-        hShowerMultiplicityByType.at(sampleType)->Fill(nShowers);
+        hTrackMultiplicityByType.at(sampleType)->Fill(nTracks, eventWeight);
+        hShowerMultiplicityByType.at(sampleType)->Fill(nShowers, eventWeight);
         hTrueModeByType.at(sampleType)->Fill(intMode);
         hCCNCByType.at(sampleType)->Fill(ccnc);
 
-        std::cout<<"filled trees"<<std::endl;
         // --------------------------------------------------------------------
         // Mode vs E_nu stack
         // --------------------------------------------------------------------
 
         const int modeIndex = ModeToArrayIndex(intMode);
 
-        if(sampleType == 1){ // background sample, designate interaction mode
+        if(sampleType == 2){ // background sample, designate interaction mode
             if (modeIndex >= 0)
             {
                 hNuEnergyByMode.at(modeIndex)->Fill(nuEnergy);
@@ -1050,14 +1060,14 @@ void backgroundPlots::Loop()
             }     
         }
 
-        else if(sampleType == 3){ // cosmic sample, designate as cosmic
+        else if(sampleType == 4){ // cosmic sample, designate as cosmic
             hNuEnergyByMode.at(kCosmicModeStack)->Fill(nuEnergy);
         }
         
         else if(sampleType == 0){ // signal sample, designate as true signal
             hNuEnergyByMode.at(kSignalModeStack)->Fill(nuEnergy);
         }
-        else if(sampleType == 2){ // dirt sample, designate as dirt
+        else if(sampleType == 3){ // dirt sample, designate as dirt
             hNuEnergyByMode.at(kDirtModeStack)->Fill(nuEnergy);
         }
 
@@ -1127,13 +1137,13 @@ void backgroundPlots::Loop()
         std::cout<<"filled leading momenta histograms // end of iteration"<<std::endl;
     }
 
-    std::cout<<"==========================================================================================="<<std::endl;
+   /* std::cout<<"==========================================================================================="<<std::endl;
     std::cout<< "Finished loop over "<< nentries<< " entries."<< std::endl;
     //std::cout<< "Entries skipped because of bad chosenMCchosenTruthIdx: "<< nBadTruthIndices<< std::endl;
     std::cout<<"# of Events with Unknown MCTruth Origin = "<<originCounts[0]<<std::endl;
     std::cout<<"# of Events with Beam Neutrino MCTruth Origin = "<<originCounts[1]<<std::endl;
     std::cout<<"# of Events with Cosmic MCTruth Origin = "<<originCounts[2]<<std::endl;
-    std::cout<<"==========================================================================================="<<std::endl;
+    std::cout<<"==========================================================================================="<<std::endl;*/
 
     // ========================================================================
     // COMMON HISTOGRAM STYLE
@@ -1147,14 +1157,18 @@ void backgroundPlots::Loop()
 
     std::array<int, 5> sampleTypeColors = {
         kGreen + 2,
+        kMagenta + 2,
         kRed + 1,
         kBlue + 2,
-        kAzure + 7,
-        kMagenta + 2
+        kAzure + 7
     };
 
     THStack* hsNuScore = new THStack("hsNuScore", "NuScore by Event Type");
+    THStack* hsNuScoreHyps = new THStack("hsNuScoreHyps", "NuScore by Event Type: Signal v Other Hyperons");
+    THStack* hsNuScoreBkg = new THStack("hsNuScoreBkg", "NuScore by Event Type: Background");
     TLegend* legNuScore = new TLegend(0.75, 0.65, 0.95, 0.90);
+    TLegend* legNuScoreHyps = new TLegend(0.75, 0.65, 0.95, 0.90);
+    TLegend* legNuScoreBkg = new TLegend(0.75, 0.65, 0.95, 0.90);
 
     legNuScore->SetBorderSize(0);
     legNuScore->SetFillStyle(0);
@@ -1166,6 +1180,75 @@ void backgroundPlots::Loop()
         legNuScore->AddEntry(hNuScoreByType.at(i), eventTypeLabels.at(i).c_str(), "f");
     }
 
+    // 3 different plot categories: (1) signal vs combined background, (2) signal vs other hyperons, (3) beam bkg vs cosmic vs dirt
+    // loop over nPlotCategories to I don't have to write everything thrice...
+
+    std::array<THStack*, nPlotCategories> hsNuScoreByCat;
+    std::array<TLegend*, nPlotCategories> legNuScoreByCat;
+
+    for (int iCat = 0; iCat < nPlotCategories; ++iCat)
+    {
+        if(iCat == 0){continue;}
+        
+        hsNuScoreByCat.at(iCat) = new THStack(Form("hsNuScore_%d", iCat), "Test"); //use Form()
+        legNuScoreByCat.at(iCat) = new TLegend(0.75, 0.65, 0.95, 0.90);
+        if(iCat == 1){
+            for (int i = 0; i < 2; ++i){
+                hNuScoreByType.at(i)->SetFillColorAlpha(sampleTypeColors.at(i), 0.75);
+                hNuScoreByType.at(i)->SetLineColor(kBlack);
+                hsNuScoreByCat.at(iCat)->Add(hNuScoreByType.at(i));
+                legNuScoreByCat.at(iCat)->AddEntry(hNuScoreByType.at(i), eventTypeLabels.at(i).c_str(), "f");
+            }
+
+            TCanvas* cNuScore = new TCanvas("cNuScore", "NuScore", 1600, 1200);
+            cNuScore->SetRightMargin(0.05);
+
+            hsNuScoreByCat.at(iCat)->Draw("HIST");
+            hsNuScoreByCat.at(iCat)->GetXaxis()->SetTitle("NuScore");
+            hsNuScoreByCat.at(iCat)->GetYaxis()->SetTitle("Interactions");
+            legNuScoreByCat.at(iCat)->Draw();
+
+            cNuScore->Print(Form("plots/nuScore_%d.png", iCat));
+        }
+
+        if(iCat == 2)
+        {
+            for (int i = 2; i < 5; ++i)
+            {
+                hNuScoreByType.at(i)->SetFillColorAlpha(sampleTypeColors.at(i), 0.75);
+                hNuScoreByType.at(i)->SetLineColor(kBlack);
+                hsNuScoreByCat.at(iCat)->Add(hNuScoreByType.at(i));
+                legNuScoreByCat.at(iCat)->AddEntry(hNuScoreByType.at(i), eventTypeLabels.at(i).c_str(), "f");
+            } 
+
+            TCanvas* cNuScore = new TCanvas("cNuScore", "NuScore", 1600, 1200);
+            cNuScore->SetRightMargin(0.05);
+
+            hsNuScoreByCat.at(iCat)->Draw("HIST");
+            hsNuScoreByCat.at(iCat)->GetXaxis()->SetTitle("NuScore");
+            hsNuScoreByCat.at(iCat)->GetYaxis()->SetTitle("Interactions");
+            legNuScoreByCat.at(iCat)->Draw();
+
+            cNuScore->Print(Form("plots/nuScore_%d.png", iCat));
+        }
+
+    }
+
+    /*for (int i = 0; i < 2; ++i) // signal vs combined background
+    { 
+        continue;
+    }
+
+    for (int i = 0; i < 2; ++i) // signal vs other hyperons -> CREATE VAR FOR nHyperonTypes
+    { 
+
+    }
+
+    for (int i = 0; i < 3; ++i) // beam background vs dirt vs cosmics -> CREATE VAR FOR nBkgTypes
+    {
+
+    }*/
+
     TCanvas* cNuScore = new TCanvas("cNuScore", "NuScore", 1600, 1200);
     cNuScore->SetRightMargin(0.05);
 
@@ -1174,7 +1257,7 @@ void backgroundPlots::Loop()
     hsNuScore->GetYaxis()->SetTitle("Interactions");
     legNuScore->Draw();
 
-    cNuScore->Print("plots/nuScore.pdf");
+    cNuScore->Print("plots/nuScore.png");
 
     // ========================================================================
     // Barycenter Flash Match Score
@@ -1184,6 +1267,57 @@ void backgroundPlots::Loop()
     TLegend* legFlashMatchScore = new TLegend(0.75, 0.65, 0.95, 0.90);
     legFlashMatchScore->SetBorderSize(0);
     legFlashMatchScore->SetFillStyle(0);
+
+    std::array<THStack*, nPlotCategories> hsFlashMatchScoreByCat;
+    std::array<TLegend*, nPlotCategories> legFlashMatchScoreByCat;
+
+    for (int iCat = 0; iCat < nPlotCategories; ++iCat)
+    {
+        if(iCat == 0){continue;}
+        
+        hsFlashMatchScoreByCat.at(iCat) = new THStack(Form("hsFlashMatchScore_%d", iCat), "Placeholder"); //use Form()
+        legFlashMatchScoreByCat.at(iCat) = new TLegend(0.75, 0.65, 0.95, 0.90);
+        if(iCat == 1){
+            for (int i = 0; i < 2; ++i){
+                hFlashMatchScoreByType.at(i)->SetFillColorAlpha(sampleTypeColors.at(i), 0.75);
+                hFlashMatchScoreByType.at(i)->SetLineColor(kBlack);
+                hsFlashMatchScoreByCat.at(iCat)->Add(hFlashMatchScoreByType.at(i));
+                legFlashMatchScoreByCat.at(iCat)->AddEntry(hFlashMatchScoreByType.at(i), eventTypeLabels.at(i).c_str(), "f");
+            }
+
+            TCanvas* cFlashMatchScore = new TCanvas("cFlashMatchScore", "FlashMatchScore", 1600, 1200);
+            cFlashMatchScore->SetRightMargin(0.05);
+
+            hsFlashMatchScoreByCat.at(iCat)->Draw("HIST");
+            hsFlashMatchScoreByCat.at(iCat)->GetXaxis()->SetTitle("FlashMatchScore");
+            hsFlashMatchScoreByCat.at(iCat)->GetYaxis()->SetTitle("Interactions");
+            legFlashMatchScoreByCat.at(iCat)->Draw();
+
+            cFlashMatchScore->Print(Form("plots/FlashMatchScore_%d.png", iCat));
+        }
+
+        if(iCat == 2)
+        {
+            for (int i = 2; i < 5; ++i)
+            {
+                hFlashMatchScoreByType.at(i)->SetFillColorAlpha(sampleTypeColors.at(i), 0.75);
+                hFlashMatchScoreByType.at(i)->SetLineColor(kBlack);
+                hsFlashMatchScoreByCat.at(iCat)->Add(hFlashMatchScoreByType.at(i));
+                legFlashMatchScoreByCat.at(iCat)->AddEntry(hFlashMatchScoreByType.at(i), eventTypeLabels.at(i).c_str(), "f");
+            } 
+
+            TCanvas* cFlashMatchScore = new TCanvas("cFlashMatchScore", "FlashMatchScore", 1600, 1200);
+            cFlashMatchScore->SetRightMargin(0.05);
+
+            hsFlashMatchScoreByCat.at(iCat)->Draw("HIST");
+            hsFlashMatchScoreByCat.at(iCat)->GetXaxis()->SetTitle("FlashMatchScore");
+            hsFlashMatchScoreByCat.at(iCat)->GetYaxis()->SetTitle("Interactions");
+            legFlashMatchScoreByCat.at(iCat)->Draw();
+
+            cFlashMatchScore->Print(Form("plots/FlashMatchScore_%d.png", iCat));
+        }
+
+    }
 
         // ========================================================================
     // PFP Multiplicity
@@ -1218,6 +1352,11 @@ void backgroundPlots::Loop()
         hsFlashMatchScore->Add(hFlashMatchScoreByType.at(i));
         legFlashMatchScore->AddEntry(hFlashMatchScoreByType.at(i), eventTypeLabels.at(i).c_str(), "f");
 
+        hFlashTimeByType.at(i)->SetFillColorAlpha(sampleTypeColors.at(i), 0.75);
+        hFlashTimeByType.at(i)->SetLineColor(kBlack);
+        hsFlashTime->Add(hFlashTimeByType.at(i));
+        legFlashTime->AddEntry(hFlashTimeByType.at(i), eventTypeLabels.at(i).c_str(), "f");
+
         hPFPMultiplicityByType.at(i)->SetFillColorAlpha(sampleTypeColors.at(i), 0.75);
         hPFPMultiplicityByType.at(i)->SetLineColor(kBlack);
         hsPFPMultiplicity->Add(hPFPMultiplicityByType.at(i));
@@ -1241,7 +1380,16 @@ void backgroundPlots::Loop()
     hsFlashMatchScore->GetXaxis()->SetTitle("Barycenter Flash Match Score");
     hsFlashMatchScore->GetYaxis()->SetTitle("Interactions");
     legFlashMatchScore->Draw();
-    cFlashMatchScore->Print("plots/flashMatchScore.pdf");
+    cFlashMatchScore->Print("plots/flashMatchScore.png");
+
+    TCanvas* cFlashTime = new TCanvas("cFlashTime", "Barycenter Flash Time", 1600, 1200);
+    cFlashTime->SetRightMargin(0.05);
+
+    hsFlashTime->Draw("HIST");
+    hsFlashTime->GetXaxis()->SetTitle("Barycenter Flash Time");
+    hsFlashTime->GetYaxis()->SetTitle("Interactions");
+    legFlashTime->Draw();
+    cFlashTime->Print("plots/flashTime.png");
 
     TCanvas* cPFPMultiplicity = new TCanvas("cPFPMultiplicity", "PFP Multiplicity", 1600, 1200);
     cPFPMultiplicity->SetRightMargin(0.05);
@@ -1249,7 +1397,7 @@ void backgroundPlots::Loop()
     hsPFPMultiplicity->GetXaxis()->SetTitle("PFP Multiplicity");
     hsPFPMultiplicity->GetYaxis()->SetTitle("Interactions");
     legPFPMultiplicity->Draw();
-    cPFPMultiplicity->Print("plots/pfpMultiplicity.pdf");
+    cPFPMultiplicity->Print("plots/pfpMultiplicity.png");
 
     TCanvas* cTrackMultiplicity = new TCanvas("cTrackMultiplicity", "Track Multiplicity", 1600, 1200);
     cTrackMultiplicity->SetRightMargin(0.05);
@@ -1257,7 +1405,7 @@ void backgroundPlots::Loop()
     hsTrackMultiplicity->GetXaxis()->SetTitle("Track Multiplicity");
     hsTrackMultiplicity->GetYaxis()->SetTitle("Interactions");
     legTrackMultiplicity->Draw();
-    cTrackMultiplicity->Print("plots/trackMultiplicity.pdf");
+    cTrackMultiplicity->Print("plots/trackMultiplicity.png");
 
     TCanvas* cShowerMultiplicity = new TCanvas("cShowerMultiplicity", "Shower Multiplicity", 1600, 1200);
     cShowerMultiplicity->SetRightMargin(0.05);
@@ -1265,7 +1413,7 @@ void backgroundPlots::Loop()
     hsShowerMultiplicity->GetXaxis()->SetTitle("Shower Multiplicity");
     hsShowerMultiplicity->GetYaxis()->SetTitle("Interactions");
     legShowerMultiplicity->Draw();
-    cShowerMultiplicity->Print("plots/showerMultiplicity.pdf");
+    cShowerMultiplicity->Print("plots/showerMultiplicity.png");
 
 
     // ========================================================================
@@ -1292,7 +1440,7 @@ void backgroundPlots::Loop()
     hsCCNC->GetXaxis()->SetTitle("Interaction Current");
     hsCCNC->GetYaxis()->SetTitle("Interactions");
     legCCNC->Draw();
-    cCCNCStack->Print("plots/ccncStack.pdf");
+    cCCNCStack->Print("plots/ccncStack.png");
 
     // (old)
 
@@ -1305,7 +1453,7 @@ void backgroundPlots::Loop()
     hTrueCCNC->SetLineColor(kBlack);
     hTrueCCNC->SetLineWidth(2);
     hTrueCCNC->Draw("HIST TEXT0");
-    cCCNC->Print("plots/trueBeamCCNC_new.pdf");
+    cCCNC->Print("plots/trueBeamCCNC_new.png");
 
     // ========================================================================
     // 2. INTERACTION MODE DISTRIBUTION
@@ -1331,7 +1479,7 @@ void backgroundPlots::Loop()
     hsMode->GetXaxis()->SetTitle("Interaction Mode");
     hsMode->GetYaxis()->SetTitle("Interactions");
     legModeStack->Draw();
-    cModeStack->Print("plots/trueBeamIntModeStack.pdf");
+    cModeStack->Print("plots/trueBeamIntModeStack.png");
 
     TCanvas* cMode = new TCanvas("cMode", "True Interaction Mode", 1800, 1200);
 
@@ -1344,7 +1492,7 @@ void backgroundPlots::Loop()
     hTrueIntMode->SetLineWidth(2);
     hTrueIntMode->LabelsOption("v","X");
     hTrueIntMode->Draw("HIST TEXT0");
-    cMode->Print("plots/trueBeamIntMode.pdf");
+    cMode->Print("plots/trueBeamIntMode.png");
 
     // ========================================================================
     // 3. INTERACTION TYPE DISTRIBUTION
@@ -1369,7 +1517,7 @@ void backgroundPlots::Loop()
     hTrueIntType->SetLineColor(kBlack);
     hTrueIntType->LabelsOption("v","X");
     hTrueIntType->Draw("HIST TEXT0");
-    cIntType->Print("plots/trueBeamIntType.pdf");
+    cIntType->Print("plots/trueBeamIntType.png");
 
     // ========================================================================
     // 4. MCTRUTH ORIGIN
@@ -1382,7 +1530,7 @@ void backgroundPlots::Loop()
     hTrueOrigin->SetLineColor(kBlack);
     hTrueOrigin->LabelsOption("v", "X");
     hTrueOrigin->Draw("HIST TEXT0");
-    cNuOrigin->Print("plots/trueNuOrigin.pdf");
+    cNuOrigin->Print("plots/trueNuOrigin.png");
 
     // ========================================================================
     // 5. OVERALL NEUTRINO ENERGY
@@ -1395,7 +1543,7 @@ void backgroundPlots::Loop()
     hTrueNuEnergy->SetFillColorAlpha(fillColour,0.7);
     hTrueNuEnergy->SetLineColor(kBlack);
     hTrueNuEnergy->Draw("HIST");
-    cNuEnergy->Print("plots/trueNuEnergy_new.pdf");
+    cNuEnergy->Print("plots/trueNuEnergy_new.png");
 
     // ========================================================================
     // 6. FINAL-STATE TOPOLOGY DISTRIBUTION
@@ -1437,7 +1585,7 @@ void backgroundPlots::Loop()
     hTopology->SetLineColor(kBlack);
     hTopology->SetLineWidth(2);
     hTopology->Draw("HIST TEXT0");
-    cTopology->Print("plots/finalStateTopologiesBkg_new.pdf");
+    cTopology->Print("plots/finalStateTopologiesBkg_new.png");
 
     // ========================================================================
     // COLOURS FOR STACKS
@@ -1538,7 +1686,7 @@ void backgroundPlots::Loop()
     hsModeVsNuE->GetXaxis()->SetTitle("True E_{#nu} [GeV]" );
     hsModeVsNuE->GetYaxis()->SetTitle("Interactions");
     legMode->Draw();
-    cModeVsNuE->Print("plots/modeVsNuEnergy_bkg.pdf");
+    cModeVsNuE->Print("plots/modeVsNuEnergy_bkg.png");
 
     // ========================================================================
     // STACKED TOPOLOGY VS NEUTRINO ENERGY
@@ -1572,7 +1720,7 @@ void backgroundPlots::Loop()
     hsTopologyVsNuE->GetYaxis()->SetTitle("Interactions");
 
     legTopology->Draw();
-    cTopologyVsNuE->Print("plots/topologyVsNuEnergy_bkg.pdf");
+    cTopologyVsNuE->Print("plots/topologyVsNuEnergy_bkg.png");
 
     // ========================================================================
     // STACKED INTERACTION MODE VS TMVA INPUTS
@@ -1605,7 +1753,7 @@ void backgroundPlots::Loop()
         hsModeVsTMVA->GetXaxis()->SetTitle(varName.c_str());
         hsModeVsTMVA->GetYaxis()->SetTitle("Interactions");
         legModeTMVA->Draw();
-        cModeVsTMVA->Print(("plots/modeVs"+varName+"_bkg.pdf").c_str());
+        cModeVsTMVA->Print(("plots/modeVs"+varName+"_bkg.png").c_str());
 
         delete hsModeVsTMVA;
         delete legModeTMVA;
@@ -1644,7 +1792,7 @@ void backgroundPlots::Loop()
         hsTopologyVsTMVA->GetYaxis()->SetTitle("Interactions");
 
         legTopologyTMVA->Draw();
-        cTopologyVsTMVA->Print(("plots/topologyVs"+varName+"_bkg.pdf").c_str());
+        cTopologyVsTMVA->Print(("plots/topologyVs"+varName+"_bkg.png").c_str());
 
         delete hsTopologyVsTMVA;
         delete legTopologyTMVA;
@@ -1665,7 +1813,7 @@ void backgroundPlots::Loop()
     hModeVsTopology->GetYaxis()->SetTitle("Interaction Mode");
     hModeVsTopology->Draw("COLZ TEXT");
 
-    cModeVsTopology->Print("plots/modeVsTopology_bkg.pdf");
+    cModeVsTopology->Print("plots/modeVsTopology_bkg.png");
 
 
     // ========================================================================
@@ -1689,11 +1837,11 @@ void backgroundPlots::Loop()
     };
 
     const std::array<std::string, 5> multiplicityFiles = {
-        "plots/nPrimaryProtons_new.pdf",
-        "plots/nPrimaryNeutrons_new.pdf",
-        "plots/nPrimaryPions_new.pdf",
-        "plots/nPrimaryPhotons_new.pdf",
-        "plots/nPrimaryStrange_new.pdf"
+        "plots/nPrimaryProtons_new.png",
+        "plots/nPrimaryNeutrons_new.png",
+        "plots/nPrimaryPions_new.png",
+        "plots/nPrimaryPhotons_new.png",
+        "plots/nPrimaryStrange_new.png"
     };
 
     for (size_t i = 0;i < multiplicityHists.size();++i)
@@ -1725,9 +1873,9 @@ void backgroundPlots::Loop()
     };
 
     const std::array<std::string, 3> momentumFiles = {
-        "plots/leadingProtonP_new.pdf",
-        "plots/leadingPionP_new.pdf",
-        "plots/leadingPhotonP_new.pdf"
+        "plots/leadingProtonP_new.png",
+        "plots/leadingPionP_new.png",
+        "plots/leadingPhotonP_new.png"
     };
 
     for (size_t i = 0;i < momentumHists.size();++i)

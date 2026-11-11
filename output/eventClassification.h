@@ -1,8 +1,8 @@
 //////////////////////////////////////////////////////////
 // This class has been automatically generated on
-// Thu Oct  8 15:02:24 2026 by ROOT version 6.40.04
+// Fri Oct 23 11:37:33 2026 by ROOT version 6.40.04
 // from TTree tree/Output TTree
-// found on file: /data/ooconnor/sbnd/hyperons/analyzer_output/merged_anaOut_hyperons.root
+// found on file: /data/ooconnor/sbnd/hyperons/analyzer_output/merged_anaOut_2026.root
 //////////////////////////////////////////////////////////
 
 #ifndef eventClassification_h
@@ -95,9 +95,12 @@ public :
    vector<float>   *sliceVtxX;
    vector<float>   *sliceVtxY;
    vector<float>   *sliceVtxZ;
+   vector<int>     *sliceHasClearCosmicMetadata;
+   vector<int>     *sliceIsClearCosmic;
    vector<int>     *sliceHasBaryFlashMatch;
    vector<float>   *sliceBaryFlashScore;
    vector<float>   *sliceBaryFlashChi2;
+   vector<float>   *sliceBaryFlashTime;
    vector<float>   *sliceBaryFlashPE;
    vector<int>     *pfpKey;
    vector<int>     *pfpSelfID;
@@ -234,9 +237,12 @@ public :
    TBranch        *b_sliceVtxX;   ///<!
    TBranch        *b_sliceVtxY;   ///<!
    TBranch        *b_sliceVtxZ;   ///<!
+   TBranch        *b_sliceHasClearCosmicMetadata;   ///<!
+   TBranch        *b_sliceIsClearCosmic;   ///<!
    TBranch        *b_sliceHasBaryFlashMatch;   ///<!
    TBranch        *b_sliceBaryFlashScore;   ///<!
    TBranch        *b_sliceBaryFlashChi2;   ///<!
+   TBranch        *b_sliceBaryFlashTime;   ///<!
    TBranch        *b_sliceBaryFlashPE;   ///<!
    TBranch        *b_pfpKey;   ///<!
    TBranch        *b_pfpSelfID;   ///<!
@@ -321,11 +327,11 @@ eventClassification::eventClassification(TTree *tree) : fChain(0)
 // if parameter tree is not specified (or zero), connect the file
 // used to generate this class and read the Tree.
    if (tree == 0) {
-      TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("/data/ooconnor/sbnd/hyperons/analyzer_output/merged_anaOut_hyperons.root");
+      TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("/data/ooconnor/sbnd/hyperons/analyzer_output/merged_anaOut_2026.root");
       if (!f || !f->IsOpen()) {
-         f = new TFile("/data/ooconnor/sbnd/hyperons/analyzer_output/merged_anaOut_hyperons.root");
+         f = new TFile("/data/ooconnor/sbnd/hyperons/analyzer_output/merged_anaOut_2026.root");
       }
-      TDirectory * dir = (TDirectory*)f->Get("/data/ooconnor/sbnd/hyperons/analyzer_output/merged_anaOut_hyperons.root:/ana");
+      TDirectory * dir = (TDirectory*)f->Get("/data/ooconnor/sbnd/hyperons/analyzer_output/merged_anaOut_2026.root:/ana");
       dir->GetObject("tree",tree);
 
    }
@@ -432,9 +438,12 @@ void eventClassification::Init(TTree *tree)
    sliceVtxX = 0;
    sliceVtxY = 0;
    sliceVtxZ = 0;
+   sliceHasClearCosmicMetadata = 0;
+   sliceIsClearCosmic = 0;
    sliceHasBaryFlashMatch = 0;
    sliceBaryFlashScore = 0;
    sliceBaryFlashChi2 = 0;
+   sliceBaryFlashTime = 0;
    sliceBaryFlashPE = 0;
    pfpKey = 0;
    pfpSelfID = 0;
@@ -575,9 +584,12 @@ void eventClassification::Init(TTree *tree)
    fChain->SetBranchAddress("sliceVtxX", &sliceVtxX, &b_sliceVtxX);
    fChain->SetBranchAddress("sliceVtxY", &sliceVtxY, &b_sliceVtxY);
    fChain->SetBranchAddress("sliceVtxZ", &sliceVtxZ, &b_sliceVtxZ);
+   fChain->SetBranchAddress("sliceHasClearCosmicMetadata", &sliceHasClearCosmicMetadata, &b_sliceHasClearCosmicMetadata);
+   fChain->SetBranchAddress("sliceIsClearCosmic", &sliceIsClearCosmic, &b_sliceIsClearCosmic);
    fChain->SetBranchAddress("sliceHasBaryFlashMatch", &sliceHasBaryFlashMatch, &b_sliceHasBaryFlashMatch);
    fChain->SetBranchAddress("sliceBaryFlashScore", &sliceBaryFlashScore, &b_sliceBaryFlashScore);
    fChain->SetBranchAddress("sliceBaryFlashChi2", &sliceBaryFlashChi2, &b_sliceBaryFlashChi2);
+   fChain->SetBranchAddress("sliceBaryFlashTime", &sliceBaryFlashTime, &b_sliceBaryFlashTime);
    fChain->SetBranchAddress("sliceBaryFlashPE", &sliceBaryFlashPE, &b_sliceBaryFlashPE);
    fChain->SetBranchAddress("pfpKey", &pfpKey, &b_pfpKey);
    fChain->SetBranchAddress("pfpSelfID", &pfpSelfID, &b_pfpSelfID);

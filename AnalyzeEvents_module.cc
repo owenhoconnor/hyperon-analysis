@@ -247,6 +247,11 @@ struct PFPTruthMatch
     float purity = -1.f;
 };
 
+enum class TruthSource: int {
+    Beam = 0;
+    Corsika = 1;
+};
+
 } // anonymous namespace
 
 
@@ -321,6 +326,7 @@ private:
   int fSubRun; // Sub run number
  
   // MCTruth Level
+  std::vector<int> trueMCTruthSource;
   std::vector<int> trueOrigin;
   std::vector<float> trueW;
   std::vector<float> trueX;
@@ -396,10 +402,12 @@ private:
   std::vector<float> fSliceVtxX;
   std::vector<float> fSliceVtxY;
   std::vector<float> fSliceVtxZ;
-  std::vector<float> fSliceOpt0Score;
+  std::vector<int> fSliceHasClearCosmicMetadata;
+  std::vector<int> fSliceIsClearCosmic;
   std::vector<int> fSliceHasBaryFlashMatch;
   std::vector<float> fSliceBaryFlashScore;
   std::vector<float> fSliceBaryFlashChi2;
+  std::vector<float> fSliceBaryFlashTime;
   std::vector<float> fSliceBaryFlashPE;
 
   // PFP level
@@ -545,10 +553,12 @@ void hyperon::AnalyzeEvents::analyze(art::Event const& evt)
   fSliceVtxX.clear();
   fSliceVtxY.clear();
   fSliceVtxZ.clear();
-  fSliceOpt0Score.clear();
+  fSliceHasClearCosmicMetadata.clear();
+  fSliceIsClearCosmic.clear();
   fSliceHasBaryFlashMatch.clear();
   fSliceBaryFlashScore.clear();
   fSliceBaryFlashChi2.clear();
+  fSliceBaryFlashTime.clear();
   fSliceBaryFlashPE.clear();
 
   fPfpKey.clear();
@@ -809,9 +819,12 @@ void hyperon::AnalyzeEvents::analyze(art::Event const& evt)
    for (const art::Ptr<recob::Slice> &slice : sliceVector){
 
     float nuScore = -1;
+    bool sliceHasClearCosmicMetadata = false;
+    bool sliceIsClearCosmic = false;
     int hasBaryFlashMatch = 0;
     float baryFlashScore = -999.f;
     float baryFlashChi2 = -999.f;
+    float baryFlashTime = -999.f;
     float baryFlashPE = -999.f;
 	totalSlices++;
 
@@ -839,11 +852,39 @@ void hyperon::AnalyzeEvents::analyze(art::Event const& evt)
         hasBaryFlashMatch = 1;
         baryFlashScore = baryMatch->score;
         baryFlashChi2 = baryMatch->chi2;
+        baryFlashTime = baryMatch->flashTime;
         baryFlashPE = baryMatch->flashPEs;
     }
     float sliceVtxX = -999.;
     float sliceVtxY = -999.;
     float sliceVtxZ = -999.;
+
+    // ClearCosmic diagnostics
+    for (const auto& pfp : slicePFPs)
+    {
+        if (!pfp->IsPrimary()) {continue;}
+
+        std::cout<< "PFP Self=" << pfp->Self()<< " Parent=" << pfp->Parent()<< " Primary=" << pfp->IsPrimary()<< " PDG=" << pfp->PdgCode();
+
+        const auto metadataVec = pfpMetadataAssoc.at(pfp.key());
+
+        for (const auto& metadata : metadataVec)
+        {
+            const auto& properties = metadata->GetPropertiesMap();
+
+            auto it = properties.find("IsClearCosmic");
+
+            if (it != properties.end())
+            {
+                sliceHasClearCosmicMetadata = true;
+                std::cout<<" IsClearCosmic="<<it->second<<std::endl;;
+
+                if (it->second != 0.f) {
+                    sliceIsClearCosmic = true; // designate whole slice as ClearCosmic if ANY pfp is marked as a clear cosmic...is this reasonable?
+                }
+            }
+        }
+    }
 
     // Loop over PFPs in slice
 	for (const art::Ptr<recob::PFParticle> &slicePFP : slicePFPs){
@@ -872,48 +913,16 @@ void hyperon::AnalyzeEvents::analyze(art::Event const& evt)
 			continue;
 		}
 
-		bool isClearCosmic = false;
-		bool foundNuScore = false;
-		bool foundClearCosmic = false;
-
 		for (const art::Ptr<larpandoraobj::PFParticleMetadata> &metadata : metadataVec){
 			const auto &propertiesMap = metadata->GetPropertiesMap();
 
 			if (propertiesMap.find("NuScore") != propertiesMap.end()){
 				nuScore = propertiesMap.at("NuScore");
-				foundNuScore = true;
 			}
 
 			else {
 				std::cerr<<"NuScore not found for PFParticle with key "<<slice.key()<<std::endl;
 			}
-
-			if (propertiesMap.find("IsClearCosmic") != propertiesMap.end()){
-				isClearCosmic = static_cast<bool>(propertiesMap.at("IsClearCosmic"));
-				foundClearCosmic = true;
-			}
-		}
-
-		if (foundNuScore) {
-			std::cout<<"Found nuScore for this PFP: "<<nuScore<<". Current highestNuScore: "<<highestNuScore<<std::endl;
-			fnuScore.push_back(nuScore);
-
-			if (isClearCosmic){
-				fCosmicNuScores.push_back(nuScore);
-				std::cout<<"Found clear cosmic with nuScore "<<nuScore<<std::endl;
-			}
-
-			else {
-				fNeutrinoNuScores.push_back(nuScore);
-			}
-		}
-
-		else {
-			std::cerr<<"Skipping PFParticle due to missing nuScore. Key:  "<<slicePFP.key()<<std::endl;
-		}
-
-		if (!foundClearCosmic) {
-			std::cerr<<"Warning: IsClearCosmic property missing for PFParticle with key: "<<slicePFP.key()<<std::endl;
 		}
 
 		std::cout << "Neutrino slice detected! PDG codes of particles in this slice: ";	
@@ -958,16 +967,19 @@ void hyperon::AnalyzeEvents::analyze(art::Event const& evt)
     fSliceKey.push_back(slice.key());
     fSliceID.push_back(slice.id());
     fSliceNuScore.push_back(nuScore);
-    //fSliceOpt0Score.push_back(opt0Score)
+    fSliceHasClearCosmicMetadata.push_back(sliceHasClearCosmicMetadata);
+    fSliceIsClearCosmic.push_back(sliceIsClearCosmic);
     fSliceVtxX.push_back(sliceVtxX);
     fSliceVtxY.push_back(sliceVtxY);
     fSliceVtxZ.push_back(sliceVtxZ);
     fSliceHasBaryFlashMatch.push_back(hasBaryFlashMatch);
     fSliceBaryFlashScore.push_back(baryFlashScore);
     fSliceBaryFlashChi2.push_back(baryFlashChi2);
+    fSliceBaryFlashTime.push_back(baryFlashTime);
     fSliceBaryFlashPE.push_back(baryFlashPE);
 
-    // Now, get hits in slice and loop over these hits
+    // Get Hits associated with this slice
+    // Loop over hits associated with this slice
 
     std::vector<art::Ptr<recob::Hit>> sliceHits(sliceHitAssoc.at(slice.key()));
     int totalSliceHits = sliceHits.size();
@@ -1458,48 +1470,49 @@ for (size_t i_hit = 0; i_hit < showerHits.size(); i_hit++) { // loop over shower
 
 std::cout<< "------------ MC TRUTH Parameters ----------------"<<std::endl;
 
-art::Handle<std::vector<simb::MCTruth> > mctruthListHandle;
-std::vector<art::Ptr<simb::MCTruth> > mclist;
-if (evt.getByLabel(fGenieGenModuleLabel,mctruthListHandle)){
-      art::fill_ptr_vector(mclist, mctruthListHandle);
+// Get Beam MCTruth
+art::Handle<std::vector<simb::MCTruth> > beamTruthHandle;
+std::vector<art::Ptr<simb::MCTruth> > beamTruths;
+if (evt.getByLabel(fGenieGenModuleLabel,beamTruthHandle)){
+      art::fill_ptr_vector(beamTruths, beamTruthHandle);
 }
 
-art::FindManyP<simb::MCParticle> fmpart( mctruthListHandle, evt, "largeant" );
+art::FindManyP<simb::MCParticle> beamGeantAssoc( mctruthListHandle, evt, "largeant" );
 
-// corsika MC truth information
-
-/*art::ValidHandle<std::vector<simb::MCTruth>> cosmicMCTruthListHandle = evt.getValidHandle<std::vector<simb::MCTruth>>("corsika");
-std::vector<art::Ptr<simb::MCTruth>> cosmicMCTruthVector;
-if (cosmicMCTruthListHandle.isValid()){
-    art::fill_ptr_vector(cosmicMCTruthVector, cosmicMCTruthListHandle);
+/* // Get Cosmic MCTruth
+art::Handle<std::vector<simb::MCTruth>> cosmicTruthHandle;
+std::vector<art::Ptr<simb::MCTruth>> cosmicTruths;
+if (evt.getByLabel("corsika", cosmicTruthHandle)) {
+    art::fill_ptr_vector(cosmicTruths, cosmicTruthHandle);
 }
-
-art::FindManyP<simb::MCParticle> cosmicGeantAssoc(cosmicMCTruthListHandle, evt, "largeant");*/
-
 ++nTotEvents;
+art::FindManyP<simb::MCParticle> cosmicGeantAssoc(cosmicMCTruthListHandle, evt, "largeant"); */
+
+std::cout<<"Event: "<<fEventID<<" Run:"<<fRun<<" Subrun: "<<fSubRun<<" || Beam MCTruth objects: " << beamTruths.size()<<std::endl;
+
 
 // ---------------------------------------------------------------------------
 // Number of MCTruth interactions in this art::Event
 // ---------------------------------------------------------------------------
 
-if (mclist.size() > 1) {
+if (beamTruths.size() > 1) {
     ++nMultiEvents;
 }
 
-if (mclist.size() == 1) {
+if (beamTruths.size() == 1) {
     ++nSingleEvents;
 }
 
-std::cout<< "mclist size = "<< mclist.size()<< std::endl;
+std::cout<< "beamTruths size = "<< beamTruths.size()<< std::endl;
 
 
 // ===========================================================================
 // Loop over neutrino interactions
 // ===========================================================================
 
-for (size_t i_truth = 0; i_truth < mclist.size(); ++i_truth)
+for (size_t i_truth = 0; i_truth < beamTruths.size(); ++i_truth)
 {
-    art::Ptr<simb::MCTruth> truth = mclist.at(i_truth);
+    art::Ptr<simb::MCTruth> truth = beamTruths.at(i_truth);
 
     const auto& neutrino = truth->GetNeutrino();
     const auto& nu       = neutrino.Nu();
@@ -1509,10 +1522,9 @@ for (size_t i_truth = 0; i_truth < mclist.size(); ++i_truth)
     // Save interaction-level information
     // -----------------------------------------------------------------------
 
-    std::cout
-        << "\n========== MCTruth " << i_truth << " =========="<< std::endl;
-
+    std::cout<< "\n========== MCTruth " << i_truth << " =========="<< std::endl;
     std::cout<< "MCTruth Origin: "<<origin<< std::endl;
+    std::cout<<"NeutrinoSet: "<<truth->NeutrinoSet()<<std::endl;
     std::cout<< "Neutrino PDG: "<< nu.PdgCode()<< std::endl;
     std::cout<< "Interaction mode: "<< neutrino.Mode()<< std::endl;
     std::cout<< "Interaction type: "<< neutrino.InteractionType()<< std::endl;
@@ -1521,6 +1533,11 @@ for (size_t i_truth = 0; i_truth < mclist.size(); ++i_truth)
     std::cout<< "Neutrino vertex: ("<< nu.Vx() << ", "<< nu.Vy() << ", "<< nu.Vz() << ")"<< std::endl;
     std::cout<< "Target: "<< neutrino.Target()<< std::endl;
     std::cout<< "Generator neutrino TrackID: "<< nu.TrackId()<< std::endl;
+
+    if (truth->NeutrinoSet())
+    {
+        std::cout<< " PDG = " << nu.PdgCode()<< " E = " << nu.E()<< " Vtx = ("<< nu.Vx() << ", "<< nu.Vy() << ", "<< nu.Vz() << ")";
+    }
 
     trueOrigin.push_back(origin);
     trueW.push_back(neutrino.W());
@@ -1547,7 +1564,7 @@ for (size_t i_truth = 0; i_truth < mclist.size(); ++i_truth)
     // detector interactions, ionisation, scattering, etc.
     // -----------------------------------------------------------------------
 
-    std::vector<art::Ptr<simb::MCParticle>> assocParticles = fmpart.at(i_truth);
+    std::vector<art::Ptr<simb::MCParticle>> assocParticles = beamGeantAssoc.at(i_truth);
 
     std::cout<< "Total associated Geant4 MCParticles = "<< assocParticles.size()<< std::endl;
 
@@ -2084,6 +2101,7 @@ std::cout<<"trueIntMode size = "<<trueIntMode.size()<<std::endl;
 std::cout<<"trueIntType size = "<<trueIntType.size()<<std::endl;
 std::cout<<"trueCCNC size = "<<trueCCNC.size()<<std::endl;
 
+    trueMCTruthSource.clear();
     trueOrigin.clear();
     trueW.clear();
     trueX.clear();
@@ -2158,6 +2176,7 @@ void hyperon::AnalyzeEvents::beginJob()
   fTree ->Branch("run", &fRun, "run/I");
   fTree ->Branch("subrun", &fSubRun, "subrun/I");
 
+  fTree->Branch("trueMCTruthSource", &trueMCTruthSource);
   fTree->Branch("trueOrigin", &trueOrigin);
   fTree->Branch("trueW", &trueW);
   fTree->Branch("trueX", &trueX);
@@ -2228,9 +2247,12 @@ void hyperon::AnalyzeEvents::beginJob()
   fTree->Branch("sliceVtxX", &fSliceVtxX);
   fTree->Branch("sliceVtxY", &fSliceVtxY);
   fTree->Branch("sliceVtxZ", &fSliceVtxZ);
+  fTree->Branch("sliceHasClearCosmicMetadata", &fSliceHasClearCosmicMetadata);
+  fTree->Branch("sliceIsClearCosmic", &fSliceIsClearCosmic);
   fTree->Branch("sliceHasBaryFlashMatch", &fSliceHasBaryFlashMatch);
   fTree->Branch("sliceBaryFlashScore", &fSliceBaryFlashScore);
   fTree->Branch("sliceBaryFlashChi2", &fSliceBaryFlashChi2);
+  fTree->Branch("sliceBaryFlashTime", &fSliceBaryFlashTime);
   fTree->Branch("sliceBaryFlashPE", &fSliceBaryFlashPE);
 
   fTree->Branch("pfpKey", &fPfpKey);

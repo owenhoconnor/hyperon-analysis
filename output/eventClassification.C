@@ -6,10 +6,10 @@
 
 enum eventType {
    Signal,
-   Background,
+   Hyperon,
+   Beam,
    Dirt,
-   Cosmic,
-   Hyperon
+   Cosmic
 };
 
 void eventClassification::Loop()
@@ -210,9 +210,12 @@ void eventClassification::Loop()
 
    int nSlicesSkipped = 0;
    int sliceSizeMissmatch = 0;
-   int nSingleIntEvents = 0;
-   int nMultiIntEvents = 0;
-   int nZeroIntEvents = 0;
+   int nSingleIntEventsHyp = 0;
+   int nMultiIntEventsHyp = 0;
+   int nZeroIntEventsHyp = 0;
+   int nSingleIntEventsProd = 0;
+   int nMultiIntEventsProd = 0;
+   int nZeroIntEventsProd = 0;
 
    Long64_t nentries = fChain->GetEntries();
    std::cout<<"nentries ="<<nentries<<std::endl;
@@ -288,22 +291,50 @@ void eventClassification::Loop()
       isCosmic = true;
    }
 
+   // --------------------
+   // Pileup % Calculation
+   // --------------------
+
+   if(isHyperonSample){
+      if(!isCosmic){
+            if(trueNuVtxX->size() == 0){
+               nZeroIntEventsHyp++;
+               continue;
+            }
+            if (trueNuVtxX->size() == 1){nSingleIntEventsHyp++;}
+            if (trueNuVtxX->size() > 1){nMultiIntEventsHyp++;}
+         }
+   }
+
+   if (isProdSample)
+   {
+      int nNuIntInTrueFV = 0;
+
+      for (size_t iVtx = 0; iVtx < trueNuVtxX->size(); ++iVtx)
+      {
+         const float x = trueNuVtxX->at(iVtx);
+         const float y = trueNuVtxY->at(iVtx);
+         const float z = trueNuVtxZ->at(iVtx);
+         const bool inTrueFV = std::abs(x) < 180 && std::abs(y) < 180 && z > 10 && z < 450;
+
+        if (inTrueFV){++nNuIntInTrueFV;}
+    }
+
+    if(nNuIntInTrueFV == 0){++nZeroIntEventsProd;}
+    else if(nNuIntInTrueFV == 1){++nSingleIntEventsProd;}
+    else{++nMultiIntEventsProd;}
+   }
+
       // ------------------------------------------------------------
       // Choose the MCTruth index corresponding to the true neutrino interaction vertex 
       // closest to the reconstructed vertex
       // ------------------------------------------------------------
 
-      if(trueNuVtxX->size() == 0){
-         nZeroIntEvents++;
-         continue;
-      }
-      if (trueNuVtxX->size() == 1){nSingleIntEvents++;}
-      if (trueNuVtxX->size() > 1){nMultiIntEvents++;}
-
       float recoVtxX = sliceVtxX->at(nuSliceIdx);
       float recoVtxY = sliceVtxY->at(nuSliceIdx);
       float recoVtxZ = sliceVtxZ->at(nuSliceIdx);
       TVector3 recoVtx(recoVtxX, recoVtxY, recoVtxZ);
+      if(trueNuVtxX->empty()){continue;} // skip if there are no vertices (no MCTruth)
 
       for (int i = 0; i < trueNuVtxX->size(); i++){
          TVector3 trueVtx(trueNuVtxX->at(i), trueNuVtxY->at(i), trueNuVtxZ->at(i));
@@ -349,7 +380,6 @@ void eventClassification::Loop()
       int sigmaTrackID = -1;
       bool hasPrimarySigma0 = false;
       bool hasPrimaryMuPlus = false;
-//std::cout<<"got here"<<std::endl;
       for (int i = 0; i < truePDG->size(); i++){
 
          // skip if the particle is not a primary particle
@@ -456,18 +486,19 @@ void eventClassification::Loop()
          nDirt += eventWeight; // add to total dirt count, scaled to 1e21 POT
       }
       else if (isProdSample && isSignal){ // Signal in beam background sample (very rare)
-        sampleType = Signal;
+         continue; // exclude from analysis
+       /* sampleType = Signal;
         nSignalProd++;
         eventWeight = prodScaleFactor; // scale production events to 1e21 POT
         nSignal += eventWeight; // add to total signal count, scaled to 1e21 POT
         if(isInDentTrueFV){
             nSignalProdInDentTrueFV++;
             nSignalInDentTrueFV += eventWeight;
-        }
+        }*/
       }
       else if (isProdSample && isInTrueFV){ // Beam background
          nBkgRaw++;
-         sampleType = Background;
+         sampleType = Beam;
          eventWeight = prodScaleFactor; // scale production events to 1e21 POT
          nBkg += eventWeight; // add to total bkg count, scaled to 1e21 POT
          bkgTree->Fill();
@@ -484,7 +515,7 @@ void eventClassification::Loop()
       }
       else {continue;} 
 
-      outTree->Fill();
+      if(sampleType >= 0){outTree->Fill();} // exclude non classified events
 
       // Reco FV
       if (std::abs(recoVtxX) < 180 && std::abs(recoVtxY) < 180 && recoVtxZ < 450 && recoVtxZ > 10){
@@ -498,7 +529,7 @@ void eventClassification::Loop()
       if(isInRecoFV){
          if(sampleType==Signal){nInRecoFVSig += eventWeight;}
          if(sampleType==Hyperon){nInRecoFVHyperon += eventWeight;}
-         if(sampleType==Background){nInRecoFVBkg += eventWeight;}
+         if(sampleType==Beam){nInRecoFVBkg += eventWeight;}
          if(sampleType==Dirt){nInRecoFVDirt += eventWeight;}
          if(sampleType==Cosmic){nInRecoFVCosmic += eventWeight;}
       
@@ -506,11 +537,13 @@ void eventClassification::Loop()
             if(sampleType==Signal){nGoodTopoSig += eventWeight;}
             if(sampleType==Hyperon){nGoodTopoHyperon += eventWeight;}
             if(sampleType==Dirt){nGoodTopoDirt += eventWeight;}
-            if(sampleType==Background){nGoodTopoBkg += eventWeight;}
+            if(sampleType==Beam){nGoodTopoBkg += eventWeight;}
             if(sampleType==Cosmic){nGoodTopoCosmic += eventWeight;}
          }
 
-      }  
+      }
+      
+      // Count how many vertices are in the event (only for non cosmics for now)
 
    } // End of event loop
 
@@ -535,34 +568,40 @@ void eventClassification::Loop()
    outFile->Close();
    delete outFile;
 
-   std::cout<<"===================================================================="<<std::endl;
-   std::cout<<"number of events where sliceID size != sliceNuScore size = "<<sliceSizeMissmatch<<std::endl;
-   std::cout<<"number of events with 1 MCtruth  = "<<nSingleIntEvents<<std::endl;
-   std::cout<<"num of events with >1 MCTruth = "<<nMultiIntEvents<<std::endl;
-   std::cout<<"num of events wth 0 MCTruth = "<<nZeroIntEvents<<std::endl;
+   // calculate pileup%
+
+   const int nEventsWithNuInFV = nSingleIntEventsProd + nMultiIntEventsProd;
+   const double pileupFraction = nEventsWithNuInFV > 0 ? 100.0 * nMultiIntEventsProd / nEventsWithNuInFV : 0.0;
+
+   std::cout<<"=============================== Pileup Info / Slice Diagnostics====================================="<<std::endl;
+   std::cout<<"Total number of events where sliceID size != sliceNuScore size = "<<sliceSizeMissmatch<<std::endl;
+   std::cout<<"# of beam events in true FV with 1 MCTruth  = "<<nSingleIntEventsProd<<std::endl;
+   std::cout<<"# of beam events in true FV with >1 MCTruth = "<<nMultiIntEventsProd<<std::endl;
+   std::cout<<"# of beam events wth 0 MCTruth = "<<nZeroIntEventsProd<<std::endl;
+   std::cout<<"Beam pileup fraction = "<<pileupFraction<<std::endl;
    std::cout<<"------------ Summary of Event Counts ----------------"<<std::endl;
    std::cout<<"Total number of events processed = "<<nentries<<std::endl;
    std::cout<<"Total number of events skipped due to no slices = "<<nSlicesSkipped<<std::endl;
    std::cout<<"# Signal (scaled )=  "<<nSignal<<" from "<<nSignalHyp<<" signal in hyperon files + "<<nSignalProd<<"signal in prod files"<<std::endl;
    std::cout<<"# Hyperons (scaled )= "<<nHyperon<<std::endl;
-   std::cout<<"# Background (scaled) = "<<nBkg<<std::endl;
+   std::cout<<"# Beam (scaled) = "<<nBkg<<std::endl;
    std::cout<<"# Dirt (scaled) = "<<nDirt<<" from "<<nDirtHyp<<" dirt events in hyperon files + "<<nDirtProd<<" dirt events in prod files"<<std::endl;
    std::cout<<"# Cosmics (scaled) = "<<nCosmic<<std::endl;
    std::cout<<"----------- DENT True FV --------------"<<std::endl;
    std::cout<<"# Signal in DENT true FV = "<<nSignalInDentTrueFV<<std::endl;
    std::cout<<"# Hyperons in DENT true FV = "<<nHyperonInDentTrueFV<<std::endl;
-   std::cout<<"# Background in DENT true FV = "<<nBkgInDentTrueFV<<std::endl;
+   std::cout<<"# Beam in DENT true FV = "<<nBkgInDentTrueFV<<std::endl;
    //std::cout<<"# Cosmic in DENT true FV = "<<nCosmicInTrueFV<<std::endl;
    std::cout<<"----------- Reco FV --------------"<<std::endl;
    std::cout<<"# Signal after reco FV cut = "<<nInRecoFVSig<<std::endl;
    std::cout<<"# Hyperons after reco FV cut = "<<nInRecoFVHyperon<<std::endl;
-   std::cout<<"# Background after reco FV cut = "<<nInRecoFVBkg<<std::endl;
+   std::cout<<"# Beam after reco FV cut = "<<nInRecoFVBkg<<std::endl;
    std::cout<<"# Dirt after reco FV cut = "<<nInRecoFVDirt<<std::endl;
    std::cout<<"# Cosmic after reco FV cut = "<<nInRecoFVCosmic<<std::endl;
    std::cout<<"----------- 3+1 Topology --------------"<<std::endl;
    std::cout<<"# Signal after 3+1 topo cut = "<<nGoodTopoSig<<std::endl;
    std::cout<<"# Hyperons after 3+1 topo cut = "<<nGoodTopoHyperon<<std::endl;
-   std::cout<<"# Background after 3+1 topo cut = "<<nGoodTopoBkg<<std::endl;
+   std::cout<<"# Beam after 3+1 topo cut = "<<nGoodTopoBkg<<std::endl;
    std::cout<<"# Dirt after 3+1 topo cut = "<<nGoodTopoDirt<<std::endl;
    std::cout<<"# Cosmic after 3+1 topo cut = "<<nGoodTopoCosmic<<std::endl;
    std::cout<<"================================================================"<<std::endl;
