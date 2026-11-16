@@ -17,11 +17,11 @@
 
 namespace {
 
-// Same reconstructability definition as the original study.
+// Truth-level reconstructability: at least five hits in EACH wire plane.
 bool IsReconstructable(int nHits, int nU, int nV, int nZ)
 {
-    const int nGoodViews = (nU >= 5) + (nV >= 5) + (nZ >= 5);
-    return nHits >= 15 && nGoodViews >= 2;
+    (void)nHits; // Per-plane requirement already implies >= 15 total hits.
+    return nU >= 5 && nV >= 5 && nZ >= 5;
 }
 
 struct ParticleStudy {
@@ -66,7 +66,7 @@ void PlotEfficiencies(const ParticleStudy& study)
     TGraphAsymmErrors* grAll = MakeEfficiencyGraph(study.all, kBlue + 1, 20);
     TGraphAsymmErrors* grReco = MakeEfficiencyGraph(study.reconstructable, kOrange + 7, 22);
 
-    grAll->SetTitle(Form("%s Reconstruction Efficiency;True Momentum [GeV/c];Efficiency", study.name));
+    grAll->SetTitle(Form("%s Reconstruction Study;True Momentum [GeV/c];Fraction of True Particles", study.name));
     grAll->Draw("APZ");
     grAll->GetXaxis()->SetLimits(0.0, study.maxMomentum);
     grAll->GetYaxis()->SetRangeUser(0.0, 1.05);
@@ -82,8 +82,8 @@ void PlotEfficiencies(const ParticleStudy& study)
     legend->SetBorderSize(0);
     legend->SetFillStyle(0);
     legend->SetTextSize(0.035);
-    legend->AddEntry(grAll, "All true particles", "lp");
-    legend->AddEntry(grReco, "Reconstructable subset", "lp");
+    legend->AddEntry(grAll, "Reconstructed", "lp");
+    legend->AddEntry(grReco, "Reconstructable (5 hits/plane)", "lp");
     legend->Draw();
 
     canvas->Modified();
@@ -179,8 +179,9 @@ void recoStudy::Loop()
             if (reconstructable) {
                 ++study.nReconstructable;
                 if (matched) ++study.nMatchedReconstructable;
-                study.reconstructable->Fill(matched, momentum);
             }
+            // Fraction of ALL true particles satisfying the hit criterion.
+            study.reconstructable->Fill(reconstructable, momentum);
 
             if (matched) {
                 const int bestPfpIdx = trueBestRecoPfpIdx->at(i);
@@ -211,7 +212,9 @@ void recoStudy::Loop()
                   << ", matched=" << study.nMatched
                   << ", matched & reconstructable=" << study.nMatchedReconstructable
                   << ", all efficiency=" << Fraction(study.nMatched, study.nTrue)
-                  << ", reconstructable efficiency="
+                  << ", reconstructable fraction="
+                  << Fraction(study.nReconstructable, study.nTrue)
+                  << ", matched given reconstructable="
                   << Fraction(study.nMatchedReconstructable, study.nReconstructable)
                   << ", primary=" << study.nPrimary
                   << ", secondary=" << study.nSecondary

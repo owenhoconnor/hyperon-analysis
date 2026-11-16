@@ -8,7 +8,7 @@
 
 namespace {
 const char* sampleNames[kNSamples] = {"signal", "hyperon", "beam", "dirt", "cosmic"};
-const char* stageNames[kNStages] = {"initial", "reco_fv", "nu_score", "bcfm", "tracks", "showers"};
+const char* stageNames[kNStages] = {"initial", "reco_fv", "nu_score", "bcfm", "flash_time", "tracks", "showers"};
 const char* reasonNames[kNInvalidReasons] = {
     "no_nu_slice", "missing_slice_vector", "slice_index_out_of_range",
     "nonfinite_reco_value", "invalid_weight"
@@ -74,7 +74,7 @@ void runPreselection()
     }
     {
         auto out = openCSV(outputDir + "/preselection_patterns.csv");
-        out << "pattern,pass_reco_fv,pass_nu_score,pass_bcfm,pass_tracks,pass_showers,sample,raw,sumW,sumW2\n";
+        out << "pattern,pass_reco_fv,pass_nu_score,pass_bcfm,pass_flash_time,pass_tracks,pass_showers,sample,raw,sumW,sumW2\n";
         for (int p = 0; p < kNCutPatterns; ++p) {
             for (int c = 0; c < kNSamples; ++c) {
                 out << p;
@@ -116,7 +116,9 @@ void runPreselection()
             << "n_tracks_exact," << cuts.nTracks << '\n'
             << "n_showers_exact," << cuts.nShowers << '\n'
             << "dent_applied,false\n"
-            << "flash_time_applied,false\n"
+            << "flash_time_applied,true\n"
+            << "flash_time_min_inclusive,0.18\n"
+            << "flash_time_max_inclusive,1.73\n"
             << "weight_definition,eventWeight_POT_scale_only\n"
             << "sample_type_0,signal\n"
             << "sample_type_1,hyperon\n"
@@ -126,14 +128,15 @@ void runPreselection()
             << "pattern_bit_0,reco_fv\n"
             << "pattern_bit_1,nu_score\n"
             << "pattern_bit_2,bcfm\n"
-            << "pattern_bit_3,tracks\n"
-            << "pattern_bit_4,showers\n";
+            << "pattern_bit_3,flash_time\n"
+            << "pattern_bit_4,tracks\n"
+            << "pattern_bit_5,showers\n";
     }
     // Compatibility with the existing presentations Python script: wide-format
     // CSV with one row per cumulative stage and expected weighted yields.
     {
         auto out = openCSV(outputDir + "/preselection.csv");
-        out << "cut,signal,hyperon,beam,cosmic,dirt\n";
+        out << "cut,signal,hyperon,beam,dirt,cosmic\n";
         for (int s = 0; s < kNStages; ++s) {
             out << stageNames[s] << ','
                 << r.cutflow[s][kSignal].sumW << ','

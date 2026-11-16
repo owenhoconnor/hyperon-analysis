@@ -39,7 +39,7 @@ PreselectionResults preselection::Loop(const PreselectionCuts& cuts)
 
         // Check every applicable slice-validation failure, not just the first.
         const bool noSlice = nuSliceIdx < 0;
-        const bool missingVector = !sliceNuScore || !sliceBaryFlashScore ||
+        const bool missingVector = !sliceNuScore || !sliceBaryFlashScore || !sliceBaryFlashTime ||
                                    !sliceVtxX || !sliceVtxY || !sliceVtxZ;
         bool outOfRange = false;
         bool nonFinite = false;
@@ -77,6 +77,7 @@ PreselectionResults preselection::Loop(const PreselectionCuts& cuts)
         const double z = sliceVtxZ->at(idx);
         const double nuScore = sliceNuScore->at(idx);
         const double bcfm = sliceBaryFlashScore->at(idx);
+        const double flashTime = sliceBaryFlashTime->at(idx);
 
         // Keep the previous RecoFV geometry (dent not applied).
         const bool pass[kNPhysicsCuts] = {
@@ -85,6 +86,7 @@ PreselectionResults preselection::Loop(const PreselectionCuts& cuts)
             z > cuts.recoVtxZMin && z < cuts.recoVtxZMax,
             nuScore > cuts.nuScore.value,
             bcfm > cuts.bcfm.value,
+            flashTime >= 0.18 && flashTime <= 1.73,
             nTracks == cuts.nTracks,
             nShowers == cuts.nShowers
         };
@@ -106,7 +108,7 @@ PreselectionResults preselection::Loop(const PreselectionCuts& cuts)
     }
 
     const char* stageNames[kNStages] = {
-        "Initial", "RecoFV", "nuScore", "BCFM", "Tracks", "Showers"
+        "Initial", "RecoFV", "nuScore", "BCFM", "FlashTime", "Tracks", "Showers"
     };
     const char* sampleNames[kNSamples] = {
         "Signal", "Other Hyperons", "Beam", "Dirt", "Cosmic"

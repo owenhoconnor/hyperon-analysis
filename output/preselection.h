@@ -19,7 +19,7 @@
 #include <cstddef>
 
 constexpr int kNSamples = 5;
-constexpr int kNStages = 6;
+constexpr int kNStages = 7;
 
 enum SampleCategory {
     kSignal = 0,
@@ -35,8 +35,9 @@ enum SelectionStage {
     kRecoFV = 1,
     kNuScore = 2,
     kBCFM = 3,
-    kTracks = 4,
-    kShowers = 5
+    kFlashTime = 4,
+    kTracks = 5,
+    kShowers = 6
 };
 
 struct WeightedCount {
@@ -213,6 +214,7 @@ public :
    vector<float>   *sliceBaryFlashScore;
    vector<float>   *sliceBaryFlashChi2;
    vector<float>   *sliceBaryFlashPE;
+   vector<float> *sliceBaryFlashTime;
    vector<int>     *pfpKey;
    vector<int>     *pfpSelfID;
    vector<int>     *pfpParentID;
@@ -358,6 +360,7 @@ public :
    TBranch        *b_sliceBaryFlashScore;   ///<!
    TBranch        *b_sliceBaryFlashChi2;   ///<!
    TBranch        *b_sliceBaryFlashPE;   ///<!
+   TBranch        *b_sliceBaryFlashTime;   ///<!   
    TBranch        *b_pfpKey;   ///<!
    TBranch        *b_pfpSelfID;   ///<!
    TBranch        *b_pfpParentID;   ///<!
@@ -559,6 +562,7 @@ void preselection::Init(TTree *tree)
    sliceBaryFlashScore = 0;
    sliceBaryFlashChi2 = 0;
    sliceBaryFlashPE = 0;
+   sliceBaryFlashTime = 0;
    pfpKey = 0;
    pfpSelfID = 0;
    pfpParentID = 0;
@@ -702,6 +706,7 @@ void preselection::Init(TTree *tree)
    fChain->SetBranchAddress("sliceBaryFlashScore", &sliceBaryFlashScore, &b_sliceBaryFlashScore);
    fChain->SetBranchAddress("sliceBaryFlashChi2", &sliceBaryFlashChi2, &b_sliceBaryFlashChi2);
    fChain->SetBranchAddress("sliceBaryFlashPE", &sliceBaryFlashPE, &b_sliceBaryFlashPE);
+   fChain->SetBranchAddress("sliceBaryFlashTime", &sliceBaryFlashTime, &b_sliceBaryFlashTime);
    fChain->SetBranchAddress("pfpKey", &pfpKey, &b_pfpKey);
    fChain->SetBranchAddress("pfpSelfID", &pfpSelfID, &b_pfpSelfID);
    fChain->SetBranchAddress("pfpParentID", &pfpParentID, &b_pfpParentID);
