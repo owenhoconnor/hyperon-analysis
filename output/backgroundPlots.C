@@ -20,6 +20,7 @@
 #include <map>
 #include <string>
 #include <vector>
+#include <TLine.h>
 
 // ============================================================================
 // EVENT TYPE DEFINITIONS
@@ -572,6 +573,33 @@ ParticleSummary SummariseParticles(
     return summary;
 }
 
+// ============================================================================
+// Vertical Line Helper Function
+// ============================================================================
+
+void DrawCutLine(TCanvas* canvas, double cutValue)
+{
+    canvas->cd();
+    canvas->Update();
+
+    const double yMin = canvas->GetLogy()
+        ? std::pow(10.0, canvas->GetUymin())
+        : canvas->GetUymin();
+
+    const double yMax = canvas->GetLogy()
+        ? std::pow(10.0, canvas->GetUymax())
+        : canvas->GetUymax();
+
+    TLine* line = new TLine(cutValue, yMin, cutValue, yMax);
+
+    line->SetLineColor(kRed + 1);
+    line->SetLineStyle(2);
+    line->SetLineWidth(3);
+    line->Draw("SAME");
+
+    canvas->Modified();
+    canvas->Update();
+}
 
 // ============================================================================
 // MAIN LOOP FUNCTION
@@ -1190,7 +1218,7 @@ void backgroundPlots::Loop()
     {
         if(iCat == 0){continue;}
         
-        hsNuScoreByCat.at(iCat) = new THStack(Form("hsNuScore_%d", iCat), "Test"); //use Form()
+        hsNuScoreByCat.at(iCat) = new THStack(Form("hsNuScore_%d", iCat), "NuScore"); //use Form()
         legNuScoreByCat.at(iCat) = new TLegend(0.75, 0.65, 0.95, 0.90);
         if(iCat == 1){
             for (int i = 0; i < 2; ++i){
@@ -1207,6 +1235,7 @@ void backgroundPlots::Loop()
             hsNuScoreByCat.at(iCat)->GetXaxis()->SetTitle("NuScore");
             hsNuScoreByCat.at(iCat)->GetYaxis()->SetTitle("Interactions");
             legNuScoreByCat.at(iCat)->Draw();
+            DrawCutLine(cNuScore, 0.48);
 
             cNuScore->Print(Form("plots/nuScore_%d.png", iCat));
         }
@@ -1228,6 +1257,7 @@ void backgroundPlots::Loop()
             hsNuScoreByCat.at(iCat)->GetXaxis()->SetTitle("NuScore");
             hsNuScoreByCat.at(iCat)->GetYaxis()->SetTitle("Interactions");
             legNuScoreByCat.at(iCat)->Draw();
+            DrawCutLine(cNuScore, 0.48);
 
             cNuScore->Print(Form("plots/nuScore_%d.png", iCat));
         }
@@ -1281,9 +1311,9 @@ void backgroundPlots::Loop()
     {
         if(iCat == 0){continue;}
         
-        hsFlashMatchScoreByCat.at(iCat) = new THStack(Form("hsFlashMatchScore_%d", iCat), "Placeholder"); //use Form()
+        hsFlashMatchScoreByCat.at(iCat) = new THStack(Form("hsFlashMatchScore_%d", iCat), "Barycenter Flash Match Score"); //use Form()
         legFlashMatchScoreByCat.at(iCat) = new TLegend(0.75, 0.65, 0.95, 0.90);
-        hsFlashTimeByCat.at(iCat) = new THStack(Form("hsFlashTime_%d", iCat), "Placeholder");
+        hsFlashTimeByCat.at(iCat) = new THStack(Form("hsFlashTime_%d", iCat), "Barycenter Flash Time");
         legFlashTimeByCat.at(iCat) = new TLegend(0.75, 0.65, 0.95, 0.90);
         if(iCat == 1){
             for (int i = 0; i < 2; ++i){
@@ -1304,6 +1334,7 @@ void backgroundPlots::Loop()
             hsFlashMatchScoreByCat.at(iCat)->GetXaxis()->SetTitle("FlashMatchScore");
             hsFlashMatchScoreByCat.at(iCat)->GetYaxis()->SetTitle("Interactions");
             legFlashMatchScoreByCat.at(iCat)->Draw();
+            DrawCutLine(cFlashMatchScore, 0.04);
 
             cFlashMatchScore->Print(Form("plots/FlashMatchScore_%d.png", iCat));
 
@@ -1314,6 +1345,7 @@ void backgroundPlots::Loop()
             hsFlashTimeByCat.at(iCat)->GetXaxis()->SetTitle("FlashTime");
             hsFlashTimeByCat.at(iCat)->GetYaxis()->SetTitle("Interactions");
             legFlashTimeByCat.at(iCat)->Draw();
+            DrawCutLine(cFlashTime, 1.75);
 
             cFlashTime->Print(Form("plots/FlashTime_%d.png", iCat));
         }
@@ -1340,6 +1372,7 @@ void backgroundPlots::Loop()
             hsFlashMatchScoreByCat.at(iCat)->GetXaxis()->SetTitle("FlashMatchScore");
             hsFlashMatchScoreByCat.at(iCat)->GetYaxis()->SetTitle("Interactions");
             legFlashMatchScoreByCat.at(iCat)->Draw();
+            DrawCutLine(cFlashMatchScore, 0.04);
 
             cFlashMatchScore->Print(Form("plots/FlashMatchScore_%d.png", iCat));
 
@@ -1349,6 +1382,7 @@ void backgroundPlots::Loop()
             hsFlashTimeByCat.at(iCat)->GetXaxis()->SetTitle("FlashTime");
             hsFlashTimeByCat.at(iCat)->GetYaxis()->SetTitle("Interactions");
             legFlashTimeByCat.at(iCat)->Draw();
+            DrawCutLine(cFlashTime, 1.75);
 
             cFlashTime->Print(Form("plots/FlashTime_%d.png", iCat));
         }

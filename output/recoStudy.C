@@ -1,473 +1,228 @@
 #define recoStudy_cxx
 #include "recoStudy.h"
-#include <TH2.h>
-#include <TStyle.h>
+
+#include <TEfficiency.h>
+#include <TGraphAsymmErrors.h>
 #include <TCanvas.h>
+#include <TLegend.h>
+#include <TStyle.h>
+#include <TSystem.h>
+#include <TString.h>
+#include <TAxis.h>
 
-TGraphAsymmErrors* MakeEfficiencyGraph(
-    TEfficiency* eff,
-    Color_t color,
-    Style_t markerStyle)
+#include <array>
+#include <iostream>
+#include <string>
+#include <vector>
+
+namespace {
+
+// Same reconstructability definition as the original study.
+bool IsReconstructable(int nHits, int nU, int nV, int nZ)
 {
-    TGraphAsymmErrors* gr = eff->CreateGraph();
-
-    for (int i = 0; i < gr->GetN(); ++i)
-    {
-        // Remove horizontal bin-width error bars
-        gr->SetPointEXlow(i, 0.0);
-        gr->SetPointEXhigh(i, 0.0);
-    }
-
-    gr->SetMarkerColor(color);
-    gr->SetLineColor(color);
-
-    gr->SetMarkerStyle(markerStyle);
-    gr->SetMarkerSize(1.3);
-
-    gr->SetLineWidth(2);
-
-    gr->SetTitle(eff->GetTitle());
-
-    return gr;
+    const int nGoodViews = (nU >= 5) + (nV >= 5) + (nZ >= 5);
+    return nHits >= 15 && nGoodViews >= 2;
 }
+
+struct ParticleStudy {
+    const char* name;
+    const char* filename;
+    double maxMomentum;
+    TEfficiency* all;
+    TEfficiency* reconstructable;
+    long long nTrue = 0;
+    long long nReconstructable = 0;
+    long long nMatched = 0;
+    long long nMatchedReconstructable = 0;
+    long long nInvalidBestPFP = 0;
+    long long nPrimary = 0;
+    long long nSecondary = 0;
+};
+
+TGraphAsymmErrors* MakeEfficiencyGraph(TEfficiency* eff, Color_t colour,
+                                       Style_t marker)
+{
+    TGraphAsymmErrors* graph = eff->CreateGraph();
+    graph->SetMarkerColor(colour);
+    graph->SetLineColor(colour);
+    graph->SetMarkerStyle(marker);
+    graph->SetMarkerSize(1.2);
+    graph->SetLineWidth(2);
+    for (int i = 0; i < graph->GetN(); ++i) {
+        graph->SetPointEXlow(i, 0.0);
+        graph->SetPointEXhigh(i, 0.0);
+    }
+    return graph;
+}
+
+void PlotEfficiencies(const ParticleStudy& study)
+{
+    TCanvas* canvas = new TCanvas(Form("cEff%s", study.name), study.name, 1400, 1000);
+    canvas->SetLeftMargin(0.12);
+    canvas->SetRightMargin(0.05);
+    canvas->SetBottomMargin(0.12);
+    canvas->SetTopMargin(0.08);
+
+    TGraphAsymmErrors* grAll = MakeEfficiencyGraph(study.all, kBlue + 1, 20);
+    TGraphAsymmErrors* grReco = MakeEfficiencyGraph(study.reconstructable, kOrange + 7, 22);
+
+    grAll->SetTitle(Form("%s Reconstruction Efficiency;True Momentum [GeV/c];Efficiency", study.name));
+    grAll->Draw("APZ");
+    grAll->GetXaxis()->SetLimits(0.0, study.maxMomentum);
+    grAll->GetYaxis()->SetRangeUser(0.0, 1.05);
+    grAll->GetXaxis()->SetTitleSize(0.045);
+    grAll->GetYaxis()->SetTitleSize(0.045);
+    grAll->GetXaxis()->SetLabelSize(0.04);
+    grAll->GetYaxis()->SetLabelSize(0.04);
+    grAll->GetYaxis()->SetTitleOffset(1.15);
+
+    grReco->Draw("PZ SAME");
+
+    TLegend* legend = new TLegend(0.51, 0.15, 0.91, 0.29);
+    legend->SetBorderSize(0);
+    legend->SetFillStyle(0);
+    legend->SetTextSize(0.035);
+    legend->AddEntry(grAll, "All true particles", "lp");
+    legend->AddEntry(grReco, "Reconstructable subset", "lp");
+    legend->Draw();
+
+    canvas->Modified();
+    canvas->Update();
+    canvas->Print(Form("plots/%s", study.filename));
+    delete canvas;
+}
+
+double Fraction(long long numerator, long long denominator)
+{
+    return denominator ? static_cast<double>(numerator) / denominator : 0.0;
+}
+
+} // namespace
 
 void recoStudy::Loop()
 {
-//   In a ROOT session, you can do:
-//      root> .L recoStudy.C
-//      root> recoStudy t
-//      root> t.GetEntry(12); // Fill t data members with entry number 12
-//      root> t.Show();       // Show values of entry 12
-//      root> t.Show(16);     // Read and show values of entry 16
-//      root> t.Loop();       // Loop on all entries
-//
+    if (!fChain) return;
 
-//     This is the loop skeleton where:
-//    jentry is the global entry number in the chain
-//    ientry is the entry number in the current Tree
-//  Note that the argument to GetEntry must be:
-//    jentry for TChain::GetEntry
-//    ientry for TTree::GetEntry and TBranch::GetEntry
-//
-//       To read only selected branches, Insert statements like:
-// METHOD1:
-//    fChain->SetBranchStatus("*",0);  // disable all branches
-//    fChain->SetBranchStatus("branchname",1);  // activate branchname
-// METHOD2: replace line
-//    fChain->GetEntry(jentry);       //read all branches
-//by  b_branchname->GetEntry(ientry); //read only this branch
-   if (fChain == 0) return;
+    gSystem->mkdir("plots", true);
+    gStyle->SetOptStat(0);
 
-  // Create Histograms
+    std::array<ParticleStudy, 4> studies = {{
+        {"Muon",   "efficiencyMuon.png",   3.0, nullptr, nullptr},
+        {"Photon", "efficiencyPhoton.png", 0.3, nullptr, nullptr},
+        {"Proton", "efficiencyProton.png", 1.5, nullptr, nullptr},
+        {"Pion",   "efficiencyPion.png",   0.3, nullptr, nullptr}
+    }};
 
-   TEfficiency* effMuon = new TEfficiency("effMuon", "Muon Reconstructed Efficiency;True Momentum [GeV/c]; Efficiency", 30, 0.0, 3.0);
-   TEfficiency* effPhoton = new TEfficiency("effPhoton", "Photon Reconstruction Efficiency;True Momentum [GeV/c]; Efficiency", 30, 0.0, 0.3);
-   TEfficiency* effProton = new TEfficiency("effProton", "Proton Reconstruction Efficiency;True Momentum [GeV/c]; Efficiency", 30, 0.0, 1.5);
-   TEfficiency* effPion = new TEfficiency("effPion", "Pion Reconstruction Efficiency;True Momentum [GeV/C]; Efficiency", 30, 0.0, 0.3);
+    for (auto& study : studies) {
+        study.all = new TEfficiency(Form("eff%sAll", study.name), "",
+                                    30, 0.0, study.maxMomentum);
+        study.reconstructable = new TEfficiency(Form("eff%sReconstructable", study.name), "",
+                                                30, 0.0, study.maxMomentum);
+    }
 
-   TH1F* hMuonTrackScore = new TH1F("hMuonTrackScore", "Muon Track Score", 100, 0, 1);
-   TH1F* hPhotonTrackScore = new TH1F("hPhotonTrackScore", "Photon Track Score", 100, 0, 1);
-   TH1F* hProtonTrackScore = new TH1F("hProtonTrackScore", "Proton Track Score", 100, 0, 1);
-   TH1F* hPionTrackScore = new TH1F("hPionTrackScore", "Pion Track Score", 100, 0, 1);
+    long long nSignalEvents = 0;
+    long long nUnusualNuRoots = 0;
+    long long nBadTruthVectors = 0;
+    const Long64_t nEntries = fChain->GetEntriesFast();
 
-   // Define counters
+    for (Long64_t jentry = 0; jentry < nEntries; ++jentry) {
+        if (LoadTree(jentry) < 0) break;
+        fChain->GetEntry(jentry);
+        if (sampleType != 0) continue;
+        ++nSignalEvents;
 
-   int nMuons = 0;
-   int nPhotons = 0;
-   int nPions = 0;
-   int nProtons = 0;
-
-   int nPrimaryPFPs = 0;
-   int nSecondaryPFPs = 0;
-
-   int nPrimaryMuons = 0;
-   int nSecondaryMuons = 0;
-   int nPrimaryPhotons = 0;
-   int nSecondaryPhotons = 0;
-   int nPrimaryProtons = 0;
-   int nSecondaryProtons = 0;
-   int nPrimaryPions = 0;
-   int nSecondaryPions = 0;
-
-   int nNotRecoMuons = 0;
-   int nNotRecoPhotons = 0;
-   int nNotRecoProtons = 0;
-   int nNotRecoPions = 0;
-
-            int nMultiNuRootEvents = 0;
-
-
-   Long64_t nentries = fChain->GetEntriesFast();
-
-   Long64_t nbytes = 0, nb = 0;
-   for (Long64_t jentry=0; jentry<nentries;jentry++) {
-      Long64_t ientry = LoadTree(jentry);
-      if (ientry < 0) break;
-      nb = fChain->GetEntry(jentry);   nbytes += nb;
-      // if (Cut(ientry) < 0) continue;
-
-      // find PDG for each signal particle, fill TEfficiency for each
-      // isReconstructed->at(that PDG)
-
-      int signalTrueMuonID = -999;
-      int signalTruePhotonID = -999;
-      int signalTrueProtonID = -999;
-      int signalTruePionID = -999;
-
-      std::cout<<"New event # "<<jentry<<std::endl;
-      if (sampleType == 0){ // is Signal
-
-         // loop over reco PFPs to determine nu PFP ID
-         int nNuRoots = 0;
-         int nuPfpSelfID = -1;
-
-         for (size_t iPfp = 0; iPfp < pfpKey->size(); ++iPfp)
-         {
-            if (pfpIsNuSlice->at(iPfp) && pfpIsPrimary->at(iPfp))
-            {
-               ++nNuRoots;
-               nuPfpSelfID = pfpSelfID->at(iPfp);
+        // Identify the selected neutrino PFP root, as in the original script.
+        int nNuRoots = 0;
+        int nuPfpSelfID = -1;
+        for (size_t i = 0; i < pfpKey->size(); ++i) {
+            if (pfpIsNuSlice->at(i) && pfpIsPrimary->at(i)) {
+                ++nNuRoots;
+                nuPfpSelfID = pfpSelfID->at(i);
             }
-         }
+        }
+        if (nNuRoots != 1) ++nUnusualNuRoots;
 
-         if (nNuRoots != 1)
-         {
-            std::cout<< "Event " << jentry<< " has " << nNuRoots<< " primary PFPs in selected nu slice"<< std::endl;
-            nMultiNuRootEvents++;
-         }
+        const size_t nTruth = truePDG->size();
+        if (trueGeneration->size() != nTruth || trueMotherPDG->size() != nTruth ||
+            trueP->size() != nTruth || trueIsReconstructed->size() != nTruth ||
+            trueNHits->size() != nTruth || trueNHitsU->size() != nTruth ||
+            trueNHitsV->size() != nTruth || trueNHitsZ->size() != nTruth ||
+            trueBestRecoPfpIdx->size() != nTruth) {
+            ++nBadTruthVectors;
+            continue;
+        }
 
-         // loop over true particles
+        for (size_t i = 0; i < nTruth; ++i) {
+            const int pdg = truePDG->at(i);
+            const int generation = trueGeneration->at(i);
+            const int mother = trueMotherPDG->at(i);
 
-         for (int i = 0; i < truePDG->size(); ++i){
-            std::cout<<"PDG = "<<truePDG->at(i)<<" at generation "<<trueGeneration->at(i)<<std::endl;
+            // Original signal-particle definitions; do not loosen these.
+            int category = -1;
+            if (pdg == -13 && generation == 0) category = 0;
+            else if (pdg == 22 && generation == 1 && mother == 3212) category = 1;
+            else if (pdg == 2212 && generation == 2 && mother == 3122) category = 2;
+            else if (pdg == -211 && generation == 2 && mother == 3122) category = 3;
+            if (category < 0) continue;
 
-            const bool reconstructed = (trueIsReconstructed->at(i) == 1);
-            const float momentum = trueP->at(i);
-            
-            // define reconstructability w/ per view hits
-            int nGoodViews = 0;
+            ParticleStudy& study = studies.at(category);
+            const bool matched = (trueIsReconstructed->at(i) == 1);
+            const bool reconstructable = IsReconstructable(
+                trueNHits->at(i), trueNHitsU->at(i),
+                trueNHitsV->at(i), trueNHitsZ->at(i));
+            const double momentum = trueP->at(i);
 
-            if (trueNHitsU->at(i) >= 5){++nGoodViews;}
-            if (trueNHitsV->at(i) >= 5){++nGoodViews;}
-            if (trueNHitsZ->at(i) >= 5){++nGoodViews;}
+            ++study.nTrue;
+            if (matched) ++study.nMatched;
+            study.all->Fill(matched, momentum);
 
-            const bool reconstructable = trueNHits->at(i) >= 15 && nGoodViews >= 2;
-
-            // muons
-            if (truePDG->at(i) == -13 && trueGeneration->at(i) == 0){
-               effMuon->Fill(reconstructed, momentum);
-               
-               nMuons++;
-               signalTrueMuonID = trueTrackID->at(i);
-
-               if(!reconstructed){
-                  nNotRecoMuons++;
-               }
-               else
-               {
-                  const int bestPfpIdx = trueBestRecoPfpIdx->at(i);
-                  if(bestPfpIdx < 0 || bestPfpIdx > static_cast<int>(pfpParentID->size())){
-                     std::cout<<"Error: muon says recoed, but valid best PFP index "<<bestPfpIdx<<" event = "<<jentry<<std::endl;
-                  }
-                  else
-                  {
-                     const int parentID = pfpParentID->at(bestPfpIdx);
-                     const bool isPrimary = parentID == nuPfpSelfID && nuPfpSelfID >= 0;
-
-                     if(isPrimary){
-                        nPrimaryMuons++;
-                     }
-                     else{
-                        nSecondaryMuons++;
-                     }
-                  }
-
-               }
-            }
-            // photons
-            if (truePDG->at(i) == 22 && trueGeneration->at(i) == 1 && trueMotherPDG->at(i) == 3212){
-               effPhoton->Fill(reconstructed, momentum);
-               
-               nPhotons++;
-               signalTruePhotonID = trueTrackID->at(i);
-
-               if(!reconstructed){
-                  nNotRecoPhotons++;
-               }
-               else
-               {
-                  const int bestPfpIdx = trueBestRecoPfpIdx->at(i);
-                  if(bestPfpIdx < 0 || bestPfpIdx > static_cast<int>(pfpParentID->size())){
-                     std::cout<<"Error: photon says recoed, but valid best PFP index "<<bestPfpIdx<<" event = "<<jentry<<std::endl;
-                  }
-                  else
-                  {
-                     const int parentID = pfpParentID->at(bestPfpIdx);
-                     const bool isPrimary = parentID == nuPfpSelfID && nuPfpSelfID >= 0;
-
-                     if(isPrimary){
-                        nPrimaryPhotons++;
-                     }
-                     else{
-                        nSecondaryPhotons++;
-                     }
-                  }
-
-               }
-            }
-            // protons
-            if (truePDG->at(i) == 2212 && trueGeneration->at(i) == 2 && trueMotherPDG->at(i) == 3122){
-               effProton->Fill(reconstructed, momentum);
-               
-               nProtons++;
-               if (signalTrueProtonID != -999) {
-                  std::cout<< "WARNING: multiple signal proton candidates in event "<< jentry << std::endl;
-               }
-               signalTrueProtonID = trueTrackID->at(i);
-
-               if(!reconstructed){
-                  nNotRecoProtons++;
-               }
-               else
-               {
-                  const int bestPfpIdx = trueBestRecoPfpIdx->at(i);
-                  if(bestPfpIdx < 0 || bestPfpIdx > static_cast<int>(pfpParentID->size())){
-                     std::cout<<"Error: proton says recoed, but valid best PFP index "<<bestPfpIdx<<" event = "<<jentry<<std::endl;
-                  }
-                  else
-                  {
-                     const int parentID = pfpParentID->at(bestPfpIdx);
-                     const bool isPrimary = parentID == nuPfpSelfID && nuPfpSelfID >= 0;
-
-                     if(isPrimary){
-                        nPrimaryProtons++;
-                     }
-                     else{
-                        nSecondaryProtons++;
-                     }
-                  }
-               }
-            }
-            // pions
-            if (truePDG->at(i) == -211 && trueGeneration->at(i) == 2 && trueMotherPDG->at(i) == 3122){
-               effPion->Fill(reconstructed, momentum);
-               
-               nPions++;
-               signalTruePionID = trueTrackID->at(i);
-
-               if(!reconstructed){
-                  nNotRecoPions++;
-               }
-               else
-               {
-                  const int bestPfpIdx = trueBestRecoPfpIdx->at(i);
-                  if(bestPfpIdx < 0 || bestPfpIdx > static_cast<int>(pfpParentID->size())){
-                     std::cout<<"Error: pion says recoed, but valid best PFP index "<<bestPfpIdx<<" event = "<<jentry<<std::endl;
-                  }
-                  else
-                  {
-                     const int parentID = pfpParentID->at(bestPfpIdx);
-                     const bool isPrimary = parentID == nuPfpSelfID && nuPfpSelfID >= 0;
-
-                     if(isPrimary){
-                        nPrimaryPions++;
-                     }
-                     else{
-                        nSecondaryPions++;
-                     }
-                  }
-
-               }
+            if (reconstructable) {
+                ++study.nReconstructable;
+                if (matched) ++study.nMatchedReconstructable;
+                study.reconstructable->Fill(matched, momentum);
             }
 
-         } // end loop over truth 
-
-         // loop over reco PFPs
-      
-         std::cout<<"num of PFPs in event = "<<pfpKey->size()<<std::endl;
-         for (int iPfp = 0; iPfp < pfpKey->size(); ++iPfp){
-            std::cout<<"PFP truth matched PDG ="<<pfpTruePDG->at(iPfp)<<std::endl;
-
-            const float trackScore = pfpTrackScore->at(iPfp);
-            const bool inNuSlice = pfpIsNuSlice->at(iPfp);
-            const int parentID = pfpParentID->at(iPfp);
-            const bool isPrimary = nuPfpSelfID >= 0 && parentID == nuPfpSelfID;
-            const int matchedTrackID = pfpTrueTrackID->at(iPfp);
-            // if this pfp->Parent is primary, need to be able to look up isPrimary for parent -> make map
-            //if(trackScore<0){continue;}
-
-            if(isPrimary){nPrimaryPFPs++;}
-            if(!isPrimary){nSecondaryPFPs++;}
-
-            // muon
-            /*if (pfpTruePDG->at(iPfp) == -13){
-               hMuonTrackScore->Fill(trackScore);
+            if (matched) {
+                const int bestPfpIdx = trueBestRecoPfpIdx->at(i);
+                if (bestPfpIdx < 0 ||
+                    bestPfpIdx >= static_cast<int>(pfpParentID->size())) {
+                    ++study.nInvalidBestPFP;
+                } else {
+                    const bool primary = (nuPfpSelfID >= 0 &&
+                        pfpParentID->at(bestPfpIdx) == nuPfpSelfID);
+                    if (primary) ++study.nPrimary;
+                    else ++study.nSecondary;
+                }
             }
-            // photon
-            if (pfpTruePDG->at(iPfp) == 22){
-               hPhotonTrackScore->Fill(trackScore);
-            }
-            // proton
-            if (pfpTruePDG->at(iPfp) == 2212){
-               hProtonTrackScore->Fill(trackScore);
-            }
-            // pion
-            if (pfpTruePDG->at(iPfp) == -211){
-               hPionTrackScore->Fill(trackScore);
-            }*/
+        }
+    }
 
-         } // end loop over PFPs
+    std::cout << "\n========== Reconstruction study ==========\n"
+              << "Signal events: " << nSignalEvents << "\n"
+              << "Events with != 1 selected nu root: " << nUnusualNuRoots << "\n"
+              << "Events with inconsistent truth-vector sizes: " << nBadTruthVectors << "\n"
+              << "Efficiencies below are integrated over all momenta;\n"
+              << "plots use only the configured momentum ranges.\n\n";
 
-      } // end check if event is signal
+    for (const auto& study : studies) {
+        std::cout << study.name
+                  << ": true=" << study.nTrue
+                  << ", reconstructable=" << study.nReconstructable
+                  << ", matched=" << study.nMatched
+                  << ", matched & reconstructable=" << study.nMatchedReconstructable
+                  << ", all efficiency=" << Fraction(study.nMatched, study.nTrue)
+                  << ", reconstructable efficiency="
+                  << Fraction(study.nMatchedReconstructable, study.nReconstructable)
+                  << ", primary=" << study.nPrimary
+                  << ", secondary=" << study.nSecondary
+                  << ", invalid best PFP=" << study.nInvalidBestPFP
+                  << '\n';
+    }
 
-   } // end loop over events
-
-   float fracPrimaryMuon = static_cast<float>(nPrimaryMuons) / nMuons;//(static_cast<float>(nPrimaryMuons) + static_cast<float>(nSecondaryMuons));
-   float fracPrimaryPhoton = static_cast<float>(nPrimaryPhotons) / nPhotons; //(static_cast<float>(nPrimaryPhotons) + static_cast<float>(nSecondaryPhotons));
-   float fracPrimaryProton = static_cast<float>(nPrimaryProtons) / nProtons; //(static_cast<float>(nPrimaryProtons) + static_cast<float>(nSecondaryProtons));
-   float fracPrimaryPion = static_cast<float>(nPrimaryPions) / nPions; //(static_cast<float>(nPrimaryPions) + static_cast<float>(nSecondaryPions));
-
-   float fracSecondaryMuon = static_cast<float>(nSecondaryMuons) / nMuons; // (static_cast<float>(nPrimaryMuons) + static_cast<float>(nSecondaryMuons));
-   float fracSecondaryPhoton = static_cast<float>(nSecondaryPhotons) / nPhotons; // (static_cast<float>(nPrimaryPhotons) + static_cast<float>(nSecondaryPhotons));
-   float fracSecondaryProton = static_cast<float>(nSecondaryProtons) / nProtons; // (static_cast<float>(nPrimaryProtons) + static_cast<float>(nSecondaryProtons));
-   float fracSecondaryPion = static_cast<float>(nSecondaryPions) / nPions; // (static_cast<float>(nPrimaryPions) + static_cast<float>(nSecondaryPions));
-
-   float fracNotRecoMuon = static_cast<float>(nNotRecoMuons) / nMuons; // (static_cast<float>(nPrimaryMuons) + static_cast<float>(nSecondaryMuons));
-   float fracNotRecoPhoton = static_cast<float>(nNotRecoPhotons) / nPhotons; // (static_cast<float>(nPrimaryPhotons) + static_cast<float>(nSecondaryPhotons));
-   float fracNotRecoProton = static_cast<float>(nNotRecoProtons) / nProtons; // (static_cast<float>(nPrimaryProtons) + static_cast<float>(nSecondaryProtons));
-   float fracNotRecoPion = static_cast<float>(nNotRecoPions) / nPions; // (static_cast<float>(nPrimaryPions) + static_cast<float>(nSecondaryPions));
-
-
-
-   std::cout
-   <<"num of muons = "<<nMuons
-   <<"num of photons = "<<nPhotons
-   <<"num of protons = "<<nProtons
-   <<"num of pions = "<<nPions
-   <<std::endl;
-
-   std::cout<<"============================================="<<std::endl;
-   std::cout<<"Signal Particle | Frac Primary | Frac Secondary | Not Reco"<<std::endl;
-   std::cout<<"Muon            | "<<fracPrimaryMuon<<" | "<<fracSecondaryMuon<<" | "<<fracNotRecoMuon<<std::endl;
-   std::cout<<"Photon          | "<<fracPrimaryPhoton<<" | "<<fracSecondaryPhoton<<"| "<<fracNotRecoPhoton<<std::endl;
-   std::cout<<"Proton          | "<<fracPrimaryProton<<" | "<<fracSecondaryProton<<" | "<<fracNotRecoProton<<std::endl;
-   std::cout<<"Pion            | "<<fracPrimaryPion<<" | "<<fracSecondaryPion<<" | "<<fracNotRecoPion<<std::endl;
-   std::cout<<"============================================="<<std::endl;
-
-   std::cout<<"num of primary muons = "<<nPrimaryMuons<<std::endl;
-   std::cout<<"num of secondary muons = "<<nSecondaryMuons<<std::endl;
-
-   std::cout<<"num of primary photons = "<<nPrimaryPhotons<<std::endl;
-   std::cout<<"num of secondary photons = "<<nSecondaryPhotons<<std::endl;
-   std::cout<<" num of primary protons = "<<nPrimaryProtons<<std::endl;
-   std::cout<<"num of secondary protons = "<<nSecondaryProtons<<std::endl;
-   std::cout<<"num of primray pions = "<<nPrimaryPions<<std::endl;
-   std::cout<<"num of secondary pions = "<<nSecondaryPions<<std::endl;
-   std::cout<<"num of primary PFPs = "<<nPrimaryPFPs<<std::endl;
-   std::cout<<"num of secondary PFPs = "<<nSecondaryPFPs<<std::endl;
-
-   // -------------------------------------------------------
-   // Track Score by Signal Particle
-   // -------------------------------------------------------
-
-   THStack* hsTrackScores = new THStack("hsTrackScores", "Track Scores by Signal Particles");
-   TLegend* legTrackScore = new TLegend(0.75, 0.3, 0.97, 0.91);
-   legTrackScore->SetBorderSize(0);
-   legTrackScore->SetFillStyle(0);
-   legTrackScore->SetTextSize(0.025);
-
-   hMuonTrackScore->SetFillColorAlpha(kRed, 0.75);
-   hMuonTrackScore->SetLineColor(kBlack);
-   hsTrackScores->Add(hMuonTrackScore);
-   legTrackScore->AddEntry(hMuonTrackScore, "Muons", "f");
-
-   hPhotonTrackScore->SetFillColorAlpha(kBlue, 0.75);
-   hPhotonTrackScore->SetLineColor(kBlack);
-   hsTrackScores->Add(hPhotonTrackScore);
-   legTrackScore->AddEntry(hPhotonTrackScore, "Photons", "f");
-
-   hProtonTrackScore->SetFillColorAlpha(kYellow, 0.75);
-   hProtonTrackScore->SetLineColor(kBlack);
-   hsTrackScores->Add(hProtonTrackScore);
-   legTrackScore->AddEntry(hProtonTrackScore, "Protons", "f");
-
-   hPionTrackScore->SetFillColorAlpha(kOrange, 0.75);
-   hPionTrackScore->SetLineColor(kBlack);
-   hsTrackScores->Add(hPionTrackScore);
-   legTrackScore->AddEntry(hPionTrackScore, "Pions", "f");
-
-   TCanvas* cTrackScores = new TCanvas("cTrackScores", "Track Scores by Signal Particle", 1800, 1200);
-   hsTrackScores->Draw("HIST");
-   hsTrackScores->GetXaxis()->SetTitle(" PFP Track Score");
-   hsTrackScores->GetYaxis()->SetTitle("PFPs");
-
-   legTrackScore->Draw();
-   cTrackScores->Print("plots/trackScoresStacked.png");
-
-
-   // -------------------------------------------------------
-   // Reconstruction Efficiencies
-   // -------------------------------------------------------
-
-   TCanvas* cEffMuon = new TCanvas("cEffMuon", "", 1800, 1200);
-  cEffMuon->SetFillColor(kWhite);
-
-   TGraphAsymmErrors* grMuon =
-      MakeEfficiencyGraph(
-         effMuon,
-         kBlue + 1,
-         20
-      );
-
-   grMuon->Draw("APZ");
-
-   grMuon->GetXaxis()->SetLimits(0.0, 3.0);
-   grMuon->GetYaxis()->SetRangeUser(0.0, 1.05);
-
-   cEffMuon->Print("plots/efficiencyMuon.png");
-
-   TCanvas* cEffPhoton =
-      new TCanvas("cEffPhoton", "", 1800, 1200);
-
-   TGraphAsymmErrors* grPhoton =
-      MakeEfficiencyGraph(
-         effPhoton,
-         kBlue + 1,
-         20
-      );
-
-   grPhoton->Draw("APZ");
-
-   grPhoton->GetXaxis()->SetLimits(0.0, 0.3);
-   grPhoton->GetYaxis()->SetRangeUser(0.0, 1.05);
-
-   cEffPhoton->Print("plots/efficiencyPhoton.png");
-
-   TCanvas* cEffProton = new TCanvas("cEffProton", "", 1800, 1200);
-
-   TGraphAsymmErrors* grProton =
-      MakeEfficiencyGraph(
-         effProton,
-         kBlue + 1,
-         20
-      );
-
-   grProton->Draw("APZ");
-
-   grProton->GetXaxis()->SetLimits(0.0, 1.5);
-   grProton->GetYaxis()->SetRangeUser(0.0, 1.05);
-   cEffProton->Print("plots/efficiencyProton.png");
-
-   TCanvas* cEffPion = new TCanvas("cEffPion", "", 1800, 1200);
-   cEffPion->SetFillStyle(1001);
-   cEffPion->SetFillColor(kWhite);
-   
-   TGraphAsymmErrors* grPion =
-      MakeEfficiencyGraph(
-         effPion,
-         kBlue + 1,
-         20
-      );
-   grPion->Draw("APZ");
-   cEffPion->Print("plots/efficiencyPion.png");
+    for (const auto& study : studies) PlotEfficiencies(study);
+    for (auto& study : studies) {
+        delete study.all;
+        delete study.reconstructable;
+    }
+    std::cout << "Plots saved in plots/efficiency{Muon,Photon,Proton,Pion}.png\n";
 }
