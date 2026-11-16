@@ -3,6 +3,11 @@
 #include <TH2.h>
 #include <TStyle.h>
 #include <TCanvas.h>
+#include "/data/sbnd/genie_hyp_weights/GenieHypXsecWeight.h"
+#include <cmath>
+#include <limits>
+#include <map>
+#include <stdexcept>
 
 enum eventType {
    Signal,
@@ -73,14 +78,25 @@ void eventClassification::Loop()
    }
 
    double potSBND = 1.0e21;
-   double hyperonScaleFactor = potSBND/totPotHyperons;
-   double prodScaleFactor = potSBND/totPotProd;
+   double hyperonPotFactor = potSBND/totPotHyperons;
+   double prodPotFactor = potSBND/totPotProd;
 
 
    std::cout<<"Total POT in Hyperon files = "<<totPotHyperons<<std::endl;
    std::cout<<"Total POT in Production files = "<<totPotProd<<std::endl;
-   std::cout<<"Scale factor for Hyperon files = "<<hyperonScaleFactor<<std::endl;
-   std::cout<<"Scale factor for Production files = "<<prodScaleFactor<<std::endl;
+   std::cout<<"Scale factor for Hyperon files = "<<hyperonPotFactor<<std::endl;
+   std::cout<<"Scale factor for Production files = "<<prodPotFactor<<std::endl;
+
+   // GENIE Hyperon Correction Weights
+
+   GenieHypXsecWeight::Weights W;
+
+   if (!W.load("/data/sbnd/genie_hyp_weights/hyp_xsec_weights_mu.root",
+      "/data/sbnd/genie_hyp_weights/hyp_xsec_weights_e.root"
+   ))
+   {
+      throw std::runtime_error("Failed to load GENIE hyperon weight tables");
+   }
 
    // Output file creation
 
@@ -137,7 +153,19 @@ void eventClassification::Loop()
    int nuSliceKey;
    int nTracks = 0;
    int nShowers = 0;
-   float eventWeight = 1.0;
+   float potWeight = 1.0;
+   float genieHypWeight = 1.0;
+   float eventWeight = potWeight * genieHypWeight;
+
+   signalTree->Branch("potWeight", &potWeight);
+   bkgTree->Branch("potWeight", &potWeight);
+   cosmicTree->Branch("potWeight", &potWeight);
+   outTree->Branch("potWeight", &potWeight);
+
+   signalTree->Branch("genieHypWeight", &genieHypWeight);
+   bkgTree->Branch("genieHypWeight", &genieHypWeight);
+   cosmicTree->Branch("genieHypWeight", &genieHypWeight);
+   outTree->Branch("genieHypWeight", &genieHypWeight);
 
    signalTree->Branch("eventWeight", &eventWeight);
    bkgTree->Branch("eventWeight", &eventWeight);
@@ -169,7 +197,7 @@ void eventClassification::Loop()
    cosmicTree->Branch("nShowers", &nShowers);
    outTree->Branch("nShowers", &nShowers);
 
-   float shortestDistTrueToRecoVtx = 0;
+   // Closest-vertex distance is local to each event (see below).
    int nSignalHyp = 0;
    int nSignalProd = 0;
    float nSignal = 0.0;
@@ -199,6 +227,15 @@ void eventClassification::Loop()
    float nGoodTopoBkg = 0.0;
    float nGoodTopoDirt = 0.0;
    float nGoodTopoCosmic = 0.0;
+
+   // GENIE hyperon-QE reweighting diagnostics (unweighted event counts).
+   std::map<int, long long> hypEligibleByPDG;
+   std::map<int, double> hypSumWeightsByPDG;
+   std::map<int, long long> hypPrimaryStatusCodes;
+   long long nHypWeightInvalidInputs = 0;
+   long long nHypWeightMultiplePrimaries = 0;
+   long long nHypWeightApplied = 0;
+   long long nHypWeightUnit = 0;
 
    int nBeamOrigin = 0;
    int nBeamOriginBkg = 0;
@@ -242,7 +279,9 @@ void eventClassification::Loop()
       nuSliceKey = -1;
       chosenTruthIdx = -1;
       sampleType = -1;
-      eventWeight = 1.0;
+      potWeight = 1.0f;
+      genieHypWeight = 1.0f;
+      eventWeight = 1.0f;
 
       // ---------------------------------------------------
       // Choose slice with highest nuScore (nuSlice) and use to assign event as cosmic or not
@@ -336,6 +375,7 @@ void eventClassification::Loop()
       TVector3 recoVtx(recoVtxX, recoVtxY, recoVtxZ);
       if(trueNuVtxX->empty()){continue;} // skip if there are no vertices (no MCTruth)
 
+      float shortestDistTrueToRecoVtx = std::numeric_limits<float>::infinity();
       for (int i = 0; i < trueNuVtxX->size(); i++){
          TVector3 trueVtx(trueNuVtxX->at(i), trueNuVtxY->at(i), trueNuVtxZ->at(i));
          float distTrueToRecoVtx = (trueVtx - recoVtx).Mag();
@@ -447,9 +487,75 @@ void eventClassification::Loop()
       bool hasCorrectLambdaDecay = hasLambdaProton && hasLambdaPionMinus;
       bool isSignal = isInTrueFV && hasPrimarySigma0 && hasPrimaryMuPlus && hasCorrectSigmaDecay && hasCorrectLambdaDecay && !isCosmic;
 
+      // ------------------------------------------------------------
+      // GENIE QEL-CC-LAMBDA cross-section correction.
+      // Uses the selected MCTruth and its generation-zero hyperon.
+      // With no GTruth::fHitNucP4 branch, E_rest ~= E_nu (nucleon at rest).
+      // This is a differential xsec weight, NOT a POT scale factor.
+      // ------------------------------------------------------------
+      int weightHyperonPDG = 0;
+      int nPrimaryWeightHyperons = 0;
+      const bool validTruthKinematics =
+          chosenTruthIdx >= 0 &&
+          trueNuPDG && chosenTruthIdx < static_cast<int>(trueNuPDG->size()) &&
+          trueCCNC && chosenTruthIdx < static_cast<int>(trueCCNC->size()) &&
+          trueIntMode && chosenTruthIdx < static_cast<int>(trueIntMode->size()) &&
+          trueNuEnergy && chosenTruthIdx < static_cast<int>(trueNuEnergy->size()) &&
+          trueQSqr && chosenTruthIdx < static_cast<int>(trueQSqr->size());
+
+      if (validTruthKinematics && !isCosmic &&
+          trueNuPDG->at(chosenTruthIdx) < 0 &&
+          trueCCNC->at(chosenTruthIdx) == 0 &&
+          trueIntMode->at(chosenTruthIdx) == 0 &&
+          truePDG && trueGeneration && trueMCTruthIndex &&
+          truePDG->size() == trueGeneration->size() &&
+          truePDG->size() == trueMCTruthIndex->size()) {
+
+         for (size_t p = 0; p < truePDG->size(); ++p) {
+            if (trueMCTruthIndex->at(p) != chosenTruthIdx ||
+                trueGeneration->at(p) != 0 ||
+                !GenieHypXsecWeight::isHyperonQE(truePDG->at(p))) continue;
+
+            ++nPrimaryWeightHyperons;
+            weightHyperonPDG = truePDG->at(p);
+            if (trueStatusCode && p < trueStatusCode->size())
+               ++hypPrimaryStatusCodes[trueStatusCode->at(p)];
+         }
+
+         if (nPrimaryWeightHyperons > 1) ++nHypWeightMultiplePrimaries;
+
+         // An ambiguous primary hyperon is left unweighted, not guessed.
+         if (nPrimaryWeightHyperons == 1) {
+            const double Enu = trueNuEnergy->at(chosenTruthIdx);
+            const double Q2 = trueQSqr->at(chosenTruthIdx);
+            if (std::isfinite(Enu) && Enu > 0.0 &&
+                std::isfinite(Q2) && Q2 >= 0.0) {
+               const double correction = W.weight(
+                   trueNuPDG->at(chosenTruthIdx), weightHyperonPDG, Enu, Q2);
+               if (std::isfinite(correction) && correction >= 0.0) {
+                  genieHypWeight = static_cast<float>(correction);
+                  ++nHypWeightApplied;
+                  ++hypEligibleByPDG[weightHyperonPDG];
+                  hypSumWeightsByPDG[weightHyperonPDG] += correction;
+               } else {
+                  ++nHypWeightInvalidInputs;
+               }
+            } else {
+               ++nHypWeightInvalidInputs;
+            }
+         }
+      }
+      if (genieHypWeight == 1.0f) ++nHypWeightUnit;
+
+      // Assign the POT factor according to the *input sample*, not
+      // the reconstructed category (important for dirt and cosmics).
+      potWeight = static_cast<float>(isHyperonSample ? hyperonPotFactor : prodPotFactor);
+      eventWeight = potWeight * genieHypWeight;
+
+
       if (isCosmic){ // Cosmics - no cosmics in filtered hyps, so should be fine like this
          sampleType = Cosmic;
-         eventWeight = prodScaleFactor;
+         // eventWeight already includes sample POT scaling and GENIE correction
          nCosmic += eventWeight;
          cosmicTree->Fill();
          /*if(isInTrueFV){
@@ -462,7 +568,7 @@ void eventClassification::Loop()
       else if (isHyperonSample && isSignal){ // Sigma0 Signal
          nSignalHyp++;
          sampleType = Signal;
-         eventWeight = hyperonScaleFactor; // scale hyperon events to 1e21 POT
+         // eventWeight already includes sample POT scaling and GENIE correction
          nSignal += eventWeight;
          signalTree->Fill();
          if(isInDentTrueFV){
@@ -473,7 +579,7 @@ void eventClassification::Loop()
       else if (isHyperonSample && isInTrueFV){ // Other hyperons
          nHyperonRaw++;
          sampleType = Hyperon;
-         eventWeight = hyperonScaleFactor; // scale hyperon events to 1e21 POT
+         // eventWeight already includes sample POT scaling and GENIE correction
          nHyperon += eventWeight;
          if(isInDentTrueFV){
             nHyperonInDentTrueFV += eventWeight;
@@ -482,14 +588,14 @@ void eventClassification::Loop()
       else if (isHyperonSample && !isInTrueFV){ // dirt in hyperon sample
          nDirtHyp++;
          sampleType = Dirt;
-         eventWeight = hyperonScaleFactor; // scale hyperon events to 1e21 POT
+         // eventWeight already includes sample POT scaling and GENIE correction
          nDirt += eventWeight; // add to total dirt count, scaled to 1e21 POT
       }
       else if (isProdSample && isSignal){ // Signal in beam background sample (very rare)
          continue; // exclude from analysis
        /* sampleType = Signal;
         nSignalProd++;
-        eventWeight = prodScaleFactor; // scale production events to 1e21 POT
+        // eventWeight already includes sample POT scaling and GENIE correction
         nSignal += eventWeight; // add to total signal count, scaled to 1e21 POT
         if(isInDentTrueFV){
             nSignalProdInDentTrueFV++;
@@ -499,7 +605,7 @@ void eventClassification::Loop()
       else if (isProdSample && isInTrueFV){ // Beam background
          nBkgRaw++;
          sampleType = Beam;
-         eventWeight = prodScaleFactor; // scale production events to 1e21 POT
+         // eventWeight already includes sample POT scaling and GENIE correction
          nBkg += eventWeight; // add to total bkg count, scaled to 1e21 POT
          bkgTree->Fill();
          if(isInDentTrueFV){
@@ -510,7 +616,7 @@ void eventClassification::Loop()
       else if (isProdSample && !isInTrueFV){ // Dirt - for now only flag dirt from bnb2026 sample (in future, include from filt hyp too, but needs diff weight)
          sampleType = Dirt; //unsure if this is necessary correct (or best way) to flag dirt, as I believe I may be able to grab dirt property from somewhere, similar to cosmic origin
          nDirtProd++;
-         eventWeight = prodScaleFactor; // scale production events to 1e21 POT
+         // eventWeight already includes sample POT scaling and GENIE correction
          nDirt += eventWeight; // add to total dirt count, scaled to 1e21 POT
       }
       else {continue;} 
@@ -605,11 +711,28 @@ void eventClassification::Loop()
    std::cout<<"# Dirt after 3+1 topo cut = "<<nGoodTopoDirt<<std::endl;
    std::cout<<"# Cosmic after 3+1 topo cut = "<<nGoodTopoCosmic<<std::endl;
    std::cout<<"================================================================"<<std::endl;
+   std::cout << "================ GENIE Hyperon QE Weights ================" << std::endl;
+   std::cout << "Weight prescription: E_rest = E_nu (nucleon-at-rest approximation)" << std::endl;
+   std::cout << "Events with an evaluated eligible weight: " << nHypWeightApplied << std::endl;
+   std::cout << "Events with unit weight: " << nHypWeightUnit << std::endl;
+   std::cout << "Events with ambiguous primary hyperons: " << nHypWeightMultiplePrimaries << std::endl;
+   std::cout << "Eligible events with invalid weight inputs: " << nHypWeightInvalidInputs << std::endl;
+   for (const auto& item : hypEligibleByPDG) {
+      const int pdg = item.first;
+      const double count = static_cast<double>(item.second);
+      std::cout << "  Primary hyperon " << pdg << ": " << item.second
+                << " events, mean GENIE weight = " << hypSumWeightsByPDG[pdg] / count
+                << std::endl;
+   }
+   std::cout << "Status codes of candidate generation-zero hyperons:" << std::endl;
+   for (const auto& item : hypPrimaryStatusCodes)
+      std::cout << "  status " << item.first << ": " << item.second << std::endl;
+   std::cout << "===========================================================" << std::endl;
    std::cout<<"========================== POT Info ======================================"<<std::endl;
    std::cout<<"Total POT in Hyperon files = "<<totPotHyperons<<std::endl;
    std::cout<<"Total POT in Production files = "<<totPotProd<<std::endl;
-   std::cout<<"Scale factor for Hyperon files = "<<hyperonScaleFactor<<std::endl;
-   std::cout<<"Scale factor for Production files = "<<prodScaleFactor<<std::endl;
+   std::cout<<"Scale factor for Hyperon files = "<<hyperonPotFactor<<std::endl;
+   std::cout<<"Scale factor for Production files = "<<prodPotFactor<<std::endl;
 
 
 }

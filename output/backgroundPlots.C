@@ -1267,9 +1267,15 @@ void backgroundPlots::Loop()
     TLegend* legFlashMatchScore = new TLegend(0.75, 0.65, 0.95, 0.90);
     legFlashMatchScore->SetBorderSize(0);
     legFlashMatchScore->SetFillStyle(0);
+    THStack* hsFlashTime = new THStack("hsFlashTime", "Barycenter Flash Time by Event Type");
+    TLegend* legFlashTime = new TLegend(0.75, 0.65, 0.95, 0.90);
+    legFlashTime->SetBorderSize(0);
+    legFlashTime->SetFillStyle(0);
 
     std::array<THStack*, nPlotCategories> hsFlashMatchScoreByCat;
     std::array<TLegend*, nPlotCategories> legFlashMatchScoreByCat;
+    std::array<THStack*, nPlotCategories> hsFlashTimeByCat;
+    std::array<TLegend*, nPlotCategories> legFlashTimeByCat;
 
     for (int iCat = 0; iCat < nPlotCategories; ++iCat)
     {
@@ -1277,12 +1283,18 @@ void backgroundPlots::Loop()
         
         hsFlashMatchScoreByCat.at(iCat) = new THStack(Form("hsFlashMatchScore_%d", iCat), "Placeholder"); //use Form()
         legFlashMatchScoreByCat.at(iCat) = new TLegend(0.75, 0.65, 0.95, 0.90);
+        hsFlashTimeByCat.at(iCat) = new THStack(Form("hsFlashTime_%d", iCat), "Placeholder");
+        legFlashTimeByCat.at(iCat) = new TLegend(0.75, 0.65, 0.95, 0.90);
         if(iCat == 1){
             for (int i = 0; i < 2; ++i){
                 hFlashMatchScoreByType.at(i)->SetFillColorAlpha(sampleTypeColors.at(i), 0.75);
                 hFlashMatchScoreByType.at(i)->SetLineColor(kBlack);
+                hFlashTimeByType.at(i)->SetFillColorAlpha(sampleTypeColors.at(i), 0.75);
+                hFlashTimeByType.at(i)->SetLineColor(kBlack);
                 hsFlashMatchScoreByCat.at(iCat)->Add(hFlashMatchScoreByType.at(i));
+                hsFlashTimeByCat.at(iCat)->Add(hFlashTimeByType.at(i));
                 legFlashMatchScoreByCat.at(iCat)->AddEntry(hFlashMatchScoreByType.at(i), eventTypeLabels.at(i).c_str(), "f");
+                legFlashTimeByCat.at(iCat)->AddEntry(hFlashTimeByType.at(i), eventTypeLabels.at(i).c_str(), "f");
             }
 
             TCanvas* cFlashMatchScore = new TCanvas("cFlashMatchScore", "FlashMatchScore", 1600, 1200);
@@ -1294,6 +1306,16 @@ void backgroundPlots::Loop()
             legFlashMatchScoreByCat.at(iCat)->Draw();
 
             cFlashMatchScore->Print(Form("plots/FlashMatchScore_%d.png", iCat));
+
+            TCanvas* cFlashTime = new TCanvas("cFlashTime", "FlashTime", 1600, 1200);
+            cFlashTime->SetRightMargin(0.05);
+
+            hsFlashTimeByCat.at(iCat)->Draw("HIST");
+            hsFlashTimeByCat.at(iCat)->GetXaxis()->SetTitle("FlashTime");
+            hsFlashTimeByCat.at(iCat)->GetYaxis()->SetTitle("Interactions");
+            legFlashTimeByCat.at(iCat)->Draw();
+
+            cFlashTime->Print(Form("plots/FlashTime_%d.png", iCat));
         }
 
         if(iCat == 2)
@@ -1304,6 +1326,11 @@ void backgroundPlots::Loop()
                 hFlashMatchScoreByType.at(i)->SetLineColor(kBlack);
                 hsFlashMatchScoreByCat.at(iCat)->Add(hFlashMatchScoreByType.at(i));
                 legFlashMatchScoreByCat.at(iCat)->AddEntry(hFlashMatchScoreByType.at(i), eventTypeLabels.at(i).c_str(), "f");
+
+                hFlashTimeByType.at(i)->SetFillColorAlpha(sampleTypeColors.at(i), 0.75);
+                hFlashTimeByType.at(i)->SetLineColor(kBlack);
+                hsFlashTimeByCat.at(iCat)->Add(hFlashTimeByType.at(i));
+                legFlashTimeByCat.at(iCat)->AddEntry(hFlashTimeByType.at(i), eventTypeLabels.at(i).c_str(), "f");
             } 
 
             TCanvas* cFlashMatchScore = new TCanvas("cFlashMatchScore", "FlashMatchScore", 1600, 1200);
@@ -1315,11 +1342,20 @@ void backgroundPlots::Loop()
             legFlashMatchScoreByCat.at(iCat)->Draw();
 
             cFlashMatchScore->Print(Form("plots/FlashMatchScore_%d.png", iCat));
+
+            TCanvas* cFlashTime = new TCanvas("cFlashTime", "FlashTime", 1600, 1200);
+            cFlashTime->SetRightMargin(0.05);
+            hsFlashTimeByCat.at(iCat)->Draw("HIST");
+            hsFlashTimeByCat.at(iCat)->GetXaxis()->SetTitle("FlashTime");
+            hsFlashTimeByCat.at(iCat)->GetYaxis()->SetTitle("Interactions");
+            legFlashTimeByCat.at(iCat)->Draw();
+
+            cFlashTime->Print(Form("plots/FlashTime_%d.png", iCat));
         }
 
     }
 
-        // ========================================================================
+    // ========================================================================
     // PFP Multiplicity
     // ========================================================================
 
